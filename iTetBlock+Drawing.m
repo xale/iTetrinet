@@ -14,25 +14,27 @@
 			  theme:(iTetTheme*)theme
 {
 	// Create an NSImage to draw to
+	NSSize cellSize = [theme cellSize];
 	NSImage* image = [[NSImage alloc] initWithSize:
-		   NSMakeSize((ITET_BLOCK_WIDTH * ITET_DEF_CELL_WIDTH), (ITET_BLOCK_HEIGHT * ITET_DEF_CELL_HEIGHT))];
+				NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH),
+					     (cellSize.height * ITET_BLOCK_HEIGHT))];
 	
 	// Prepare the image for drawing
 	[image lockFocus];
 	
 	// For each occupied cell of the block, draw the fill for that region
 	int row, col;
-	char cell;
+	char cellType;
 	NSImage* cellImage;
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
-			cell = [self cellAtRow:row column:col];
-			if (cell)
+			cellType = [self cellAtRow:row column:col];
+			if (cellType)
 			{
-				cellImage = [theme imageForCellType:cell];
-				[cellImage drawAtPoint:NSMakePoint(ITET_DEF_CELL_WIDTH * col, ITET_DEF_CELL_HEIGHT * row)
+				cellImage = [theme imageForCellType:cellType];
+				[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
 						  fromRect:NSZeroRect
 						 operation:NSCompositeSourceOver
 						  fraction:1.0];
