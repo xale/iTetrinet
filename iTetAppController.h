@@ -13,14 +13,12 @@
 @class iTetGameViewController;
 @class iTetPlayer;
 @class iTetLocalPlayer;
-@class iTetGameRules;
 @class iTetPreferencesWindowController;
 
 #define iTetMaxPlayers	6
 
 @interface iTetAppController : NSObject
 {
-	// Interface Builder outlets
 	// Window
 	IBOutlet NSWindow* window;
 	
@@ -44,9 +42,6 @@
 	iTetPlayer* players[iTetMaxPlayers];
 	int playerCount;
 	iTetLocalPlayer* localPlayer;
-	
-	// Game rules
-	iTetGameRules* currentGameRules;
 	
 	// Preferences window
 	iTetPreferencesWindowController* prefsWindowController;

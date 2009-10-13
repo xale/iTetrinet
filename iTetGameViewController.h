@@ -11,6 +11,7 @@
 @class iTetBoardView;
 @class iTetLocalBoardView;
 @class iTetPlayer;
+@class iTetGameRules;
 
 @interface iTetGameViewController : NSObject
 {
@@ -33,5 +34,11 @@
 
 - (void)assignBoardToPlayer:(iTetPlayer*)player;
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player;
+
+- (void)newGameWithStartingLevel:(int)startLevel
+		  initialStackHeight:(int)stackHeight
+				   rules:(iTetGameRules*)rules;
+
+@property (readonly) BOOL gameInProgress;
 
 @end

@@ -107,7 +107,7 @@
 					case obstructHoriz:
 						side = obstructHoriz;
 					
-					// If unobstructed, ignore and keep checking
+					// If unobstructed, keep checking
 					default:
 						break;
 				}

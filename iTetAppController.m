@@ -9,6 +9,7 @@
 #import "iTetNetworkController.h"
 #import "iTetPreferencesController.h"
 #import "iTetChatViewController.h"
+#import "iTetGameViewController.h"
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
@@ -48,8 +49,6 @@
 	[prefsWindowController release];
 	
 	[self removeAllPlayers];
-	
-	[currentGameRules release];
 	
 	[super dealloc];
 }
@@ -144,7 +143,7 @@
 - (IBAction)startStopGame:(id)sender
 {	
 	// Check if a game is already in progress
-	if (currentGameRules != nil)
+	if ([gameController gameInProgress])
 	{
 		// Create a confirmation dialog
 		NSAlert* dialog = [[NSAlert alloc] init];
@@ -561,9 +560,12 @@
 			stackHeight, startLevel, rules);
 		
 		// Create a game rules object
-		currentGameRules = [[iTetGameRules alloc] initWithRules:rules];
+		iTetGameRules* gameRules = [[[iTetGameRules alloc] initWithRules:rules] autorelease];
 		
-		// FIXME: WRITEME: Start new game
+		// The the gameController to start the game
+		[gameController newGameWithStartingLevel:startLevel
+					    initialStackHeight:stackHeight
+							     rules:gameRules];
 	}
 	// Special used / lines sent
 	else if ([messageType isEqualToString:SpecialUsedMessage])

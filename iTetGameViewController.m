@@ -17,10 +17,16 @@
 
 @implementation iTetGameViewController
 
+#pragma mark -
+#pragma mark Interface Actions
+
 - (IBAction)sendMessage:(id)sender
 {
 	// FIXME: WRITEME
 }
+
+#pragma mark -
+#pragma mark Player-Board Assignment
 
 - (void)assignBoardToPlayer:(iTetPlayer*)player
 {
@@ -30,6 +36,25 @@
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
 {
 	// FIXME: WRITEME
+}
+
+#pragma mark -
+#pragma mark Starting a Game
+
+- (void)newGameWithStartingLevel:(int)startLevel
+		  initialStackHeight:(int)stackHeight
+				   rules:(iTetGameRules*)rules
+{
+	// FIXME: WRITEME
+}
+
+#pragma mark -
+#pragma mark Accessors
+
+- (BOOL)gameInProgress
+{
+	// FIXME: WRITEME
+	return NO;
 }
 
 @end
