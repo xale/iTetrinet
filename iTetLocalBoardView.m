@@ -6,7 +6,7 @@
 //
 
 #import "iTetLocalBoardView.h"
-#import "iTetBlock.h"
+#import "iTetBlock+Drawing.h"
 #import "iTetLocalPlayer.h"
 
 @implementation iTetLocalBoardView
@@ -38,7 +38,32 @@
 	if (currentBlock == nil)
 		return;
 	
-	// FIXME: WRITEME: transform graphics context and draw falling block
+	// Determine the size at which the block should be drawn
+	NSSize cellSize = NSMakeSize(([self bounds].size.width / ITET_BOARD_WIDTH),
+					     ([self bounds].size.height / ITET_BOARD_HEIGHT));
+	NSSize blockSize = NSMakeSize((4 * cellSize.width), (4 * cellSize.height));
+	
+	// Draw the block to an image of that size
+	NSImage* blockImage = [currentBlock imageWithSize:blockSize
+								  theme:[self theme]];
+	
+	// Draw the image at the block's position
+	NSPoint drawPoint = NSMakePoint(([currentBlock colPos] * cellSize.width),
+						  ([currentBlock rowPos] * cellSize.height));
+	[blockImage drawAtPoint:drawPoint
+			   fromRect:NSZeroRect
+			  operation:NSCompositeSourceOver
+			   fraction:1.0];
+}
+
+#pragma mark -
+#pragma mark Event Handling
+
+- (void)keyDown:(NSEvent*)keyEvent
+{
+	// FIXME: WRITEME
+	
+	[super keyDown:keyEvent];
 }
 
 #pragma mark -
