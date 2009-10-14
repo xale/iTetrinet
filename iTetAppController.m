@@ -44,7 +44,7 @@
 }
 
 - (void)dealloc
-{
+{	
 	[networkController release];
 	[prefsWindowController release];
 	
@@ -696,6 +696,7 @@
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
+		[gameController removeBoardAssignmentForPlayer:players[(number - 1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
@@ -712,7 +713,7 @@
 	[self didChangeValueForKey:@"playerList"];
 	
 	// Assign a board for the new player
-	// FIXME: WRITEME
+	[gameController assignBoardToPlayer:players[(number - 1)]];
 }
 
 - (void)setTeamName:(NSString*)team
@@ -744,6 +745,9 @@
 		return;
 	}
 	
+	// Remove the player's board assignment
+	[gameController removeBoardAssignmentForPlayer:players[(number - 1)]];
+	
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove the player
@@ -763,8 +767,12 @@
 	// Remove all players
 	for (int i = 0; i < iTetMaxPlayers; i++)
 	{
-		[players[i] release];
-		players[i] = nil;
+		if (players[i] != nil)
+		{
+			[gameController removeBoardAssignmentForPlayer:players[i]];
+			[players[i] release];
+			players[i] = nil;
+		}
 	}
 	
 	// nil the local player pointer (released with the others)
