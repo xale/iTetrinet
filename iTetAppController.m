@@ -635,7 +635,7 @@
 #pragma mark -
 #pragma mark Players
 
-#define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= iTetMaxPlayers))
+#define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= ITET_MAX_PLAYERS))
 
 - (void)setLocalPlayerNumber:(int)number
 {
@@ -765,7 +765,7 @@
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove all players
-	for (int i = 0; i < iTetMaxPlayers; i++)
+	for (int i = 0; i < ITET_MAX_PLAYERS; i++)
 	{
 		if (players[i] != nil)
 		{
@@ -823,7 +823,7 @@
 - (NSArray*)playerList
 {
 	NSMutableArray* list = [NSMutableArray arrayWithCapacity:playerCount];
-	for (int i = 0; i < iTetMaxPlayers; i++)
+	for (int i = 0; i < ITET_MAX_PLAYERS; i++)
 	{
 		if (players[i] != nil)
 			[list addObject:players[i]];

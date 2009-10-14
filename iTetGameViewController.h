@@ -27,7 +27,7 @@
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
 	
-	char occupiedBoardViews;
+	char assignedBoards;
 }
 
 - (IBAction)sendMessage:(id)sender;

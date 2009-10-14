@@ -15,7 +15,7 @@
 @class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
 
-#define iTetMaxPlayers	6
+#define ITET_MAX_PLAYERS	6
 
 @interface iTetAppController : NSObject
 {
@@ -39,7 +39,7 @@
 	NSTimer* connectionTimer;
 	
 	// Players
-	iTetPlayer* players[iTetMaxPlayers];
+	iTetPlayer* players[ITET_MAX_PLAYERS];
 	int playerCount;
 	iTetLocalPlayer* localPlayer;
 	

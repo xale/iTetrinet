@@ -7,7 +7,8 @@
 
 #import "iTetGameViewController.h"
 #import "iTetAppController.h"
-#import "iTetPlayer.h"
+#import "iTetLocalPlayer.h"
+#import "iTetLocalBoardView.h"
 
 #define BOARD_1	0x01
 #define BOARD_2	0x02
@@ -30,12 +31,76 @@
 
 - (void)assignBoardToPlayer:(iTetPlayer*)player
 {
-	// FIXME: WRITEME
+	// Generate a random board for the player
+	[player setBoard:[iTetBoard boardWithRandomContents]];
+	
+	// Find an un-assigned board, and assign it to the player
+	if ((assignedBoards & BOARD_1) == 0)
+	{
+		[board1 setOwner:player];
+		assignedBoards += BOARD_1;
+	}
+	else if ((assignedBoards & BOARD_2) == 0)
+	{
+		[board2 setOwner:player];
+		assignedBoards += BOARD_2;
+	}
+	else if ((assignedBoards & BOARD_3) == 0)
+	{
+		[board3 setOwner:player];
+		assignedBoards += BOARD_3;
+	}
+	else if ((assignedBoards & BOARD_4) == 0)
+	{
+		[board4 setOwner:player];
+		assignedBoards += BOARD_4;
+	}
+	else if ((assignedBoards & BOARD_5) == 0)
+	{
+		[board5 setOwner:player];
+		assignedBoards += BOARD_5;
+	}
+	else
+	{
+		// No available boards (shouldn't happen)
+		NSLog(@"Warning: iTetGameController -assignBoardToPlayer: called with no available boards");
+	}
 }
 
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
 {
-	// FIXME: WRITEME
+	// Find the board belonging to this player
+	int playerNum = [player playerNumber];
+	if ([[board1 owner] playerNumber] == playerNum)
+	{
+		[board1 setOwner:nil];
+		assignedBoards -= BOARD_1;
+	}
+	else if ([[board2 owner] playerNumber] == playerNum)
+	{
+		[board2 setOwner:nil];
+		assignedBoards -= BOARD_2;
+	}
+	else if ([[board3 owner] playerNumber] == playerNum)
+	{
+		[board3 setOwner:nil];
+		assignedBoards -= BOARD_3;
+	}
+	else if ([[board4 owner] playerNumber] == playerNum)
+	{
+		[board4 setOwner:nil];
+		assignedBoards -= BOARD_4;
+	}
+	else if ([[board5 owner] playerNumber] == playerNum)
+	{
+		[board5 setOwner:nil];
+		assignedBoards -= BOARD_5;
+	}
+	else
+	{
+		// Player is not assigned to a board (shouldn't happen)
+		NSLog(@"Warning: iTetGameController -removeBoardAssignmentForPlayer: called with player not assigned to a board");
+	}
 }
 
 #pragma mark -
