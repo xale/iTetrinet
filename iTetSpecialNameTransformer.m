@@ -24,7 +24,7 @@
 {
 	// Check that the value to transform is an NSNumber or subclass thereof
 	if (![value isKindOfClass:[NSNumber class]])
-		return iTetInvalidOrNoneSpecialName;
+		return nil;
 	
 	// Get the integer value; cast to the enum type iTetSpecialType
 	iTetSpecialType type = (iTetSpecialType)[value intValue];

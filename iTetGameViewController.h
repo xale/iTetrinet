@@ -10,6 +10,8 @@
 @class iTetAppController;
 @class iTetBoardView;
 @class iTetLocalBoardView;
+@class iTetNextBlockView;
+@class iTetSpecialsView;
 @class iTetPlayer;
 @class iTetGameRules;
 
@@ -18,12 +20,19 @@
 	IBOutlet iTetAppController* appController;
 	
 	// Interface objects
+	// Local player's views
 	IBOutlet iTetLocalBoardView* localBoardView;
+	IBOutlet iTetNextBlockView* nextBlockView;
+	IBOutlet iTetSpecialsView* specialsView;
+	
+	// Remote players' board views
 	IBOutlet iTetBoardView* board1;
 	IBOutlet iTetBoardView* board2;
 	IBOutlet iTetBoardView* board3;
 	IBOutlet iTetBoardView* board4;
 	IBOutlet iTetBoardView* board5;
+	
+	// Chat views
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
 	

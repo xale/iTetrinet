@@ -3600,13 +3600,22 @@
 							<string key="NSBinding">value</string>
 							<string key="NSKeyPath">localPlayer.specialsQueue.firstObject</string>
 							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">TetrinetSpecialNameTransformer</string>
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMutableArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Specials</string>
+									<string>TetrinetSpecialNameTransformer</string>
+								</object>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">701</int>
+					<int key="connectionID">703</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5676,7 +5685,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">701</int>
+			<int key="maxID">703</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5790,6 +5799,8 @@
 							<string>chatView</string>
 							<string>localBoardView</string>
 							<string>messageField</string>
+							<string>nextBlockView</string>
+							<string>specialsView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5802,6 +5813,8 @@
 							<string>NSTextView</string>
 							<string>iTetLocalBoardView</string>
 							<string>NSTextField</string>
+							<string>iTetNextBlockView</string>
+							<string>iTetSpecialsView</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

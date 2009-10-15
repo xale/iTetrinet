@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Debug</string>
+	<string>Project</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -273,21 +273,20 @@
 								<string>6A96B57C10098F29003D353E</string>
 								<string>6A4A3749101BB32500F27DE9</string>
 								<string>6AFDE346100AA7C600BED4A0</string>
-								<string>6A96B57B10098EF9003D353E</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
 								<string>1C37FBAC04509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>45</integer>
-									<integer>39</integer>
+									<integer>59</integer>
+									<integer>52</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 267}, {291, 764}}</string>
+							<string>{{0, 375}, {291, 764}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -303,6 +302,8 @@
 							<string>MainColumn</string>
 							<real>291</real>
 						</array>
+						<key>RubberWindowFrame</key>
+						<string>48 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -313,12 +314,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>6A96B59A10099028003D353E</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>iTetAppController.h</string>
+								<string>iTetSpecialNameTransformer.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +329,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>6A96B59B10099028003D353E</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>iTetAppController.h</string>
+										<string>iTetSpecialNameTransformer.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>6AFCE1911087784E0090F3DF</string>
+										<string>6AFCE1AD10877B780090F3DF</string>
 										<key>history</key>
 										<array>
 											<string>6A96B5C11009912D003D353E</string>
@@ -383,7 +386,6 @@
 											<string>6A64BD87108573F200B0E13D</string>
 											<string>6AFCE0AF10876E180090F3DF</string>
 											<string>6AFCE0B210876E180090F3DF</string>
-											<string>6AFCE0B510876E180090F3DF</string>
 											<string>6AFCE0FE1087757E0090F3DF</string>
 											<string>6AFCE1001087757E0090F3DF</string>
 											<string>6AFCE1011087757E0090F3DF</string>
@@ -395,13 +397,9 @@
 											<string>6AFCE1091087757E0090F3DF</string>
 											<string>6AFCE10A1087757E0090F3DF</string>
 											<string>6AFCE10B1087757E0090F3DF</string>
-											<string>6AFCE10C1087757E0090F3DF</string>
-											<string>6AFCE10D1087757E0090F3DF</string>
 											<string>6AFCE10E1087757E0090F3DF</string>
 											<string>6AFCE10F1087757E0090F3DF</string>
 											<string>6AFCE1101087757E0090F3DF</string>
-											<string>6AFCE1111087757E0090F3DF</string>
-											<string>6AFCE1121087757E0090F3DF</string>
 											<string>6AFCE1131087757E0090F3DF</string>
 											<string>6AFCE1141087757E0090F3DF</string>
 											<string>6AFCE1171087757E0090F3DF</string>
@@ -414,7 +412,12 @@
 											<string>6AFCE176108777E20090F3DF</string>
 											<string>6AFCE185108778210090F3DF</string>
 											<string>6AFCE18E1087784E0090F3DF</string>
-											<string>6AFCE186108778210090F3DF</string>
+											<string>6AFCE19610877A8F0090F3DF</string>
+											<string>6AFCE19710877A8F0090F3DF</string>
+											<string>6AFCE19810877A8F0090F3DF</string>
+											<string>6AFCE1A110877AF20090F3DF</string>
+											<string>6AFCE1A210877AF20090F3DF</string>
+											<string>6AFCE1AC10877B760090F3DF</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -623,6 +626,14 @@
 											<string>6AFCE187108778210090F3DF</string>
 											<string>6AFCE188108778210090F3DF</string>
 											<string>6AFCE18F1087784E0090F3DF</string>
+											<string>6AFCE19A10877A8F0090F3DF</string>
+											<string>6AFCE19B10877A8F0090F3DF</string>
+											<string>6AFCE19C10877A8F0090F3DF</string>
+											<string>6AFCE19D10877A8F0090F3DF</string>
+											<string>6AFCE19E10877A8F0090F3DF</string>
+											<string>6AFCE19F10877A8F0090F3DF</string>
+											<string>6AFCE1A310877AF20090F3DF</string>
+											<string>6AFCE1A410877AF20090F3DF</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -637,6 +648,8 @@
 							<dict>
 								<key>Frame</key>
 								<string>{{0, 0}, {1066, 777}}</string>
+								<key>RubberWindowFrame</key>
+								<string>48 55 1379 823 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -660,6 +673,8 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {1066, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>48 55 1379 823 0 0 1440 878 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -782,8 +797,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
@@ -795,8 +808,6 @@
 					<dict>
 						<key>Frame</key>
 						<string>{{0, 0}, {1379, 334}}</string>
-						<key>RubberWindowFrame</key>
-						<string>48 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
@@ -871,11 +882,7 @@
 							</array>
 							<key>Frame</key>
 							<string>{{673, 0}, {706, 213}}</string>
-							<key>RubberWindowFrame</key>
-							<string>48 55 1379 823 0 0 1440 878 </string>
 						</dict>
-						<key>RubberWindowFrame</key>
-						<string>48 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>

@@ -9,6 +9,8 @@
 #import "iTetAppController.h"
 #import "iTetLocalPlayer.h"
 #import "iTetLocalBoardView.h"
+#import "iTetNextBlockView.h"
+#import "iTetSpecialsView.h"
 
 #define BOARD_1	0x01
 #define BOARD_2	0x02
@@ -34,10 +36,12 @@
 	// Generate a random board for the player
 	[player setBoard:[iTetBoard boardWithRandomContents]];
 	
-	// If this player is the local player, assign the local board
+	// If this player is the local player, assign the local board and related views
 	if ([player isKindOfClass:[iTetLocalPlayer class]])
 	{
 		[localBoardView setOwner:player];
+		[nextBlockView setOwner:player];
+		[specialsView setOwner:player];
 		return;
 	}
 	
@@ -76,10 +80,12 @@
 
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
 {
-	// If this is the local player, remove the local board view's owner
+	// If this is the local player, remove the local views' owner
 	if ([player isKindOfClass:[iTetLocalPlayer class]])
 	{
 		[localBoardView setOwner:nil];
+		[nextBlockView setOwner:nil];
+		[specialsView setOwner:nil];
 		return;
 	}
 	
