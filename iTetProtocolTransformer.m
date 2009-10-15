@@ -26,7 +26,7 @@ NSString* const unknownProtocolString = @"Unknown Protocol";
 
 - (id)transformedValue:(id)value
 {
-	// Check that the value to transform is an NSInteger or subclass thereof
+	// Check that the value to transform is an NSNumber or subclass thereof
 	if (![value isKindOfClass:[NSNumber class]])
 		return unknownProtocolString;
 	

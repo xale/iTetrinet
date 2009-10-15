@@ -28,6 +28,7 @@
 
 - (void)enqueueSpecial:(iTetSpecialType)special;
 - (iTetSpecialType)dequeueSpecial;
+- (iTetSpecialType)activeSpecial;
 
 @property (readonly) Queue* specialsQueue;
 @property (readwrite, assign) NSUInteger queueSize;

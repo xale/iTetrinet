@@ -11,7 +11,7 @@
 
 @interface iTetBoardView : iTetThemedView
 {	
-	
+	IBOutlet NSTextField* nicknameField;
 }
 
 @end

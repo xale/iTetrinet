@@ -55,6 +55,15 @@
 	// Dequeue the first special
 	return (iTetSpecialType)[[specialsQueue dequeueFirstObject] intValue];
 }
+- (iTetSpecialType)activeSpecial
+{
+	// Check that there are specials in the queue
+	if ([specialsQueue count] == 0)
+		return invalidSpecial;
+	
+	// Return the first special in the queue (do not dequeue)
+	return (iTetSpecialType)[[specialsQueue firstObject] intValue];
+}
 @synthesize specialsQueue;
 
 - (void)setQueueSize:(NSUInteger)size

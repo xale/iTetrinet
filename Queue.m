@@ -21,6 +21,10 @@
 	// Wrap the object in a new node (object will be retained)
 	Node* newNode = [Node nodeWithContents:object];
 	
+	[self willChangeValueForKey:@"lastObject"];
+	[self willChangeValueForKey:@"allObjects"];
+	[self willChangeValueForKey:@"count"];
+	
 	// Check: is the queue non-empty?
 	if (count > 0)
 	{
@@ -33,12 +37,18 @@
 	else
 	{
 		// Queue is empty; the new node is both the head and tail
+		[self willChangeValueForKey:@"firstObject"];
 		head = [newNode retain];
 		tail = newNode;
+		[self didChangeValueForKey:@"firstObject"];
 	}
 	
 	// Increment the count of nodes in the queue
 	count++;
+	
+	[self didChangeValueForKey:@"count"];
+	[self didChangeValueForKey:@"allObjects"];
+	[self didChangeValueForKey:@"lastObject"];
 }
 
 - (id)dequeueFirstObject
@@ -53,6 +63,10 @@
 	// Get the object out of the first node
 	id object = [[firstNode contents] retain];
 	
+	[self willChangeValueForKey:@"firstObject"];
+	[self willChangeValueForKey:@"allObjects"];
+	[self willChangeValueForKey:@"count"];
+	
 	// Check: is there more than one node in the queue?
 	if (count > 1)
 	{
@@ -62,8 +76,10 @@
 	else
 	{
 		// Last remaining node; set the head and tail pointers to nil
+		[self willChangeValueForKey:@"lastObject"];
 		head = nil;
 		tail = nil;
+		[self didChangeValueForKey:@"lastObject"];
 	}
 	
 	// Release the node
@@ -72,12 +88,21 @@
 	// Decrement the count of nodes
 	count--;
 	
+	[self didChangeValueForKey:@"count"];
+	[self didChangeValueForKey:@"allObjects"];
+	[self didChangeValueForKey:@"firstObject"];
+	
 	// Return the object removed from the first node
 	return [object autorelease];
 }
 
 - (void)removeAllObjects
 {
+	[self willChangeValueForKey:@"firstObject"];
+	[self willChangeValueForKey:@"lastObject"];
+	[self willChangeValueForKey:@"allObjects"];
+	[self willChangeValueForKey:@"count"];
+	
 	// Only the first node is retained, so releasing it will recursively
 	// release all the other nodes in the queue
 	[head release];
@@ -88,7 +113,15 @@
 	
 	// Reset the count
 	count = 0;
+	
+	[self didChangeValueForKey:@"count"];
+	[self didChangeValueForKey:@"allObjects"];
+	[self didChangeValueForKey:@"lastObject"];
+	[self didChangeValueForKey:@"firstObject"];
 }
+
+#pragma mark -
+#pragma mark Properties
 
 - (id)firstObject
 {

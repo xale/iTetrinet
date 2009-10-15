@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="501"/>
-			<integer value="29"/>
 			<integer value="575"/>
+			<integer value="29"/>
+			<integer value="501"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1246,7 +1246,7 @@
 											<object class="NSTextField" id="107636205">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{14, 606}, {38, 17}}</string>
+												<string key="NSFrame">{{14, 606}, {246, 17}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="224351412">
@@ -1269,7 +1269,7 @@
 											<object class="NSTextField" id="383164859">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{382, 609}, {33, 14}}</string>
+												<string key="NSFrame">{{382, 609}, {126, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="488759384">
@@ -1292,7 +1292,7 @@
 											<object class="NSTextField" id="756125185">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{510, 609}, {33, 14}}</string>
+												<string key="NSFrame">{{510, 609}, {126, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="31711883">
@@ -1315,7 +1315,7 @@
 											<object class="NSTextField" id="1044636452">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{638, 609}, {33, 14}}</string>
+												<string key="NSFrame">{{638, 609}, {126, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="124630338">
@@ -1338,7 +1338,7 @@
 											<object class="NSTextField" id="520024283">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{510, 358}, {33, 14}}</string>
+												<string key="NSFrame">{{510, 358}, {126, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="239429729">
@@ -1361,7 +1361,7 @@
 											<object class="NSTextField" id="357533635">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">265</int>
-												<string key="NSFrame">{{638, 358}, {33, 14}}</string>
+												<string key="NSFrame">{{638, 358}, {126, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="888360078">
@@ -3540,6 +3540,74 @@
 					</object>
 					<int key="connectionID">686</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="701483452"/>
+						<reference key="destination" ref="107636205"/>
+					</object>
+					<int key="connectionID">693</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="763875518"/>
+						<reference key="destination" ref="383164859"/>
+					</object>
+					<int key="connectionID">694</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="514836372"/>
+						<reference key="destination" ref="756125185"/>
+					</object>
+					<int key="connectionID">695</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="372708780"/>
+						<reference key="destination" ref="1044636452"/>
+					</object>
+					<int key="connectionID">696</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="946716394"/>
+						<reference key="destination" ref="520024283"/>
+					</object>
+					<int key="connectionID">697</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nicknameField</string>
+						<reference key="source" ref="778172441"/>
+						<reference key="destination" ref="357533635"/>
+					</object>
+					<int key="connectionID">698</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.specialsQueue.firstObject</string>
+						<reference key="source" ref="1003838065"/>
+						<reference key="destination" ref="742664187"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1003838065"/>
+							<reference key="NSDestination" ref="742664187"/>
+							<string key="NSLabel">value: localPlayer.specialsQueue.firstObject</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.specialsQueue.firstObject</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">TetrinetSpecialNameTransformer</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">701</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -4240,9 +4308,9 @@
 							<reference ref="372708780"/>
 							<reference ref="672272869"/>
 							<reference ref="1044636452"/>
-							<reference ref="756125185"/>
 							<reference ref="514836372"/>
 							<reference ref="107636205"/>
+							<reference ref="756125185"/>
 							<reference ref="1003838065"/>
 						</object>
 						<reference key="parent" ref="210918728"/>
@@ -5422,8 +5490,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{227, 85}, {824, 713}}</string>
-					<string>{{227, 85}, {824, 713}}</string>
+					<string>{{233, 87}, {824, 713}}</string>
+					<string>{{233, 87}, {824, 713}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<reference ref="5"/>
@@ -5548,7 +5616,7 @@
 							<string key="accessibilityValue">Server List</string>
 						</object>
 					</object>
-					<string>{{229, 576}, {608, 261}}</string>
+					<string>{{180, 576}, {608, 261}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -5608,7 +5676,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">686</int>
+			<int key="maxID">701</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -5666,6 +5734,10 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">iTetBoardView</string>
 					<string key="superclassName">iTetThemedView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">nicknameField</string>
+						<string key="NS.object.0">NSTextField</string>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">iTetBoardView.h</string>

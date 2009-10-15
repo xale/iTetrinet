@@ -34,7 +34,14 @@
 	// Generate a random board for the player
 	[player setBoard:[iTetBoard boardWithRandomContents]];
 	
-	// Find an un-assigned board, and assign it to the player
+	// If this player is the local player, assign the local board
+	if ([player isKindOfClass:[iTetLocalPlayer class]])
+	{
+		[localBoardView setOwner:player];
+		return;
+	}
+	
+	// Otherwise, find an un-assigned board, and assign it to the player
 	if ((assignedBoards & BOARD_1) == 0)
 	{
 		[board1 setOwner:player];
@@ -69,7 +76,14 @@
 
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
 {
-	// Find the board belonging to this player
+	// If this is the local player, remove the local board view's owner
+	if ([player isKindOfClass:[iTetLocalPlayer class]])
+	{
+		[localBoardView setOwner:nil];
+		return;
+	}
+	
+	// Otherwise, find the board belonging to this player
 	int playerNum = [player playerNumber];
 	if ([[board1 owner] playerNumber] == playerNum)
 	{

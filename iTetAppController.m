@@ -13,17 +13,21 @@
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
-#import "iTetProtocolTransformer.h"
 #import "iTetPreferencesWindowController.h"
+#import "iTetProtocolTransformer.h"
+#import "iTetSpecialNameTransformer.h"
 
 @implementation iTetAppController
 
 + (void)initialize
 {
-	// Register iTetProtocolTransformer value transformer
+	// Register value transformers
 	iTetProtocolTransformer* pt = [[[iTetProtocolTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:pt
 						  forName:@"TetrinetProtocolTransformer"];
+	pt = [[[iTetSpecialNameTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:pt
+						  forName:@"TetrinetSpecialNameTransformer"];
 }
 
 - (id)init
@@ -639,16 +643,19 @@
 
 - (void)setLocalPlayerNumber:(int)number
 {
-	// Sanity checks
+	// Sanity check
 	iTetCheckPlayerNumber(number);
+	
+	[self willChangeValueForKey:@"playerList"];
+	
+	// Check that the assigned slot is not already occupied
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: local player assigned to occupied player slot");
+		[gameController removeBoardAssignmentForPlayer:players[(number -1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
-	
-	[self willChangeValueForKey:@"playerList"];
 	
 	// Check if our player already exists; if so, this is a move operation
 	if (localPlayer != nil)
@@ -661,6 +668,8 @@
 		
 		// Move to the new location in the players array
 		players[(number - 1)] = (iTetPlayer*)localPlayer;
+		
+		// No need to notify game controller; board assignment will not change
 	}
 	else
 	{
@@ -674,6 +683,9 @@
 		
 		// Update player count
 		playerCount++;
+		
+		// Assign the local board to this player
+		[gameController assignBoardToPlayer:localPlayer];
 		
 		// Send the player's team name to the server
 		if (![[localPlayer teamName] isEqualToString:@""])
@@ -691,8 +703,12 @@
 - (void)addPlayerWithNumber:(int)number
 			 nickname:(NSString*)nick
 {
-	// Sanity checks
+	// Sanity check
 	iTetCheckPlayerNumber(number);
+	
+	[self willChangeValueForKey:@"playerList"];
+	
+	// Check that the slot is not already occupied
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
@@ -700,8 +716,6 @@
 		[players[(number - 1)] release];
 		playerCount--;
 	}
-	
-	[self willChangeValueForKey:@"playerList"];
 	
 	// Create the new player
 	players[(number - 1)] = [[iTetPlayer alloc] initWithNickname:nick

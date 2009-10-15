@@ -16,6 +16,18 @@
 	return [super initWithFrame:frame];
 }
 
+- (void)awakeFromNib
+{	
+	if (nicknameField != nil)
+	{
+		[nicknameField bind:@"value"
+			     toObject:self
+			  withKeyPath:@"owner.nickname"
+				options:[NSDictionary dictionaryWithObject:@"No Player"
+										forKey:NSNullPlaceholderBindingOption]];
+	}
+}
+
 #pragma mark -
 #pragma mark Drawing
 

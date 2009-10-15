@@ -19,9 +19,9 @@
 - (id)dequeueFirstObject;
 - (void)removeAllObjects;
 
-- (id)firstObject;
-- (id)lastObject;
-- (NSArray*)allObjects;
-- (NSUInteger)count;
+@property (readonly) id firstObject;
+@property (readonly) id lastObject;
+@property (readonly) NSArray* allObjects;
+@property (readonly) NSUInteger count;
 
 @end
