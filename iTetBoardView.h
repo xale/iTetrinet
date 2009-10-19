@@ -10,7 +10,8 @@
 #import "iTetThemedView.h"
 
 @interface iTetBoardView : iTetThemedView
-{	
+{
+	IBOutlet NSTextField* numberField;
 	IBOutlet NSTextField* nicknameField;
 }
 

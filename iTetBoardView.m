@@ -17,7 +17,15 @@
 }
 
 - (void)awakeFromNib
-{	
+{
+	if (numberField != nil)
+	{
+		[numberField bind:@"value"
+			   toObject:self
+			withKeyPath:@"owner.playerNumber"
+			    options:[NSDictionary dictionaryWithObject:@""
+									    forKey:NSNullPlaceholderBindingOption]];
+	}
 	if (nicknameField != nil)
 	{
 		[nicknameField bind:@"value"

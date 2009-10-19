@@ -45,6 +45,9 @@
 		6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */; };
 		6AC2397C1044A5D0006D3C83 /* iTetProtocolTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */; };
 		6ACC223F107D0CE7006768C0 /* iTetGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */; };
+		6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */; };
+		6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */; };
+		6AEB7F851089218C00A8BCFD /* iTetKeyboardPrefsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F831089218C00A8BCFD /* iTetKeyboardPrefsViewController.m */; };
 		6AF511D6104860DB00D0B020 /* iTetLocalBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF511D5104860DB00D0B020 /* iTetLocalBoardView.m */; };
 		6AFCE0F5108771310090F3DF /* iTetSpecials.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F4108771310090F3DF /* iTetSpecials.m */; };
 		6AFCE0F9108772B10090F3DF /* iTetSpecialNameTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F8108772B10090F3DF /* iTetSpecialNameTransformer.m */; };
@@ -128,6 +131,11 @@
 		6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetProtocolTransformer.m; sourceTree = "<group>"; };
 		6ACC223D107D0CE7006768C0 /* iTetGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGameViewController.h; sourceTree = "<group>"; };
 		6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameViewController.m; sourceTree = "<group>"; };
+		6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyView.h; sourceTree = "<group>"; };
+		6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyView.m; sourceTree = "<group>"; };
+		6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyboardPrefsView.xib; sourceTree = "<group>"; };
+		6AEB7F831089218C00A8BCFD /* iTetKeyboardPrefsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyboardPrefsViewController.m; sourceTree = "<group>"; };
+		6AEB7F841089218C00A8BCFD /* iTetKeyboardPrefsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyboardPrefsViewController.h; sourceTree = "<group>"; };
 		6AF511D4104860DB00D0B020 /* iTetLocalBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetLocalBoardView.h; sourceTree = "<group>"; };
 		6AF511D5104860DB00D0B020 /* iTetLocalBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetLocalBoardView.m; sourceTree = "<group>"; };
 		6AFCE0F4108771310090F3DF /* iTetSpecials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecials.m; sourceTree = "<group>"; };
@@ -221,6 +229,7 @@
 				6AB76DAD101D178800734661 /* GeneralPrefsView.xib */,
 				6AB76DB0101D17AE00734661 /* ThemesPrefsView.xib */,
 				6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */,
+				6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -316,6 +325,8 @@
 				6A934974100C44D700A7CF51 /* Themed NSView Subclasses */,
 				6A96B55610098E88003D353E /* iTetBlock+Drawing.h */,
 				6A96B55710098E88003D353E /* iTetBlock+Drawing.m */,
+				6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */,
+				6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -394,6 +405,8 @@
 			children = (
 				6AB76D52101D145000734661 /* iTetGeneralPrefsViewController.h */,
 				6AB76D53101D145000734661 /* iTetGeneralPrefsViewController.m */,
+				6AEB7F841089218C00A8BCFD /* iTetKeyboardPrefsViewController.h */,
+				6AEB7F831089218C00A8BCFD /* iTetKeyboardPrefsViewController.m */,
 				6AB76D58101D145000734661 /* iTetThemesViewController.h */,
 				6AB76D59101D145000734661 /* iTetThemesViewController.m */,
 				6AB76D56101D145000734661 /* iTetServersViewController.h */,
@@ -472,6 +485,7 @@
 				6AB76DAE101D178800734661 /* GeneralPrefsView.xib in Resources */,
 				6AB76DB1101D17AE00734661 /* ThemesPrefsView.xib in Resources */,
 				6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */,
+				6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,6 +527,8 @@
 				6ACC223F107D0CE7006768C0 /* iTetGameViewController.m in Sources */,
 				6AFCE0F5108771310090F3DF /* iTetSpecials.m in Sources */,
 				6AFCE0F9108772B10090F3DF /* iTetSpecialNameTransformer.m in Sources */,
+				6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */,
+				6AEB7F851089218C00A8BCFD /* iTetKeyboardPrefsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
