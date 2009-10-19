@@ -28,6 +28,9 @@
 	pt = [[[iTetSpecialNameTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:pt
 						  forName:@"TetrinetSpecialNameTransformer"];
+	
+	// Seed random number generator
+	srandom(time(NULL));
 }
 
 - (id)init
