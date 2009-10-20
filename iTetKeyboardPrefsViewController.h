@@ -12,8 +12,6 @@
 @interface iTetKeyboardPrefsViewController : NSViewController
 {
 	IBOutlet NSPopUpButton* configurationPopUpButton;
-	
-	IBOutlet NSView* bar;
 }
 
 + (id)viewController;
