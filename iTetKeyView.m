@@ -25,41 +25,74 @@
 	// FIXME: WRITEME
 }
 
-#define KEY_FONT_SIZE		14
-#define KEY_MARGIN_SIZE		10
-#define KEY_CORNER_RADIUS	5
+NSString* const iTetSpacebarPlaceholderString = @"space";
 
 - (NSImage*)imageForKey:(NSEvent*)keyEvent
 {
 	// Get the characters representing the event
 	NSString* key = [keyEvent charactersIgnoringModifiers];
 	
-	// Check if an image for this key exists in cache
-	NSImage* image = [NSImage imageNamed:key];
-	if (image != nil)
-		return image;
+	// Check for various non-printing keys
+	// Space
+	if ([key isEqualToString:@" "])
+		key = iTetSpacebarPlaceholderString;
+	// FIXME: Additional non-printing keys
 	
-	// If not, generate an image
-	NSSize viewSize = [self bounds].size;
-	image = [[[NSImage alloc] initWithSize:viewSize] autorelease];
-	
-	// Determine the size of the key to draw
-	NSRect keyRect = NSMakeRect(0, 0, viewSize.height, viewSize.height);
-	
-	// FIXME: WRITEME
-	
-	// Attempt to set the image's name, so it will be stored in cache
-	if (![image setName:key])
-		NSLog(@"Warning: attempt to name key image \'%@\' failed", key);
-	
-	return image;
+	return [self keyImageWithString:key];
 }
+
+NSString* const iTetUnknownModifierPlaceholderString = @"(unknown)";
+NSString* const iTetShiftKeyPlaceholderString =		@"shift";
+NSString* const iTetControlKeyPlaceholderString =	@"control";
+NSString* const iTetAltOptionKeyPlaceholderString =	@"option";
+NSString* const iTetCommandKeyPlaceholderString =	[NSString stringWithFormat:@"%C  %C", 0xF8FF, 0x2318];
+// The above should render as the unicode Apple logo followed by the unicode cloverleaf
 
 - (NSImage*)imageForModifier:(NSEvent*)modifierEvent
 {
-	// FIXME: WRITEME
+	NSString* modifierName = iTetUnknownModifierPlaceholderString;
 	
-	return nil;
+	// Check which modifier is held down
+	NSUInteger flags = [modifierEvent modifierFlags];
+	if ((flags & NSAlphaShiftKeyMask) || (flags & NSShiftKeyMask))
+		modifierName = iTetShiftKeyPlaceholderString;
+	else if (flags & NSControlKeyMask)
+		modifierName = iTetControlKeyPlaceholderString;
+	else if (flags & NSAlternateKeyMask)
+		modifierName = iTetAltOptionKeyPlaceholderString;
+	else if (flags & NSCommandKeyMask)
+		modifierName = iTetCommandKeyPlaceholderString;
+	
+	return [self keyImageWithString:modifierName];
+}
+
+NSString* const iTetKeyFontName = @"Helvetica";
+#define KEY_FONT_SIZE		(14.0)
+#define KEY_MARGIN_SIZE		(10)
+#define KEY_CORNER_RADIUS	(5)
+		
+- (NSImage*)keyImageWithString:(NSString*)keyName
+{
+	// Check if an image for this key exists in cache
+	NSImage* image = [NSImage imageNamed:keyName];
+	if (image != nil)
+		return image;
+	
+	// If no image in cache, generate one
+	// Begin by creating an attributed string
+	NSFont* drawFont = [NSFont fontWithName:iTetKeyFontName
+						     size:KEY_FONT_SIZE];
+	// FIXME: create text color; place attributes in dictionary
+	
+	NSAttributedString* drawString = [[[NSAttributedString alloc] initWithString:keyName] autorelease];
+	
+	// FIXME: draw image
+	
+	// Attempt to set the image's name, so it will be stored in cache (if this
+	// fails, for any reason, we will just re-generate the image next time)
+	[image setName:keyName];
+	
+	return image;
 }
 
 #pragma mark -

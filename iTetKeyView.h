@@ -17,6 +17,7 @@
 
 - (NSImage*)imageForKey:(NSEvent*)keyEvent;
 - (NSImage*)imageForModifier:(NSEvent*)modifierEvent;
+- (NSImage*)keyImageWithString:(NSString*)keyName;
 
 - (void)setRepresentedKey:(NSEvent*)keyEvent;
 @property (readwrite, assign) BOOL highlighted;
