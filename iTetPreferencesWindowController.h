@@ -23,6 +23,7 @@ typedef enum {
 	IBOutlet NSToolbarItem* general;
 	IBOutlet NSToolbarItem* themes;
 	IBOutlet NSToolbarItem* servers;
+	IBOutlet NSToolbarItem* keyboard;
 }
 
 - (IBAction)changeView:(id)sender;

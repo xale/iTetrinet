@@ -9,6 +9,7 @@
 #import "iTetGeneralPrefsViewController.h"
 #import "iTetThemesViewController.h"
 #import "iTetServersViewController.h"
+#import "iTetKeyboardViewController.h"
 
 @implementation iTetPreferencesWindowController
 
@@ -21,7 +22,9 @@
 	viewControllers = [[NSArray alloc] initWithObjects:
 				 [iTetGeneralPrefsViewController viewController],
 				 [iTetThemesViewController viewController],
-				 [iTetServersViewController viewController], nil];
+				 [iTetServersViewController viewController],
+				 [iTetKeyboardViewController viewController],
+				 nil];
 	
 	currentViewNumber = -1;
 	
@@ -99,7 +102,8 @@
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
 {
 	return [NSArray arrayWithObjects: [general itemIdentifier],
-		  [themes itemIdentifier], [servers itemIdentifier], nil];
+		  [themes itemIdentifier], [servers itemIdentifier],
+		  [keyboard itemIdentifier], nil];
 }
 
 @end
