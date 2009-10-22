@@ -15,7 +15,7 @@
 @class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
 
-#define ITET_MAX_PLAYERS	6
+#define ITET_MAX_PLAYERS	(6)
 
 @interface iTetAppController : NSObject
 {
