@@ -12,15 +12,15 @@
 	NSImage* currentKeyImage;
 	BOOL highlighted;
 	
-	id delegate;
+	IBOutlet id delegate;
 }
 
-- (NSImage*)imageForKey:(NSEvent*)keyEvent;
-- (NSImage*)imageForModifier:(NSEvent*)modifierEvent;
+- (NSString*)keyNameForEvent:(NSEvent*)event;
+- (NSString*)modifierNameForEvent:(NSEvent*)event;
 - (NSImage*)keyImageWithString:(NSString*)keyName;
 
-- (void)setRepresentedKey:(NSEvent*)keyEvent;
+- (void)setRepresentedKeyName:(NSString*)keyName;
+@property (readwrite, retain) NSImage* currentKeyImage;
 @property (readwrite, assign) BOOL highlighted;
-@property (readwrite, assign) id delegate;
 
 @end
