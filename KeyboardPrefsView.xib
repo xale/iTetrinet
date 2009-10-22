@@ -27,7 +27,7 @@
 		<object class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSCustomObject" id="1001">
-				<string key="NSClassName">iTetKeyboardPrefsViewController</string>
+				<string key="NSClassName">iTetKeyboardViewController</string>
 			</object>
 			<object class="NSCustomObject" id="1003">
 				<string key="NSClassName">FirstResponder</string>
@@ -113,14 +113,14 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 288}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="995308307">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{250, 288}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="702870039">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -159,14 +159,14 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 207}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="908102076">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{250, 207}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="55621820">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -205,14 +205,14 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{20, 126}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="179301198">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{250, 126}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="883287644">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -251,7 +251,7 @@
 						<int key="NSvFlags">268</int>
 						<string key="NSFrame">{{135, 45}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
-						<string key="NSClassName">NSView</string>
+						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="712242726">
 						<reference key="NSNextResponder" ref="1005"/>
@@ -280,11 +280,187 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="1005"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">configurationPopUpButton</string>
 						<reference key="source" ref="1001"/>
 						<reference key="destination" ref="545895532"/>
 					</object>
-					<int key="connectionID">32</int>
+					<int key="connectionID">34</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">moveLeftKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="913161186"/>
+					</object>
+					<int key="connectionID">35</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">moveRightKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="995308307"/>
+					</object>
+					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">rotateCounterclockwiseKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="115330270"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">rotateClockwiseKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="908102076"/>
+					</object>
+					<int key="connectionID">38</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">moveDownKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="403531003"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">dropKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="179301198"/>
+					</object>
+					<int key="connectionID">40</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">gameChatKeyView</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="301095197"/>
+					</object>
+					<int key="connectionID">41</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="913161186"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">42</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="995308307"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">43</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="115330270"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">44</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="908102076"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">45</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="403531003"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="179301198"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="301095197"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="545895532"/>
+						<reference key="destination" ref="913161186"/>
+					</object>
+					<int key="connectionID">49</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="913161186"/>
+						<reference key="destination" ref="995308307"/>
+					</object>
+					<int key="connectionID">50</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="995308307"/>
+						<reference key="destination" ref="115330270"/>
+					</object>
+					<int key="connectionID">51</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="115330270"/>
+						<reference key="destination" ref="908102076"/>
+					</object>
+					<int key="connectionID">52</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="908102076"/>
+						<reference key="destination" ref="403531003"/>
+					</object>
+					<int key="connectionID">53</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="403531003"/>
+						<reference key="destination" ref="179301198"/>
+					</object>
+					<int key="connectionID">54</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextKeyView</string>
+						<reference key="source" ref="179301198"/>
+						<reference key="destination" ref="301095197"/>
+					</object>
+					<int key="connectionID">55</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -559,7 +735,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{367, 341}, {480, 396}}</string>
+					<string>{{364, 148}, {480, 396}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{628, 654}</string>
 					<string>{{217, 442}, {480, 272}}</string>
@@ -612,21 +788,54 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">32</int>
+			<int key="maxID">55</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
-					<string key="className">iTetKeyboardPrefsViewController</string>
-					<string key="superclassName">NSViewController</string>
+					<string key="className">iTetKeyView</string>
+					<string key="superclassName">NSView</string>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">configurationPopUpButton</string>
-						<string key="NS.object.0">NSPopUpButton</string>
+						<string key="NS.key.0">delegate</string>
+						<string key="NS.object.0">id</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetKeyboardPrefsViewController.h</string>
+						<string key="minorKey">iTetKeyView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iTetKeyboardViewController</string>
+					<string key="superclassName">NSViewController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>configurationPopUpButton</string>
+							<string>dropKeyView</string>
+							<string>gameChatKeyView</string>
+							<string>moveDownKeyView</string>
+							<string>moveLeftKeyView</string>
+							<string>moveRightKeyView</string>
+							<string>rotateClockwiseKeyView</string>
+							<string>rotateCounterclockwiseKeyView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSPopUpButton</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+							<string>iTetKeyView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetKeyboardViewController.h</string>
 					</object>
 				</object>
 			</object>
