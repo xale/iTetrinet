@@ -29,7 +29,7 @@
 {
 	// Fill the background
 	[[NSColor whiteColor] setFill];
-	[NSBezierPath fillRect:rect];
+	[NSBezierPath fillRect:[self bounds]];
 	
 	// Get the view's owner as a local player
 	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
@@ -84,9 +84,9 @@
 	}
 	
 	// Draw a red box around the first (active) special
+	CGFloat boxEdgeLength = [self bounds].size.height - (LINE_WIDTH / 2) - 1;
 	NSRect boxRect = NSMakeRect((LINE_WIDTH / 2), (LINE_WIDTH / 2),
-					    [theme cellSize].width - (LINE_WIDTH / 2) - 1,
-					    [self bounds].size.height - (LINE_WIDTH / 2) - 1);
+					    boxEdgeLength, boxEdgeLength);
 	[[NSColor redColor] setStroke];
 	[NSBezierPath setDefaultLineWidth:LINE_WIDTH];
 	[NSBezierPath strokeRect:boxRect];
