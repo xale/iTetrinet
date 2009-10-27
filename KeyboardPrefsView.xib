@@ -43,7 +43,7 @@
 					<object class="NSTextField" id="423275420">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 358}, {201, 17}}</string>
+						<string key="NSFrame">{{17, 380}, {201, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="883993103">
@@ -79,7 +79,7 @@
 					<object class="NSPopUpButton" id="545895532">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{220, 352}, {243, 26}}</string>
+						<string key="NSFrame">{{220, 374}, {243, 26}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSPopUpButtonCell" key="NSCell" id="10515599">
@@ -111,21 +111,21 @@
 					<object class="NSCustomView" id="913161186">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{20, 288}, {210, 48}}</string>
+						<string key="NSFrame">{{20, 310}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="995308307">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{250, 288}, {210, 48}}</string>
+						<string key="NSFrame">{{250, 310}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="702870039">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 263}, {216, 17}}</string>
+						<string key="NSFrame">{{17, 285}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="235948611">
@@ -141,7 +141,7 @@
 					<object class="NSTextField" id="144242525">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{247, 263}, {216, 17}}</string>
+						<string key="NSFrame">{{247, 285}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="680397102">
@@ -157,21 +157,21 @@
 					<object class="NSCustomView" id="115330270">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{20, 207}, {210, 48}}</string>
+						<string key="NSFrame">{{20, 229}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="908102076">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{250, 207}, {210, 48}}</string>
+						<string key="NSFrame">{{250, 229}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="55621820">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 182}, {216, 17}}</string>
+						<string key="NSFrame">{{17, 204}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="751372865">
@@ -187,7 +187,7 @@
 					<object class="NSTextField" id="315726716">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{247, 182}, {216, 17}}</string>
+						<string key="NSFrame">{{247, 204}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="427018374">
@@ -203,21 +203,21 @@
 					<object class="NSCustomView" id="403531003">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{20, 126}, {210, 48}}</string>
+						<string key="NSFrame">{{20, 148}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSCustomView" id="179301198">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{250, 126}, {210, 48}}</string>
+						<string key="NSFrame">{{250, 148}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="883287644">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{17, 101}, {216, 17}}</string>
+						<string key="NSFrame">{{17, 123}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="298681181">
@@ -233,7 +233,7 @@
 					<object class="NSTextField" id="404823790">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{247, 101}, {216, 17}}</string>
+						<string key="NSFrame">{{247, 123}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="907941082">
@@ -249,14 +249,14 @@
 					<object class="NSCustomView" id="301095197">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{135, 45}, {210, 48}}</string>
+						<string key="NSFrame">{{135, 67}, {210, 48}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<string key="NSClassName">iTetKeyView</string>
 					</object>
 					<object class="NSTextField" id="712242726">
 						<reference key="NSNextResponder" ref="1005"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{132, 20}, {216, 17}}</string>
+						<string key="NSFrame">{{132, 42}, {216, 17}}</string>
 						<reference key="NSSuperview" ref="1005"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSTextFieldCell" key="NSCell" id="1032011059">
@@ -269,8 +269,28 @@
 							<reference key="NSTextColor" ref="3955831"/>
 						</object>
 					</object>
+					<object class="NSTextField" id="299228061">
+						<reference key="NSNextResponder" ref="1005"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{17, 20}, {446, 14}}</string>
+						<reference key="NSSuperview" ref="1005"/>
+						<bool key="NSEnabled">YES</bool>
+						<object class="NSTextFieldCell" key="NSCell" id="470583465">
+							<int key="NSCellFlags">68288064</int>
+							<int key="NSCellFlags2">138544128</int>
+							<string key="NSContents"/>
+							<object class="NSFont" key="NSSupport">
+								<string key="NSName">LucidaGrande</string>
+								<double key="NSSize">1.100000e+01</double>
+								<int key="NSfFlags">3100</int>
+							</object>
+							<reference key="NSControlView" ref="299228061"/>
+							<reference key="NSBackgroundColor" ref="771847732"/>
+							<reference key="NSTextColor" ref="3955831"/>
+						</object>
+					</object>
 				</object>
-				<string key="NSFrameSize">{480, 396}</string>
+				<string key="NSFrameSize">{480, 418}</string>
 				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
@@ -349,14 +369,6 @@
 						<reference key="destination" ref="301095197"/>
 					</object>
 					<int key="connectionID">41</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="913161186"/>
-						<reference key="destination" ref="1001"/>
-					</object>
-					<int key="connectionID">42</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -462,6 +474,78 @@
 					</object>
 					<int key="connectionID">55</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="913161186"/>
+						<reference key="destination" ref="702870039"/>
+					</object>
+					<int key="connectionID">59</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="913161186"/>
+						<reference key="destination" ref="1001"/>
+					</object>
+					<int key="connectionID">60</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="995308307"/>
+						<reference key="destination" ref="144242525"/>
+					</object>
+					<int key="connectionID">61</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="115330270"/>
+						<reference key="destination" ref="55621820"/>
+					</object>
+					<int key="connectionID">62</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="908102076"/>
+						<reference key="destination" ref="315726716"/>
+					</object>
+					<int key="connectionID">63</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="403531003"/>
+						<reference key="destination" ref="883287644"/>
+					</object>
+					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="179301198"/>
+						<reference key="destination" ref="404823790"/>
+					</object>
+					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">actionNameField</string>
+						<reference key="source" ref="301095197"/>
+						<reference key="destination" ref="712242726"/>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">keyDescriptionField</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="299228061"/>
+					</object>
+					<int key="connectionID">67</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -513,6 +597,7 @@
 							<reference ref="404823790"/>
 							<reference ref="301095197"/>
 							<reference ref="712242726"/>
+							<reference ref="299228061"/>
 						</object>
 						<reference key="parent" ref="1002"/>
 					</object>
@@ -689,6 +774,20 @@
 						<reference key="object" ref="1032011059"/>
 						<reference key="parent" ref="712242726"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">56</int>
+						<reference key="object" ref="299228061"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="470583465"/>
+						</object>
+						<reference key="parent" ref="1005"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">57</int>
+						<reference key="object" ref="470583465"/>
+						<reference key="parent" ref="299228061"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -727,6 +826,8 @@
 					<string>31.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
+					<string>56.IBPluginDependency</string>
+					<string>57.IBPluginDependency</string>
 					<string>6.IBEditorWindowLastContentRect</string>
 					<string>6.IBPluginDependency</string>
 				</object>
@@ -735,10 +836,12 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilderKit</string>
 					<string>com.apple.InterfaceBuilderKit</string>
-					<string>{{364, 148}, {480, 396}}</string>
+					<string>{{373, 205}, {480, 418}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{628, 654}</string>
 					<string>{{217, 442}, {480, 272}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -788,7 +891,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">55</int>
+			<int key="maxID">67</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -797,8 +900,17 @@
 					<string key="className">iTetKeyView</string>
 					<string key="superclassName">NSView</string>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">delegate</string>
-						<string key="NS.object.0">id</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionNameField</string>
+							<string>delegate</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTextField</string>
+							<string>id</string>
+						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
@@ -815,6 +927,7 @@
 							<string>configurationPopUpButton</string>
 							<string>dropKeyView</string>
 							<string>gameChatKeyView</string>
+							<string>keyDescriptionField</string>
 							<string>moveDownKeyView</string>
 							<string>moveLeftKeyView</string>
 							<string>moveRightKeyView</string>
@@ -826,6 +939,7 @@
 							<string>NSPopUpButton</string>
 							<string>iTetKeyView</string>
 							<string>iTetKeyView</string>
+							<string>NSTextField</string>
 							<string>iTetKeyView</string>
 							<string>iTetKeyView</string>
 							<string>iTetKeyView</string>
