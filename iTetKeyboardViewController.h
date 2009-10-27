@@ -21,9 +21,14 @@
 	IBOutlet iTetKeyView* moveDownKeyView;
 	IBOutlet iTetKeyView* dropKeyView;
 	IBOutlet iTetKeyView* gameChatKeyView;
+	
+	IBOutlet NSTextField* keyDescriptionField;
 }
 
 + (id)viewController;
+
+- (void)startObservingKeyView:(iTetKeyView*)keyView;
+- (void)stopObservingKeyView:(iTetKeyView*)keyView;
 
 - (BOOL)keyView:(iTetKeyView*)keyView
 shouldSetRepresentedKey:(NSEvent*)keyEvent;
@@ -34,6 +39,8 @@ shouldSetRepresentedModifier:(NSEvent*)modifierEvent;
 didSetRepresentedKey:(NSEvent*)keyEvent;
 - (void)keyView:(iTetKeyView*)keyView
 didSetRepresentedModifier:(NSEvent*)modifierEvent;
+
+- (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
 
 @property (readonly) iTetPreferencesController* preferencesController;
 
