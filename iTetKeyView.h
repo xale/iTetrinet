@@ -13,6 +13,7 @@
 	BOOL highlighted;
 	
 	IBOutlet id delegate;
+	IBOutlet NSTextField* actionNameField;
 }
 
 - (NSString*)keyNameForEvent:(NSEvent*)event;
@@ -22,5 +23,6 @@
 - (void)setRepresentedKeyName:(NSString*)keyName;
 @property (readwrite, retain) NSImage* currentKeyImage;
 @property (readwrite, assign) BOOL highlighted;
+@property (readonly) NSString* actionName;
 
 @end

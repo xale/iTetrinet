@@ -6,6 +6,7 @@
 //
 
 #import "iTetKeyView.h"
+#import "iTetKeyboardViewController.h" // Quiets warnings on delegate methods
 
 @implementation iTetKeyView
 
@@ -28,7 +29,7 @@
 	if ([self highlighted])
 	{
 		// FIXME: make this prettier
-		[[NSColor blueColor] set];
+		[[NSColor darkGrayColor] set];
 		[NSBezierPath fillRect:[self bounds]];
 	}
 	
@@ -49,8 +50,8 @@
 #define EscapeKeyCode	(53)
 
 NSString* const iTetEscapeKeyPlaceholderString =	@"esc";
-NSString* const iTetSpacebarPlaceholderString =		@"space";
-NSString* const iTetTabKeyPlaceholderString =		@"tab";
+NSString* const iTetSpacebarPlaceholderString =		@"     space     ";
+NSString* const iTetTabKeyPlaceholderString =		@"  tab  ";
 NSString* const iTetReturnKeyPlaceholderString =	@"return";
 NSString* const iTetEnterKeyPlaceholderString =		@"enter";
 NSString* const iTetDeleteKeyPlaceholderString =	@"delete";
@@ -305,6 +306,21 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	return YES;
 }
 
+- (BOOL)resignFirstResponder
+{	
+	// Ask superclass if it is okay to resign first responder
+	BOOL shouldResign = [super resignFirstResponder];
+	
+	// If we should, un-highlight the view before doing so
+	if (shouldResign)
+	{
+		[self setHighlighted:NO];
+		[self setNeedsDisplay:YES];
+	}
+	
+	return shouldResign;
+}
+
 - (void)setRepresentedKeyName:(NSString*)keyName
 {
 	[self setCurrentKeyImage:[self keyImageWithString:keyName]];
@@ -312,5 +328,16 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 
 @synthesize currentKeyImage;
 @synthesize highlighted;
+
+- (NSString*)actionName
+{
+	if (actionNameField == nil)
+	{
+		NSLog(@"Warning: iTetKeyView with unconnected actionNameField outlet");
+		return nil;
+	}
+	
+	return [actionNameField stringValue];
+}
 
 @end
