@@ -32,9 +32,9 @@
 	
 	// Determine the name of the event
 	if (isModifier)
-		keyName = [self modifierNameForEvent:event];
+		keyName = [[self modifierNameForEvent:event] retain];
 	else
-		keyName = [self keyNameForEvent:event];
+		keyName = [[self keyNameForEvent:event] retain];
 	
 	return self;
 	
