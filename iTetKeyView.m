@@ -6,6 +6,7 @@
 //
 
 #import "iTetKeyView.h"
+#import "iTetKeyNamePair.h"
 #import "iTetKeyboardViewController.h" // Quiets warnings on delegate methods
 
 @implementation iTetKeyView
@@ -45,107 +46,6 @@
 				  fromRect:NSZeroRect
 				 operation:NSCompositeSourceOver
 				  fraction:1.0];
-}
-
-#define EscapeKeyCode	(53)
-
-NSString* const iTetEscapeKeyPlaceholderString =	@"esc";
-NSString* const iTetSpacebarPlaceholderString =		@"     space     ";
-NSString* const iTetTabKeyPlaceholderString =		@"  tab  ";
-NSString* const iTetReturnKeyPlaceholderString =	@"return";
-NSString* const iTetEnterKeyPlaceholderString =		@"enter";
-NSString* const iTetDeleteKeyPlaceholderString =	@"delete";
-
-#define iTetLeftArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2190]
-#define iTetRightArrowKeyPlaceholderString	[NSString stringWithFormat:@"%C", 0x2192]
-#define iTetUpArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2191]
-#define iTetDownArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2193]
-
-- (NSString*)keyNameForEvent:(NSEvent*)keyEvent
-{
-	// Check for events with no characters
-	switch ([keyEvent keyCode])
-	{
-		case EscapeKeyCode:
-			return iTetEscapeKeyPlaceholderString;
-			
-		// FIXME: others?
-	}
-	
-	// Get the characters representing the event
-	NSString* keyString = [[keyEvent charactersIgnoringModifiers] lowercaseString];
-	
-	// Check for various non-printing keys
-	unichar key = [keyString characterAtIndex:0];
-	switch (key)
-	{
-		// Space
-		case ' ':
-			keyString = iTetSpacebarPlaceholderString;
-			break;
-		// Tab
-		case NSTabCharacter:
-			keyString = iTetTabKeyPlaceholderString;
-			break;
-		// Return/Newline
-		case NSLineSeparatorCharacter:
-		case NSNewlineCharacter:
-		case NSCarriageReturnCharacter:
-			keyString = iTetReturnKeyPlaceholderString;
-			break;
-		// Enter
-		case NSEnterCharacter:
-			keyString = iTetEnterKeyPlaceholderString;
-			break;
-		// Backspace/delete
-		case NSBackspaceCharacter:
-		case NSDeleteCharacter:
-			keyString = iTetDeleteKeyPlaceholderString;
-			break;
-			
-		// Arrow keys
-		case NSLeftArrowFunctionKey:
-			keyString = iTetLeftArrowKeyPlaceholderString;
-			break;
-		case NSRightArrowFunctionKey:
-			keyString = iTetRightArrowKeyPlaceholderString;
-			break;
-		case NSUpArrowFunctionKey:
-			keyString = iTetUpArrowKeyPlaceholderString;
-			break;
-		case NSDownArrowFunctionKey:
-			keyString = iTetDownArrowKeyPlaceholderString;
-			break;
-	}
-	// FIXME: Additional non-printing keys?
-	
-	return keyString;
-}
-
-NSString* const iTetUnknownModifierPlaceholderString =	@"(unknown)";
-NSString* const iTetShiftKeyPlaceholderString =			@"   shift   ";
-NSString* const iTetControlKeyPlaceholderString	=		@"control";
-NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
-
-#define iTetCommandKeyPlaceholderString [NSString stringWithFormat:@" %C  %C ", 0xF8FF, 0x2318]
-// The above should render as the unicode Apple logo followed by the unicode cloverleaf
-
-- (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
-{
-	NSString* modifierName = iTetUnknownModifierPlaceholderString;
-	
-	// Check which modifier is held down
-	NSUInteger flags = [modifierEvent modifierFlags];
-	if ((flags & NSAlphaShiftKeyMask) || (flags & NSShiftKeyMask))
-		modifierName = iTetShiftKeyPlaceholderString;
-	else if (flags & NSCommandKeyMask)
-		modifierName = iTetCommandKeyPlaceholderString;
-	else if (flags & NSAlternateKeyMask)
-		modifierName = iTetAltOptionKeyPlaceholderString;
-	else if (flags & NSControlKeyMask)
-		modifierName = iTetControlKeyPlaceholderString;
-	
-	return modifierName;
 }
 
 NSString* const iTetKeyFontName =	@"Helvetica";
@@ -245,6 +145,18 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 {
 	NSLog(@"DEBUG: keyView keyDown: %@", keyEvent);
 	
+	[self keyPressed:keyEvent];
+}
+
+- (void)flagsChanged:(NSEvent*)modifierEvent
+{
+	NSLog(@"DEBUG: keyView flagsChanged: %@", modifierEvent);
+	
+	[self keyPressed:modifierEvent];
+}
+
+- (void)keyPressed:(NSEvent*)event
+{
 	// If this view is not highlighted, ignore the event
 	if (![self highlighted])
 		return;
@@ -254,40 +166,15 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 		return;
 	
 	// Ask the delegate if the view's represented key should be changed
-	if ([delegate keyView:self shouldSetRepresentedKey:keyEvent])
+	iTetKeyNamePair* key = [iTetKeyNamePair keyNamePairFromKeyEvent:event];
+	if ([delegate keyView:self shouldSetRepresentedKey:key])
 	{
-		[self setRepresentedKeyName:[self keyNameForEvent:keyEvent]];
+		[self setRepresentedKeyName:[key keyName]];
 		[self setHighlighted:NO];
 		[self setNeedsDisplay:YES];
 		
 		if ([delegate respondsToSelector:@selector(keyView:didSetRepresentedKey:)])
-			[delegate keyView:self didSetRepresentedKey:keyEvent];
-	}
-	else
-		NSBeep();
-}
-
-- (void)flagsChanged:(NSEvent*)modifierEvent
-{
-	NSLog(@"DEBUG: keyView flagsChanged: %@", modifierEvent);
-	
-	// If this view is not highlighted, ignore the event
-	if (![self highlighted])
-		return;
-	
-	// If we have no delegate, or the delegate isn't interested, ignore
-	if ((delegate == nil) || !([delegate respondsToSelector:@selector(keyView:shouldSetRepresentedModifier:)]))
-		return;
-	
-	// Ask the delegate if the view's represented key should be changed
-	if ([delegate keyView:self shouldSetRepresentedModifier:modifierEvent])
-	{
-		[self setRepresentedKeyName:[self modifierNameForEvent:modifierEvent]];
-		[self setHighlighted:NO];
-		[self setNeedsDisplay:YES];
-		
-		if ([delegate respondsToSelector:@selector(keyView:didSetRepresentedModifier:)])
-			[delegate keyView:self didSetRepresentedModifier:modifierEvent];
+			[delegate keyView:self didSetRepresentedKey:key];
 	}
 	else
 		NSBeep();

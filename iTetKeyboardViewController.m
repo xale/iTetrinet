@@ -8,6 +8,7 @@
 #import "iTetKeyboardViewController.h"
 #import "iTetPreferencesController.h"
 #import "iTetKeyView.h"
+#import "iTetKeyNamePair.h"
 
 @implementation iTetKeyboardViewController
 
@@ -104,28 +105,14 @@
 #pragma mark iTetKeyView Delegate Methods
 
 - (BOOL)keyView:(iTetKeyView*)keyView
-shouldSetRepresentedKey:(NSEvent*)keyEvent
-{
-	// FIXME: WRITEME
-	return YES;
-}
-- (BOOL)keyView:(iTetKeyView*)keyView
-shouldSetRepresentedModifier:(NSEvent*)modifierEvent
+shouldSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	// FIXME: WRITEME
 	return YES;
 }
 
 - (void)keyView:(iTetKeyView*)keyView
-didSetRepresentedKey:(NSEvent*)keyEvent
-{
-	// FIXME: WRITEME
-	
-	// Clear the text field
-	[keyDescriptionField setStringValue:@""];
-}
-- (void)keyView:(iTetKeyView*)keyView
-didSetRepresentedModifier:(NSEvent*)modifierEvent
+didSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	// FIXME: WRITEME
 	

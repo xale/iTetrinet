@@ -16,9 +16,9 @@
 	IBOutlet NSTextField* actionNameField;
 }
 
-- (NSString*)keyNameForEvent:(NSEvent*)event;
-- (NSString*)modifierNameForEvent:(NSEvent*)event;
 - (NSImage*)keyImageWithString:(NSString*)keyName;
+
+- (void)keyPressed:(NSEvent*)event;
 
 - (void)setRepresentedKeyName:(NSString*)keyName;
 @property (readwrite, retain) NSImage* currentKeyImage;

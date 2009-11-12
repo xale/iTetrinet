@@ -9,6 +9,7 @@
 
 @class iTetPreferencesController;
 @class iTetKeyView;
+@class iTetKeyNamePair;
 
 @interface iTetKeyboardViewController : NSViewController
 {
@@ -31,14 +32,10 @@
 - (void)stopObservingKeyView:(iTetKeyView*)keyView;
 
 - (BOOL)keyView:(iTetKeyView*)keyView
-shouldSetRepresentedKey:(NSEvent*)keyEvent;
-- (BOOL)keyView:(iTetKeyView*)keyView
-shouldSetRepresentedModifier:(NSEvent*)modifierEvent;
+shouldSetRepresentedKey:(iTetKeyNamePair*)key;
 
 - (void)keyView:(iTetKeyView*)keyView
-didSetRepresentedKey:(NSEvent*)keyEvent;
-- (void)keyView:(iTetKeyView*)keyView
-didSetRepresentedModifier:(NSEvent*)modifierEvent;
+didSetRepresentedKey:(iTetKeyNamePair*)key;
 
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
 
