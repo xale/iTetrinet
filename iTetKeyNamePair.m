@@ -7,7 +7,6 @@
 
 #import "iTetKeyNamePair.h"
 
-
 @implementation iTetKeyNamePair
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
@@ -67,11 +66,6 @@ NSString* const iTetTabKeyPlaceholderString =		@"  tab  ";
 NSString* const iTetReturnKeyPlaceholderString =	@"return";
 NSString* const iTetEnterKeyPlaceholderString =		@"enter";
 NSString* const iTetDeleteKeyPlaceholderString =	@"delete";
-
-#define iTetLeftArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2190]
-#define iTetRightArrowKeyPlaceholderString	[NSString stringWithFormat:@"%C", 0x2192]
-#define iTetUpArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2191]
-#define iTetDownArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2193]
 
 - (NSString*)keyNameForEvent:(NSEvent*)keyEvent
 {
@@ -138,9 +132,6 @@ NSString* const iTetShiftKeyPlaceholderString =			@"   shift   ";
 NSString* const iTetControlKeyPlaceholderString	=		@"control";
 NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
 
-#define iTetCommandKeyPlaceholderString [NSString stringWithFormat:@" %C  %C ", 0xF8FF, 0x2318]
-// The above should render as the unicode Apple logo followed by the unicode cloverleaf
-
 - (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
 {
 	NSString* modifierName = iTetUnknownModifierPlaceholderString;
@@ -157,6 +148,21 @@ NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
 		modifierName = iTetControlKeyPlaceholderString;
 	
 	return modifierName;
+}
+
+#pragma mark -
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone*)zone
+{
+	return [[[self class] allocWithZone:zone] initWithKeyCode:[self keyCode]
+									     name:[self keyName]];
+	
+}
+
+- (id)copy
+{
+	return [self copyWithZone:nil];
 }
 
 #pragma mark -
@@ -179,6 +185,26 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
 	
 	return self;
+}
+
+#pragma mark -
+#pragma mark Comparators
+
+- (BOOL)isEqual:(id)otherObject
+{
+	if ([otherObject isKindOfClass:[self class]])
+	{
+		iTetKeyNamePair* otherKey = (iTetKeyNamePair*)otherObject;
+		
+		return ([self keyCode] == [otherKey keyCode]);
+	}
+	
+	return NO;
+}
+
+- (NSUInteger)hash
+{
+	return (NSUInteger)[self keyCode];
 }
 
 #pragma mark -
