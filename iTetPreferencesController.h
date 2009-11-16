@@ -13,6 +13,7 @@
 extern NSString* const iTetThemeListPrefKey;
 extern NSString* const iTetCurrentThemePrefKey;
 extern NSString* const iTetServerListPrefKey;
+extern NSString* const iTetKeyConfigsPrefKey;
 
 extern NSString* const iTetCurrentThemeDidChangeNotification;
 
@@ -22,6 +23,8 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 	iTetTheme* currentTheme;
 	
 	NSMutableArray* serverList;
+	
+	NSMutableArray* keyConfigurations;
 }
 
 + (iTetPreferencesController*)preferencesController;
@@ -40,5 +43,7 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
  inServerListAtIndex:(NSUInteger)index;
 - (void)removeObjectFromServerListAtIndex:(NSUInteger)index;
 @property (readwrite, retain) NSMutableArray* serverList;
+
+@property (readwrite, retain) NSMutableArray* keyConfigurations;
 
 @end

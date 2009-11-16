@@ -8,10 +8,12 @@
 #import "iTetPreferencesController.h"
 #import "iTetServerInfo.h"
 #import "iTetTheme.h"
+#import "NSMutableDictionary+KeyBindings.h"
 
 NSString* const iTetThemeListPrefKey =	@"themeList";
 NSString* const iTetCurrentThemePrefKey =	@"currentTheme";
 NSString* const iTetServerListPrefKey =	@"serverList";
+NSString* const iTetKeyConfigsPrefKey =	@"keyConfigs";
 
 NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange";
 
@@ -30,6 +32,8 @@ static iTetPreferencesController* preferencesController = nil;
 			 forKey:iTetCurrentThemePrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
 			 forKey:iTetServerListPrefKey];
+	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary defaultKeyConfigurations]]
+			 forKey:iTetKeyConfigsPrefKey];
 	
 	// Register the defaults
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -64,6 +68,11 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Start observing all the servers in the serverList
 	[self startObservingServersInArray:serverList];
+	
+	// Load the list of keyboard configurations
+	prefsData = [defaults objectForKey:iTetKeyConfigsPrefKey];
+	keyConfigurations = [[NSMutableArray alloc] initWithArray:
+				   [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	return self;
 }
@@ -338,5 +347,7 @@ static iTetPreferencesController* preferencesController = nil;
 								forKey:iTetServerListPrefKey];
 }
 @synthesize serverList;
+
+@synthesize keyConfigurations;
 
 @end
