@@ -10,10 +10,11 @@
 #import "iTetTheme.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
-NSString* const iTetThemeListPrefKey =	@"themeList";
-NSString* const iTetCurrentThemePrefKey =	@"currentTheme";
-NSString* const iTetServerListPrefKey =	@"serverList";
-NSString* const iTetKeyConfigsPrefKey =	@"keyConfigs";
+NSString* const iTetThemeListPrefKey =		@"themeList";
+NSString* const iTetCurrentThemePrefKey =		@"currentTheme";
+NSString* const iTetServerListPrefKey =		@"serverList";
+NSString* const iTetKeyConfigsPrefKey =		@"keyConfigs";
+NSString* const iTetCurrentKeyConfigNumberKey =	@"currentKeyConfigNum";
 
 NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange";
 
@@ -34,6 +35,8 @@ static iTetPreferencesController* preferencesController = nil;
 			 forKey:iTetServerListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary defaultKeyConfigurations]]
 			 forKey:iTetKeyConfigsPrefKey];
+	[defaults setObject:[NSNumber numberWithInt:0]
+			 forKey:iTetCurrentKeyConfigNumberKey];
 	
 	// Register the defaults
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -73,6 +76,10 @@ static iTetPreferencesController* preferencesController = nil;
 	prefsData = [defaults objectForKey:iTetKeyConfigsPrefKey];
 	keyConfigurations = [[NSMutableArray alloc] initWithArray:
 				   [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+	
+	// Load the current configuration number
+	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey]
+						   unsignedIntegerValue];
 	
 	return self;
 }
@@ -349,5 +356,16 @@ static iTetPreferencesController* preferencesController = nil;
 @synthesize serverList;
 
 @synthesize keyConfigurations;
+
+- (void)setCurrentKeyConfigurationNumber:(NSUInteger)num
+{
+	// Change the current key configuration number
+	currentKeyConfigurationNumber = num;
+	
+	// Write the change to user defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithUnsignedInteger:num]
+								forKey:iTetCurrentKeyConfigNumberKey];
+}
+@synthesize currentKeyConfigurationNumber;
 
 @end

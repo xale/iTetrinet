@@ -26,6 +26,10 @@
 	IBOutlet NSTextField* keyDescriptionField;
 }
 
+- (IBAction)changeConfiguration:(id)sender;
+- (IBAction)saveConfiguration:(id)sender;
+- (IBAction)deleteConfiguration:(id)sender;
+
 + (id)viewController;
 
 - (void)startObservingKeyView:(iTetKeyView*)keyView;

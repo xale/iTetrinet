@@ -169,9 +169,8 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	iTetKeyNamePair* key = [iTetKeyNamePair keyNamePairFromKeyEvent:event];
 	if ([delegate keyView:self shouldSetRepresentedKey:key])
 	{
-		[self setRepresentedKeyName:[key keyName]];
+		[self setRepresentedKey:key];
 		[self setHighlighted:NO];
-		[self setNeedsDisplay:YES];
 		
 		if ([delegate respondsToSelector:@selector(keyView:didSetRepresentedKey:)])
 			[delegate keyView:self didSetRepresentedKey:key];
@@ -208,12 +207,22 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	return shouldResign;
 }
 
-- (void)setRepresentedKeyName:(NSString*)keyName
+- (void)setRepresentedKey:(iTetKeyNamePair*)key
 {
-	[self setCurrentKeyImage:[self keyImageWithString:keyName]];
+	[self setCurrentKeyImage:[self keyImageWithString:[key keyName]]];
+	[self setNeedsDisplay:YES];
 }
 
 @synthesize currentKeyImage;
+
+- (void)setHighlighted:(BOOL)turnOn
+{
+	if ((highlighted && !turnOn) || (!highlighted && turnOn))
+	{
+		highlighted = turnOn;
+		[self setNeedsDisplay:YES];
+	}
+}
 @synthesize highlighted;
 
 - (NSString*)actionName

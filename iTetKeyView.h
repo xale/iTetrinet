@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class iTetKeyNamePair;
+
 @interface iTetKeyView : NSView
 {	
 	NSImage* currentKeyImage;
@@ -20,7 +22,7 @@
 
 - (void)keyPressed:(NSEvent*)event;
 
-- (void)setRepresentedKeyName:(NSString*)keyName;
+- (void)setRepresentedKey:(iTetKeyNamePair*)keyName;
 @property (readwrite, retain) NSImage* currentKeyImage;
 @property (readwrite, assign) BOOL highlighted;
 @property (readonly) NSString* actionName;

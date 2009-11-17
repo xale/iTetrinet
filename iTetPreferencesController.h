@@ -14,6 +14,7 @@ extern NSString* const iTetThemeListPrefKey;
 extern NSString* const iTetCurrentThemePrefKey;
 extern NSString* const iTetServerListPrefKey;
 extern NSString* const iTetKeyConfigsPrefKey;
+extern NSString* const iTetCurrentKeyConfigNumberKey;
 
 extern NSString* const iTetCurrentThemeDidChangeNotification;
 
@@ -25,6 +26,7 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 	NSMutableArray* serverList;
 	
 	NSMutableArray* keyConfigurations;
+	NSUInteger currentKeyConfigurationNumber;
 }
 
 + (iTetPreferencesController*)preferencesController;
@@ -45,5 +47,6 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 @property (readwrite, retain) NSMutableArray* serverList;
 
 @property (readwrite, retain) NSMutableArray* keyConfigurations;
+@property (readwrite, assign) NSUInteger currentKeyConfigurationNumber;
 
 @end
