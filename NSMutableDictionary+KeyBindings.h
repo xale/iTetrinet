@@ -30,6 +30,7 @@ extern NSString* const iTetKeyConfigurationNameKey;
 - (void)setAction:(iTetGameAction)action
 	     forKey:(iTetKeyNamePair*)key;
 - (iTetGameAction)actionForKey:(iTetKeyNamePair*)key;
+- (iTetKeyNamePair*)keyForAction:(iTetGameAction)action;
 
 @property (readwrite, retain) NSString* configurationName;
 
