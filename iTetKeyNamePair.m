@@ -208,9 +208,44 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 }
 
 #pragma mark -
-#pragma mark Accessors (Synthesized)
+#pragma mark Accessors
 
 @synthesize keyCode;
 @synthesize keyName;
+
+- (NSString*)printedName
+{
+	if ([[self keyName] isEqualToString:iTetEscapeKeyPlaceholderString])
+		return @"Escape";
+	
+	if ([[self keyName] isEqualToString:iTetSpacebarPlaceholderString])
+		return @"Space";
+	
+	if ([[self keyName] isEqualToString:iTetTabKeyPlaceholderString])
+		return @"Tab";
+	
+	if ([[self keyName] isEqualToString:iTetReturnKeyPlaceholderString])
+		return @"Return";
+	
+	if ([[self keyName] isEqualToString:iTetEnterKeyPlaceholderString])
+		return @"Enter";
+	
+	if ([[self keyName] isEqualToString:iTetDeleteKeyPlaceholderString])
+		return @"Delete";
+	
+	if ([[self keyName] isEqualToString:iTetShiftKeyPlaceholderString])
+		return @"Shift"; // FIXME: left/right?
+	
+	if ([[self keyName] isEqualToString:iTetControlKeyPlaceholderString])
+		return @"Control";
+	
+	if ([[self keyName] isEqualToString:iTetAltOptionKeyPlaceholderString])
+		return @"Option";
+	
+	if ([[self keyName] isEqualToString:iTetCommandKeyPlaceholderString])
+		return @"Command";
+	
+	return [[self keyName] uppercaseString];
+}
 
 @end

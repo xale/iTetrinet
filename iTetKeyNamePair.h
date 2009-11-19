@@ -46,5 +46,6 @@ extern NSString* const iTetAltOptionKeyPlaceholderString;
 
 @property (readonly) int keyCode;
 @property (readonly) NSString* keyName;
+@property (readonly) NSString* printedName;
 
 @end
