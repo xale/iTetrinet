@@ -368,4 +368,9 @@ static iTetPreferencesController* preferencesController = nil;
 }
 @synthesize currentKeyConfigurationNumber;
 
+- (NSMutableDictionary*)currentKeyConfiguration
+{
+	return [[self keyConfigurations] objectAtIndex:[self currentKeyConfigurationNumber]];
+}
+
 @end

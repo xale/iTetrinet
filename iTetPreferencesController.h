@@ -48,5 +48,6 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 
 @property (readwrite, retain) NSMutableArray* keyConfigurations;
 @property (readwrite, assign) NSUInteger currentKeyConfigurationNumber;
+- (NSMutableDictionary*)currentKeyConfiguration;
 
 @end
