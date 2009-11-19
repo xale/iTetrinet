@@ -24,9 +24,12 @@
 	IBOutlet iTetKeyView* gameChatKeyView;
 	
 	IBOutlet NSTextField* keyDescriptionField;
+	
+	BOOL unsavedConfiguration;
 }
 
 - (IBAction)changeConfiguration:(id)sender;
+- (void)displayConfigurationNumber:(NSUInteger)configNum;
 - (IBAction)saveConfiguration:(id)sender;
 - (IBAction)deleteConfiguration:(id)sender;
 
@@ -44,5 +47,6 @@ didSetRepresentedKey:(iTetKeyNamePair*)key;
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
 
 @property (readonly) iTetPreferencesController* preferencesController;
+- (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum;
 
 @end

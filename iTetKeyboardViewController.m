@@ -71,22 +71,8 @@
 	NSUInteger currentConfigNum = [[self preferencesController] currentKeyConfigurationNumber];
 	[configurationPopUpButton selectItemWithTag:currentConfigNum];
 	
-	// Set the active keys in the key views
-	NSMutableDictionary* currentConfig = [configurations objectAtIndex:currentConfigNum];
-	[moveLeftKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceLeft]];
-	[moveRightKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceRight]];
-	[rotateCounterclockwiseKeyView setRepresentedKey:
-	 [currentConfig keyForAction:rotatePieceCounterclockwise]];
-	[rotateClockwiseKeyView setRepresentedKey:
-	 [currentConfig keyForAction:rotatePieceClockwise]];
-	[moveDownKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceDown]];
-	[dropKeyView setRepresentedKey:
-	 [currentConfig keyForAction:dropPiece]];
-	[gameChatKeyView setRepresentedKey:
-	 [currentConfig keyForAction:gameChat]];
+	// Display the active configuration in the key views
+	[self displayConfigurationNumber:currentConfigNum];
 	
 	// Register for notifications when a key view changes highlight state
 	[self startObservingKeyView:moveLeftKeyView];
@@ -119,16 +105,69 @@
 #pragma mark Interface Actions
 
 - (IBAction)changeConfiguration:(id)sender
-{	
-	// Determine the new action configuration number
-	NSUInteger configNum = [sender tag];
+{
+	// Check if we have an unsaved configuration
+	if (unsavedConfiguration)
+	{
+		// Create an alert
+		NSAlert* alert = [[NSAlert alloc] init];
+		[alert setMessageText:@"Unsaved Configuration"];
+		[alert setInformativeText:@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?"];
+		[alert addButtonWithTitle:@"Save Configuration"];
+		[alert addButtonWithTitle:@"Cancel"];
+		[alert addButtonWithTitle:@"Change without Saving"];
+		
+		// Run the alert as a sheet
+		[alert beginSheetModalForWindow:[[self view] window]
+					modalDelegate:self
+				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:originalSender:)
+					  contextInfo:sender];
+	}
 	
+	// Switch to the selected configuration
+	[self displayConfigurationNumber:[sender tag]];
+}
+
+- (void)unsavedConfigAlertDidEnd:(NSAlert*)alert
+			    returnCode:(NSInteger)returnCode
+			originalSender:(id)sender
+{
+	// If the user pressed "cancel", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// If the user pressed "change without saving", change configurations
+	if (returnCode == NSAlertThirdButtonReturn)
+	{
+		[[alert window] orderOut:self];
+		[self displayConfigurationNumber:[sender tag]];
+		return;
+	}
+	
+	// Otherwise, open the "save configuration" sheet
+	[self saveConfiguration:self];
+}
+
+- (IBAction)saveConfiguration:(id)sender
+{
+	// FIXME: WRITEME: save current configuration
+}
+
+- (IBAction)deleteConfiguration:(id)sender
+{
+	// FIXME: WRITEME: delete current configuration
+}
+
+#pragma mark -
+#pragma mark Configurations
+
+- (void)displayConfigurationNumber:(NSUInteger)configNum
+{
 	// Set the new active configuration
 	[[self preferencesController] setCurrentKeyConfigurationNumber:configNum];
 	
 	// Set the active keys in the key views
-	NSArray* configurations = [[self preferencesController] keyConfigurations];
-	NSMutableDictionary* currentConfig = [configurations objectAtIndex:configNum];
+	NSMutableDictionary* currentConfig = [self keyConfigNumber:configNum];
 	[moveLeftKeyView setRepresentedKey:
 	 [currentConfig keyForAction:movePieceLeft]];
 	[moveRightKeyView setRepresentedKey:
@@ -143,16 +182,9 @@
 	 [currentConfig keyForAction:dropPiece]];
 	[gameChatKeyView setRepresentedKey:
 	 [currentConfig keyForAction:gameChat]];
-}
-
-- (IBAction)saveConfiguration:(id)sender
-{
-	// FIXME: WRITEME: save current configuration
-}
-
-- (IBAction)deleteConfiguration:(id)sender
-{
-	// FIXME: WRITEME: delete current configuration
+	
+	// We've just loaded a configuration, so it is obviously clean
+	unsavedConfiguration = NO;
 }
 
 #pragma mark -
@@ -192,6 +224,15 @@
 		// key view's description
 		[self setKeyDescriptionForKeyView:keyView];
 	}
+	else
+	{
+		// Key view is no longer highlighted: if the description text currently
+		// contains the key's description, clear the text
+		// FIXME: kinda hacky
+		NSString* desc = [keyDescriptionField stringValue];
+		if (([desc length] > 0) && ([desc characterAtIndex:0] == 'P'))
+			[keyDescriptionField setStringValue:@""];
+	}
 }
 
 #pragma mark -
@@ -200,7 +241,19 @@
 - (BOOL)keyView:(iTetKeyView*)keyView
 shouldSetRepresentedKey:(iTetKeyNamePair*)key
 {
-	// FIXME: WRITEME
+	// Check if the pressed key is already in use
+	NSMutableDictionary* currentConfig = [[self preferencesController] currentKeyConfiguration];
+	iTetGameAction boundAction = [currentConfig actionForKey:key];
+	if (boundAction != noAction)
+	{
+		// Place a warning in the text field
+		[keyDescriptionField setStringValue:
+		 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
+		  [key printedName], iTetNameForAction(boundAction)]];
+		
+		return NO;
+	}
+	
 	return YES;
 }
 
@@ -220,8 +273,18 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	if ([menuItem action] == @selector(saveConfiguration:))
 	{
-		// FIXME: check if configuration can be saved
+		if (unsavedConfiguration)
+			return YES;
+		
 		return NO;
+	}
+	
+	if ([menuItem action] == @selector(deleteConfiguration:))
+	{
+		if (unsavedConfiguration)
+			return NO;
+		
+		return YES;
 	}
 	
 	return YES;
@@ -241,6 +304,11 @@ NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to \'%@\'";
 - (iTetPreferencesController*)preferencesController
 {
 	return [iTetPreferencesController preferencesController];
+}
+
+- (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum
+{	
+	return [[[self preferencesController] keyConfigurations] objectAtIndex:configNum];
 }
 
 @end

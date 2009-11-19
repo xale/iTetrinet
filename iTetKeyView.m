@@ -138,24 +138,19 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 {
 	// Toggle highlighting
 	[self setHighlighted:![self highlighted]];
-	[self setNeedsDisplay:YES];
 }
 
 - (void)keyDown:(NSEvent*)keyEvent
-{
-	NSLog(@"DEBUG: keyView keyDown: %@", keyEvent);
-	
-	[self keyPressed:keyEvent];
+{	
+	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:keyEvent]];
 }
 
 - (void)flagsChanged:(NSEvent*)modifierEvent
-{
-	NSLog(@"DEBUG: keyView flagsChanged: %@", modifierEvent);
-	
-	[self keyPressed:modifierEvent];
+{	
+	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:modifierEvent]];
 }
 
-- (void)keyPressed:(NSEvent*)event
+- (void)keyPressed:(iTetKeyNamePair*)key
 {
 	// If this view is not highlighted, ignore the event
 	if (![self highlighted])
@@ -166,7 +161,6 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 		return;
 	
 	// Ask the delegate if the view's represented key should be changed
-	iTetKeyNamePair* key = [iTetKeyNamePair keyNamePairFromKeyEvent:event];
 	if ([delegate keyView:self shouldSetRepresentedKey:key])
 	{
 		[self setRepresentedKey:key];
@@ -176,7 +170,10 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 			[delegate keyView:self didSetRepresentedKey:key];
 	}
 	else
+	{
 		NSBeep();
+		[self setHighlighted:NO];
+	}
 }
 
 #pragma mark -
@@ -199,10 +196,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// If we should, un-highlight the view before doing so
 	if (shouldResign)
-	{
 		[self setHighlighted:NO];
-		[self setNeedsDisplay:YES];
-	}
 	
 	return shouldResign;
 }
@@ -210,9 +204,14 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 - (void)setRepresentedKey:(iTetKeyNamePair*)key
 {
 	[self setCurrentKeyImage:[self keyImageWithString:[key keyName]]];
-	[self setNeedsDisplay:YES];
 }
 
+- (void)setCurrentKeyImage:(NSImage*)image
+{
+	[currentKeyImage release];
+	currentKeyImage = [image retain];
+	[self setNeedsDisplay:YES];
+}
 @synthesize currentKeyImage;
 
 - (void)setHighlighted:(BOOL)turnOn

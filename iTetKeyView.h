@@ -20,7 +20,7 @@
 
 - (NSImage*)keyImageWithString:(NSString*)keyName;
 
-- (void)keyPressed:(NSEvent*)event;
+- (void)keyPressed:(iTetKeyNamePair*)key;
 
 - (void)setRepresentedKey:(iTetKeyNamePair*)keyName;
 @property (readwrite, retain) NSImage* currentKeyImage;
