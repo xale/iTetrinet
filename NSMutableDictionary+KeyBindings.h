@@ -6,20 +6,9 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetKeyActions.h"
 
 @class iTetKeyNamePair;
-
-typedef enum
-{
-	movePieceLeft,
-	movePieceRight,
-	rotatePieceClockwise,
-	rotatePieceCounterclockwise,
-	movePieceDown,
-	dropPiece,
-	gameChat,
-	noAction
-} iTetGameAction;
 
 extern NSString* const iTetKeyConfigurationNameKey;
 
