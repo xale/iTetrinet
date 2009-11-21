@@ -8,6 +8,7 @@
 #import "iTetKeyView.h"
 #import "iTetKeyNamePair.h"
 #import "iTetKeyboardViewController.h" // Quiets warnings on delegate methods
+#import "NSImage+KeyImageCache.h"
 
 @implementation iTetKeyView
 
@@ -57,9 +58,9 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 #define KEY_CORNER_RADIUS	(5)
 		
 - (NSImage*)keyImageWithString:(NSString*)keyName
-{
+{	
 	// Check if an image for this key exists in cache
-	NSImage* image = [NSImage imageNamed:keyName];
+	NSImage* image = [NSImage imageForKeyName:keyName];
 	if (image != nil)
 		return image;
 	
@@ -124,9 +125,9 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	// Finished drawing
 	[image unlockFocus];
 	
-	// Attempt to set the image's name, so it will be stored in cache (if this
-	// fails, for any reason, we will just re-generate the image next time)
-	[image setName:keyName];
+	// Store the image in cache, for later access
+	[NSImage setImage:image
+		 forKeyName:keyName];
 	
 	return image;
 }
@@ -164,7 +165,6 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	if ([delegate keyView:self shouldSetRepresentedKey:key])
 	{
 		[self setRepresentedKey:key];
-		[self setHighlighted:NO];
 		
 		if ([delegate respondsToSelector:@selector(keyView:didSetRepresentedKey:)])
 			[delegate keyView:self didSetRepresentedKey:key];
@@ -172,8 +172,10 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	else
 	{
 		NSBeep();
-		[self setHighlighted:NO];
 	}
+	
+	// Clear highlight
+	[self setHighlighted:NO];
 }
 
 #pragma mark -
@@ -194,7 +196,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	// Ask superclass if it is okay to resign first responder
 	BOOL shouldResign = [super resignFirstResponder];
 	
-	// If we should, un-highlight the view before doing so
+	// If we should resign, un-highlight the view before doing so
 	if (shouldResign)
 		[self setHighlighted:NO];
 	
