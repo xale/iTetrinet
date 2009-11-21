@@ -6,11 +6,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetKeyActions.h"
 
 @class iTetKeyNamePair;
 
 @interface iTetKeyView : NSView
-{	
+{
+	iTetGameAction associatedAction;
 	NSImage* currentKeyImage;
 	BOOL highlighted;
 	
@@ -23,8 +25,8 @@
 - (void)keyPressed:(iTetKeyNamePair*)key;
 
 - (void)setRepresentedKey:(iTetKeyNamePair*)keyName;
+@property (readwrite, assign) iTetGameAction associatedAction;
 @property (readwrite, retain) NSImage* currentKeyImage;
 @property (readwrite, assign) BOOL highlighted;
-@property (readonly) NSString* actionName;
 
 @end

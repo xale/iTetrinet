@@ -30,6 +30,15 @@
 
 - (void)awakeFromNib
 {
+	// Set the actions associated with the key views
+	[moveLeftKeyView setAssociatedAction:movePieceLeft];
+	[moveRightKeyView setAssociatedAction:movePieceRight];
+	[rotateCounterclockwiseKeyView setAssociatedAction:rotatePieceCounterclockwise];
+	[rotateClockwiseKeyView setAssociatedAction:rotatePieceClockwise];
+	[moveDownKeyView setAssociatedAction:movePieceDown];
+	[dropKeyView setAssociatedAction:dropPiece];
+	[gameChatKeyView setAssociatedAction:gameChat];
+	
 	// Fill the pop-up menu with the available keyboard configurations
 	NSArray* configurations = [[self preferencesController] keyConfigurations];
 	int numConfigs = [configurations count];
@@ -248,10 +257,13 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 	iTetGameAction boundAction = [currentConfig actionForKey:key];
 	if (boundAction != noAction)
 	{
-		// Place a warning in the text field
-		[keyDescriptionField setStringValue:
-		 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
-		  [key printedName], iTetNameForAction(boundAction)]];
+		if (boundAction != [keyView associatedAction])
+		{
+			// Place a warning in the text field
+			[keyDescriptionField setStringValue:
+			 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
+			  [key printedName], iTetNameForAction(boundAction)]];
+		}
 		
 		return NO;
 	}
@@ -303,7 +315,8 @@ NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to \'%@\'";
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView
 {
 	[keyDescriptionField setStringValue:
-	 [NSString stringWithFormat:iTetKeyDescriptionFormat, [keyView actionName]]];
+	 [NSString stringWithFormat:iTetKeyDescriptionFormat,
+	  iTetNameForAction([keyView associatedAction])]];
 }
 
 - (iTetPreferencesController*)preferencesController

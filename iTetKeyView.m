@@ -208,6 +208,14 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	[self setCurrentKeyImage:[self keyImageWithString:[key keyName]]];
 }
 
+- (void)setAssociatedAction:(iTetGameAction)action
+{
+	associatedAction = action;
+	
+	[actionNameField setStringValue:iTetNameForAction(associatedAction)];
+}
+@synthesize associatedAction;
+
 - (void)setCurrentKeyImage:(NSImage*)image
 {
 	[currentKeyImage release];
@@ -225,16 +233,5 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	}
 }
 @synthesize highlighted;
-
-- (NSString*)actionName
-{
-	if (actionNameField == nil)
-	{
-		NSLog(@"Warning: iTetKeyView with unconnected actionNameField outlet");
-		return nil;
-	}
-	
-	return [actionNameField stringValue];
-}
 
 @end

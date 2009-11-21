@@ -11,14 +11,14 @@
 
 typedef enum
 {
+	noAction = 0,
 	movePieceLeft,
 	movePieceRight,
 	rotatePieceCounterclockwise,
 	rotatePieceClockwise,
 	movePieceDown,
 	dropPiece,
-	gameChat,
-	noAction
+	gameChat
 } iTetGameAction;
 
 extern NSString* const iTetMovePieceLeftActionName;
