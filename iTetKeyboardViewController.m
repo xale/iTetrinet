@@ -143,14 +143,17 @@
 			    returnCode:(NSInteger)returnCode
 			originalSender:(id)sender
 {
+	// We're done with the sheet; ask it to order out
+	[[alert window] orderOut:self];
+	
 	// If the user pressed "cancel", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
-	// If the user pressed "change without saving", change configurations
+	// If the user pressed "change without saving", discard changes and change configurations
 	if (returnCode == NSAlertThirdButtonReturn)
 	{
-		[[alert window] orderOut:self];
+		[self clearUnsavedConfiguration];
 		[self displayConfigurationNumber:[sender tag]];
 		return;
 	}
@@ -161,7 +164,39 @@
 
 - (IBAction)saveConfiguration:(id)sender
 {
-	// FIXME: WRITEME: save current configuration
+	// Run the "save configuration" sheet
+	[NSApp beginSheet:saveSheetWindow
+	   modalForWindow:[[self view] window]
+	    modalDelegate:self
+	   didEndSelector:@selector(saveSheetDidEnd:returnCode:contextInfo:)
+		contextInfo:NULL];
+}
+
+- (IBAction)closeSaveSheet:(id)sender
+{	
+	[NSApp endSheet:saveSheetWindow
+	     returnCode:[sender tag]];
+}
+
+- (void)saveSheetDidEnd:(NSWindow*)sheet
+		 returnCode:(NSInteger)returnCode
+		contextInfo:(void*)context
+{
+	// If the user pressed "cancel", do nothing
+	if (returnCode == 0)
+	{
+		[sheet orderOut:self];
+		return;
+	}
+	
+	// If the user pressed "save", attempt to save the configuration
+	// FIXME: WRITEME: check for name in text field
+	//			 check for duplicate name
+	//			 copy unsaved configuration, set name
+	//			 add new configuration to list
+	
+	// Order out the sheet
+	[sheet orderOut:self];
 }
 
 - (IBAction)deleteConfiguration:(id)sender
@@ -193,9 +228,17 @@
 	 [currentConfig keyForAction:dropPiece]];
 	[gameChatKeyView setRepresentedKey:
 	 [currentConfig keyForAction:gameChat]];
+}
+
+- (void)clearUnsavedConfiguration
+{
+	// Remove the unsaved configuration from the pop-up menu
+	NSMenu* menu = [configurationPopUpButton menu];
+	[menu removeItem:[menu itemWithTitle:[unsavedConfiguration configurationName]]];
 	
-	// We've just loaded a configuration, so it is obviously clean
-	unsavedConfiguration = NO;
+	// Delete the configuration
+	[unsavedConfiguration release];
+	unsavedConfiguration = nil;
 }
 
 #pragma mark -
@@ -274,10 +317,33 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 - (void)keyView:(iTetKeyView*)keyView
 didSetRepresentedKey:(iTetKeyNamePair*)key
 {
-	// FIXME: WRITEME
+	// If the current configuration is clean, make a copy
+	if (!unsavedConfiguration)
+	{
+		// Copy the current configuration
+		unsavedConfiguration = [[[self preferencesController] currentKeyConfiguration] mutableCopy];
+		
+		// Change the copy's name
+		[unsavedConfiguration setConfigurationName:@"Custom"];
+		
+		// Add the configuration to the pop-up menu
+		NSUInteger newConfigNum = [[[self preferencesController] keyConfigurations] count];
+		NSMenu* menu = [configurationPopUpButton menu];
+		NSMenuItem* menuItem = [[[NSMenuItem alloc] initWithTitle:[unsavedConfiguration configurationName]
+										   action:@selector(changeConfiguration:)
+									  keyEquivalent:@""] autorelease];
+		[menuItem setTag:newConfigNum];
+		[menuItem setTarget:self];
+		[menu insertItem:menuItem
+			   atIndex:newConfigNum];
+		
+		// Select the item in the menu
+		[configurationPopUpButton selectItem:menuItem];
+	}
 	
-	// Mark the current configuration as dirty
-	unsavedConfiguration = YES;
+	// Change the key in the unsaved configuration
+	[unsavedConfiguration setAction:[keyView associatedAction]
+					 forKey:key];
 	
 	// Clear the text field
 	[keyDescriptionField setStringValue:@""];

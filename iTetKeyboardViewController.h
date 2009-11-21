@@ -25,13 +25,18 @@
 	
 	IBOutlet NSTextField* keyDescriptionField;
 	
-	BOOL unsavedConfiguration;
+	IBOutlet NSWindow* saveSheetWindow;
+	
+	NSMutableDictionary* unsavedConfiguration;
 }
 
 - (IBAction)changeConfiguration:(id)sender;
-- (void)displayConfigurationNumber:(NSUInteger)configNum;
 - (IBAction)saveConfiguration:(id)sender;
+- (IBAction)closeSaveSheet:(id)sender;
 - (IBAction)deleteConfiguration:(id)sender;
+
+- (void)displayConfigurationNumber:(NSUInteger)configNum;
+- (void)clearUnsavedConfiguration;
 
 + (id)viewController;
 

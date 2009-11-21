@@ -46,6 +46,8 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 - (void)removeObjectFromServerListAtIndex:(NSUInteger)index;
 @property (readwrite, retain) NSMutableArray* serverList;
 
+- (void)addKeyConfiguration:(NSMutableDictionary*)config;
+- (void)removeKeyConfigurationAtIndex:(NSUInteger)index;
 @property (readwrite, retain) NSMutableArray* keyConfigurations;
 @property (readwrite, assign) NSUInteger currentKeyConfigurationNumber;
 - (NSMutableDictionary*)currentKeyConfiguration;
