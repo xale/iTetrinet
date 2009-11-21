@@ -122,6 +122,8 @@
 					modalDelegate:self
 				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:originalSender:)
 					  contextInfo:sender];
+		
+		return;
 	}
 	
 	// Switch to the selected configuration
@@ -261,6 +263,9 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 didSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	// FIXME: WRITEME
+	
+	// Mark the current configuration as dirty
+	unsavedConfiguration = YES;
 	
 	// Clear the text field
 	[keyDescriptionField setStringValue:@""];
