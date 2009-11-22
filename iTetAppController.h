@@ -51,7 +51,6 @@
 - (IBAction)startStopGame:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;
-- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item;
 
 - (void)connectionOpened;
 - (void)connectionClosed;
