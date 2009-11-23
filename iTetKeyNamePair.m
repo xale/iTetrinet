@@ -248,4 +248,9 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 	return [[self keyName] uppercaseString];
 }
 
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"<iTetKeyNamePair code:%d name:%@>", [self keyCode], [self keyName]];
+}
+
 @end
