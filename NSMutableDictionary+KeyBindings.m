@@ -74,6 +74,11 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 - (void)setAction:(iTetGameAction)action
 	     forKey:(iTetKeyNamePair*)key
 {
+	// Remove the previous keybinding
+	iTetKeyNamePair* oldKey = [self keyForAction:action];
+	if (oldKey)
+		[self removeObjectForKey:oldKey];
+	
 	[self setObject:[NSNumber numberWithInt:action]
 		   forKey:key];
 }
@@ -90,8 +95,12 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 
 - (iTetKeyNamePair*)keyForAction:(iTetGameAction)action
 {
-	// We're assuming that a given key can be bound to only one action
-	return [[self allKeysForObject:[NSNumber numberWithInt:action]] objectAtIndex:0];
+	NSArray* keys = [self allKeysForObject:[NSNumber numberWithInt:action]];
+	
+	if ([keys count] > 0)
+		return [keys objectAtIndex:0];
+	
+	return nil;
 }
 
 - (NSString*)configurationName
