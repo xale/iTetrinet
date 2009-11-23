@@ -92,6 +92,8 @@
 	[self startObservingKeyView:dropKeyView];
 	[self startObservingKeyView:gameChatKeyView];
 	
+	// Bind the save button availa
+	
 	// Clear the description text
 	[keyDescriptionField setStringValue:@""];
 }
@@ -146,9 +148,13 @@
 	// We're done with the sheet; ask it to order out
 	[[alert window] orderOut:self];
 	
-	// If the user pressed "cancel", do nothing
+	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
 	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
 		return;
+	}
+		
 	
 	// If the user pressed "change without saving", discard changes and change configurations
 	if (returnCode == NSAlertThirdButtonReturn)
@@ -186,22 +192,101 @@
 	if (returnCode == 0)
 	{
 		[sheet orderOut:self];
+		
+		// Re-select the configuration in the pop-up menu
+		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
+		
 		return;
 	}
 	
 	// If the user pressed "save", attempt to save the configuration
-	// FIXME: WRITEME: check for name in text field
-	//			 check for duplicate name
-	//			 copy unsaved configuration, set name
-	//			 add new configuration to list
+	// Get the name from the text field
+	NSString* newConfigName = [configurationNameField stringValue];
+	
+	// Check for duplicate configuration name
+	for (NSMutableDictionary* config in [[self preferencesController] keyConfigurations])
+	{
+		if ([[config configurationName] isEqualToString:newConfigName])
+		{	
+			// Create a new alert
+			NSAlert* alert = [[NSAlert alloc] init];
+			[alert setMessageText:@"Duplicate Configuration"];
+			[alert setInformativeText:[NSString stringWithFormat:@"A keyboard configuration already exists with the name \"%@\". Would you like to replace it?", newConfigName]];
+			[alert addButtonWithTitle:@"Replace Configuration"];
+			[alert addButtonWithTitle:@"Cancel"];
+			
+			// Order out the old sheet
+			[sheet orderOut:self];
+			
+			// Run the new alert
+			[alert beginSheetModalForWindow:[[self view] window]
+						modalDelegate:self
+					     didEndSelector:@selector(duplicateConfigAlertEnded:returnCode:contextInfo:)
+						  contextInfo:NULL];
+			
+			return;
+		}
+	}
+	
+	// FIXME: WRITEME: copy unsaved configuration, set name
+	// FIXME: WRITEME: add new configuration to list
+	// FIXME: WRITEME: add menu item for new configuration
 	
 	// Order out the sheet
 	[sheet orderOut:self];
 }
 
+- (void)duplicateConfigAlertEnded:(NSAlert*)alert
+			     returnCode:(NSInteger)returnCode
+			    contextInfo:(void*)context
+{
+	// FIXME: WRITEME
+}
+
 - (IBAction)deleteConfiguration:(id)sender
 {
-	// FIXME: WRITEME: delete current configuration
+	// Get the current configuration name
+	NSString* configName = [[[self preferencesController] currentKeyConfiguration] configurationName];
+	
+	// Ask the user for confirmation via an alert
+	NSAlert* alert = [[NSAlert alloc] init];
+	[alert setMessageText:@"Delete Configuration?"];
+	[alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete the configuration named \"%@\"?", configName]];
+	[alert addButtonWithTitle:@"Delete"];
+	[alert addButtonWithTitle:@"Cancel"];
+	
+	// Run the alert as a sheet
+	[alert beginSheetModalForWindow:[[self view] window]
+				modalDelegate:self
+			     didEndSelector:@selector(deleteConfigAlertDidEnd:returnCode:contextInfo:)
+				  contextInfo:NULL];
+}
+
+- (void)deleteConfigAlertDidEnd:(NSAlert*)alert
+			   returnCode:(NSInteger)returnCode
+			  contextInfo:(void*)context
+{
+	NSUInteger configNum = [[self preferencesController] currentKeyConfigurationNumber];
+	NSMenu* menu = [configurationPopUpButton menu];
+	
+	// If the user pressed "cancel", do not delete
+	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// Select the current config in the pop-up menu
+		[configurationPopUpButton selectItem:[menu itemWithTag:configNum]];
+		
+		return;
+	}
+	
+	// Delete the currently selected configuration from the list of configurations
+	[[self preferencesController] removeKeyConfigurationAtIndex:configNum];
+	
+	// Remove the configuration name from the pop-up menu
+	[menu removeItem:[menu itemWithTag:configNum]];
+	
+	// Select the first configuration in the list
+	[configurationPopUpButton selectItem:[menu itemWithTag:0]];
+	[self displayConfigurationNumber:0];
 }
 
 #pragma mark -
@@ -350,7 +435,13 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 }
 
 #pragma mark -
-#pragma mark Menu Item Validation
+#pragma mark Interface Item Validation
+
+- (void)controlTextDidChange:(NSNotification*)note
+{	
+	if ([[[note userInfo] objectForKey:@"NSFieldEditor"] isEqual:[configurationNameField currentEditor]])
+		[saveButton setEnabled:([[configurationNameField stringValue] length] > 0)];
+}
 
 - (BOOL)validateMenuItem:(NSMenuItem*)menuItem
 {
@@ -365,6 +456,9 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	if ([menuItem action] == @selector(deleteConfiguration:))
 	{
 		if (unsavedConfiguration)
+			return NO;
+		
+		if ([[[self preferencesController] keyConfigurations] count] <= 1)
 			return NO;
 		
 		return YES;

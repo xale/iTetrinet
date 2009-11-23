@@ -26,6 +26,8 @@
 	IBOutlet NSTextField* keyDescriptionField;
 	
 	IBOutlet NSWindow* saveSheetWindow;
+	IBOutlet NSTextField* configurationNameField;
+	IBOutlet NSButton* saveButton;
 	
 	NSMutableDictionary* unsavedConfiguration;
 }
