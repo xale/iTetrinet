@@ -14,6 +14,13 @@
 	return [[[self alloc] init] autorelease];
 }
 
+- (id)init
+{
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
+}
+
 #pragma mark -
 #pragma mark Accessors
 
