@@ -12,6 +12,7 @@
 		6A2922AE100BE5CF0008A3C3 /* iTetPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */; };
 		6A29233D100BED350008A3C3 /* iTetNextBlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29233C100BED350008A3C3 /* iTetNextBlockView.m */; };
 		6A2923CF100BFB7A0008A3C3 /* iTetThemedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */; };
+		6A29DC8410BB44040054D353 /* iTetPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29DC8310BB44040054D353 /* iTetPreferencesViewController.m */; };
 		6A3ACC4810B7C49500459D97 /* NSImage+KeyImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC4710B7C49500459D97 /* NSImage+KeyImageCache.m */; };
 		6A3ACC5510B7C85A00459D97 /* IPSCacheDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC5410B7C85A00459D97 /* IPSCacheDictionary.m */; };
 		6A4A3760101BB3E000F27DE9 /* iTetChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4A375F101BB3E000F27DE9 /* iTetChatViewController.m */; };
@@ -79,6 +80,8 @@
 		6A29233C100BED350008A3C3 /* iTetNextBlockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNextBlockView.m; sourceTree = "<group>"; };
 		6A2923CD100BFB7A0008A3C3 /* iTetThemedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemedView.h; sourceTree = "<group>"; };
 		6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemedView.m; sourceTree = "<group>"; };
+		6A29DC8210BB44040054D353 /* iTetPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPreferencesViewController.h; sourceTree = "<group>"; };
+		6A29DC8310BB44040054D353 /* iTetPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPreferencesViewController.m; sourceTree = "<group>"; };
 		6A3ACC4610B7C49500459D97 /* NSImage+KeyImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+KeyImageCache.h"; sourceTree = "<group>"; };
 		6A3ACC4710B7C49500459D97 /* NSImage+KeyImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+KeyImageCache.m"; sourceTree = "<group>"; };
 		6A3ACC5310B7C85A00459D97 /* IPSCacheDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPSCacheDictionary.h; sourceTree = "<group>"; };
@@ -256,6 +259,15 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6A29DC8810BB46130054D353 /* Superclass */ = {
+			isa = PBXGroup;
+			children = (
+				6A29DC8210BB44040054D353 /* iTetPreferencesViewController.h */,
+				6A29DC8310BB44040054D353 /* iTetPreferencesViewController.m */,
+			);
+			name = Superclass;
 			sourceTree = "<group>";
 		};
 		6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */ = {
@@ -441,6 +453,7 @@
 		6AB76D6C101D148C00734661 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				6A29DC8810BB46130054D353 /* Superclass */,
 				6AB76D52101D145000734661 /* iTetGeneralPrefsViewController.h */,
 				6AB76D53101D145000734661 /* iTetGeneralPrefsViewController.m */,
 				6AEB7F841089218C00A8BCFD /* iTetKeyboardViewController.h */,
@@ -583,6 +596,7 @@
 				6A05EE1010B5A94D0002F86E /* iTetKeyActions.m in Sources */,
 				6A3ACC4810B7C49500459D97 /* NSImage+KeyImageCache.m in Sources */,
 				6A3ACC5510B7C85A00459D97 /* IPSCacheDictionary.m in Sources */,
+				6A29DC8410BB44040054D353 /* iTetPreferencesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

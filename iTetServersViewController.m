@@ -6,15 +6,9 @@
 //
 
 #import "iTetServersViewController.h"
-#import "iTetPreferencesController.h"
 #import "iTetServerInfo.h"
 
 @implementation iTetServersViewController
-
-+ (id)viewController
-{
-	return [[[self alloc] init] autorelease];
-}
 
 - (id)init
 {
@@ -28,11 +22,6 @@
 
 #pragma mark -
 #pragma mark Accessors
-
-- (iTetPreferencesController*)preferencesController
-{
-	return [iTetPreferencesController preferencesController];
-}
 
 - (NSArray*)valuesForProtocolPopUpCell
 {

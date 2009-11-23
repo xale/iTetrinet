@@ -62,8 +62,11 @@
 	// Sanity check
 	NSParameterAssert((index >= 0) && (index < [viewControllers count]));
 	
+	// Ask the current view controller if it is okay to swap
+	// FIXME: WRITEME
+	
 	// Get the view swap in
-	NSViewController* controller = [viewControllers objectAtIndex:index];
+	iTetPreferencesViewController* controller = [viewControllers objectAtIndex:index];
 	NSView* view = [controller view];
 	
 	// Compute the new window size

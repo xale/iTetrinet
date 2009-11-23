@@ -7,15 +7,9 @@
 
 #import "iTetThemesViewController.h"
 #import "iTetThemesArrayController.h"
-#import "iTetPreferencesController.h"
 #import "iTetTheme.h"
 
 @implementation iTetThemesViewController
-
-+ (id)viewController
-{
-	return [[[self alloc] init] autorelease];
-}
 
 - (id)init
 {
@@ -146,7 +140,7 @@
 - (IBAction)chooseTheme:(id)sender
 {
 	// Change the current theme
-	[[iTetPreferencesController preferencesController] setCurrentTheme:[themesArrayController selectedTheme]];
+	[PREFS setCurrentTheme:[themesArrayController selectedTheme]];
 }
 
 #pragma mark -
@@ -178,14 +172,6 @@
 	
 	// Add the new theme
 	[themesArrayController addObject:newTheme];
-}
-
-#pragma mark -
-#pragma mark Accessors
-
-- (iTetPreferencesController*)preferencesController
-{
-	return [iTetPreferencesController preferencesController];
 }
 
 @end

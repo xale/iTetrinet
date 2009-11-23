@@ -6,12 +6,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetPreferencesViewController.h"
 
-@class iTetPreferencesController;
 @class iTetKeyView;
 @class iTetKeyNamePair;
 
-@interface iTetKeyboardViewController : NSViewController
+@interface iTetKeyboardViewController : iTetPreferencesViewController
 {
 	IBOutlet NSPopUpButton* configurationPopUpButton;
 	
@@ -43,8 +43,6 @@
 - (void)displayConfigurationNumber:(NSUInteger)configNum;
 - (void)clearUnsavedConfiguration;
 
-+ (id)viewController;
-
 - (void)startObservingKeyView:(iTetKeyView*)keyView;
 - (void)stopObservingKeyView:(iTetKeyView*)keyView;
 
@@ -56,7 +54,6 @@ didSetRepresentedKey:(iTetKeyNamePair*)key;
 
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
 
-@property (readonly) iTetPreferencesController* preferencesController;
 - (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum;
 
 @end

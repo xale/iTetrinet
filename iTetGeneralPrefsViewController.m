@@ -6,14 +6,8 @@
 //
 
 #import "iTetGeneralPrefsViewController.h"
-#import "iTetPreferencesController.h"
 
 @implementation iTetGeneralPrefsViewController
-
-+ (id)viewController
-{
-	return [[[self alloc] init] autorelease];
-}
 
 - (id)init
 {
@@ -23,14 +17,6 @@
 	[self setTitle:@"Preferences"];
 	
 	return self;
-}
-
-#pragma mark -
-#pragma mark Accessors
-
-- (iTetPreferencesController*)preferencesController
-{
-	return [iTetPreferencesController preferencesController];
 }
 
 @end

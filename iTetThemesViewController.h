@@ -6,20 +6,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetPreferencesViewController.h"
 
 @class iTetThemesArrayController;
-@class iTetPreferencesController;
 
-@interface iTetThemesViewController : NSViewController
+@interface iTetThemesViewController : iTetPreferencesViewController
 {
 	IBOutlet iTetThemesArrayController* themesArrayController;
 }
 
-+ (id)viewController;
-
 - (IBAction)addTheme:(id)sender;
 - (IBAction)chooseTheme:(id)sender;
-
-@property (readonly) iTetPreferencesController* preferencesController;
 
 @end

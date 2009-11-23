@@ -6,17 +6,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetPreferencesViewController.h"
 
-@class iTetPreferencesController;
-
-@interface iTetServersViewController : NSViewController
+@interface iTetServersViewController : iTetPreferencesViewController
 {
 	
 }
 
-+ (id)viewController;
-
-@property (readonly) iTetPreferencesController* preferencesController;
 @property (readonly) NSArray* valuesForProtocolPopUpCell;
 
 @end

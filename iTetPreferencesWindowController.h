@@ -10,7 +10,8 @@
 typedef enum {
 	generalPreferencesTab = 0,
 	themesPreferencesTab,
-	serversPreferencesTab
+	serversPreferencesTab,
+	keyboardPreferencesTab
 } iTetPreferencesTabNumber;
 
 @interface iTetPreferencesWindowController : NSWindowController

@@ -566,15 +566,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: preferencesController.serverList</string>
+						<string key="label">contentArray: prefs.serverList</string>
 						<reference key="source" ref="546769263"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="546769263"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: preferencesController.serverList</string>
+							<string key="NSLabel">contentArray: prefs.serverList</string>
 							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">preferencesController.serverList</string>
+							<string key="NSKeyPath">prefs.serverList</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>

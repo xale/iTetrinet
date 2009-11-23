@@ -6,16 +6,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetPreferencesViewController.h"
 
-@class iTetPreferencesController;
-
-@interface iTetGeneralPrefsViewController : NSViewController
+@interface iTetGeneralPrefsViewController : iTetPreferencesViewController
 {
 
 }
-
-+ (id)viewController;
-
-@property (readonly) iTetPreferencesController* preferencesController;
 
 @end

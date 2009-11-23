@@ -444,15 +444,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: preferencesController.themeList</string>
+						<string key="label">contentArray: prefs.themeList</string>
 						<reference key="source" ref="866817502"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="866817502"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">contentArray: preferencesController.themeList</string>
+							<string key="NSLabel">contentArray: prefs.themeList</string>
 							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">preferencesController.themeList</string>
+							<string key="NSKeyPath">prefs.themeList</string>
 							<object class="NSDictionary" key="NSOptions">
 								<string key="NS.key.0">NSConditionallySetsEditable</string>
 								<boolean value="NO" key="NS.object.0"/>
@@ -480,15 +480,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: preferencesController.currentTheme.preview</string>
+						<string key="label">value: prefs.currentTheme.preview</string>
 						<reference key="source" ref="315864365"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="315864365"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: preferencesController.currentTheme.preview</string>
+							<string key="NSLabel">value: prefs.currentTheme.preview</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">preferencesController.currentTheme.preview</string>
+							<string key="NSKeyPath">prefs.currentTheme.preview</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -520,15 +520,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: preferencesController.currentTheme.name</string>
+						<string key="label">value: prefs.currentTheme.name</string>
 						<reference key="source" ref="185011703"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="185011703"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: preferencesController.currentTheme.name</string>
+							<string key="NSLabel">value: prefs.currentTheme.name</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">preferencesController.currentTheme.name</string>
+							<string key="NSKeyPath">prefs.currentTheme.name</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -536,15 +536,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: preferencesController.currentTheme.author</string>
+						<string key="label">value: prefs.currentTheme.author</string>
 						<reference key="source" ref="829790859"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="829790859"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: preferencesController.currentTheme.author</string>
+							<string key="NSLabel">value: prefs.currentTheme.author</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">preferencesController.currentTheme.author</string>
+							<string key="NSKeyPath">prefs.currentTheme.author</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -552,15 +552,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: preferencesController.currentTheme.description</string>
+						<string key="label">value: prefs.currentTheme.description</string>
 						<reference key="source" ref="633024422"/>
 						<reference key="destination" ref="1001"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="633024422"/>
 							<reference key="NSDestination" ref="1001"/>
-							<string key="NSLabel">value: preferencesController.currentTheme.description</string>
+							<string key="NSLabel">value: prefs.currentTheme.description</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">preferencesController.currentTheme.description</string>
+							<string key="NSKeyPath">prefs.currentTheme.description</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
