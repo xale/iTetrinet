@@ -42,30 +42,22 @@
 	// Fill the pop-up menu with the available keyboard configurations
 	NSArray* configurations = [[self preferencesController] keyConfigurations];
 	int numConfigs = [configurations count];
-	
-	NSMenu* menu = [configurationPopUpButton menu];
-	NSMenuItem* menuItem;
 	for (int i = 0; i < numConfigs; i++)
 	{
-		NSString* configName = [[configurations objectAtIndex:i] configurationName];
-		menuItem = [[NSMenuItem alloc] initWithTitle:configName
-								  action:@selector(changeConfiguration:)
-							 keyEquivalent:@""];
-		[menuItem setTag:i];
-		[menuItem setTarget:self];
-		[menu addItem:menuItem];
-		[menuItem release];
+		[self insertConfiguration:[configurations objectAtIndex:i]
+			 inPopUpMenuAtIndex:i
+				    tagNumber:i];
 	}
 	
 	// Add a separator menu item to the pop-up menu
-	[menu addItem:[NSMenuItem separatorItem]];
+	[[configurationPopUpButton menu] addItem:[NSMenuItem separatorItem]];
 	
 	// Add the "save configuration" menu item
-	menuItem = [[NSMenuItem alloc] initWithTitle:@"Save Configuration..."
-							  action:@selector(saveConfiguration:)
-						 keyEquivalent:@""];
+	NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:@"Save Configuration..."
+									  action:@selector(saveConfiguration:)
+								 keyEquivalent:@""];
 	[menuItem setTarget:self];
-	[menu addItem:menuItem];
+	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
 	
 	// Add the "delete configuration" menu item
@@ -73,7 +65,7 @@
 							  action:@selector(deleteConfiguration:)
 						 keyEquivalent:@""];
 	[menuItem setTarget:self];
-	[menu addItem:menuItem];
+	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
 	
 	// Select the active configuration in the pop-up menu
@@ -204,15 +196,20 @@
 	NSString* newConfigName = [configurationNameField stringValue];
 	
 	// Check for duplicate configuration name
-	for (NSMutableDictionary* config in [[self preferencesController] keyConfigurations])
+	NSArray* configs = [[self preferencesController] keyConfigurations];
+	NSMutableDictionary* config;
+	NSUInteger numConfigs = [configs count];
+	for (NSUInteger i = 0; i < numConfigs; i++)
 	{
+		config = [configs objectAtIndex:i];
+		
 		if ([[config configurationName] isEqualToString:newConfigName])
 		{	
 			// Create a new alert
 			NSAlert* alert = [[NSAlert alloc] init];
 			[alert setMessageText:@"Duplicate Configuration"];
 			[alert setInformativeText:[NSString stringWithFormat:@"A keyboard configuration already exists with the name \"%@\". Would you like to replace it?", newConfigName]];
-			[alert addButtonWithTitle:@"Replace Configuration"];
+			[alert addButtonWithTitle:@"Replace"];
 			[alert addButtonWithTitle:@"Cancel"];
 			
 			// Order out the old sheet
@@ -221,16 +218,35 @@
 			// Run the new alert
 			[alert beginSheetModalForWindow:[[self view] window]
 						modalDelegate:self
-					     didEndSelector:@selector(duplicateConfigAlertEnded:returnCode:contextInfo:)
-						  contextInfo:NULL];
-			
+					     didEndSelector:@selector(duplicateConfigAlertEnded:returnCode:indexToReplace:)
+						  contextInfo:[[NSNumber numberWithUnsignedInteger:i] retain]];
 			return;
 		}
 	}
 	
-	// FIXME: WRITEME: copy unsaved configuration, set name
-	// FIXME: WRITEME: add new configuration to list
-	// FIXME: WRITEME: add menu item for new configuration
+	// Make a copy of the unsaved configuration
+	NSMutableDictionary* newConfig = [unsavedConfiguration mutableCopy];
+	
+	// Set the configuration name
+	[newConfig setConfigurationName:newConfigName];
+	
+	// Clear the unsaved configuration
+	[self clearUnsavedConfiguration];
+	
+	// Add the new configuration to the list
+	[[self preferencesController] addKeyConfiguration:newConfig];
+	
+	// Get the index of the new configuration
+	NSUInteger i = [[[self preferencesController] keyConfigurations] count] - 1;
+	
+	// Add the new configuration name to the pop-up menu
+	[self insertConfiguration:newConfig
+		 inPopUpMenuAtIndex:i
+			    tagNumber:i];
+	
+	// Select the configuration
+	[self displayConfigurationNumber:i];
+	[configurationPopUpButton selectItemAtIndex:i];
 	
 	// Order out the sheet
 	[sheet orderOut:self];
@@ -238,9 +254,43 @@
 
 - (void)duplicateConfigAlertEnded:(NSAlert*)alert
 			     returnCode:(NSInteger)returnCode
-			    contextInfo:(void*)context
+			 indexToReplace:(NSNumber*)index
 {
-	// FIXME: WRITEME
+	// Balance retain
+	[index autorelease];
+	
+	// If the user pressed "cancel", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// Re-select the unsaved configuration in the pop-up menu
+		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
+		
+		return;
+	}
+	
+	// If the user pressed "replace", replace the existing configuration
+	// Get the index of the configuration to replace
+	NSUInteger i = [index unsignedIntValue];
+	
+	// Make a copy of the unsaved configuration
+	NSMutableDictionary* newConfig = [unsavedConfiguration mutableCopy];
+	
+	// Set the configuration name (same as the config we are replacing)
+	[newConfig setConfigurationName:
+	 [[[[self preferencesController] keyConfigurations] objectAtIndex:i] configurationName]];
+	
+	// Clear the unsaved configuration
+	[self clearUnsavedConfiguration];
+	
+	// Replace the configuration
+	[[self preferencesController] replaceKeyConfigurationAtIndex:i
+							    withKeyConfiguration:newConfig];
+	
+	// Do not add the configuration name to the pop-up button, should already be present
+	
+	// Select the configuration
+	[self displayConfigurationNumber:i];
+	[configurationPopUpButton selectItemAtIndex:i];
 }
 
 - (IBAction)deleteConfiguration:(id)sender
@@ -291,6 +341,22 @@
 
 #pragma mark -
 #pragma mark Configurations
+
+- (void)insertConfiguration:(NSMutableDictionary*)config
+	   inPopUpMenuAtIndex:(NSUInteger)index
+			tagNumber:(NSUInteger)tag
+{
+	// Create a menu item
+	NSMenuItem* item = [[[NSMenuItem alloc] initWithTitle:[config configurationName]
+								     action:@selector(changeConfiguration:)
+							    keyEquivalent:@""] autorelease];
+	[item setTarget:self];
+	[item setTag:tag];
+	
+	// Add it to the menu
+	[[configurationPopUpButton menu] insertItem:item
+							atIndex:index];
+}
 
 - (void)displayConfigurationNumber:(NSUInteger)configNum
 {
@@ -381,8 +447,17 @@
 shouldSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	// Check if the pressed key is already in use
-	NSMutableDictionary* currentConfig = [[self preferencesController] currentKeyConfiguration];
-	iTetGameAction boundAction = [currentConfig actionForKey:key];
+	iTetGameAction boundAction;
+	if (unsavedConfiguration)
+	{
+		boundAction = [unsavedConfiguration actionForKey:key];
+	}
+	else
+	{
+		NSMutableDictionary* currentConfig = [[self preferencesController] currentKeyConfiguration];
+		boundAction = [currentConfig actionForKey:key];
+	}
+	
 	if (boundAction != noAction)
 	{
 		if (boundAction != [keyView associatedAction])
@@ -401,7 +476,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 
 - (void)keyView:(iTetKeyView*)keyView
 didSetRepresentedKey:(iTetKeyNamePair*)key
-{
+{	
 	// If the current configuration is clean, make a copy
 	if (!unsavedConfiguration)
 	{
@@ -413,17 +488,12 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 		
 		// Add the configuration to the pop-up menu
 		NSUInteger newConfigNum = [[[self preferencesController] keyConfigurations] count];
-		NSMenu* menu = [configurationPopUpButton menu];
-		NSMenuItem* menuItem = [[[NSMenuItem alloc] initWithTitle:[unsavedConfiguration configurationName]
-										   action:@selector(changeConfiguration:)
-									  keyEquivalent:@""] autorelease];
-		[menuItem setTag:newConfigNum];
-		[menuItem setTarget:self];
-		[menu insertItem:menuItem
-			   atIndex:newConfigNum];
+		[self insertConfiguration:unsavedConfiguration
+			 inPopUpMenuAtIndex:newConfigNum
+				    tagNumber:newConfigNum];
 		
 		// Select the item in the menu
-		[configurationPopUpButton selectItem:menuItem];
+		[configurationPopUpButton selectItemAtIndex:newConfigNum];
 	}
 	
 	// Change the key in the unsaved configuration
