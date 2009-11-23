@@ -53,7 +53,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 #define KEY_LINE_COLOR		[NSColor grayColor]
 #define KEY_FILL_COLOR		[NSColor whiteColor]
 #define KEY_FONT_SIZE		(22.0)
-#define KEY_MARGIN_SIZE		(10)
+#define KEY_NAME_MARGIN_SIZE	(10)
 #define KEY_BORDER_WIDTH	(2)
 #define KEY_CORNER_RADIUS	(5)
 		
@@ -83,7 +83,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// Create the rect in which we will draw the key
 	NSRect imageRect = NSMakeRect(0, 0,
-						stringSize.width + (KEY_MARGIN_SIZE * 2),
+						stringSize.width + (KEY_NAME_MARGIN_SIZE * 2),
 						viewSize.height);
 	
 	// If the rect is taller than it is wide, make it square
