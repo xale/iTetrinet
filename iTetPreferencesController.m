@@ -373,6 +373,17 @@ static iTetPreferencesController* preferencesController = nil;
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:keyConfigurations]
 								forKey:iTetKeyConfigsPrefKey];
 }
+- (void)replaceKeyConfigurationAtIndex:(NSUInteger)index
+			withKeyConfiguration:(NSMutableDictionary*)config
+{
+	// Replace the configuration
+	[keyConfigurations replaceObjectAtIndex:index
+					     withObject:config];
+	
+	// Write the list to user defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:keyConfigurations]
+								forKey:iTetKeyConfigsPrefKey];
+}
 @synthesize keyConfigurations;
 
 - (void)setCurrentKeyConfigurationNumber:(NSUInteger)num
