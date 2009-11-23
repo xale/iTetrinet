@@ -17,7 +17,7 @@
 
 #define ITET_MAX_PLAYERS	(6)
 
-@interface iTetAppController : NSObject
+@interface iTetAppController : NSObject <NSUserInterfaceValidations>
 {
 	// Window
 	IBOutlet NSWindow* window;
