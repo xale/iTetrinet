@@ -7,8 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum {
-	generalPreferencesTab = 0,
+@class iTetPreferencesViewController;
+
+typedef enum
+{
+	noPreferencesTab = -1,
+	generalPreferencesTab =	0,
 	themesPreferencesTab,
 	serversPreferencesTab,
 	keyboardPreferencesTab
@@ -29,6 +33,7 @@ typedef enum {
 
 - (IBAction)changeView:(id)sender;
 - (void)displayViewControllerAtIndex:(iTetPreferencesTabNumber)index;
+- (void)displayViewController:(iTetPreferencesViewController*)controller;
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar;
 

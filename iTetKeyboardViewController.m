@@ -10,6 +10,9 @@
 #import "iTetKeyNamePair.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
+NSString* const iTetOriginalSenderInfoKey =	@"originalSender";
+NSString* const iTetNewControllerInfoKey =	@"newController";
+
 @implementation iTetKeyboardViewController
 
 + (id)viewController
@@ -37,6 +40,20 @@
 	[moveDownKeyView setAssociatedAction:movePieceDown];
 	[dropKeyView setAssociatedAction:dropPiece];
 	[gameChatKeyView setAssociatedAction:gameChat];
+	
+	// Add the key views to an array for easy enumeration
+	keyViews = [[NSArray alloc] initWithObjects:
+			moveLeftKeyView,
+			moveRightKeyView,
+			rotateCounterclockwiseKeyView,
+			rotateClockwiseKeyView,
+			moveDownKeyView,
+			dropKeyView,
+			gameChatKeyView, nil];
+	
+	// Register for notifications when a key view changes highlight state
+	for (iTetKeyView* keyView in keyViews)
+		[self startObservingKeyView:keyView];
 	
 	// Fill the pop-up menu with the available keyboard configurations
 	NSArray* configurations = [PREFS keyConfigurations];
@@ -67,23 +84,9 @@
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
 	
-	// Select the active configuration in the pop-up menu
-	NSUInteger currentConfigNum = [PREFS currentKeyConfigurationNumber];
-	[configurationPopUpButton selectItemWithTag:currentConfigNum];
-	
 	// Display the active configuration in the key views
+	NSUInteger currentConfigNum = [PREFS currentKeyConfigurationNumber];
 	[self displayConfigurationNumber:currentConfigNum];
-	
-	// Register for notifications when a key view changes highlight state
-	[self startObservingKeyView:moveLeftKeyView];
-	[self startObservingKeyView:moveRightKeyView];
-	[self startObservingKeyView:rotateCounterclockwiseKeyView];
-	[self startObservingKeyView:rotateClockwiseKeyView];
-	[self startObservingKeyView:moveDownKeyView];
-	[self startObservingKeyView:dropKeyView];
-	[self startObservingKeyView:gameChatKeyView];
-	
-	// Bind the save button availa
 	
 	// Clear the description text
 	[keyDescriptionField setStringValue:@""];
@@ -91,14 +94,15 @@
 
 - (void)dealloc
 {
+	// If we have an unsaved configuration, release it
+	[unsavedConfiguration release];
+	
 	// Stop observing key view highlight states
-	[self stopObservingKeyView:moveLeftKeyView];
-	[self stopObservingKeyView:moveRightKeyView];
-	[self stopObservingKeyView:rotateCounterclockwiseKeyView];
-	[self stopObservingKeyView:rotateClockwiseKeyView];
-	[self stopObservingKeyView:moveDownKeyView];
-	[self stopObservingKeyView:dropKeyView];
-	[self stopObservingKeyView:gameChatKeyView];
+	for (iTetKeyView* keyView in keyViews)
+		[self stopObservingKeyView:keyView];
+	
+	// Release the array of key views
+	[keyViews release];
 	
 	[super dealloc];
 }
@@ -119,44 +123,21 @@
 		[alert addButtonWithTitle:@"Cancel"];
 		[alert addButtonWithTitle:@"Change without Saving"];
 		
+		// Create a context info dictionary
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:sender
+										     forKey:iTetOriginalSenderInfoKey];
+		
 		// Run the alert as a sheet
 		[alert beginSheetModalForWindow:[[self view] window]
 					modalDelegate:self
-				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:originalSender:)
-					  contextInfo:sender];
+				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+					  contextInfo:[infoDict retain]];
 		
 		return;
 	}
 	
 	// Switch to the selected configuration
 	[self displayConfigurationNumber:[sender tag]];
-}
-
-- (void)unsavedConfigAlertDidEnd:(NSAlert*)alert
-			    returnCode:(NSInteger)returnCode
-			originalSender:(id)sender
-{
-	// We're done with the sheet; ask it to order out
-	[[alert window] orderOut:self];
-	
-	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
-	if (returnCode == NSAlertSecondButtonReturn)
-	{
-		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
-		return;
-	}
-		
-	
-	// If the user pressed "change without saving", discard changes and change configurations
-	if (returnCode == NSAlertThirdButtonReturn)
-	{
-		[self clearUnsavedConfiguration];
-		[self displayConfigurationNumber:[sender tag]];
-		return;
-	}
-	
-	// Otherwise, open the "save configuration" sheet
-	[self saveConfiguration:self];
 }
 
 - (IBAction)saveConfiguration:(id)sender
@@ -173,6 +154,120 @@
 {	
 	[NSApp endSheet:saveSheetWindow
 	     returnCode:[sender tag]];
+}
+
+- (IBAction)deleteConfiguration:(id)sender
+{
+	// Get the current configuration name
+	NSString* configName = [[PREFS currentKeyConfiguration] configurationName];
+	
+	// Ask the user for confirmation via an alert
+	NSAlert* alert = [[NSAlert alloc] init];
+	[alert setMessageText:@"Delete Configuration"];
+	[alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete the configuration named \"%@\"?", configName]];
+	[alert addButtonWithTitle:@"Delete"];
+	[alert addButtonWithTitle:@"Cancel"];
+	
+	// Run the alert as a sheet
+	[alert beginSheetModalForWindow:[[self view] window]
+				modalDelegate:self
+			     didEndSelector:@selector(deleteConfigAlertDidEnd:returnCode:contextInfo:)
+				  contextInfo:NULL];
+}
+
+#pragma mark -
+#pragma mark View Swapping
+
+- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
+		    byWindowController:(iTetPreferencesWindowController*)sender
+{
+	if (unsavedConfiguration)
+	{
+		// Create an "unsaved configuration" alert
+		NSAlert* alert = [[NSAlert alloc] init];
+		[alert setMessageText:@"Unsaved Configuration"];
+		[alert setInformativeText:@"Your current key configuration is unsaved. Do you  wish to save the configuration?"];
+		[alert addButtonWithTitle:@"Save Configuration"];
+		[alert addButtonWithTitle:@"Cancel"];
+		[alert addButtonWithTitle:@"Don't Save"];
+		
+		// Create a context info dictionary
+		NSDictionary* infoDict = [[NSDictionary alloc] initWithObjectsAndKeys:
+						  sender, iTetOriginalSenderInfoKey,
+						  newController, iTetNewControllerInfoKey, nil];
+		
+		// Run the alert as a sheet
+		[alert beginSheetModalForWindow:[[self view] window]
+					modalDelegate:self
+				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+					  contextInfo:infoDict];
+		
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (void)viewWillBeRemoved:(id)sender
+{
+	// Un-highlight all key views
+	for (iTetKeyView* keyView in keyViews)
+		[keyView setHighlighted:NO];
+}
+
+- (void)viewWasSwappedIn:(id)sender
+{
+	// Display the active configuration
+	[self displayConfigurationNumber:[PREFS currentKeyConfigurationNumber]];
+}
+
+#pragma mark -
+#pragma mark Modal Dialog Callbacks
+
+- (void)unsavedConfigAlertDidEnd:(NSAlert*)alert
+			    returnCode:(NSInteger)returnCode
+			   contextInfo:(NSDictionary*)infoDict
+{	
+	// We're done with the sheet; ask it to order out
+	[[alert window] orderOut:self];
+	
+	// Balance the allocation of the context-info dictionary
+	[infoDict autorelease];
+	
+	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
+	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
+		return;
+	}
+	
+	
+	// If the user pressed "don't save", delete the configuration
+	if (returnCode == NSAlertThirdButtonReturn)
+	{
+		[self clearUnsavedConfiguration];
+		
+		// Determine what to do next
+		
+		// If the context info has a "new view controller" object, we need to swap this view out
+		iTetPreferencesViewController* newController = [infoDict objectForKey:iTetNewControllerInfoKey];
+		if (newController != nil)
+		{
+			// Get the window controller out of the context info dictionary
+			iTetPreferencesWindowController* windowController = [infoDict objectForKey:iTetOriginalSenderInfoKey];
+			
+			// Call the window controller back, ask it to switch views
+			[windowController displayViewController:newController];
+		}
+		// If there's no "new view controller", we just need to switch configurations
+		else
+			[self displayConfigurationNumber:[[infoDict objectForKey:iTetOriginalSenderInfoKey] tag]];
+		
+		return;
+	}
+	
+	// Otherwise, open the "save configuration" sheet
+	[self saveConfiguration:self];
 }
 
 - (void)saveSheetDidEnd:(NSWindow*)sheet
@@ -245,7 +340,6 @@
 	
 	// Select the configuration
 	[self displayConfigurationNumber:i];
-	[configurationPopUpButton selectItemAtIndex:i];
 	
 	// Order out the sheet
 	[sheet orderOut:self];
@@ -289,26 +383,6 @@
 	
 	// Select the configuration
 	[self displayConfigurationNumber:i];
-	[configurationPopUpButton selectItemAtIndex:i];
-}
-
-- (IBAction)deleteConfiguration:(id)sender
-{
-	// Get the current configuration name
-	NSString* configName = [[PREFS currentKeyConfiguration] configurationName];
-	
-	// Ask the user for confirmation via an alert
-	NSAlert* alert = [[NSAlert alloc] init];
-	[alert setMessageText:@"Delete Configuration?"];
-	[alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete the configuration named \"%@\"?", configName]];
-	[alert addButtonWithTitle:@"Delete"];
-	[alert addButtonWithTitle:@"Cancel"];
-	
-	// Run the alert as a sheet
-	[alert beginSheetModalForWindow:[[self view] window]
-				modalDelegate:self
-			     didEndSelector:@selector(deleteConfigAlertDidEnd:returnCode:contextInfo:)
-				  contextInfo:NULL];
 }
 
 - (void)deleteConfigAlertDidEnd:(NSAlert*)alert
@@ -322,7 +396,7 @@
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
 		// Select the current config in the pop-up menu
-		[configurationPopUpButton selectItem:[menu itemWithTag:configNum]];
+		[configurationPopUpButton selectItemWithTag:configNum];
 		
 		return;
 	}
@@ -334,7 +408,6 @@
 	[menu removeItem:[menu itemWithTag:configNum]];
 	
 	// Select the first configuration in the list
-	[configurationPopUpButton selectItem:[menu itemWithTag:0]];
 	[self displayConfigurationNumber:0];
 }
 
@@ -364,20 +437,11 @@
 	
 	// Set the active keys in the key views
 	NSMutableDictionary* currentConfig = [self keyConfigNumber:configNum];
-	[moveLeftKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceLeft]];
-	[moveRightKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceRight]];
-	[rotateCounterclockwiseKeyView setRepresentedKey:
-	 [currentConfig keyForAction:rotatePieceCounterclockwise]];
-	[rotateClockwiseKeyView setRepresentedKey:
-	 [currentConfig keyForAction:rotatePieceClockwise]];
-	[moveDownKeyView setRepresentedKey:
-	 [currentConfig keyForAction:movePieceDown]];
-	[dropKeyView setRepresentedKey:
-	 [currentConfig keyForAction:dropPiece]];
-	[gameChatKeyView setRepresentedKey:
-	 [currentConfig keyForAction:gameChat]];
+	for (iTetKeyView* keyView in keyViews)
+		[keyView setRepresentedKey:[currentConfig keyForAction:[keyView associatedAction]]];
+	
+	// Select the configuration in the pop-up menu
+	[configurationPopUpButton selectItemWithTag:configNum];
 }
 
 - (void)clearUnsavedConfiguration
@@ -465,6 +529,8 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 			[keyDescriptionField setStringValue:
 			 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
 			  [key printedName], iTetNameForAction(boundAction)]];
+			
+			NSBeep();
 		}
 		
 		return NO;

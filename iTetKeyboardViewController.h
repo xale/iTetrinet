@@ -22,6 +22,7 @@
 	IBOutlet iTetKeyView* moveDownKeyView;
 	IBOutlet iTetKeyView* dropKeyView;
 	IBOutlet iTetKeyView* gameChatKeyView;
+	NSArray* keyViews;
 	
 	IBOutlet NSTextField* keyDescriptionField;
 	

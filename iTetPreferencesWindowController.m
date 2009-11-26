@@ -26,7 +26,7 @@
 				 [iTetKeyboardViewController viewController],
 				 nil];
 	
-	currentViewNumber = -1;
+	currentViewNumber = noPreferencesTab;
 	
 	return self;
 }
@@ -48,25 +48,45 @@
 #pragma mark View Switching
 
 - (IBAction)changeView:(id)sender
-{	
-	// Change to the specified view
+{
 	[self displayViewControllerAtIndex:[sender tag]];
 }
 
 - (void)displayViewControllerAtIndex:(iTetPreferencesTabNumber)index
 {
+	// Sanity check
+	NSParameterAssert((index >= 0) && (index < [viewControllers count]));
+	
 	// Check if we are already displaying the view
 	if (currentViewNumber == index)
 		return;
 	
-	// Sanity check
-	NSParameterAssert((index >= 0) && (index < [viewControllers count]));
+	// Get the controller to swap in
+	iTetPreferencesViewController* newController = [viewControllers objectAtIndex:index];
 	
-	// Ask the current view controller if it is okay to swap
-	// FIXME: WRITEME
+	// If we are swapping out a controller, confirm it is safe to do so
+	if (currentViewNumber != noPreferencesTab)
+	{
+		// Get the current controller
+		iTetPreferencesViewController* controller = [viewControllers objectAtIndex:currentViewNumber];
+		
+		// Ask the current view controller if it is okay to swap
+		if (![controller viewShouldBeSwappedForView:newController
+						 byWindowController:self])
+			return;
+	}
+	
+	// Change to the specified view
+	[self displayViewController:newController];
+}
+
+- (void)displayViewController:(iTetPreferencesViewController*)controller
+{
+	// If we are swapping out a view controller, inform it
+	if (currentViewNumber != noPreferencesTab)
+		[[viewControllers objectAtIndex:currentViewNumber] viewWillBeRemoved:self];
 	
 	// Get the view swap in
-	iTetPreferencesViewController* controller = [viewControllers objectAtIndex:index];
 	NSView* view = [controller view];
 	
 	// Compute the new window size
@@ -82,9 +102,6 @@
 	// Clear the window for resizing
 	[viewBox setContentView:nil];
 	
-	// Set the window title to the title of the view controller
-	[[self window] setTitle:[controller title]];
-	
 	// Resize the window
 	[[self window] setFrame:windowFrame
 			    display:YES
@@ -93,10 +110,17 @@
 	// Swap the view into the box
 	[viewBox setContentView:view];
 	
+	// Set the window title to the title of the view controller
+	[[self window] setTitle:[controller title]];
+	
+	// Make the view first responder
 	[[self window] makeFirstResponder:view];
 	
-	// Record which view is being displayed
-	currentViewNumber = index;
+	// Inform the view controller it has been swapped in
+	[controller viewWasSwappedIn:self];
+	
+	// Record the number of the view being displayed
+	currentViewNumber = [viewControllers indexOfObject:controller];
 }
 
 #pragma mark -

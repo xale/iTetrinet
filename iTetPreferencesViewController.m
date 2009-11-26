@@ -24,6 +24,23 @@
 #pragma mark -
 #pragma mark Accessors
 
+- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
+		    byWindowController:(iTetPreferencesWindowController*)sender;
+{
+	// Subclasses can override for graceful-termination behavior
+	return YES;
+}
+
+- (void)viewWillBeRemoved:(id)sender
+{
+	// By default, does nothing (subclasses override)
+}
+
+- (void)viewWasSwappedIn:(id)sender
+{
+	// By default, does nothing (subclasses override)
+}
+
 - (iTetPreferencesController*)prefs
 {
 	return PREFS;
