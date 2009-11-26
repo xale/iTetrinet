@@ -169,10 +169,6 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 		if ([delegate respondsToSelector:@selector(keyView:didSetRepresentedKey:)])
 			[delegate keyView:self didSetRepresentedKey:key];
 	}
-	else
-	{
-		NSBeep();
-	}
 	
 	// Clear highlight
 	[self setHighlighted:NO];
