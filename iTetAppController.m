@@ -188,16 +188,16 @@
 
 - (IBAction)showPreferences:(id)sender
 {
-	[self openPreferencesTabNumber:generalPreferencesTab];
-}
-
-- (void)openPreferencesTabNumber:(NSInteger)tabNumber
-{
 	if (prefsWindowController == nil)
 		prefsWindowController = [[iTetPreferencesWindowController alloc] init];
 	
 	[prefsWindowController showWindow:self];
 	[[prefsWindowController window] makeKeyAndOrderFront:self];
+}
+
+- (void)openPreferencesTabNumber:(NSInteger)tabNumber
+{
+	[self showPreferences:self];
 	[prefsWindowController displayViewControllerAtIndex:tabNumber];
 }
 
