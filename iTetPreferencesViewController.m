@@ -31,6 +31,12 @@
 	return YES;
 }
 
+- (BOOL)windowShouldClose:(id)window
+{
+	// Subclasses can override for graceful-termination behavior
+	return YES;
+}
+
 - (void)viewWillBeRemoved:(id)sender
 {
 	// By default, does nothing (subclasses override)

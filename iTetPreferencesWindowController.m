@@ -124,6 +124,15 @@
 }
 
 #pragma mark -
+#pragma mark NSWindow Delegate Methods
+
+- (BOOL)windowShouldClose:(id)window
+{
+	// Ask the current view controller if it is okay to close
+	return [[viewControllers objectAtIndex:currentViewNumber] windowShouldClose:window];
+}
+
+#pragma mark -
 #pragma mark NSToolbar Delegate Methods
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar

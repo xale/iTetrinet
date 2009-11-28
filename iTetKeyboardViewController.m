@@ -12,6 +12,7 @@
 
 NSString* const iTetOriginalSenderInfoKey =	@"originalSender";
 NSString* const iTetNewControllerInfoKey =	@"newController";
+NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 
 @implementation iTetKeyboardViewController
 
@@ -176,7 +177,7 @@ NSString* const iTetNewControllerInfoKey =	@"newController";
 }
 
 #pragma mark -
-#pragma mark View Swapping
+#pragma mark View Swapping/Closing
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 		    byWindowController:(iTetPreferencesWindowController*)sender
@@ -201,6 +202,34 @@ NSString* const iTetNewControllerInfoKey =	@"newController";
 					modalDelegate:self
 				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
 					  contextInfo:infoDict];
+		
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (BOOL)windowShouldClose:(id)window
+{
+	if (unsavedConfiguration)
+	{
+		// Create an "unsaved configuration" alert
+		NSAlert* alert = [[NSAlert alloc] init];
+		[alert setMessageText:@"Unsaved Configuration"];
+		[alert setInformativeText:@"Your current key configuration is unsaved. Do you  wish to save the configuration?"];
+		[alert addButtonWithTitle:@"Save Configuration"];
+		[alert addButtonWithTitle:@"Cancel"];
+		[alert addButtonWithTitle:@"Don't Save"];
+		
+		// Create a context info dictionary
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:window
+										     forKey:iTetWindowToCloseInfoKey];
+		
+		// Run the alert as a sheet
+		[alert beginSheetModalForWindow:[[self view] window]
+					modalDelegate:self
+				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+					  contextInfo:[infoDict retain]];
 		
 		return NO;
 	}
@@ -241,7 +270,6 @@ NSString* const iTetNewControllerInfoKey =	@"newController";
 		return;
 	}
 	
-	
 	// If the user pressed "don't save", delete the configuration
 	if (returnCode == NSAlertThirdButtonReturn)
 	{
@@ -258,10 +286,21 @@ NSString* const iTetNewControllerInfoKey =	@"newController";
 			
 			// Call the window controller back, ask it to switch views
 			[windowController displayViewController:newController];
+			
+			return;
 		}
-		// If there's no "new view controller", we just need to switch configurations
-		else
-			[self displayConfigurationNumber:[[infoDict objectForKey:iTetOriginalSenderInfoKey] tag]];
+		
+		// If the context info has a "window to close" object, send it a 
+		NSWindow* window = [infoDict objectForKey:iTetWindowToCloseInfoKey];
+		if (window != nil)
+		{
+			// Close the window
+			[window close];
+			
+			return;
+		}
+		
+		[self displayConfigurationNumber:[[infoDict objectForKey:iTetOriginalSenderInfoKey] tag]];
 		
 		return;
 	}

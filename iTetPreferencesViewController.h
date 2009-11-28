@@ -17,6 +17,7 @@
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 		    byWindowController:(iTetPreferencesWindowController*)sender;
+- (BOOL)windowShouldClose:(id)window;
 - (void)viewWillBeRemoved:(id)sender;
 - (void)viewWasSwappedIn:(id)sender;
 
