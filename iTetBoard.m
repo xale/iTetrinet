@@ -23,6 +23,36 @@
 	return self;
 }
 
+#pragma mark Boards with Starting Stack
+
++ (id)boardWithStackHeight:(int)stackHeight
+{
+	return [[[self alloc] initWithStackHeight:stackHeight] autorelease];
+}
+
+- (id)initWithStackHeight:(int)stackHeight
+{
+	// Start with an empty board
+	[self init];
+	
+	// FIXME: Not sure this is how it's supposed to work
+	// For each row of the starting stack, fill with debris
+	for (int row = 0; row < stackHeight; row++)
+	{
+		// Choose a random column index to be empty
+		int emptyCol = random() % ITET_BOARD_WIDTH;
+		
+		// Fill the rest of the row
+		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
+		{
+			if (col != emptyCol)
+				contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+		}
+	}
+	
+	return self;
+}
+
 #pragma mark Random Boards
 
 + (id)boardWithRandomContents

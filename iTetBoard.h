@@ -27,6 +27,10 @@ typedef enum
 // Initializer for an empty board
 + (id)board;
 
+// Initializers for a board with a starting stack height
++ (id)boardWithStackHeight:(int)stackHeight;
+- (id)initWithStackHeight:(int)stackHeight;
+
 // Initializers for a random board
 + (id)boardWithRandomContents;
 - (id)initWithRandomContents;
