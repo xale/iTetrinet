@@ -32,10 +32,7 @@
 #pragma mark Player-Board Assignment
 
 - (void)assignBoardToPlayer:(iTetPlayer*)player
-{
-	// Generate a random board for the player
-	[player setBoard:[iTetBoard boardWithRandomContents]];
-	
+{	
 	// If this player is the local player, assign the local board and related views
 	if ([player isKindOfClass:[iTetLocalPlayer class]])
 	{
@@ -130,6 +127,13 @@
 		  initialStackHeight:(int)stackHeight
 				   rules:(iTetGameRules*)rules
 {
+	// Give the players blank boards
+	for (iTetPlayer* player in [appController playerList])
+		[player setBoard:[iTetBoard board]];
+	
+	// Give the local player a new board with the given stack height
+	[[appController localPlayer] setBoard:[iTetBoard boardWithStackHeight:stackHeight]];
+	
 	// FIXME: WRITEME
 }
 
