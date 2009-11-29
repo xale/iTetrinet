@@ -90,12 +90,13 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	NSString* address;
 	for (address in [currentConnection addresses])
 	{
-		// FIXME: very fragile
+		// FIXME: very fragile/hacky
 		if ([address rangeOfString:@"."].location != NSNotFound)
 			break;
 	}
 	
-	NSLog(@"DEBUG: initializing connection to server %@", address);
+	// FIXME: debug logging
+	//NSLog(@"DEBUG: initializing connection to server %@", address);
 	
 	// Split the server's IP address into integer components
 	NSArray* ipComponents = [address componentsSeparatedByString:@"."];
@@ -109,7 +110,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 				  (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
 	
 	// Start with a random salt, and use it to create the initialization request
-	int x = random() % 256;
+	int x = random() % 255;
 	NSMutableString* encodedString = [NSMutableString stringWithFormat:@"%02X", x];
 	
 	// For each character in the connection request, create the two-character
@@ -180,35 +181,35 @@ NSString* const iTetDisconnectMessage = @"disconnect";
 	if (event & NSStreamEventOpenCompleted)
 	{
 		// FIXME: debug logging
-		NSLog(@"DEBUG: OpenCompleted stream event");
+		//NSLog(@"DEBUG: OpenCompleted stream event");
 		[self setConnected:YES];
 	}
 	// Data to read
 	if (event & NSStreamEventHasBytesAvailable)
 	{
 		// FIXME: debug logging
-		NSLog(@"DEBUG: HasBytesAvailable stream event");
+		//NSLog(@"DEBUG: HasBytesAvailable stream event");
 		[self attemptRead];
 	}
 	// Space to write
 	if (event & NSStreamEventHasSpaceAvailable)
 	{
 		// FIXME: debug logging
-		NSLog(@"DEBUG: HasSpaceAvailable stream event");
+		//NSLog(@"DEBUG: HasSpaceAvailable stream event");
 		[self attemptWrite];
 	}
 	// Error
 	if (event & NSStreamEventErrorOccurred)
 	{
 		// FIXME: debug logging
-		NSLog(@"DEBUG: ErrorOccurred stream event");
+		//NSLog(@"DEBUG: ErrorOccurred stream event");
 		[self handleError:stream];
 	}
 	// End-of-stream
 	if (event & NSStreamEventEndEncountered)
 	{
 		// FIXME: debug logging
-		NSLog(@"DEBUG: EndEncountered stream event");
+		//NSLog(@"DEBUG: EndEncountered stream event");
 		[self disconnect];
 	}
 }
@@ -236,7 +237,7 @@ NSString* const iTetDisconnectMessage = @"disconnect";
 	buffer[bytesRead] = 0; // NULL terminator
 	
 	// FIXME: debug logging
-	NSLog(@"DEBUG: data read: %s", buffer);
+	// NSLog(@"DEBUG: data read: %s", buffer);
 	
 	// Loop through the data, looking for terminator characters
 	NSUInteger index, lastTerminator = 0;
@@ -321,12 +322,14 @@ NSString* const iTetDisconnectMessage = @"disconnect";
 		dataSize = [data length];
 		
 		// FIXME: Outgoing message debug logging
+		/*
 		NSMutableString* byteString = [NSMutableString string];
 		for (int i = 0; i < [data length]; i++)
 		{
 			[byteString appendFormat:@"%02X ", dataRaw[i]];
 		}
 		NSLog(@"DEBUG: sending bytes: %@", byteString);
+		 */
 		
 		// Attempt to write the bytes to the stream
 		bytesWritten = [writeStream write:dataRaw

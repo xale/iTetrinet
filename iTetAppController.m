@@ -208,7 +208,7 @@
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
 {
-	// Determine which item we are looking at based on 
+	// Determine which item we are looking at based on its action
 	SEL itemAction = [item action];
 	
 	// "New Game" button/menu item

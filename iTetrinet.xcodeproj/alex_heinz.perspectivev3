@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActivePerspectiveName</key>
-	<string>Debug</string>
+	<string>Project</string>
 	<key>AllowedModules</key>
 	<array>
 		<dict>
@@ -265,6 +265,7 @@
 								<string>29B97314FDCFA39411CA2CEA</string>
 								<string>080E96DDFE201D6D7F000001</string>
 								<string>6A96B57C10098F29003D353E</string>
+								<string>6A4A3749101BB32500F27DE9</string>
 								<string>6AB76D51101D141700734661</string>
 								<string>6AB76D6C101D148C00734661</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
@@ -273,7 +274,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>7</integer>
+									<integer>13</integer>
 									<integer>4</integer>
 									<integer>1</integer>
 									<integer>0</integer>
@@ -296,6 +297,8 @@
 							<string>MainColumn</string>
 							<real>291</real>
 						</array>
+						<key>RubberWindowFrame</key>
+						<string>52 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -306,12 +309,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>6A96B59A10099028003D353E</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>iTetAppController.m</string>
+								<string>iTetNetworkController.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -319,11 +324,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>6A96B59B10099028003D353E</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>iTetAppController.m</string>
+										<string>iTetNetworkController.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>6A7A8B6510C1EE18000DEE2D</string>
+										<string>6A7A8B8210C1F201000DEE2D</string>
 										<key>history</key>
 										<array>
 											<string>6A96B5C11009912D003D353E</string>
@@ -365,7 +370,6 @@
 											<string>6AFCE176108777E20090F3DF</string>
 											<string>6AFCE185108778210090F3DF</string>
 											<string>6AFCE1A210877AF20090F3DF</string>
-											<string>6AE96DF61088D5F800D3331B</string>
 											<string>6AE96DF81088D5F800D3331B</string>
 											<string>6AE96DF91088D5F800D3331B</string>
 											<string>6AE96E1D1088D97500D3331B</string>
@@ -374,7 +378,6 @@
 											<string>6AEB7F8610892BB200A8BCFD</string>
 											<string>6AEB7F8810892BB200A8BCFD</string>
 											<string>6AEB7F8910892BB200A8BCFD</string>
-											<string>6AEB7F8A10892BB200A8BCFD</string>
 											<string>6AEB7F8B10892BB200A8BCFD</string>
 											<string>6AEB7F8C10892BB200A8BCFD</string>
 											<string>6AEB7F8D10892BB200A8BCFD</string>
@@ -392,7 +395,6 @@
 											<string>6AD96FAE10A3300200022273</string>
 											<string>6AFBE89710AC6ABF008336EC</string>
 											<string>6AFBE89B10AC6ABF008336EC</string>
-											<string>6ACB04CD10ACC22400E1ECDB</string>
 											<string>6ACB04D010ACC22400E1ECDB</string>
 											<string>6AF8C11C10AE750800581E26</string>
 											<string>6A3ACC5910B7C8AE00459D97</string>
@@ -418,7 +420,6 @@
 											<string>6ADCB5F010BF273C00312049</string>
 											<string>6ADCB5F110BF273C00312049</string>
 											<string>6ADCB69410BF33A100312049</string>
-											<string>6ADCB6DA10BF349300312049</string>
 											<string>6A7A8B0B10C1ECC8000DEE2D</string>
 											<string>6A7A8B0C10C1ECC8000DEE2D</string>
 											<string>6A7A8B0F10C1ECC8000DEE2D</string>
@@ -430,10 +431,14 @@
 											<string>6A7A8B4C10C1EE17000DEE2D</string>
 											<string>6A7A8B4D10C1EE17000DEE2D</string>
 											<string>6A7A8B4E10C1EE17000DEE2D</string>
-											<string>6A7A8B4F10C1EE17000DEE2D</string>
 											<string>6A7A8B5010C1EE17000DEE2D</string>
 											<string>6A7A8B5110C1EE17000DEE2D</string>
-											<string>6ADCB6FD10BF34FA00312049</string>
+											<string>6A7A8B6910C1EF3E000DEE2D</string>
+											<string>6A7A8B6A10C1EF3E000DEE2D</string>
+											<string>6A7A8B6B10C1EF3E000DEE2D</string>
+											<string>6A7A8B7810C1F078000DEE2D</string>
+											<string>6A7A8B7910C1F078000DEE2D</string>
+											<string>6A7A8B7E10C1F08A000DEE2D</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -586,6 +591,15 @@
 											<string>6A7A8B6110C1EE17000DEE2D</string>
 											<string>6A7A8B6210C1EE17000DEE2D</string>
 											<string>6A7A8B6310C1EE17000DEE2D</string>
+											<string>6A7A8B6D10C1EF3E000DEE2D</string>
+											<string>6A7A8B6E10C1EF3E000DEE2D</string>
+											<string>6A7A8B6F10C1EF3E000DEE2D</string>
+											<string>6A7A8B7010C1EF3E000DEE2D</string>
+											<string>6A7A8B7110C1EF3E000DEE2D</string>
+											<string>6A7A8B7210C1EF3E000DEE2D</string>
+											<string>6A7A8B7310C1EF3E000DEE2D</string>
+											<string>6A7A8B7A10C1F078000DEE2D</string>
+											<string>6A7A8B7B10C1F078000DEE2D</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -600,6 +614,8 @@
 							<dict>
 								<key>Frame</key>
 								<string>{{0, 0}, {1066, 777}}</string>
+								<key>RubberWindowFrame</key>
+								<string>52 55 1379 823 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -623,6 +639,8 @@
 									<dict>
 										<key>Frame</key>
 										<string>{{10, 27}, {1066, -27}}</string>
+										<key>RubberWindowFrame</key>
+										<string>52 55 1379 823 0 0 1440 878 </string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -745,8 +763,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXProjectModuleGUID</key>
@@ -758,8 +774,6 @@
 					<dict>
 						<key>Frame</key>
 						<string>{{0, 0}, {1379, 334}}</string>
-						<key>RubberWindowFrame</key>
-						<string>53 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugCLIModule</string>
@@ -834,11 +848,7 @@
 							</array>
 							<key>Frame</key>
 							<string>{{673, 0}, {706, 213}}</string>
-							<key>RubberWindowFrame</key>
-							<string>53 55 1379 823 0 0 1440 878 </string>
 						</dict>
-						<key>RubberWindowFrame</key>
-						<string>53 55 1379 823 0 0 1440 878 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXDebugSessionModule</string>
@@ -901,7 +911,7 @@
 		<string>/Users/alex_heinz/Documents/Programming/Cocoa/iTetrinet/iTetrinet.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>53 55 1379 823 0 0 1440 878 </string>
+	<string>52 55 1379 823 0 0 1440 878 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
