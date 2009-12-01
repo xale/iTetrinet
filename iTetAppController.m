@@ -580,17 +580,38 @@
 	else if ([messageType isEqualToString:SpecialUsedMessage])
 	{
 		// Get the target and sending player numbers
-		int target = [[tokens objectAtIndex:1] intValue];
-		int sender = [[tokens objectAtIndex:3] intValue];
+		int targetNum = [[tokens objectAtIndex:1] intValue];
+		int senderNum = [[tokens objectAtIndex:3] intValue];
 		
 		// Get the special type
 		NSString* special = [tokens objectAtIndex:2];
 		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: player number %d sent special \'%@\' to player number %d",
-			sender, special, target);
+		// Translate player numbers into players
+		iTetPlayer* sender = nil;
+		iTetPlayer* target = nil;
+		if (senderNum > 0)
+			sender = players[(senderNum - 1)];
+		if (targetNum > 0)
+			target = players[(targetNum - 1)];
 		
-		// FIXME: WRITEME: special used
+		// Check if this is a classic-style addline
+		if (([special length] > 1) && ([[special substringToIndex:2] isEqualToString:@"cs"]))
+		{
+			// Get the number of lines
+			int numLines = [[special substringFromIndex:2] intValue];
+			
+			// Pass to game controller
+			[gameController linesAdded:numLines
+						byPlayer:sender];
+		}
+		// Normal special
+		else
+		{	
+			// Pass to game controller
+			[gameController specialUsed:(iTetSpecialType)[special intValue]
+						 byPlayer:sender
+						 onPlayer:target];
+		}
 	}
 	// Game messages
 	else if ([messageType isEqualToString:GameMessageMessage])

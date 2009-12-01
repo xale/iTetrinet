@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetSpecials.h"
 
 @class iTetAppController;
 @class iTetBoardView;
@@ -36,7 +37,14 @@
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
 	
+	// Action history view
+	IBOutlet NSTableView* actionListView;
+	
+	// Assigned board views
 	char assignedBoards;
+	
+	// List of player actions (e.g., specials)
+	NSMutableArray* actionHistory;
 }
 
 - (IBAction)sendMessage:(id)sender;
@@ -47,6 +55,13 @@
 - (void)newGameWithStartingLevel:(int)startLevel
 		  initialStackHeight:(int)stackHeight
 				   rules:(iTetGameRules*)rules;
+
+- (void)specialUsed:(iTetSpecialType)special
+	     byPlayer:(iTetPlayer*)sender
+	     onPlayer:(iTetPlayer*)target;
+- (void)linesAdded:(int)numLines
+	    byPlayer:(iTetPlayer*)sender;
+- (void)recordAction:(NSString*)description;
 
 @property (readonly) BOOL gameInProgress;
 

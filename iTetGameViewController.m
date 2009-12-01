@@ -20,6 +20,20 @@
 
 @implementation iTetGameViewController
 
+- (id)init
+{
+	actionHistory = [[NSMutableArray alloc] init];
+	
+	return self;
+}
+
+- (void)dealloc
+{
+	[actionHistory release];
+	
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark Interface Actions
 
@@ -134,7 +148,96 @@
 	// Give the local player a new board with the given stack height
 	[[appController localPlayer] setBoard:[iTetBoard boardWithStackHeight:stackHeight]];
 	
+	// Clear the list of actions from the last game
+	[actionHistory removeAllObjects];
+	[actionListView reloadData];
+	
 	// FIXME: WRITEME
+}
+
+#pragma mark -
+#pragma mark Game Events
+
+NSString* const iTetSpecialEventDescriptionFormat = @"@% on %@ by %@";
+
+- (void)specialUsed:(iTetSpecialType)special
+	     byPlayer:(iTetPlayer*)sender
+	     onPlayer:(iTetPlayer*)target
+{
+	// If the target player is nil, the target is all players
+	BOOL targetAll = (target == nil);
+	
+	// Perform the action
+	// FIXME: WRITEME: special actions
+	
+	// Add a description of the event to the list of actions
+	// Determine the name of the target ("All", if the target is not a specific player)
+	NSString* targetName;
+	if (targetAll)
+		targetName = @"All";
+	else
+		targetName = [target nickname];
+	
+	// Create the description string
+	// FIXME: colors/formatting
+	NSString* desc = [NSString stringWithFormat:iTetSpecialEventDescriptionFormat,
+				iTetNameForSpecialType(special),
+				targetName, [sender nickname]];
+	
+	// Record the event
+	[self recordAction:desc];
+}
+
+NSString* const iTetLineAddedEventDescriptionFormat = @"1 Line Added to All by %@";
+NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All by %@";
+
+- (void)linesAdded:(int)numLines
+	    byPlayer:(iTetPlayer*)sender
+{
+	// Add the lines
+	// FIXME: WRITEME: add lines
+	
+	// Create a description
+	// FIXME: colors/formatting
+	NSString* desc;
+	if (numLines > 1)
+	{
+		desc = [NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat,
+			  numLines, [sender nickname]];
+	}
+	else
+	{
+		desc = [NSString stringWithFormat:iTetLineAddedEventDescriptionFormat,
+			  [sender nickname]];
+	}
+	
+	// Record the event
+	[self recordAction:desc];
+}
+
+- (void)recordAction:(NSString*)description
+{
+	// Add the action to the list
+	[actionHistory addObject:description];
+	
+	// Reload the action list table view
+	[actionListView noteNumberOfRowsChanged];
+	[actionListView scrollRowToVisible:([actionHistory count] - 1)];
+}
+
+#pragma mark -
+#pragma mark NSTableView Data Source Methods
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView*)tableView
+{
+	return [actionHistory count];
+}
+
+- (id)tableView:(NSTableView*)tableView
+objectValueForTableColumn:(NSTableColumn*)column
+		row:(NSInteger)row
+{
+	return [actionHistory objectAtIndex:row];
 }
 
 #pragma mark -
