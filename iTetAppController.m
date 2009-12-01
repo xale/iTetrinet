@@ -289,10 +289,12 @@
 			case ECONNREFUSED:
 				[errorText appendString:@"Connection refused. Check the server address and try again."];
 				break;
+			case EHOSTUNREACH:
+				[errorText appendString:@"Could not find the specified server. Check the server address and try again."];
+				break;
 			default:
-				[errorText appendString:@"An unknown error occurred. "];
-				[errorText appendString:@"Error domain: NSPOSIXErrorDomain "];
-				[errorText appendFormat:@"Error code: %d", [error code]];
+				[errorText appendString:@"Error connecting to server:\n"];
+				[errorText appendString:[error localizedDescription]];
 				break;
 		}
 	}
@@ -301,20 +303,20 @@
 		switch ([error code])
 		{
 			case iTetNoConnectingError:
-				[errorText appendString:@"Server refused connection. Reason: "];
+				[errorText appendString:@"Server refused connection. Reason:\n"];
 				[errorText appendString:[[error userInfo] objectForKey:@"errorMessage"]];
 				break;
 			default:
-				[errorText appendString:@"An unknown error occurred. "];
-				[errorText appendString:@"Error domain: iTetNetworkErrorDomain "];
+				[errorText appendString:@"An unknown error occurred.\n"];
+				[errorText appendString:@"Error domain: iTetNetworkErrorDomain\n"];
 				[errorText appendFormat:@"Error code: %d", [error code]];
 				break;
 		}
 	}
 	else
 	{
-		[errorText appendString:@"An unknown error occurred. "];
-		[errorText appendFormat:@"Error domain: %@ ", [error domain]];
+		[errorText appendString:@"An unknown error occurred.\n"];
+		[errorText appendFormat:@"Error domain: %@\n", [error domain]];
 		[errorText appendFormat:@"Error code: %d", [error code]];
 	}
 	
