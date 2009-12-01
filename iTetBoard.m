@@ -35,19 +35,19 @@
 	// Start with an empty board
 	[self init];
 	
-	// FIXME: Not sure this is how it's supposed to work
 	// For each row of the starting stack, fill with debris
+	// Uses gtetrinet's method; bizarre, but whatever
 	for (int row = 0; row < stackHeight; row++)
 	{
-		// Choose a random column index to be empty
+		// Fill the row randomly
+		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
+			contents[row][col] = random() % (ITET_NUM_CELL_COLORS + 1);
+		
+		// Choose a random column index
 		int emptyCol = random() % ITET_BOARD_WIDTH;
 		
-		// Fill the rest of the row
-		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
-		{
-			if (col != emptyCol)
-				contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
-		}
+		// Ensure that at least one column index is empty
+		contents[row][emptyCol] = 0;
 	}
 	
 	return self;
