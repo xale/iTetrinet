@@ -15,6 +15,7 @@
 	NSString* teamName;
 	
 	iTetBoard* board;
+	int level;
 }
 
 - (id)initWithNickname:(NSString*)nick
@@ -25,5 +26,6 @@
 @property (readwrite, assign) int playerNumber;
 @property (readwrite, copy) NSString* teamName;
 @property (readwrite, retain) iTetBoard* board;
+@property (readwrite, assign) int level;
 
 @end
