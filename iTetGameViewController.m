@@ -11,6 +11,7 @@
 #import "iTetLocalBoardView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
+#import "iTetGame.h"
 
 #define BOARD_1	0x01
 #define BOARD_2	0x02
@@ -30,6 +31,7 @@
 - (void)dealloc
 {
 	[actionHistory release];
+	[currentGame release];
 	
 	[super dealloc];
 }
@@ -137,43 +139,41 @@
 #pragma mark -
 #pragma mark Starting a Game
 
-- (void)newGameWithStartingLevel:(int)startLevel
-		  initialStackHeight:(int)stackHeight
-				   rules:(iTetGameRules*)rules
+- (void)newGameWithPlayers:(NSArray*)players
+			   rules:(iTetGameRules*)rules
+		 startingLevel:(int)startLevel
+	  initialStackHeight:(int)stackHeight
 {
-	// Give the players blank boards
-	for (iTetPlayer* player in [appController playerList])
-		[player setBoard:[iTetBoard board]];
-	
-	// Give the local player a new board with the given stack height
-	[[appController localPlayer] setBoard:[iTetBoard boardWithStackHeight:stackHeight]];
-	
 	// Clear the list of actions from the last game
-	[actionHistory removeAllObjects];
-	[actionListView reloadData];
+	[self clearActions];
 	
-	// FIXME: WRITEME
+	// Create a new game
+	currentGame = [[iTetGame alloc] initWithPlayers:players
+								rules:rules
+						    startingLevel:startLevel
+					     initialStackHeight:stackHeight];
+	
+	// FIXME: anything else to do here?
 }
 
 #pragma mark -
 #pragma mark Game Events
 
-NSString* const iTetSpecialEventDescriptionFormat = @"@% on %@ by %@";
+NSString* const iTetSpecialEventDescriptionFormat = @"@% used on %@ by %@";
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
 	     onPlayer:(iTetPlayer*)target
 {
-	// If the target player is nil, the target is all players
-	BOOL targetAll = (target == nil);
-	
 	// Perform the action
-	// FIXME: WRITEME: special actions
+	[currentGame specialUsed:special
+			    byPlayer:sender
+			    onPlayer:target];
 	
 	// Add a description of the event to the list of actions
 	// Determine the name of the target ("All", if the target is not a specific player)
 	NSString* targetName;
-	if (targetAll)
+	if (target == nil)
 		targetName = @"All";
 	else
 		targetName = [target nickname];
@@ -195,7 +195,8 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	    byPlayer:(iTetPlayer*)sender
 {
 	// Add the lines
-	// FIXME: WRITEME: add lines
+	[currentGame linesAdded:numLines
+			   byPlayer:sender];
 	
 	// Create a description
 	// FIXME: colors/formatting
@@ -225,6 +226,12 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	[actionListView scrollRowToVisible:([actionHistory count] - 1)];
 }
 
+- (void)clearActions
+{
+	[actionHistory removeAllObjects];
+	[actionListView reloadData];
+}
+
 #pragma mark -
 #pragma mark NSTableView Data Source Methods
 
@@ -245,8 +252,7 @@ objectValueForTableColumn:(NSTableColumn*)column
 
 - (BOOL)gameInProgress
 {
-	// FIXME: WRITEME
-	return NO;
+	return (currentGame != nil);
 }
 
 @end

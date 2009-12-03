@@ -13,6 +13,7 @@
 @class iTetLocalBoardView;
 @class iTetNextBlockView;
 @class iTetSpecialsView;
+@class iTetGame;
 @class iTetPlayer;
 @class iTetGameRules;
 
@@ -43,6 +44,9 @@
 	// Assigned board views
 	char assignedBoards;
 	
+	// Current game in progress
+	iTetGame* currentGame;
+	
 	// List of player actions (e.g., specials)
 	NSMutableArray* actionHistory;
 }
@@ -52,9 +56,10 @@
 - (void)assignBoardToPlayer:(iTetPlayer*)player;
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player;
 
-- (void)newGameWithStartingLevel:(int)startLevel
-		  initialStackHeight:(int)stackHeight
-				   rules:(iTetGameRules*)rules;
+- (void)newGameWithPlayers:(NSArray*)players
+			   rules:(iTetGameRules*)rules
+		 startingLevel:(int)startLevel
+	  initialStackHeight:(int)stackHeight;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
@@ -62,6 +67,7 @@
 - (void)linesAdded:(int)numLines
 	    byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSString*)description;
+- (void)clearActions;
 
 @property (readonly) BOOL gameInProgress;
 

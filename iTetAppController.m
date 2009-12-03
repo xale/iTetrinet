@@ -568,13 +568,11 @@
 		NSLog(@"DEBUG: MESSAGE: new game with stack height: %d; start level: %d; rules string: %@",
 			stackHeight, startLevel, rules);
 		
-		// Create a game rules object
-		iTetGameRules* gameRules = [[[iTetGameRules alloc] initWithRules:rules] autorelease];
-		
-		// The the gameController to start the game
-		[gameController newGameWithStartingLevel:startLevel
-					    initialStackHeight:stackHeight
-							     rules:gameRules];
+		// Tell the gameController to start the game
+		[gameController newGameWithPlayers:[self playerList]
+						     rules:[iTetGameRules gameRulesFromArray:rules]
+					   startingLevel:startLevel
+				    initialStackHeight:stackHeight];
 	}
 	// Special used / lines sent
 	else if ([messageType isEqualToString:SpecialUsedMessage])
