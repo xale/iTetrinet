@@ -6,7 +6,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetBlock.h"
 
 @interface iTetGameRules : NSObject
 {
@@ -21,7 +20,8 @@
 	BOOL classicRules;
 }
 
-- (id)initWithRules:(NSArray*)rules;
++ (id)gameRulesFromArray:(NSArray*)rules;
+- (id)initWithRulesFromArray:(NSArray*)rules;
 
 @property (readonly) NSUInteger linesPerLevel;
 @property (readonly) NSUInteger levelIncrease;

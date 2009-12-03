@@ -7,10 +7,14 @@
 
 #import "iTetGameRules.h"
 
-
 @implementation iTetGameRules
 
-- (id)initWithRules:(NSArray*)rules
++ (id)gameRulesFromArray:(NSArray*)rules
+{
+	return [[[self alloc] initWithRulesFromArray:rules] autorelease];
+}
+
+- (id)initWithRulesFromArray:(NSArray*)rules
 {
 	// The array recieved contains strings, which need to be parsed into the
 	// respective rules:
@@ -24,7 +28,6 @@
 	linesPerSpecial = [[rules objectAtIndex:2] integerValue];
 	
 	// Number of specials added per spawn
-	// FIXME: What does this actually do?
 	specialsAdded = [[rules objectAtIndex:3] integerValue];
 	
 	// Number of specials each player can hold in their "inventory"
@@ -45,12 +48,12 @@
 		specialFrequency[currentChar.location] = [[freq substringWithRange:currentChar] integerValue];
 	}
 	
-	// Display level number as average of all players
-	// FIXME: What does this actually do?
+	// Level number averages across all players
+	// FIXME: does this refer to the actual game level, or just the level displayed?
 	averageLevels = [[rules objectAtIndex:7] boolValue];
 	
-	// Play with classic rules (multiple-line completions send lines to the
-	// enemy; specials are disabled)
+	// Play with classic rules (multiple-line completions send lines to other players)
+	// FIXME: does this disable specials?
 	classicRules = [[rules objectAtIndex:8] boolValue];
 	
 	return self;
