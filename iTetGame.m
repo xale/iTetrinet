@@ -8,6 +8,8 @@
 #import "iTetGame.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
+#import "iTetBlock.h"
+#import "Queue.h"
 
 @implementation iTetGame
 
@@ -37,6 +39,10 @@
 		// Set the starting level
 		[player setLevel:startingLevel];
 	}
+	
+	// Give the local player a clean specials queue
+	[localPlayer setQueueSize:[rules specialCapacity]];
+	[localPlayer setSpecialsQueue:[Queue queue]];
 	
 	// Set up the timer to spawn the first falling block
 	// FIXME: WRITEME: block timer
