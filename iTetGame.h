@@ -22,9 +22,7 @@
 }
 
 - (id)initWithPlayers:(NSArray*)participants
-		    rules:(iTetGameRules*)gameRules
-	  startingLevel:(int)startingLevel
-   initialStackHeight:(int)stackHeight;
+		    rules:(iTetGameRules*)gameRules;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender

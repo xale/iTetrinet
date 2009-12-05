@@ -555,24 +555,15 @@
 	// New game
 	else if ([messageType isEqualToString:NewGameMessage])
 	{
-		// The second token (after the "newgame" string) is the starting stack height
-		int stackHeight = [[tokens objectAtIndex:1] intValue];
-		
-		// The third is the starting game level
-		int startLevel = [[tokens objectAtIndex:2] intValue];
-		
-		// The remaining tokens are game rules 
-		NSArray* rules = [tokens subarrayWithRange:NSMakeRange(3, [tokens count] - 3)];
+		// All tokens beyond the first (the "newgame" string) are game rules 
+		NSArray* rules = [tokens subarrayWithRange:NSMakeRange(1, [tokens count] - 1)];
 		
 		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: new game with stack height: %d; start level: %d; rules string: %@",
-			stackHeight, startLevel, rules);
+		NSLog(@"DEBUG: MESSAGE: new game with rules string: %@", rules);
 		
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
-						     rules:[iTetGameRules gameRulesFromArray:rules]
-					   startingLevel:startLevel
-				    initialStackHeight:stackHeight];
+						     rules:[iTetGameRules gameRulesFromArray:rules]];
 	}
 	// Special used / lines sent
 	else if ([messageType isEqualToString:SpecialUsedMessage])

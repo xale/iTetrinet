@@ -14,35 +14,35 @@
 @implementation iTetGame
 
 - (id)initWithPlayers:(NSArray*)participants
-		    rules:(iTetGameRules*)gameRules
-	  startingLevel:(int)startingLevel
-   initialStackHeight:(int)stackHeight
+		    rules:(iTetGameRules*)gameRules;
 {
 	players = [participants retain];
 	rules = [gameRules retain];
 	
 	for (iTetPlayer* player in players)
 	{
-		// If this is the local player, hold a reference, and create a board
-		// with the starting stack height
+		// If this is the local player, do some extra stuff
 		if ([player isKindOfClass:[iTetLocalPlayer class]])
 		{
+			// Hold a reference
 			localPlayer = (iTetLocalPlayer*)player;
-			[player setBoard:[iTetBoard boardWithStackHeight:stackHeight]];
+			
+			// Create a board with initial random garbage
+			[player setBoard:[iTetBoard boardWithStackHeight:[rules initialStackHeight]]];
+			
+			// Create a clean specials queue
+			[localPlayer setQueueSize:[rules specialCapacity]];
+			[localPlayer setSpecialsQueue:[Queue queue]];
 		}
-		// Otherwise, give the player a blank board
+		// Otherwise, just give the player a blank board
 		else
 		{
 			[player setBoard:[iTetBoard board]];
 		}
 		
 		// Set the starting level
-		[player setLevel:startingLevel];
+		[player setLevel:[rules startingLevel]];
 	}
-	
-	// Give the local player a clean specials queue
-	[localPlayer setQueueSize:[rules specialCapacity]];
-	[localPlayer setSpecialsQueue:[Queue queue]];
 	
 	// Set up the timer to spawn the first falling block
 	// FIXME: WRITEME: block timer

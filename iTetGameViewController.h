@@ -57,9 +57,7 @@
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player;
 
 - (void)newGameWithPlayers:(NSArray*)players
-			   rules:(iTetGameRules*)rules
-		 startingLevel:(int)startLevel
-	  initialStackHeight:(int)stackHeight;
+			   rules:(iTetGameRules*)rules;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender

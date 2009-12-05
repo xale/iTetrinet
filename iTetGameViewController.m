@@ -141,17 +141,13 @@
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules
-		 startingLevel:(int)startLevel
-	  initialStackHeight:(int)stackHeight
 {
 	// Clear the list of actions from the last game
 	[self clearActions];
 	
 	// Create a new game
 	currentGame = [[iTetGame alloc] initWithPlayers:players
-								rules:rules
-						    startingLevel:startLevel
-					     initialStackHeight:stackHeight];
+								rules:rules];
 	
 	// FIXME: anything else to do here?
 }
