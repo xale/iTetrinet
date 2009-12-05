@@ -13,7 +13,15 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-	return [super initWithFrame:frame];
+	if (![super initWithFrame:frame])
+		return nil;
+	
+	[self addObserver:self
+		 forKeyPath:@"owner.board"
+		    options:0
+		    context:NULL];
+	
+	return self;
 }
 
 - (void)awakeFromNib

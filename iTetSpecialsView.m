@@ -17,6 +17,11 @@
 	if (![super initWithFrame:frame])
 		return nil;
 	
+	[self addObserver:self
+		 forKeyPath:@"owner.specialsQueue"
+		    options:0
+		    context:NULL];
+	
 	return self;
 }
 
