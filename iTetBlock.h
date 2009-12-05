@@ -47,8 +47,16 @@ typedef enum
 	     column:(int)col;
 
 // The block's position
+- (void)moveLeft;
+- (void)moveRight;
+- (void)moveDown;
 @property (readonly) int rowPos;
 @property (readonly) int colPos;
+
+// The block's present orientation (rotation)
+- (void)rotateClockwise;
+- (void)rotateCounterclockwise;
+@property (readonly) int orientation;
 
 // Returns the number of possible orientations for this block
 - (int)numOrientations;

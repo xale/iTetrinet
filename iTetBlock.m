@@ -175,7 +175,39 @@ static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 	return blocks[type][orientation][row][col];
 }
 
+- (void)moveLeft
+{
+	[self willChangeValueForKey:@"colPos"];
+	colPos--;
+	[self didChangeValueForKey:@"colPos"];
+}
+- (void)moveRight
+{
+	[self willChangeValueForKey:@"colPos"];
+	colPos++;
+	[self didChangeValueForKey:@"colPos"];
+}
+- (void)moveDown
+{
+	[self willChangeValueForKey:@"rowPos"];
+	rowPos--;
+	[self didChangeValueForKey:@"rowPos"];
+}
 @synthesize rowPos, colPos;
+
+- (void)rotateClockwise
+{
+	[self willChangeValueForKey:@"orientation"];
+	orientation = (orientation + 1) % orientationCount[type];
+	[self didChangeValueForKey:@"orientation"];
+}
+- (void)rotateCounterclockwise
+{
+	[self willChangeValueForKey:@"orientation"];
+	orientation = (orientation - 1) % orientationCount[type];
+	[self didChangeValueForKey:@"orientation"];
+}
+@synthesize orientation;
 
 - (int)numOrientations
 {
