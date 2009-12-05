@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="575"/>
-			<integer value="534"/>
 			<integer value="29"/>
+			<integer value="575"/>
+			<integer value="451"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3778,6 +3778,22 @@
 					</object>
 					<int key="connectionID">724</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">specialsView</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="249663700"/>
+					</object>
+					<int key="connectionID">725</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">nextBlockView</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="489164989"/>
+					</object>
+					<int key="connectionID">726</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -5762,8 +5778,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{472, 139}, {824, 713}}</string>
-					<string>{{472, 139}, {824, 713}}</string>
+					<string>{{478, 198}, {824, 713}}</string>
+					<string>{{478, 198}, {824, 713}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<reference ref="5"/>
@@ -5960,7 +5976,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">724</int>
+			<int key="maxID">726</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
