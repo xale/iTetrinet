@@ -32,30 +32,6 @@ static BLOCK bO[1] = {
 	}
 };
 
-static BLOCK bL[4] = {
-	{
-		{0,4,0,0},
-		{0,4,0,0},
-		{0,4,4,0},
-		{0,0,0,0}
-	}, {
-		{0,0,0,0},
-		{0,4,4,4},
-		{0,4,0,0},
-		{0,0,0,0}
-	}, {
-		{0,0,0,0},
-		{0,4,4,0},
-		{0,0,4,0},
-		{0,0,4,0}
-	}, {
-		{0,0,0,0},
-		{0,0,4,0},
-		{4,4,4,0},
-		{0,0,0,0}
-	}
-};
-
 static BLOCK bJ[4] = {
 	{
 		{0,0,3,0},
@@ -80,16 +56,26 @@ static BLOCK bJ[4] = {
 	}
 };
 
-static BLOCK bS[2] = {
+static BLOCK bL[4] = {
 	{
-		{0,1,0,0},
-		{0,1,1,0},
-		{0,0,1,0},
+		{0,4,0,0},
+		{0,4,0,0},
+		{0,4,4,0},
 		{0,0,0,0}
 	}, {
 		{0,0,0,0},
-		{0,0,1,1},
-		{0,1,1,0},
+		{0,4,4,4},
+		{0,4,0,0},
+		{0,0,0,0}
+	}, {
+		{0,0,0,0},
+		{0,4,4,0},
+		{0,0,4,0},
+		{0,0,4,0}
+	}, {
+		{0,0,0,0},
+		{0,0,4,0},
+		{4,4,4,0},
 		{0,0,0,0}
 	}
 };
@@ -104,6 +90,20 @@ static BLOCK bZ[2] = {
 		{0,0,0,0},
 		{5,5,0,0},
 		{0,5,5,0},
+		{0,0,0,0}
+	}
+};
+
+static BLOCK bS[2] = {
+	{
+		{0,1,0,0},
+		{0,1,1,0},
+		{0,0,1,0},
+		{0,0,0,0}
+	}, {
+		{0,0,0,0},
+		{0,0,1,1},
+		{0,1,1,0},
 		{0,0,0,0}
 	}
 };
@@ -132,7 +132,7 @@ static BLOCK bT[4] = {
 	}
 };
 
-static BLOCK *blocks[ITET_NUM_BLOCK_TYPES] = {bI, bO, bL, bJ, bS, bZ, bT};
+static BLOCK *blocks[ITET_NUM_BLOCK_TYPES] = {bI, bO, bJ, bL, bZ, bS, bT};
 static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 
 @implementation iTetBlock
@@ -149,6 +149,19 @@ static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 {
 	type = t;
 	orientation = o;
+	
+	return self;
+}
+
++ (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies
+{
+	return [[[self alloc] initWithRandomTypeAndOrientationUsingFrequencies:blockFrequencies] autorelease];
+}
+
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies
+{	
+	type = (iTetBlockType)(blockFrequencies[random() % 100] - 1);
+	orientation = (random() % orientationCount[type]);
 	
 	return self;
 }

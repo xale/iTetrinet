@@ -15,10 +15,10 @@ typedef enum
 {
 	I_block,
 	O_block,
-	L_block,
 	J_block,
-	S_block,
+	L_block,
 	Z_block,
+	S_block,
 	T_block
 } iTetBlockType;
 
@@ -31,10 +31,16 @@ typedef enum
 	int rowPos, colPos;
 }
 
+// Create blocks with specific types and orientations
 + (id)blockWithType:(iTetBlockType)newType
 	  orientation:(int)orientation;
 - (id)initWithType:(iTetBlockType)newType
 	 orientation:(int)newOrientation;
+
+// Create random blocks using the frequency information from the game rules
+// NOTE: The frequency information must be an array of length 100
++ (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies;
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies;
 
 // Returns the contents of this block at the specified cell
 - (char)cellAtRow:(int)row
