@@ -15,6 +15,8 @@
 	Node* tail;
 }
 
++ (id)queue;
+
 - (void)enqueueObject:(id)object;
 - (id)dequeueFirstObject;
 - (void)removeAllObjects;

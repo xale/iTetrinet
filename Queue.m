@@ -9,6 +9,11 @@
 
 @implementation Queue
 
++ (id)queue
+{
+	return [[[self alloc] init] autorelease];
+}
+
 - (void)dealloc
 {
 	[self removeAllObjects];
