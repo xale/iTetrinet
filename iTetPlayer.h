@@ -19,6 +19,9 @@
 }
 
 - (id)initWithNickname:(NSString*)nick
+		    number:(int)number
+		  teamName:(NSString*)team;
+- (id)initWithNickname:(NSString*)nick
 		    number:(int)number;
 - (id)initWithNumber:(int)number;
 

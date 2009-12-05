@@ -11,14 +11,23 @@
 
 - (id)initWithNickname:(NSString*)nick
 		    number:(int)number
+		  teamName:(NSString*)team
 {
 	nickname = [nick copy];
 	playerNumber = number;
-	teamName = [[NSString alloc] init];
+	teamName = [team copy];
 	
 	board = [[iTetBoard alloc] initWithRandomContents];
 	
 	return self;
+}
+
+- (id)initWithNickname:(NSString*)nick
+		    number:(int)number
+{
+	return [self initWithNickname:nick
+				     number:number
+				   teamName:@""];
 }
 
 - (id)initWithNumber:(int)number
@@ -43,5 +52,6 @@
 @synthesize playerNumber;
 @synthesize teamName;
 @synthesize board;
+@synthesize level;
 
 @end
