@@ -75,7 +75,7 @@
 		return nil;
 	
 	if ([owner isKindOfClass:[iTetLocalPlayer class]])
-	    return (iTetLocalPlayer*)owner;
+		return (iTetLocalPlayer*)owner;
 	
 	NSLog(@"Warning: LocalBoardView owned by non-local player");
 	return nil;

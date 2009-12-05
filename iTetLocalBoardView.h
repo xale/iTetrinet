@@ -13,7 +13,23 @@
 
 @interface iTetLocalBoardView : iTetBoardView <iTetLocalPlayerView>
 {
+	if (![super initWithFrame:frame])
+		return nil;
 	
+	[self addObserver:self
+		 forKeyPath:@"owner.currentBlock.rowPos"
+		    options:0
+		    context:NULL];
+	[self addObserver:self
+		 forKeyPath:@"owner.currentBlock.colPos"
+		    options:0
+		    context:NULL];
+	[self addObserver:self
+		 forKeyPath:@"owner.currentBlock.orientation"
+		    options:0
+		    context:NULL];
+	
+	return self;
 }
 
 - (iTetLocalPlayer*)ownerAsLocalPlayer;
