@@ -169,7 +169,7 @@
 	{
 		// Start the game
 		[networkController sendMessage:
-		 [NSString stringWithFormat:StartGame, [localPlayer playerNumber]]];
+		 [NSString stringWithFormat:StartGame, [[self localPlayer] playerNumber]]];
 	}
 }
 
@@ -183,7 +183,7 @@
 	
 	// Otherwise, stop the game in progress
 	[networkController sendMessage:
-	 [NSString stringWithFormat:StopGame, [localPlayer playerNumber]]];
+	 [NSString stringWithFormat:StopGame, [[self localPlayer] playerNumber]]];
 }
 
 - (IBAction)showPreferences:(id)sender
@@ -215,7 +215,7 @@
 	if (itemAction == @selector(startStopGame:))
 	{
 		if ([networkController connected] &&
-		    ([localPlayer playerNumber] == OperatorPlayerNumber))
+		    ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
 		{
 			return YES;
 		}
@@ -682,25 +682,25 @@
 	}
 	
 	// Check if our player already exists; if so, this is a move operation
-	if (localPlayer != nil)
+	if ([self localPlayer] != nil)
 	{
 		// nil the old location in the players array
-		players[([localPlayer playerNumber] - 1)] = nil;
+		players[([[self localPlayer] playerNumber] - 1)] = nil;
 		
 		// Change the local player's number
-		[localPlayer setPlayerNumber:number];
+		[[self localPlayer] setPlayerNumber:number];
 		
 		// Move to the new location in the players array
-		players[(number - 1)] = (iTetPlayer*)localPlayer;
+		players[(number - 1)] = (iTetPlayer*)[self localPlayer];
 		
 		// No need to notify game controller; board assignment will not change
 	}
 	else
 	{
 		// Create the local player
-		localPlayer = [[iTetLocalPlayer alloc] initWithNumber:number];
-		[localPlayer setNickname:[[networkController currentServer] nickname]];
-		[localPlayer setTeamName:[[networkController currentServer] playerTeam]];
+		[self setLocalPlayer:[[iTetLocalPlayer alloc] initWithNickname:[[networkController currentServer] nickname]
+											  number:number
+											teamName:[[networkController currentServer] playerTeam]]];
 		
 		// Place the player in the players array
 		players[(number - 1)] = localPlayer;
@@ -712,11 +712,11 @@
 		[gameController assignBoardToPlayer:localPlayer];
 		
 		// Send the player's team name to the server
-		if (![[localPlayer teamName] isEqualToString:@""])
+		if (![[[self localPlayer] teamName] isEqualToString:@""])
 		{
 			NSString* teamMessage = [NSString stringWithFormat:@"team %d %@",
-							 [localPlayer playerNumber],
-							 [localPlayer teamName]];
+							 [[self localPlayer] playerNumber],
+							 [[self localPlayer] teamName]];
 			[networkController sendMessage:teamMessage];
 		}
 	}
@@ -814,7 +814,7 @@
 	}
 	
 	// nil the local player pointer (released with the others)
-	localPlayer = nil;
+	[self setLocalPlayer:nil];
 	
 	// Reset the player count
 	playerCount = 0;

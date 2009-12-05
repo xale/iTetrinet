@@ -67,7 +67,7 @@
 - (NSString*)playerNameForNumber:(int)number;
 
 @property (readonly) NSArray* playerList;
-@property (readonly) iTetLocalPlayer* localPlayer;
+@property (readwrite, assign) iTetLocalPlayer* localPlayer;
 
 @property (readonly) iTetNetworkController* networkController;
 @property (readonly) iTetPreferencesController* preferencesController;
