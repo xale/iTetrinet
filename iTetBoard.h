@@ -39,8 +39,8 @@ typedef enum
 + (id)boardWithBoard:(iTetBoard*)board;
 - (id)initWithBoard:(iTetBoard*)board;
 
-// Add the specified block to the board
-- (void)placeBlock:(iTetBlock*)block;
+// Add the cells of the specified block to the board's contents
+- (void)solidifyBlock:(iTetBlock*)block;
 
 // Returns the contents of the specified cell of the board
 - (char)cellAtRow:(int)row

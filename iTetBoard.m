@@ -88,7 +88,7 @@
 #pragma mark -
 #pragma mark Accessors
 
-- (void)placeBlock:(iTetBlock*)block
+- (void)solidifyBlock:(iTetBlock*)block
 {
 	int row, col;
 	char cell;
