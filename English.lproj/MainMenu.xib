@@ -10,7 +10,7 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="29"/>
 			<integer value="575"/>
-			<integer value="451"/>
+			<integer value="501"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3686,35 +3686,6 @@
 					<int key="connectionID">698</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.specialsQueue.firstObject</string>
-						<reference key="source" ref="1003838065"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1003838065"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.specialsQueue.firstObject</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.specialsQueue.firstObject</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSMutableArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSNullPlaceholder</string>
-									<string>NSValueTransformerName</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>No Specials</string>
-									<string>TetrinetSpecialNameTransformer</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">703</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">numberField</string>
 						<reference key="source" ref="701483452"/>
@@ -3793,6 +3764,35 @@
 						<reference key="destination" ref="489164989"/>
 					</object>
 					<int key="connectionID">726</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.specialsQueue.firstObject</string>
+						<reference key="source" ref="1003838065"/>
+						<reference key="destination" ref="742664187"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1003838065"/>
+							<reference key="NSDestination" ref="742664187"/>
+							<string key="NSLabel">value: localPlayer.specialsQueue.firstObject</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.specialsQueue.firstObject</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSMutableArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Specials</string>
+									<string>TetrinetSpecialNameTransformer</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">728</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5976,7 +5976,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">726</int>
+			<int key="maxID">728</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

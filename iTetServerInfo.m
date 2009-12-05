@@ -118,7 +118,7 @@ NSString* const iTetServerInfoProtocolKey =	@"protocol";
 }
 
 #pragma mark -
-#pragma mark Accessors (Synthesized)
+#pragma mark Accessors
 
 @synthesize serverName;
 @synthesize address;

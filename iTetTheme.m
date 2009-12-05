@@ -309,7 +309,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 }
 
 #pragma mark -
-#pragma mark Comparators (uses Name)
+#pragma mark Comparators (uses name)
 
 - (BOOL)isEqual:(id)other
 {
