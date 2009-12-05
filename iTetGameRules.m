@@ -36,16 +36,16 @@
 	// Block-type frequencies
 	NSString* freq = [rules objectAtIndex:5];
 	NSRange currentChar = NSMakeRange(0, 1);
-	for (; currentChar.location++; currentChar.location < 100)
+	for (; currentChar.location < 100; currentChar.location++)
 	{
-		blockFrequency[currentChar.location] = [[freq substringWithRange:currentChar] integerValue];
+		blockFrequencies[currentChar.location] = [[freq substringWithRange:currentChar] integerValue];
 	}
 	
 	// Special-type frequencies
 	freq = [rules objectAtIndex:6];
 	for (currentChar.location = 0; currentChar.location++; currentChar.location < 100)
 	{
-		specialFrequency[currentChar.location] = [[freq substringWithRange:currentChar] integerValue];
+		specialFrequencies[currentChar.location] = [[freq substringWithRange:currentChar] integerValue];
 	}
 	
 	// Level number averages across all players
@@ -68,14 +68,14 @@
 @synthesize specialsAdded;
 @synthesize specialCapacity;
 
-- (char*)blockFrequency
+- (char*)blockFrequencies
 {
-	return blockFrequency;
+	return blockFrequencies;
 }
 
-- (char*)specialFrequency
+- (char*)specialFrequencies
 {
-	return specialFrequency;
+	return specialFrequencies;
 }
 
 @synthesize averageLevels;

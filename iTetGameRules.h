@@ -14,8 +14,8 @@
 	NSUInteger linesPerSpecial;
 	NSUInteger specialsAdded;
 	NSUInteger specialCapacity;
-	char blockFrequency[100];
-	char specialFrequency[100];
+	char blockFrequencies[100];
+	char specialFrequencies[100];
 	BOOL averageLevels;
 	BOOL classicRules;
 }
@@ -28,8 +28,8 @@
 @property (readonly) NSUInteger linesPerSpecial;
 @property (readonly) NSUInteger specialsAdded;
 @property (readonly) NSUInteger specialCapacity;
-@property (readonly) char* blockFrequency;
-@property (readonly) char* specialFrequency;
+@property (readonly) char* blockFrequencies;
+@property (readonly) char* specialFrequencies;
 @property (readonly) BOOL averageLevels;
 @property (readonly) BOOL classicRules;
 
