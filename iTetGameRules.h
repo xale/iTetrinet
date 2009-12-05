@@ -9,6 +9,8 @@
 
 @interface iTetGameRules : NSObject
 {
+	NSUInteger startingLevel;
+	NSUInteger initialStackHeight;
 	NSUInteger linesPerLevel;
 	NSUInteger levelIncrease;
 	NSUInteger linesPerSpecial;
@@ -23,6 +25,8 @@
 + (id)gameRulesFromArray:(NSArray*)rules;
 - (id)initWithRulesFromArray:(NSArray*)rules;
 
+@property (readonly) NSUInteger startingLevel;
+@property (readonly) NSUInteger initialStackHeight;
 @property (readonly) NSUInteger linesPerLevel;
 @property (readonly) NSUInteger levelIncrease;
 @property (readonly) NSUInteger linesPerSpecial;
