@@ -137,7 +137,7 @@
 }
 
 #pragma mark -
-#pragma mark Starting a Game
+#pragma mark Controlling Game State
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules
@@ -150,6 +150,20 @@
 								rules:rules];
 	
 	// FIXME: anything else to do here?
+}
+
+- (void)pauseGame
+{
+	// FIXME: WRITEME: pause game
+}
+
+- (void)endGame
+{
+	// FIXME: WRITEME: additional actions to stop game?
+	
+	// Release and nil the game object
+	[currentGame release];
+	currentGame = nil;
 }
 
 #pragma mark -

@@ -58,6 +58,8 @@
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
+- (void)pauseGame;
+- (void)endGame;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
