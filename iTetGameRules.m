@@ -18,26 +18,26 @@
 {
 	// The array recieved contains strings, which need to be parsed into the
 	// respective rules:
-	// Starting level
-	startingLevel = [[rules objectAtIndex:0] unsignedIntegerValue];
-	
 	// Number of lines of "garbage" on the board when the game begins
-	initialStackHeight = [[rules objectAtIndex:1] unsignedIntegerValue];
+	initialStackHeight = [[rules objectAtIndex:0] integerValue];
+	
+	// Starting level
+	startingLevel = [[rules objectAtIndex:1] integerValue];
 	
 	// Number of line completions needed to trigger a level increase
-	linesPerLevel = [[rules objectAtIndex:2] unsignedIntegerValue];
+	linesPerLevel = [[rules objectAtIndex:2] integerValue];
 	
 	// Number of levels per level increase
-	levelIncrease = [[rules objectAtIndex:3] unsignedIntegerValue];
+	levelIncrease = [[rules objectAtIndex:3] integerValue];
 	
 	// Number of line completions needed to trigger the spawn of specials
-	linesPerSpecial = [[rules objectAtIndex:4] unsignedIntegerValue];
+	linesPerSpecial = [[rules objectAtIndex:4] integerValue];
 	
 	// Number of specials added per spawn
-	specialsAdded = [[rules objectAtIndex:5] unsignedIntegerValue];
+	specialsAdded = [[rules objectAtIndex:5] integerValue];
 	
 	// Number of specials each player can hold in their "inventory"
-	specialCapacity = [[rules objectAtIndex:6] unsignedIntegerValue];
+	specialCapacity = [[rules objectAtIndex:6] integerValue];
 	
 	// Block-type frequencies
 	NSString* freq = [rules objectAtIndex:7];
