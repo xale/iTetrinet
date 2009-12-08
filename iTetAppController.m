@@ -112,6 +112,83 @@
 				   contextInfo:nil];
 }
 
+#define StartGame	@"startgame 1 %d"
+#define StopGame	@"startgame 0 %d"
+
+- (IBAction)startStopGame:(id)sender
+{	
+	// Check if a game is already in progress
+	if ([gameController gameInProgress])
+	{
+		// Confirm with user before ending game
+		// Create a confirmation dialog
+		NSAlert* dialog = [[NSAlert alloc] init];
+		[dialog setMessageText:@"End Game in Progress?"];
+		[dialog setInformativeText:@"Are you sure you want to end the game in progress?"];
+		[dialog addButtonWithTitle:@"Continue Playing"];
+		[dialog addButtonWithTitle:@"End Game"];
+		
+		// Run the dialog as a window-modal sheet
+		[dialog beginSheetModalForWindow:window
+					 modalDelegate:self
+					didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
+					   contextInfo:nil];
+	}
+	else
+	{
+		// Start the game
+		[networkController sendMessage:
+		 [NSString stringWithFormat:StartGame, [[self localPlayer] playerNumber]]];
+	}
+}
+
+- (IBAction)pauseResumeGame:(id)sender
+{
+	// Check if game is already paused
+	if ([gameController gamePaused])
+	{
+		// Unpause the game
+		[gameController setGamePaused:NO];
+		
+		// Change the "resume" button back into pause button
+		[pauseButton setLabel:@"Pause Game"];
+		[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+		
+		// Change the menu item
+		[pauseMenuItem setTitle:@"Pause Game"];
+	}
+	else
+	{
+		// Pause the game
+		[gameController setGamePaused:YES];
+		
+		// Change the pause button to a "resume" button
+		[pauseButton setLabel:@"Resume Game"];
+		[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
+		
+		// Change the menu item
+		[pauseMenuItem setTitle:@"Resume Game"];
+	}
+}
+
+- (IBAction)showPreferences:(id)sender
+{
+	if (prefsWindowController == nil)
+		prefsWindowController = [[iTetPreferencesWindowController alloc] init];
+	
+	[prefsWindowController showWindow:self];
+	[[prefsWindowController window] makeKeyAndOrderFront:self];
+}
+
+- (void)openPreferencesTabNumber:(NSInteger)tabNumber
+{
+	[self showPreferences:self];
+	[prefsWindowController displayViewControllerAtIndex:tabNumber];
+}
+
+#pragma mark -
+#pragma mark Modal Sheet Callbacks
+
 - (void)connectAlertDidEnd:(NSAlert*)dialog
 		    returnCode:(NSInteger)returnCode
 		   contextInfo:(void*)contextInfo
@@ -144,35 +221,6 @@
 									  repeats:NO];
 }
 
-#define StartGame	@"startgame 1 %d"
-#define StopGame	@"startgame 0 %d"
-
-- (IBAction)startStopGame:(id)sender
-{	
-	// Check if a game is already in progress
-	if ([gameController gameInProgress])
-	{
-		// Create a confirmation dialog
-		NSAlert* dialog = [[NSAlert alloc] init];
-		[dialog setMessageText:@"End Game in Progress?"];
-		[dialog setInformativeText:@"Are you sure you want to end the game in progress?"];
-		[dialog addButtonWithTitle:@"Continue Playing"];
-		[dialog addButtonWithTitle:@"End Game"];
-		
-		// Run the dialog as a window-modal sheet
-		[dialog beginSheetModalForWindow:window
-					 modalDelegate:self
-					didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
-					   contextInfo:nil];
-	}
-	else
-	{
-		// Start the game
-		[networkController sendMessage:
-		 [NSString stringWithFormat:StartGame, [[self localPlayer] playerNumber]]];
-	}
-}
-
 - (void)stopGameAlertDidEnd:(NSAlert*)dialog
 		     returnCode:(NSInteger)returnCode
 		    contextInfo:(void*)contextInfo
@@ -182,23 +230,11 @@
 		return;
 	
 	// Otherwise, stop the game in progress
+	// FIXME: tell gameController to stop game
+	
+	// Send the server an "end game" message
 	[networkController sendMessage:
 	 [NSString stringWithFormat:StopGame, [[self localPlayer] playerNumber]]];
-}
-
-- (IBAction)showPreferences:(id)sender
-{
-	if (prefsWindowController == nil)
-		prefsWindowController = [[iTetPreferencesWindowController alloc] init];
-	
-	[prefsWindowController showWindow:self];
-	[[prefsWindowController window] makeKeyAndOrderFront:self];
-}
-
-- (void)openPreferencesTabNumber:(NSInteger)tabNumber
-{
-	[self showPreferences:self];
-	[prefsWindowController displayViewControllerAtIndex:tabNumber];
 }
 
 #pragma mark -
@@ -214,11 +250,18 @@
 	// "New Game" button/menu item
 	if (itemAction == @selector(startStopGame:))
 	{
-		if ([networkController connected] &&
-		    ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
-		{
+		if ([networkController connected] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
 			return YES;
-		}
+		
+		return NO;
+	}
+	
+	// "Pause" button/menu item
+	if (itemAction == @selector(pauseResumeGame:))
+	{
+		// FIXME: can non-op players pause the game?
+		if ([gameController gameInProgress] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
+			return YES;
 		
 		return NO;
 	}
@@ -564,6 +607,14 @@
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
 						     rules:[iTetGameRules gameRulesFromArray:rules]];
+		
+		// Change the "new game" toolbar item
+		[gameButton setLabel:@"End Game"];
+		[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
+		
+		// Change the "new game" menu item
+		[gameMenuItem setTitle:@"End Game..."];
+		[gameMenuItem setKeyEquivalent:@"e"];
 	}
 	// Special used / lines sent
 	else if ([messageType isEqualToString:SpecialUsedMessage])

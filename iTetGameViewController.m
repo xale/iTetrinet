@@ -265,4 +265,15 @@ objectValueForTableColumn:(NSTableColumn*)column
 	return (currentGame != nil);
 }
 
+- (BOOL)gamePaused
+{
+	return [currentGame isPaused];
+}
+- (void)setGamePaused:(BOOL)paused
+{
+	[currentGame setPaused:paused];
+	
+	// FIXME: anything else?
+}
+
 @end

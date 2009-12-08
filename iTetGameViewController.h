@@ -70,5 +70,6 @@
 - (void)clearActions;
 
 @property (readonly) BOOL gameInProgress;
+@property (readwrite) BOOL gamePaused;
 
 @end

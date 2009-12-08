@@ -49,6 +49,8 @@
 		6AB76DB1101D17AE00734661 /* ThemesPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DB0101D17AE00734661 /* ThemesPrefsView.xib */; };
 		6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */; };
 		6AC2397C1044A5D0006D3C83 /* iTetProtocolTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */; };
+		6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */; };
+		6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653D10CDB86B005B98E1 /* Play Blue Button.png */; };
 		6ACC223F107D0CE7006768C0 /* iTetGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */; };
 		6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */; };
 		6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */; };
@@ -146,6 +148,8 @@
 		6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServersPrefsView.xib; sourceTree = "<group>"; };
 		6AC2397A1044A5D0006D3C83 /* iTetProtocolTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetProtocolTransformer.h; sourceTree = "<group>"; };
 		6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetProtocolTransformer.m; sourceTree = "<group>"; };
+		6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause Blue Button.png"; sourceTree = "<group>"; };
+		6AC7653D10CDB86B005B98E1 /* Play Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Play Blue Button.png"; sourceTree = "<group>"; };
 		6ACC223D107D0CE7006768C0 /* iTetGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGameViewController.h; sourceTree = "<group>"; };
 		6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameViewController.m; sourceTree = "<group>"; };
 		6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyView.h; sourceTree = "<group>"; };
@@ -415,11 +419,13 @@
 		6A96B59710099001003D353E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6A96B58C10098FFD003D353E /* Network.png */,
 				6A96B58A10098FFD003D353E /* Cancel Red Button.png */,
 				6A96B58B10098FFD003D353E /* Eject Blue Button.png */,
-				6A96B58C10098FFD003D353E /* Network.png */,
 				6A96B58D10098FFD003D353E /* Play Green Button.png */,
 				6A96B58E10098FFD003D353E /* Stop Red Button.png */,
+				6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */,
+				6AC7653D10CDB86B005B98E1 /* Play Blue Button.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -553,6 +559,8 @@
 				6AB76DB1101D17AE00734661 /* ThemesPrefsView.xib in Resources */,
 				6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */,
 				6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */,
+				6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */,
+				6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

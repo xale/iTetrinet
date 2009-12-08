@@ -76,4 +76,13 @@
 	// FIXME: WRITEME
 }
 
+#pragma mark -
+#pragma mark Accessors
+
+- (void)setIsPaused:(BOOL)isPaused
+{
+	paused = isPaused;
+}
+@synthesize paused;
+
 @end

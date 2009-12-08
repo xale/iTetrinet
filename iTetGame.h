@@ -19,6 +19,8 @@
 	iTetGameRules* rules;
 	
 	NSTimer* blockTimer;
+	
+	BOOL paused;
 }
 
 - (id)initWithPlayers:(NSArray*)participants
@@ -29,5 +31,7 @@
 	     onPlayer:(iTetPlayer*)target;
 - (void)linesAdded:(int)numLines
 	    byPlayer:(iTetPlayer*)sender;
+
+@property (readwrite, assign) BOOL paused;
 
 @end

@@ -33,6 +33,8 @@
 	IBOutlet NSMenuItem* connectionMenuItem;
 	IBOutlet NSToolbarItem* gameButton;
 	IBOutlet NSMenuItem* gameMenuItem;
+	IBOutlet NSToolbarItem* pauseButton;
+	IBOutlet NSMenuItem* pauseMenuItem;
 	
 	// Network
 	iTetNetworkController* networkController;
@@ -49,6 +51,7 @@
 
 - (IBAction)openCloseConnection:(id)sender;
 - (IBAction)startStopGame:(id)sender;
+- (IBAction)pauseResumeGame:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;
 
