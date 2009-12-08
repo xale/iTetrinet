@@ -112,8 +112,8 @@
 				   contextInfo:nil];
 }
 
-#define StartGame	@"startgame 1 %d"
-#define StopGame	@"startgame 0 %d"
+NSString* const StartGameFormat =	@"startgame 1 %d";
+NSString* const StopGameFormat =	@"startgame 0 %d";
 
 - (IBAction)startStopGame:(id)sender
 {	
@@ -138,9 +138,13 @@
 	{
 		// Start the game
 		[networkController sendMessage:
-		 [NSString stringWithFormat:StartGame, [[self localPlayer] playerNumber]]];
+		 [NSString stringWithFormat:StartGameFormat, [[self localPlayer] playerNumber]]];
 	}
 }
+
+// FIXME: not sure about these:
+NSString* const PauseGameFormat =	@"pause 1 %d";
+NSString* const ResumeGameFormat =	@"pause 0 %d";
 
 - (IBAction)pauseResumeGame:(id)sender
 {
@@ -149,6 +153,10 @@
 	{
 		// Unpause the game
 		[gameController setGamePaused:NO];
+		
+		// Send a message asking the server to resume play
+		[networkController sendMessage:
+		 [NSString stringWithFormat:ResumeGameFormat, [[self localPlayer] playerNumber]]];
 		
 		// Change the "resume" button back into pause button
 		[pauseButton setLabel:@"Pause Game"];
@@ -161,6 +169,10 @@
 	{
 		// Pause the game
 		[gameController setGamePaused:YES];
+		
+		// Send a message asking the server to pause
+		[networkController sendMessage:
+		 [NSString stringWithFormat:PauseGameFormat, [[self localPlayer] playerNumber]]];
 		
 		// Change the pause button to a "resume" button
 		[pauseButton setLabel:@"Resume Game"];
@@ -230,11 +242,11 @@
 		return;
 	
 	// Otherwise, stop the game in progress
-	// FIXME: tell gameController to stop game
+	[gameController endGame];
 	
 	// Send the server an "end game" message
 	[networkController sendMessage:
-	 [NSString stringWithFormat:StopGame, [[self localPlayer] playerNumber]]];
+	 [NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
 }
 
 #pragma mark -

@@ -82,6 +82,8 @@
 - (void)setIsPaused:(BOOL)isPaused
 {
 	paused = isPaused;
+	
+	// FIXME: WRITEME
 }
 @synthesize paused;
 
