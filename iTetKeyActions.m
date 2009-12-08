@@ -14,6 +14,7 @@ NSString* const iTetRotatePieceClockwiseActionName =		@"Rotate Piece Clockwise";
 NSString* const iTetMovePieceDownActionName =			@"Move Piece Down";
 NSString* const iTetDropPieceActionName =				@"Drop Piece";
 NSString* const iTetGameChatActionName =				@"Game Chat";
+NSString* const iTetDiscardSpecialActionName =			@"Discard Special";
 NSString* const iTetNoActionName =					@"No Action";
 
 NSString* iTetNameForAction(iTetGameAction action)
@@ -37,6 +38,9 @@ NSString* iTetNameForAction(iTetGameAction action)
 			
 		case dropPiece:
 			return iTetDropPieceActionName;
+			
+		case discardSpecial:
+			return iTetDiscardSpecialActionName;
 			
 		case gameChat:
 			return iTetGameChatActionName;

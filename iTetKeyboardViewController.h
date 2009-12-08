@@ -21,6 +21,7 @@
 	IBOutlet iTetKeyView* rotateClockwiseKeyView;
 	IBOutlet iTetKeyView* moveDownKeyView;
 	IBOutlet iTetKeyView* dropKeyView;
+	IBOutlet iTetKeyView* discardSpecialKeyView;
 	IBOutlet iTetKeyView* gameChatKeyView;
 	NSArray* keyViews;
 	

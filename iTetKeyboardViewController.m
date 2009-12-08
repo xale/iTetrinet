@@ -40,6 +40,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	[rotateClockwiseKeyView setAssociatedAction:rotatePieceClockwise];
 	[moveDownKeyView setAssociatedAction:movePieceDown];
 	[dropKeyView setAssociatedAction:dropPiece];
+	[discardSpecialKeyView setAssociatedAction:discardSpecial];
 	[gameChatKeyView setAssociatedAction:gameChat];
 	
 	// Add the key views to an array for easy enumeration
@@ -50,6 +51,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 			rotateClockwiseKeyView,
 			moveDownKeyView,
 			dropKeyView,
+			discardSpecialKeyView,
 			gameChatKeyView, nil];
 	
 	// Register for notifications when a key view changes highlight state

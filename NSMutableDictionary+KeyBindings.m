@@ -20,26 +20,29 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 	// "Arrow Keys" Configuration
 	[keyDict setConfigurationName:@"Arrow Keys"];
 	[keyDict setAction:movePieceLeft
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:123
-										 name:iTetLeftArrowKeyPlaceholderString]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:123
+									     name:iTetLeftArrowKeyPlaceholderString]];
 	[keyDict setAction:movePieceRight
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:124
-										 name:iTetRightArrowKeyPlaceholderString]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:124
+									     name:iTetRightArrowKeyPlaceholderString]];
 	[keyDict setAction:rotatePieceCounterclockwise
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:6
-										 name:@"z"]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:6
+									     name:@"z"]];
 	[keyDict setAction:rotatePieceClockwise
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:7
-										 name:@"x"]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:7
+									     name:@"x"]];
 	[keyDict setAction:movePieceDown
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:125
-										 name:iTetDownArrowKeyPlaceholderString]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:125
+									     name:iTetDownArrowKeyPlaceholderString]];
 	[keyDict setAction:dropPiece
 			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:49
 										 name:iTetSpacebarPlaceholderString]];
+	[keyDict setAction:discardSpecial
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:2
+									     name:@"d"]];
 	[keyDict setAction:gameChat
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:17
-										 name:@"t"]];
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:17
+									     name:@"t"]];
 	[configs addObject:keyDict];
 	
 	// "MacBook Keyboard" Configuration
@@ -63,6 +66,9 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 	[keyDict setAction:dropPiece
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:49
 									     name:iTetSpacebarPlaceholderString]];
+	[keyDict setAction:discardSpecial
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:2
+									     name:@"d"]];
 	[keyDict setAction:gameChat
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:17
 									     name:@"t"]];
