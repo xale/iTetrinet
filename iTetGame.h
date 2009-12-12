@@ -32,6 +32,6 @@
 - (void)linesAdded:(int)numLines
 	    byPlayer:(iTetPlayer*)sender;
 
-@property (readwrite, assign) BOOL paused;
+@property (readwrite, assign, getter=isPaused) BOOL paused;
 
 @end
