@@ -8,8 +8,8 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
 			<integer value="575"/>
+			<integer value="29"/>
 			<integer value="451"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -5867,8 +5867,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{283, -134}, {824, 713}}</string>
-					<string>{{283, -134}, {824, 713}}</string>
+					<string>{{204, 44}, {824, 713}}</string>
+					<string>{{204, 44}, {824, 713}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<reference ref="5"/>

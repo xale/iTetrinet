@@ -618,7 +618,8 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 		
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
-						     rules:[iTetGameRules gameRulesFromArray:rules]];
+						     rules:[iTetGameRules gameRulesFromArray:rules
+											  withGameType:protocol]];
 		
 		// Change the "new game" toolbar item
 		[gameButton setLabel:@"End Game"];

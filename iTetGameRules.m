@@ -10,12 +10,18 @@
 @implementation iTetGameRules
 
 + (id)gameRulesFromArray:(NSArray*)rules
+		withGameType:(iTetProtocolType)protocol
 {
-	return [[[self alloc] initWithRulesFromArray:rules] autorelease];
+	return [[[self alloc] initWithRulesFromArray:rules
+						  withGameType:protocol] autorelease];
 }
 
 - (id)initWithRulesFromArray:(NSArray*)rules
+		    withGameType:(iTetProtocolType)protocol
 {
+	// Set the game type
+	gameType = protocol;
+	
 	// The array recieved contains strings, which need to be parsed into the
 	// respective rules:
 	// Number of lines of "garbage" on the board when the game begins
@@ -68,6 +74,7 @@
 #pragma mark -
 #pragma mark Accessors
 
+@synthesize gameType;
 @synthesize startingLevel;
 @synthesize initialStackHeight;
 @synthesize linesPerLevel;

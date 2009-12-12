@@ -6,9 +6,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetServerInfo.h"
 
 @interface iTetGameRules : NSObject
 {
+	iTetProtocolType gameType;
 	NSUInteger startingLevel;
 	NSUInteger initialStackHeight;
 	NSUInteger linesPerLevel;
@@ -22,9 +24,12 @@
 	BOOL classicRules;
 }
 
-+ (id)gameRulesFromArray:(NSArray*)rules;
-- (id)initWithRulesFromArray:(NSArray*)rules;
++ (id)gameRulesFromArray:(NSArray*)rules
+		withGameType:(iTetProtocolType)protocol;
+- (id)initWithRulesFromArray:(NSArray*)rules
+		    withGameType:(iTetProtocolType)protocol;
 
+@property (readonly) iTetProtocolType gameType;
 @property (readonly) NSUInteger startingLevel;
 @property (readonly) NSUInteger initialStackHeight;
 @property (readonly) NSUInteger linesPerLevel;
