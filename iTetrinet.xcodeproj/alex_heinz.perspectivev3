@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>6AE3B7AF10D3635D00BDF9AD</string>
+						<string>6AE3B7B310D3649300BDF9AD</string>
 						<key>history</key>
 						<array>
 							<string>6AA73B9810D1E123007BCC0F</string>
@@ -256,7 +256,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>6AE3B7B010D3635D00BDF9AD</string>
+						<string>6AE3B7B510D3649300BDF9AD</string>
 						<key>history</key>
 						<array>
 							<string>6AA73B9A10D1E123007BCC0F</string>
@@ -296,7 +296,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>6AE3B7B110D3635D00BDF9AD</string>
+						<string>6AE3B7B710D3649300BDF9AD</string>
 						<key>history</key>
 						<array>
 							<string>6AA73B9E10D1E123007BCC0F</string>
@@ -456,7 +456,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>6AE3B7AE10D3635D00BDF9AD</string>
+										<string>6AE3B7B210D3649300BDF9AD</string>
 										<key>history</key>
 										<array>
 											<string>6A96B5C11009912D003D353E</string>
@@ -1025,10 +1025,10 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>/Users/alex_heinz/Documents/Programming/Cocoa/iTetrinet/iTetrinet.xcodeproj</string>
 		<string>6AA73B9C10D1E123007BCC0F</string>
 		<string>6A96F94910CB2EE400DB8766</string>
 		<string>6A96F94310CB2EE400DB8766</string>
+		<string>/Users/alex_heinz/Documents/Programming/Cocoa/iTetrinet/iTetrinet.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>49 55 1379 823 0 0 1440 878 </string>

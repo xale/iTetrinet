@@ -22,6 +22,8 @@ typedef enum
 @interface iTetBoard: NSObject
 {
 	char contents[ITET_BOARD_HEIGHT][ITET_BOARD_WIDTH];
+	
+	NSString* lastPartialUpdate;
 }
 
 // Initializer for an empty board
@@ -39,6 +41,13 @@ typedef enum
 + (id)boardWithBoard:(iTetBoard*)board;
 - (id)initWithBoard:(iTetBoard*)board;
 
+// Checks whether a block is in a valid position on the board
+- (ObstructionState)blockObstructed:(iTetBlock*)block;
+
+// Checks whether the specified cell is valid (i.e., on the board) and empty
+- (ObstructionState)cellObstructedAtRow:(int)row
+					   column:(int)col;
+
 // Add the cells of the specified block to the board's contents
 - (void)solidifyBlock:(iTetBlock*)block;
 
@@ -46,11 +55,10 @@ typedef enum
 - (char)cellAtRow:(int)row
 	     column:(int)column;
 
-// Checks whether a block is in a valid position on the board
-- (ObstructionState)blockObstructed:(iTetBlock*)block;
+// The current fieldstring that describes the state of the board
+@property (readonly) NSString* fieldString;
 
-// Checks whether the specified cell is valid (i.e., on the board) and empty
-- (ObstructionState)cellObstructedAtRow:(int)row
-					   column:(int)col;
+// The fieldstring for last partial update
+@property (readwrite, retain) NSString* lastPartialUpdate; 
 
 @end
