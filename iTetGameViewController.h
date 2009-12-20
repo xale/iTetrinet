@@ -44,8 +44,11 @@
 	// Assigned board views
 	char assignedBoards;
 	
-	// Current game in progress
-	iTetGame* currentGame;
+	// Rules for game in progress (nil indicates no game in progress)
+	iTetGameRules* currentGameRules;
+	
+	// Pause/play state of current game
+	BOOL gamePaused;
 	
 	// List of player actions (e.g., specials)
 	NSMutableArray* actionHistory;
@@ -58,8 +61,10 @@
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
-- (void)pauseGame;
 - (void)endGame;
+
+- (void)sendFieldstate;
+- (void)sendPartialFieldstate;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender

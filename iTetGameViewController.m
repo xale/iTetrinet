@@ -11,7 +11,9 @@
 #import "iTetLocalBoardView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
-#import "iTetGame.h"
+#import "iTetBoard.h"
+#import "iTetGameRules.h"
+#import "Queue.h"
 
 #define BOARD_1	0x01
 #define BOARD_2	0x02
@@ -30,8 +32,8 @@
 
 - (void)dealloc
 {
+	[currentGameRules release];
 	[actionHistory release];
-	[currentGame release];
 	
 	[super dealloc];
 }
@@ -145,29 +147,65 @@
 	// Clear the list of actions from the last game
 	[self clearActions];
 	
-	// Create a new game
-	currentGame = [[iTetGame alloc] initWithPlayers:players
-								rules:rules];
+	// Retain the game rules
+	currentGameRules = [rules retain];
+	
+	// Set up the players' boards
+	for (iTetPlayer* player in players)
+	{
+		// If this is the local player, do some extra stuff
+		if ([player isKindOfClass:[iTetLocalPlayer class]])
+		{	
+			// Create a board with initial random garbage
+			[player setBoard:[iTetBoard boardWithStackHeight:[rules initialStackHeight]]];
+			
+			// Send the newly-created board to the server
+			[self sendFieldstate];
+		}
+		// Otherwise, just give the player a blank board
+		else
+		{
+			[player setBoard:[iTetBoard board]];
+		}
+		
+		// Set the starting level
+		[player setLevel:[rules startingLevel]];
+	}
+	
+	// Create a clean specials queue for the local player
+	[[appController localPlayer] setQueueSize:[rules specialCapacity]];
+	[[appController localPlayer] setSpecialsQueue:[Queue queue]];
+	
+	// Set up the timer to spawn the first falling block
+	// FIXME: WRITEME: block timer
 	
 	// FIXME: anything else to do here?
-}
-
-- (void)pauseGame
-{
-	// FIXME: WRITEME: pause game
 }
 
 - (void)endGame
 {
 	// FIXME: WRITEME: additional actions to stop game?
 	
-	// Release and nil the game object
-	[currentGame release];
-	currentGame = nil;
+	// Release and nil the game rules pointer
+	[currentGameRules release];
+	currentGameRules = nil;
 }
 
 #pragma mark -
-#pragma mark Game Events
+#pragma mark Client-to-Server Events
+
+- (void)sendFieldstate
+{
+	
+}
+
+- (void)sendPartialFieldstate
+{
+	
+}
+
+#pragma mark -
+#pragma mark Server-to-Client Events
 
 NSString* const iTetSpecialEventDescriptionFormat = @"@% used on %@ by %@";
 
@@ -176,10 +214,7 @@ NSString* const iTetSpecialEventDescriptionFormat = @"@% used on %@ by %@";
 	     onPlayer:(iTetPlayer*)target
 {
 	// Perform the action
-	[currentGame specialUsed:special
-			    byPlayer:sender
-			    onPlayer:target];
-	
+	// FIXME: WRITEME	
 	// Add a description of the event to the list of actions
 	// Determine the name of the target ("All", if the target is not a specific player)
 	NSString* targetName;
@@ -205,8 +240,7 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	    byPlayer:(iTetPlayer*)sender
 {
 	// Add the lines
-	[currentGame linesAdded:numLines
-			   byPlayer:sender];
+	// FIXME: WRITEME
 	
 	// Create a description
 	// FIXME: colors/formatting
@@ -262,18 +296,15 @@ objectValueForTableColumn:(NSTableColumn*)column
 
 - (BOOL)gameInProgress
 {
-	return (currentGame != nil);
+	return (currentGameRules != nil);
 }
 
-- (BOOL)gamePaused
-{
-	return [currentGame isPaused];
-}
 - (void)setGamePaused:(BOOL)paused
 {
-	[currentGame setPaused:paused];
+	// FIXME: pause game in progress
 	
-	// FIXME: anything else?
+	gamePaused = paused;
 }
+@synthesize gamePaused;
 
 @end
