@@ -129,8 +129,7 @@ char partialUpdateCell(char cellType);
 		}
 	}
 	
-	// If no vertical obstructions were found, return whether or not we found
-	// any horizontal obstructions
+	// If no vertical obstructions were found, return whether or not we found any horizontal obstructions
 	return side;
 }
 
@@ -172,8 +171,7 @@ char partialUpdateCell(char cellType);
 				// Add this cell of the block to the board
 				contents[[block rowPos] + row][[block colPos] + col] = cell;
 				
-				// If this cell is a different "color" from the last one
-				// in the partial update, add the to the update string
+				// If this cell is a different "color" from the last one in the partial update, add that information to the update string
 				if (cell != lastCell)
 				{
 					[update appendFormat:@"%c", partialUpdateCell(cell)];
@@ -181,9 +179,7 @@ char partialUpdateCell(char cellType);
 				}
 					
 				// Add the changed cell's coordinates to the update string
-				[update appendFormat:@"%c%c",
-				 ITET_PARTIAL_ROW(row),
-				 ITET_PARTIAL_COL(col)];
+				[update appendFormat:@"%c%c", ITET_PARTIAL_ROW(row), ITET_PARTIAL_COL(col)];
 			}
 		}
 	}
@@ -211,8 +207,7 @@ char partialUpdateCell(char cellType);
 			// Get the contents of this cell
 			cell = contents[row][col];
 			
-			// If the cell contains a special, add the special's letter
-			// to the fieldstring
+			// If the cell contains a special, add the special's letter to the fieldstring
 			if (cell > ITET_NUM_CELL_COLORS)
 				[field appendFormat:@"%c", cell];
 			// Otherwise, add the cell's numeric value
@@ -227,8 +222,7 @@ char partialUpdateCell(char cellType);
 
 char partialUpdateCell(char cellType)
 {
-	// Special cells map to a sequential set of ASCII characters, which sadly
-	// means we can't just do an add or subtract
+	// Special cells map to a sequential set of ASCII characters, which sadly means we can't just do an add or subtract
 	switch ((iTetSpecialType)cellType)
 	{
 		case addLine:
