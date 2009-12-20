@@ -36,15 +36,11 @@
 #pragma mark -
 #pragma mark Interface Actions
 
+NSString* const iTetPlineFormat =		@"pline %d %@";
+NSString* const iTetPlineActionFormat =	@"plineact %s %@";
+
 - (IBAction)sendMessage:(id)sender
-{
-	// Check for an open connection
-	if (![[appController networkController] connected])
-	{
-		NSBeep();
-		return;
-	}
-	
+{	
 	// FIXME: should use "attributedStringValue"
 	NSString* line = [messageField stringValue];
 	
@@ -60,20 +56,19 @@
 	// Format the message as text or action
 	if (action)
 	{
-		format = @"plineact %d %@";
+		format = iTetPlineActionFormat;
 		line = [line substringFromIndex:4];
 	}
 	else
 	{
-		format = @"pline %d %@";
+		format = iTetPlineFormat;
 	}
 	
 	// Send the message
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:format, [localPlayer playerNumber], line]];
 	
-	// If the message is not a slash command, (other than /me) add the line
-	// to the chat view
+	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([line characterAtIndex:0] != '/'))
 	{
 		[self appendChatLine:line
