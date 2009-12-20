@@ -194,7 +194,7 @@ char partialUpdateCell(char cellType);
 	return contents[row][col];
 }
 
-- (NSString*)fieldString
+- (NSString*)fieldstring
 {
 	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_BOARD_WIDTH * ITET_BOARD_HEIGHT)];
 	

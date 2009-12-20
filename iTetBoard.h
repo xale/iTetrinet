@@ -56,9 +56,9 @@ typedef enum
 	     column:(int)column;
 
 // The current fieldstring that describes the state of the board
-@property (readonly) NSString* fieldString;
+@property (readonly) NSString* fieldstring;
 
 // The fieldstring for last partial update
-@property (readwrite, retain) NSString* lastPartialUpdate; 
+@property (readwrite, retain) NSString* lastPartialUpdate;
 
 @end
