@@ -160,7 +160,7 @@
 			[player setBoard:[iTetBoard boardWithStackHeight:[rules initialStackHeight]]];
 			
 			// Send the newly-created board to the server
-			[self sendFieldstate];
+			[self sendFieldstring];
 		}
 		// Otherwise, just give the player a blank board
 		else
@@ -194,14 +194,31 @@
 #pragma mark -
 #pragma mark Client-to-Server Events
 
-- (void)sendFieldstate
+NSString* const iTetFieldstringMessageFormat = @"f %d %@";
+
+- (void)sendFieldstring
 {
+	iTetLocalPlayer* player = [appController localPlayer];
 	
+	// Send the string for the local player's board to the server
+	[[appController networkController] sendMessage:
+	 [NSString stringWithFormat:
+	  iTetFieldstringMessageFormat,
+	  [player playerNumber],
+	  [[player board] fieldstring]]];
+	 
 }
 
-- (void)sendPartialFieldstate
+- (void)sendPartialFieldstring
 {
+	iTetLocalPlayer* player = [appController localPlayer];
 	
+	// Send the last partial update on the local player's board to the server
+	[[appController networkController] sendMessage:
+	 [NSString stringWithFormat:
+	  iTetFieldstringMessageFormat,
+	  [player playerNumber],
+	  [[player board] fieldstring]]];
 }
 
 #pragma mark -

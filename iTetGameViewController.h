@@ -63,8 +63,8 @@
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;
 
-- (void)sendFieldstate;
-- (void)sendPartialFieldstate;
+- (void)sendFieldstring;
+- (void)sendPartialFieldstring;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
