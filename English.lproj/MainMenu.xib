@@ -9,7 +9,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="575"/>
-			<integer value="501"/>
+			<integer value="453"/>
 			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -2567,24 +2567,24 @@
 								<reference ref="1052209441"/>
 							</object>
 						</object>
-						<object class="NSTextField" id="553496863">
+						<object class="NSTextField" id="834459839">
 							<reference key="NSNextResponder" ref="396637928"/>
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{25, 5}, {773, 14}}</string>
 							<reference key="NSSuperview" ref="396637928"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="132372143">
+							<object class="NSTextFieldCell" key="NSCell" id="798740522">
 								<int key="NSCellFlags">68288064</int>
 								<int key="NSCellFlags2">272761856</int>
-								<string key="NSContents">Disconnected</string>
+								<string key="NSContents"/>
 								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="553496863"/>
+								<reference key="NSControlView" ref="834459839"/>
 								<bool key="NSDrawsBackground">YES</bool>
 								<reference key="NSBackgroundColor" ref="751214572"/>
 								<reference key="NSTextColor" ref="1002094199"/>
 							</object>
 						</object>
-						<object class="NSProgressIndicator" id="30607556">
+						<object class="NSProgressIndicator" id="744756666">
 							<reference key="NSNextResponder" ref="396637928"/>
 							<int key="NSvFlags">-2147482356</int>
 							<object class="NSPSMatrix" key="NSDrawMatrix"/>
@@ -3885,7 +3885,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">connectionProgressIndicator</string>
 						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="30607556"/>
+						<reference key="destination" ref="744756666"/>
 					</object>
 					<int key="connectionID">737</int>
 				</object>
@@ -3893,7 +3893,7 @@
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">connectionStatusLabel</string>
 						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="553496863"/>
+						<reference key="destination" ref="834459839"/>
 					</object>
 					<int key="connectionID">739</int>
 				</object>
@@ -4682,8 +4682,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1015514340"/>
-							<reference ref="30607556"/>
-							<reference ref="553496863"/>
+							<reference ref="744756666"/>
+							<reference ref="834459839"/>
 						</object>
 						<reference key="parent" ref="1048072440"/>
 					</object>
@@ -5631,21 +5631,21 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">734</int>
-						<reference key="object" ref="553496863"/>
+						<reference key="object" ref="834459839"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="132372143"/>
+							<reference ref="798740522"/>
 						</object>
 						<reference key="parent" ref="396637928"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">735</int>
-						<reference key="object" ref="132372143"/>
-						<reference key="parent" ref="553496863"/>
+						<reference key="object" ref="798740522"/>
+						<reference key="parent" ref="834459839"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">736</int>
-						<reference key="object" ref="30607556"/>
+						<reference key="object" ref="744756666"/>
 						<reference key="parent" ref="396637928"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -6085,8 +6085,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{247, 48}, {824, 713}}</string>
-					<string>{{247, 48}, {824, 713}}</string>
+					<string>{{260, 55}, {824, 713}}</string>
+					<string>{{260, 55}, {824, 713}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<reference ref="5"/>
