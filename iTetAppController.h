@@ -26,15 +26,21 @@
 	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetGameViewController* gameController;
 	
-	// Misc. Interface Objects
+	// List view (and controller) for servers on connection sheet
 	IBOutlet NSScrollView* serverListView;
 	IBOutlet NSArrayController* serverListController;
+	
+	// Menu and toolbar items
 	IBOutlet NSToolbarItem* connectionButton;
 	IBOutlet NSMenuItem* connectionMenuItem;
 	IBOutlet NSToolbarItem* gameButton;
 	IBOutlet NSMenuItem* gameMenuItem;
 	IBOutlet NSToolbarItem* pauseButton;
 	IBOutlet NSMenuItem* pauseMenuItem;
+	
+	// Connection progress indicator
+	IBOutlet NSProgressIndicator* connectionProgressIndicator;
+	IBOutlet NSTextField* connectionStatusLabel;
 	
 	// Network
 	iTetNetworkController* networkController;

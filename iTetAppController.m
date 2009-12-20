@@ -81,6 +81,13 @@
 		[connectionTimer invalidate];
 		connectionTimer = nil;
 		
+		// Stop and hide the progress indicator
+		[connectionProgressIndicator stopAnimation:self];
+		[connectionProgressIndicator setHidden:YES];
+		
+		// Change the connection status label
+		[connectionStatusLabel setStringValue:@"Connection canceled"];
+		
 		// Reset the label and image on the connection toolbar item
 		[connectionButton setLabel:@"Connect"];
 		[connectionButton setImage:[NSImage imageNamed:@"Network"]];
@@ -201,6 +208,8 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 #pragma mark -
 #pragma mark Modal Sheet Callbacks
 
+NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to server %@...";
+
 - (void)connectAlertDidEnd:(NSAlert*)dialog
 		    returnCode:(NSInteger)returnCode
 		   contextInfo:(void*)contextInfo
@@ -225,6 +234,14 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	[connectionButton setLabel:@"Cancel Connection"];
 	[connectionButton setImage:[NSImage imageNamed:@"Cancel Red Button"]];
 	
+	// Reveal and start the progress indicator
+	[connectionProgressIndicator setHidden:NO];
+	[connectionProgressIndicator startAnimation:self];
+	
+	// Change the connection status label
+	[connectionStatusLabel setStringValue:
+	 [NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
+	
 	// Start the connection timer
 	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
 									   target:self
@@ -247,6 +264,46 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	// Send the server an "end game" message
 	[networkController sendMessage:
 	 [NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
+}
+
+#pragma mark -
+#pragma mark Connection Timeout Callback
+
+- (void)connectionTimedOut:(NSTimer*)timer
+{
+	// Tell the network controller to abort the connection
+	[networkController disconnect];
+	
+	// Nil the timer
+	connectionTimer = nil;
+	
+	// Stop and hide the progress indicator
+	[connectionProgressIndicator stopAnimation:self];
+	[connectionProgressIndicator setHidden:YES];
+	
+	// Change the connection status label
+	[connectionStatusLabel setStringValue:@"Connection failed"];
+	
+	// Display an alert
+	NSAlert* alert = [NSAlert alertWithMessageText:@"Unable to Connect"
+						   defaultButton:@"Okay"
+						 alternateButton:nil
+						     otherButton:nil
+				   informativeTextWithFormat:@"Check server address and try again."];
+	
+	[alert beginSheetModalForWindow:window
+				modalDelegate:self
+			     didEndSelector:@selector(timedOutAlertEnded:returnCode:contextInfo:)
+				  contextInfo:NULL];
+}
+
+- (void)timedOutAlertEnded:(NSAlert*)alert
+		    returnCode:(int)returnCode
+		   contextInfo:(void*)contextInfo
+{
+	// Reset the connection button
+	[connectionButton setLabel:@"Connect"];
+	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
 }
 
 #pragma mark -
@@ -290,6 +347,13 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	[connectionTimer invalidate];
 	connectionTimer = nil;
 	
+	// Stop and hide the progress indicator
+	[connectionProgressIndicator stopAnimation:self];
+	[connectionProgressIndicator setHidden:YES];
+	
+	// Change the connection status label
+	[connectionStatusLabel setStringValue:@"Connected"];
+	
 	// Change the connection toolbar item
 	[connectionButton setLabel:@"Disconnect"];
 	[connectionButton setImage:[NSImage imageNamed:@"Eject Blue Button"]];
@@ -307,6 +371,9 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 {
 	[self removeAllPlayers];
 	
+	// Change the connection status label
+	[connectionStatusLabel setStringValue:@"Disconnected"];
+	
 	// Change the connection toolbar item
 	[connectionButton setLabel:@"Connect"];
 	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
@@ -321,6 +388,7 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 - (void)connectionError:(NSError*)error
 {
 	NSAlert* alert = [[NSAlert alloc] init];
+	[alert setMessageText:@"Error connecting to server"];
 	
 	// If we were attempting to connect, invalidate the timeout timer
 	if (connectionTimer != nil)
@@ -328,12 +396,13 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 		[connectionTimer invalidate];
 		connectionTimer = nil;
 		
-		[alert setMessageText:@"Error connecting to server"];
+		// Stop and hide the progress indicator
+		[connectionProgressIndicator stopAnimation:self];
+		[connectionProgressIndicator setHidden:YES];	
 	}
-	else
-	{
-		[alert setMessageText:@"Connection error"];
-	}
+	
+	// Change the connection status label
+	[connectionStatusLabel setStringValue:@"Error connecting to server"];
 	
 	// Determine the type of error
 	NSMutableString* errorText = [NSMutableString string];
@@ -375,9 +444,11 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 		[errorText appendFormat:@"Error code: %d", [error code]];
 	}
 	
+	// Add the error information to the alert, along with an "Okay" button
 	[alert setInformativeText:errorText];
 	[alert addButtonWithTitle:@"Okay"];
 	
+	// Run the error as a sheet
 	[alert beginSheetModalForWindow:window
 				modalDelegate:self
 			     didEndSelector:@selector(connectionErrorAlertEnded:returnCode:contextInfo:)
@@ -559,7 +630,7 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 		// FIXME: Debug logging
 		NSLog(@"DEBUG: MESSAGE: game pause state: %d", paused);
 		
-		// FIXME: WRITEME: pause game
+		[gameController setGamePaused:paused];
 	}
 	// Player left
 	else if ([messageType isEqualToString:PlayerLeftMessage])
@@ -875,39 +946,6 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	playerCount = 0;
 	
 	[self didChangeValueForKey:@"playerList"];
-}
-
-#pragma mark -
-#pragma mark Connection Timeout Callback
-
-- (void)connectionTimedOut:(NSTimer*)timer
-{
-	// Tell the network controller to abort the connection
-	[networkController disconnect];
-	
-	// Nil the timer
-	connectionTimer = nil;
-	
-	// Display an alert
-	NSAlert* alert = [NSAlert alertWithMessageText:@"Unable to Connect"
-						   defaultButton:@"Okay"
-						 alternateButton:nil
-						     otherButton:nil
-				   informativeTextWithFormat:@"Check server address and try again."];
-	
-	[alert beginSheetModalForWindow:window
-				modalDelegate:self
-			     didEndSelector:@selector(timedOutAlertEnded:returnCode:contextInfo:)
-				  contextInfo:NULL];
-}
-
-- (void)timedOutAlertEnded:(NSAlert*)alert
-		    returnCode:(int)returnCode
-		   contextInfo:(void*)contextInfo
-{
-	// Reset the connection button
-	[connectionButton setLabel:@"Connect"];
-	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
 }
 
 #pragma mark -
