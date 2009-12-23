@@ -15,12 +15,6 @@
 #import "iTetGameRules.h"
 #import "Queue.h"
 
-#define BOARD_1	0x01
-#define BOARD_2	0x02
-#define BOARD_3	0x04
-#define BOARD_4	0x08
-#define BOARD_5	0x10
-
 @implementation iTetGameViewController
 
 - (id)init
@@ -34,8 +28,15 @@
 {
 	[currentGameRules release];
 	[actionHistory release];
+	[boards release];
 	
 	[super dealloc];
+}
+
+- (void)awakeFromNib
+{
+	boards = [[NSArray alloc] initWithObjects:
+		    board1, board2, board3, board4, board5, nil];
 }
 
 #pragma mark -
@@ -61,36 +62,17 @@
 	}
 	
 	// Otherwise, find an un-assigned board, and assign it to the player
-	if ((assignedBoards & BOARD_1) == 0)
+	for (iTetBoardView* board in boards)
 	{
-		[board1 setOwner:player];
-		assignedBoards += BOARD_1;
+		if ([board owner] == nil)
+		{
+			[board setOwner:player];
+			return;
+		}
 	}
-	else if ((assignedBoards & BOARD_2) == 0)
-	{
-		[board2 setOwner:player];
-		assignedBoards += BOARD_2;
-	}
-	else if ((assignedBoards & BOARD_3) == 0)
-	{
-		[board3 setOwner:player];
-		assignedBoards += BOARD_3;
-	}
-	else if ((assignedBoards & BOARD_4) == 0)
-	{
-		[board4 setOwner:player];
-		assignedBoards += BOARD_4;
-	}
-	else if ((assignedBoards & BOARD_5) == 0)
-	{
-		[board5 setOwner:player];
-		assignedBoards += BOARD_5;
-	}
-	else
-	{
-		// No available boards (shouldn't happen)
-		NSLog(@"Warning: iTetGameController -assignBoardToPlayer: called with no available boards");
-	}
+	
+	// No available boards (shouldn't happen)
+	NSLog(@"Warning: iTetGameController -assignBoardToPlayer: called with no available boards");
 }
 
 - (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
@@ -104,38 +86,18 @@
 		return;
 	}
 	
-	// Otherwise, find the board belonging to this player
-	int playerNum = [player playerNumber];
-	if ([[board1 owner] playerNumber] == playerNum)
+	// Otherwise, find the board belonging to this player, and un-assign it
+	for (iTetBoardView* board in boards)
 	{
-		[board1 setOwner:nil];
-		assignedBoards -= BOARD_1;
+		if ([[board owner] playerNumber] == [player playerNumber])
+		{
+			[board setOwner:nil];
+			return;
+		}
 	}
-	else if ([[board2 owner] playerNumber] == playerNum)
-	{
-		[board2 setOwner:nil];
-		assignedBoards -= BOARD_2;
-	}
-	else if ([[board3 owner] playerNumber] == playerNum)
-	{
-		[board3 setOwner:nil];
-		assignedBoards -= BOARD_3;
-	}
-	else if ([[board4 owner] playerNumber] == playerNum)
-	{
-		[board4 setOwner:nil];
-		assignedBoards -= BOARD_4;
-	}
-	else if ([[board5 owner] playerNumber] == playerNum)
-	{
-		[board5 setOwner:nil];
-		assignedBoards -= BOARD_5;
-	}
-	else
-	{
-		// Player is not assigned to a board (shouldn't happen)
-		NSLog(@"Warning: iTetGameController -removeBoardAssignmentForPlayer: called with player not assigned to a board");
-	}
+	
+	// Player is not assigned to a board (shouldn't happen)
+	NSLog(@"Warning: iTetGameController -removeBoardAssignmentForPlayer: called with player not assigned to a board");
 }
 
 #pragma mark -

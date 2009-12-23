@@ -33,6 +33,7 @@
 	IBOutlet iTetBoardView* board3;
 	IBOutlet iTetBoardView* board4;
 	IBOutlet iTetBoardView* board5;
+	NSArray* boards;
 	
 	// Chat views
 	IBOutlet NSTextView* chatView;
@@ -40,9 +41,6 @@
 	
 	// Action history view
 	IBOutlet NSTableView* actionListView;
-	
-	// Assigned board views
-	char assignedBoards;
 	
 	// Rules for game in progress (nil indicates no game in progress)
 	iTetGameRules* currentGameRules;
