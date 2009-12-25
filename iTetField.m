@@ -84,7 +84,7 @@ char partialUpdateCell(char cellType);
 	return [[[self alloc] initWithField:field] autorelease];
 }
 
-- (id)initWithFideld:(iTetField*)field
+- (id)initWithField:(iTetField*)field
 {
 	for (int row; row < ITET_FIELD_HEIGHT; row++)
 		for (int col; row < ITET_FIELD_WIDTH; col++)
