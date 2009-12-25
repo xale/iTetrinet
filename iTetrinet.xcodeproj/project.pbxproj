@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		6A05EE1010B5A94D0002F86E /* iTetKeyActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A05EE0F10B5A94D0002F86E /* iTetKeyActions.m */; };
+		6A12A26710E4A03400EA67B7 /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26410E4A03400EA67B7 /* gtetblocks.png */; };
+		6A12A26810E4A03400EA67B7 /* gTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26510E4A03400EA67B7 /* gTetrinetTheme.cfg */; };
+		6A12A26910E4A03400EA67B7 /* iTetBlocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26610E4A03400EA67B7 /* iTetBlocks.png */; };
 		6A2922AE100BE5CF0008A3C3 /* iTetPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */; };
 		6A29233D100BED350008A3C3 /* iTetNextBlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29233C100BED350008A3C3 /* iTetNextBlockView.m */; };
 		6A2923CF100BFB7A0008A3C3 /* iTetThemedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */; };
@@ -30,7 +33,6 @@
 		6A96B57610098E88003D353E /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56A10098E88003D353E /* Node.m */; };
 		6A96B57710098E88003D353E /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56C10098E88003D353E /* Queue.m */; };
 		6A96B57F10098F49003D353E /* iTetAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B57E10098F49003D353E /* iTetAppController.m */; };
-		6A96B59010098FFD003D353E /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58910098FFD003D353E /* blocks.png */; };
 		6A96B59110098FFD003D353E /* Cancel Red Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58A10098FFD003D353E /* Cancel Red Button.png */; };
 		6A96B59210098FFD003D353E /* Eject Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58B10098FFD003D353E /* Eject Blue Button.png */; };
 		6A96B59310098FFD003D353E /* Network.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58C10098FFD003D353E /* Network.png */; };
@@ -76,6 +78,9 @@
 		32CA4F630368D1EE00C91783 /* iTetrinet_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetrinet_Prefix.pch; sourceTree = "<group>"; };
 		6A05EE0E10B5A94D0002F86E /* iTetKeyActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyActions.h; sourceTree = "<group>"; };
 		6A05EE0F10B5A94D0002F86E /* iTetKeyActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyActions.m; sourceTree = "<group>"; };
+		6A12A26410E4A03400EA67B7 /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
+		6A12A26510E4A03400EA67B7 /* gTetrinetTheme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gTetrinetTheme.cfg; sourceTree = "<group>"; };
+		6A12A26610E4A03400EA67B7 /* iTetBlocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks.png; sourceTree = "<group>"; };
 		6A2922AC100BE5CF0008A3C3 /* iTetPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPreferencesController.h; sourceTree = "<group>"; };
 		6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPreferencesController.m; sourceTree = "<group>"; };
 		6A29233B100BED350008A3C3 /* iTetNextBlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNextBlockView.h; sourceTree = "<group>"; };
@@ -120,7 +125,6 @@
 		6A96B56C10098E88003D353E /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
 		6A96B57D10098F49003D353E /* iTetAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetAppController.h; sourceTree = "<group>"; };
 		6A96B57E10098F49003D353E /* iTetAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetAppController.m; sourceTree = "<group>"; };
-		6A96B58910098FFD003D353E /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blocks.png; sourceTree = "<group>"; };
 		6A96B58A10098FFD003D353E /* Cancel Red Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cancel Red Button.png"; sourceTree = "<group>"; };
 		6A96B58B10098FFD003D353E /* Eject Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Eject Blue Button.png"; sourceTree = "<group>"; };
 		6A96B58C10098FFD003D353E /* Network.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Network.png; sourceTree = "<group>"; };
@@ -428,8 +432,10 @@
 		6A96B5981009900C003D353E /* Themes */ = {
 			isa = PBXGroup;
 			children = (
-				6A96B58910098FFD003D353E /* blocks.png */,
 				6A96B58F10098FFD003D353E /* theme.cfg */,
+				6A12A26610E4A03400EA67B7 /* iTetBlocks.png */,
+				6A12A26510E4A03400EA67B7 /* gTetrinetTheme.cfg */,
+				6A12A26410E4A03400EA67B7 /* gtetblocks.png */,
 			);
 			name = Themes;
 			sourceTree = "<group>";
@@ -542,7 +548,6 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				6A96B59010098FFD003D353E /* blocks.png in Resources */,
 				6A96B59110098FFD003D353E /* Cancel Red Button.png in Resources */,
 				6A96B59210098FFD003D353E /* Eject Blue Button.png in Resources */,
 				6A96B59310098FFD003D353E /* Network.png in Resources */,
@@ -556,6 +561,9 @@
 				6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */,
 				6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */,
 				6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */,
+				6A12A26710E4A03400EA67B7 /* gtetblocks.png in Resources */,
+				6A12A26810E4A03400EA67B7 /* gTetrinetTheme.cfg in Resources */,
+				6A12A26910E4A03400EA67B7 /* iTetBlocks.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

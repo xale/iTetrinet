@@ -14,7 +14,11 @@
 
 + (NSArray*)defaultThemeList
 {
-	return [NSArray arrayWithObject:[self defaultTheme]];
+	return [NSArray arrayWithObjects:
+		  [self defaultTheme],
+		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"gTetrinetTheme"
+											     ofType:@"cfg"]],
+		  nil];
 }
 
 + (id)defaultTheme
