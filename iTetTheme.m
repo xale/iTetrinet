@@ -6,7 +6,7 @@
 //
 
 #import "iTetTheme.h"
-#import "iTetBoard.h"
+#import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
@@ -179,17 +179,17 @@
 	NSImage* sheet = [[[NSImage alloc] initWithContentsOfFile:[self imageFilePath]] autorelease];
 	
 	// Create an image for the background
-	NSSize boardSize = NSMakeSize((cellSize.width * ITET_BOARD_WIDTH),
-						(cellSize.height * ITET_BOARD_HEIGHT));
-	background = [[NSImage alloc] initWithSize:boardSize];
+	NSSize fieldSize = NSMakeSize((cellSize.width * ITET_FIELD_WIDTH),
+						(cellSize.height * ITET_FIELD_HEIGHT));
+	background = [[NSImage alloc] initWithSize:fieldSize];
 	
 	// Draw the background portion of the sheet to the background
-	NSRect boardRect;
-	boardRect.origin = NSZeroPoint;
-	boardRect.size = boardSize;
+	NSRect fieldRect;
+	fieldRect.origin = NSZeroPoint;
+	fieldRect.size = fieldSize;
 	[background lockFocus];
-	[sheet drawInRect:boardRect
-		   fromRect:boardRect
+	[sheet drawInRect:fieldRect
+		   fromRect:fieldRect
 		  operation:NSCompositeCopy
 		   fraction:1.0];
 	[background unlockFocus];

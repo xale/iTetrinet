@@ -1,5 +1,5 @@
 //
-//  iTetLocalBoardView.h
+//  iTetLocalFieldView.h
 //  iTetrinet
 //
 //  Created by Alex Heinz on 8/28/09.
@@ -8,10 +8,10 @@
 // player input. Used only for the local player's board.
 
 #import <Cocoa/Cocoa.h>
-#import "iTetBoardView.h"
+#import "iTetFieldView.h"
 #import "iTetLocalPlayerView.h"
 
-@interface iTetLocalBoardView : iTetBoardView <iTetLocalPlayerView>
+@interface iTetLocalFieldView : iTetFieldView <iTetLocalPlayerView>
 {
 	
 }

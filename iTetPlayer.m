@@ -17,7 +17,7 @@
 	playerNumber = number;
 	teamName = [team copy];
 	
-	board = [[iTetBoard alloc] initWithRandomContents];
+	field = [[iTetField alloc] initWithRandomContents];
 	
 	return self;
 }
@@ -40,7 +40,7 @@
 {
 	[nickname release];
 	[teamName release];
-	[board release];
+	[field release];
 	
 	[super dealloc];
 }
@@ -51,7 +51,7 @@
 @synthesize nickname;
 @synthesize playerNumber;
 @synthesize teamName;
-@synthesize board;
+@synthesize field;
 @synthesize level;
 
 @end

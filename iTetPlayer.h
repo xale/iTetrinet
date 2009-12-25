@@ -6,7 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetBoard.h"
+#import "iTetField.h"
 
 @interface iTetPlayer : NSObject
 {
@@ -14,7 +14,7 @@
 	int playerNumber;
 	NSString* teamName;
 	
-	iTetBoard* board;
+	iTetField* field;
 	int level;
 }
 
@@ -28,7 +28,7 @@
 @property (readwrite, copy) NSString* nickname;
 @property (readwrite, assign) int playerNumber;
 @property (readwrite, copy) NSString* teamName;
-@property (readwrite, retain) iTetBoard* board;
+@property (readwrite, retain) iTetField* field;
 @property (readwrite, assign) int level;
 
 @end

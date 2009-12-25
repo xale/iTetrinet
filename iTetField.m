@@ -1,46 +1,46 @@
 //
-//  iTetBoard.m
+//  iTetField.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/5/09.
 //
 
-#import "iTetBoard.h"
+#import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
 // For the partial update string, rows are indexed from '3' (decimal 51), top to bottom...
-#define ITET_PARTIAL_ROW(row)	((ITET_BOARD_HEIGHT - row) + '3')
+#define ITET_PARTIAL_ROW(row)	((ITET_FIELD_HEIGHT - row) + '3')
 // ...columns from '3' (51), right to left...
-#define ITET_PARTIAL_COL(col)	((ITET_BOARD_WIDTH - col) + '3')
+#define ITET_PARTIAL_COL(col)	((ITET_FIELD_WIDTH - col) + '3')
 // ...and the cell contents are mapped to different characters
 char partialUpdateCell(char cellType);
 
-@implementation iTetBoard
+@implementation iTetField
 
-+ (id)board
++ (id)field
 {
 	return [[[self alloc] init] autorelease];
 }
 
 - (id)init
 {
-	for (int row = 0; row < ITET_BOARD_HEIGHT; row++)
-		memset((void*)(contents[row]), 0, ITET_BOARD_WIDTH);
+	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+		memset((void*)(contents[row]), 0, ITET_FIELD_WIDTH);
 	
 	return self;
 }
 
-#pragma mark Boards with Starting Stack
+#pragma mark Fields with Starting Stack
 
-+ (id)boardWithStackHeight:(int)stackHeight
++ (id)fieldWithStackHeight:(int)stackHeight
 {
 	return [[[self alloc] initWithStackHeight:stackHeight] autorelease];
 }
 
 - (id)initWithStackHeight:(int)stackHeight
 {
-	// Start with an empty board
+	// Start with an empty field
 	[self init];
 	
 	// For each row of the starting stack, fill with debris
@@ -48,11 +48,11 @@ char partialUpdateCell(char cellType);
 	for (int row = 0; row < stackHeight; row++)
 	{
 		// Fill the row randomly
-		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
+		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[row][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 		
 		// Choose a random column index
-		int emptyCol = random() % ITET_BOARD_WIDTH;
+		int emptyCol = random() % ITET_FIELD_WIDTH;
 		
 		// Ensure that at least one column index is empty
 		contents[row][emptyCol] = 0;
@@ -61,34 +61,34 @@ char partialUpdateCell(char cellType);
 	return self;
 }
 
-#pragma mark Random Boards
+#pragma mark Random Fields
 
-+ (id)boardWithRandomContents
++ (id)fieldWithRandomContents
 {
 	return [[[self alloc] initWithRandomContents] autorelease];
 }
 
 - (id)initWithRandomContents
 {
-	for (int row = 0; row < ITET_BOARD_HEIGHT; row++)
-		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
+	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
 	
 	return self;
 }
 
-#pragma mark Duplicate Boards
+#pragma mark Duplicate Fields
 
-+ (id)boardWithBoard:(iTetBoard*)board
++ (id)fieldWithField:(iTetField*)field
 {
-	return [[[self alloc] initWithBoard:board] autorelease];
+	return [[[self alloc] initWithField:field] autorelease];
 }
 
-- (id)initWithBoard:(iTetBoard*)board
+- (id)initWithFideld:(iTetField*)field
 {
-	for (int row; row < ITET_BOARD_HEIGHT; row++)
-		for (int col; row < ITET_BOARD_WIDTH; col++)
-			contents[row][col] = [board cellAtRow:row column:col];
+	for (int row; row < ITET_FIELD_HEIGHT; row++)
+		for (int col; row < ITET_FIELD_WIDTH; col++)
+			contents[row][col] = [field cellAtRow:row column:col];
 	
 	return self;
 }
@@ -102,7 +102,7 @@ char partialUpdateCell(char cellType);
 	char cell;
 	ObstructionState side = obstructNone;
 	
-	// For each cell in the block, check if it is obstructed on the board
+	// For each cell in the block, check if it is obstructed on the field
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_BLOCK_WIDTH; row++)
@@ -136,12 +136,12 @@ char partialUpdateCell(char cellType);
 - (ObstructionState)cellObstructedAtRow:(int)row
 					   column:(int)col
 {
-	// Check if obstructed by sides of board
-	if ((col < 0) || (col >= ITET_BOARD_WIDTH))
+	// Check if obstructed by sides of field
+	if ((col < 0) || (col >= ITET_FIELD_WIDTH))
 		return obstructHoriz;
 	
-	// Check if obstructed by top/bottom of board
-	if ((row < 0) || (row >= ITET_BOARD_HEIGHT))
+	// Check if obstructed by top/bottom of field
+	if ((row < 0) || (row >= ITET_FIELD_HEIGHT))
 		return obstructVert;
 	
 	// Check if the cell is occupied
@@ -168,7 +168,7 @@ char partialUpdateCell(char cellType);
 			cell = [block cellAtRow:row column:col];
 			if (cell)
 			{
-				// Add this cell of the block to the board
+				// Add this cell of the block to the field
 				contents[[block rowPos] + row][[block colPos] + col] = cell;
 				
 				// If this cell is a different "color" from the last one in the partial update, add that information to the update string
@@ -196,13 +196,13 @@ char partialUpdateCell(char cellType);
 
 - (NSString*)fieldstring
 {
-	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_BOARD_WIDTH * ITET_BOARD_HEIGHT)];
+	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT)];
 	
 	char cell;
-	// Iterate over the whole board
-	for (int row = 0; row < ITET_BOARD_HEIGHT; row++)
+	// Iterate over the whole field
+	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (int col = 0; col < ITET_BOARD_HEIGHT; col++)
+		for (int col = 0; col < ITET_FIELD_HEIGHT; col++)
 		{
 			// Get the contents of this cell
 			cell = contents[row][col];

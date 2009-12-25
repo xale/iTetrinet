@@ -250,7 +250,7 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat:@"<iTetKeyNamePair code:%d name:%@>", [self keyCode], [self keyName]];
+	return [NSString stringWithFormat:@"<iTetKeyNamePair code:%d name:%@>", [self keyCode], [self printedName]];
 }
 
 @end

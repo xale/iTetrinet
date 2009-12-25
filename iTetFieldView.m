@@ -1,15 +1,15 @@
 //
-//  iTetBoardView.m
+//  iTetFieldView.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/5/09.
 //
 
-#import "iTetBoardView.h"
-#import "iTetBoard.h"
+#import "iTetFieldView.h"
+#import "iTetField.h"
 #import "iTetBlock.h"
 
-@implementation iTetBoardView
+@implementation iTetFieldView
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -17,7 +17,7 @@
 		return nil;
 	
 	[self addObserver:self
-		 forKeyPath:@"owner.board"
+		 forKeyPath:@"owner.field"
 		    options:0
 		    context:NULL];
 	
@@ -75,7 +75,7 @@
 			  operation:NSCompositeCopy
 			   fraction:1.0];
 	
-	// If we have no board contents to draw, we are finished
+	// If we have no field contents to draw, we are finished
 	if (owner == nil)
 	{
 		// Pop graphics context before returning
@@ -83,17 +83,17 @@
 		return;
 	}
 	
-	// Draw the board contents
-	iTetBoard* board = [owner board];
+	// Draw the field contents
+	iTetField* field = [owner field];
 	char cell;
 	NSImage* cellImage;
 	NSPoint drawPoint = NSZeroPoint;
-	for (int row = 0; row < ITET_BOARD_HEIGHT; row++)
+	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (int col = 0; col < ITET_BOARD_WIDTH; col++)
+		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the cell type
-			cell = [board cellAtRow:row
+			cell = [field cellAtRow:row
 					     column:col];
 			
 			// If there is nothing to draw, skip to next iteration of loop

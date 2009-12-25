@@ -9,11 +9,10 @@
 #import "iTetSpecials.h"
 
 @class iTetAppController;
-@class iTetBoardView;
-@class iTetLocalBoardView;
+@class iTetFieldView;
+@class iTetLocalFieldView;
 @class iTetNextBlockView;
 @class iTetSpecialsView;
-@class iTetGame;
 @class iTetPlayer;
 @class iTetGameRules;
 
@@ -23,17 +22,17 @@
 	
 	// Interface objects
 	// Local player's views
-	IBOutlet iTetLocalBoardView* localBoardView;
+	IBOutlet iTetLocalFieldView* localFieldView;
 	IBOutlet iTetNextBlockView* nextBlockView;
 	IBOutlet iTetSpecialsView* specialsView;
 	
-	// Remote players' board views
-	IBOutlet iTetBoardView* board1;
-	IBOutlet iTetBoardView* board2;
-	IBOutlet iTetBoardView* board3;
-	IBOutlet iTetBoardView* board4;
-	IBOutlet iTetBoardView* board5;
-	NSArray* boards;
+	// Remote players' field views
+	IBOutlet iTetFieldView* field1;
+	IBOutlet iTetFieldView* field2;
+	IBOutlet iTetFieldView* field3;
+	IBOutlet iTetFieldView* field4;
+	IBOutlet iTetFieldView* field5;
+	NSArray* fieldViews;
 	
 	// Chat views
 	IBOutlet NSTextView* chatView;
@@ -54,8 +53,8 @@
 
 - (IBAction)sendMessage:(id)sender;
 
-- (void)assignBoardToPlayer:(iTetPlayer*)player;
-- (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player;
+- (void)assignFieldViewToPlayer:(iTetPlayer*)player;
+- (void)removeFieldViewAssignmentForPlayer:(iTetPlayer*)player;
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;

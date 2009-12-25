@@ -8,10 +8,10 @@
 #import "iTetGameViewController.h"
 #import "iTetAppController.h"
 #import "iTetLocalPlayer.h"
-#import "iTetLocalBoardView.h"
+#import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
-#import "iTetBoard.h"
+#import "iTetField.h"
 #import "iTetGameRules.h"
 #import "Queue.h"
 
@@ -28,15 +28,15 @@
 {
 	[currentGameRules release];
 	[actionHistory release];
-	[boards release];
+	[fieldViews release];
 	
 	[super dealloc];
 }
 
 - (void)awakeFromNib
 {
-	boards = [[NSArray alloc] initWithObjects:
-		    board1, board2, board3, board4, board5, nil];
+	fieldViews = [[NSArray alloc] initWithObjects:
+			  field1, field2, field3, field4, field5, nil];
 }
 
 #pragma mark -
@@ -48,56 +48,56 @@
 }
 
 #pragma mark -
-#pragma mark Player-Board Assignment
+#pragma mark Player-Field Assignment
 
-- (void)assignBoardToPlayer:(iTetPlayer*)player
+- (void)assignFieldViewToPlayer:(iTetPlayer*)player
 {	
-	// If this player is the local player, assign the local board and related views
+	// If this player is the local player, assign the local field and related views
 	if ([player isKindOfClass:[iTetLocalPlayer class]])
 	{
-		[localBoardView setOwner:player];
+		[localFieldView setOwner:player];
 		[nextBlockView setOwner:player];
 		[specialsView setOwner:player];
 		return;
 	}
 	
-	// Otherwise, find an un-assigned board, and assign it to the player
-	for (iTetBoardView* board in boards)
+	// Otherwise, find an un-assigned field view, and assign it to the player
+	for (iTetFieldView* field in fieldViews)
 	{
-		if ([board owner] == nil)
+		if ([field owner] == nil)
 		{
-			[board setOwner:player];
+			[field setOwner:player];
 			return;
 		}
 	}
 	
-	// No available boards (shouldn't happen)
-	NSLog(@"Warning: iTetGameController -assignBoardToPlayer: called with no available boards");
+	// No available field views (shouldn't happen)
+	NSLog(@"Warning: iTetGameController -assignFieldViewToPlayer: called with no available field views");
 }
 
-- (void)removeBoardAssignmentForPlayer:(iTetPlayer*)player
+- (void)removeFieldViewAssignmentForPlayer:(iTetPlayer*)player
 {
 	// If this is the local player, remove the local views' owner
 	if ([player isKindOfClass:[iTetLocalPlayer class]])
 	{
-		[localBoardView setOwner:nil];
+		[localFieldView setOwner:nil];
 		[nextBlockView setOwner:nil];
 		[specialsView setOwner:nil];
 		return;
 	}
 	
-	// Otherwise, find the board belonging to this player, and un-assign it
-	for (iTetBoardView* board in boards)
+	// Otherwise, find the field view belonging to this player, and un-assign it
+	for (iTetFieldView* field in fieldViews)
 	{
-		if ([[board owner] playerNumber] == [player playerNumber])
+		if ([[field owner] playerNumber] == [player playerNumber])
 		{
-			[board setOwner:nil];
+			[field setOwner:nil];
 			return;
 		}
 	}
 	
-	// Player is not assigned to a board (shouldn't happen)
-	NSLog(@"Warning: iTetGameController -removeBoardAssignmentForPlayer: called with player not assigned to a board");
+	// Player is not assigned to a field view (shouldn't happen)
+	NSLog(@"Warning: iTetGameController -removeFieldViewAssignmentForPlayer: called with player not assigned to a field view");
 }
 
 #pragma mark -
@@ -112,22 +112,22 @@
 	// Retain the game rules
 	currentGameRules = [rules retain];
 	
-	// Set up the players' boards
+	// Set up the players' fields
 	for (iTetPlayer* player in players)
 	{
 		// If this is the local player, do some extra stuff
 		if ([player isKindOfClass:[iTetLocalPlayer class]])
 		{	
-			// Create a board with initial random garbage
-			[player setBoard:[iTetBoard boardWithStackHeight:[rules initialStackHeight]]];
+			// Create a field with initial random garbage
+			[player setField:[iTetField fieldWithStackHeight:[rules initialStackHeight]]];
 			
-			// Send the newly-created board to the server
+			// Send the newly-created field to the server
 			[self sendFieldstring];
 		}
-		// Otherwise, just give the player a blank board
+		// Otherwise, just give the player a blank field
 		else
 		{
-			[player setBoard:[iTetBoard board]];
+			[player setField:[iTetField field]];
 		}
 		
 		// Set the starting level
@@ -162,12 +162,12 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 {
 	iTetLocalPlayer* player = [appController localPlayer];
 	
-	// Send the string for the local player's board to the server
+	// Send the string for the local player's field to the server
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
 	  iTetFieldstringMessageFormat,
 	  [player playerNumber],
-	  [[player board] fieldstring]]];
+	  [[player field] fieldstring]]];
 	 
 }
 
@@ -175,12 +175,12 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 {
 	iTetLocalPlayer* player = [appController localPlayer];
 	
-	// Send the last partial update on the local player's board to the server
+	// Send the last partial update on the local player's field to the server
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
 	  iTetFieldstringMessageFormat,
 	  [player playerNumber],
-	  [[player board] fieldstring]]];
+	  [[player field] fieldstring]]];
 }
 
 #pragma mark -

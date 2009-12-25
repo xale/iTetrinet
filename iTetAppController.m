@@ -802,7 +802,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: local player assigned to occupied player slot");
-		[gameController removeBoardAssignmentForPlayer:players[(number -1)]];
+		[gameController removeFieldViewAssignmentForPlayer:players[(number -1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
@@ -819,7 +819,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Move to the new location in the players array
 		players[(number - 1)] = (iTetPlayer*)[self localPlayer];
 		
-		// No need to notify game controller; board assignment will not change
+		// No need to notify game controller; field assignment will not change
 	}
 	else
 	{
@@ -834,8 +834,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Update player count
 		playerCount++;
 		
-		// Assign the local board to this player
-		[gameController assignBoardToPlayer:localPlayer];
+		// Assign the local field view to this player
+		[gameController assignFieldViewToPlayer:localPlayer];
 		
 		// Send the player's team name to the server
 		if (![[[self localPlayer] teamName] isEqualToString:@""])
@@ -862,7 +862,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
-		[gameController removeBoardAssignmentForPlayer:players[(number - 1)]];
+		[gameController removeFieldViewAssignmentForPlayer:players[(number - 1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
@@ -876,8 +876,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	[self didChangeValueForKey:@"playerList"];
 	
-	// Assign a board for the new player
-	[gameController assignBoardToPlayer:players[(number - 1)]];
+	// Assign a field for the new player
+	[gameController assignFieldViewToPlayer:players[(number - 1)]];
 }
 
 - (void)setTeamName:(NSString*)team
@@ -909,8 +909,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		return;
 	}
 	
-	// Remove the player's board assignment
-	[gameController removeBoardAssignmentForPlayer:players[(number - 1)]];
+	// Remove the player's field view assignment
+	[gameController removeFieldViewAssignmentForPlayer:players[(number - 1)]];
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -933,7 +933,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		if (players[i] != nil)
 		{
-			[gameController removeBoardAssignmentForPlayer:players[i]];
+			[gameController removeFieldViewAssignmentForPlayer:players[i]];
 			[players[i] release];
 			players[i] = nil;
 		}

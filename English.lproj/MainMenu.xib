@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="620"/>
-			<integer value="29"/>
 			<integer value="575"/>
+			<integer value="501"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1001,7 +1001,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">2</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1010,7 +1010,7 @@
 												<int key="NSvFlags">274</int>
 												<string key="NSFrame">{{17, 158}, {240, 440}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetLocalBoardView</string>
+												<string key="NSClassName">iTetLocalFieldView</string>
 											</object>
 											<object class="NSCustomView" id="249663700">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1308,7 +1308,7 @@
 												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{385, 381}, {120, 220}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetBoardView</string>
+												<string key="NSClassName">iTetFieldView</string>
 											</object>
 											<object class="NSTextField" id="383164859">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1331,7 +1331,7 @@
 												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{513, 381}, {120, 220}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetBoardView</string>
+												<string key="NSClassName">iTetFieldView</string>
 											</object>
 											<object class="NSTextField" id="756125185">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1354,7 +1354,7 @@
 												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{641, 381}, {120, 220}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetBoardView</string>
+												<string key="NSClassName">iTetFieldView</string>
 											</object>
 											<object class="NSTextField" id="1044636452">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1377,7 +1377,7 @@
 												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{513, 130}, {120, 220}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetBoardView</string>
+												<string key="NSClassName">iTetFieldView</string>
 											</object>
 											<object class="NSTextField" id="520024283">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1400,7 +1400,7 @@
 												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{641, 130}, {120, 220}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
-												<string key="NSClassName">iTetBoardView</string>
+												<string key="NSClassName">iTetFieldView</string>
 											</object>
 											<object class="NSTextField" id="357533635">
 												<reference key="NSNextResponder" ref="1052209441"/>
@@ -1926,6 +1926,7 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -1934,7 +1935,7 @@
 								<object class="NSTabViewItem" id="886642519">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="88341571">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2550,21 +2551,20 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Chat</string>
 									<reference key="NSColor" ref="751214572"/>
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="886642519"/>
+							<reference key="NSSelectedTabViewItem" ref="210918728"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="88341571"/>
+								<reference ref="1052209441"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -3622,54 +3622,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">localBoardView</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="701483452"/>
-					</object>
-					<int key="connectionID">675</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">board1</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="763875518"/>
-					</object>
-					<int key="connectionID">676</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">board2</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="514836372"/>
-					</object>
-					<int key="connectionID">677</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">board3</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="372708780"/>
-					</object>
-					<int key="connectionID">678</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">board4</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="946716394"/>
-					</object>
-					<int key="connectionID">679</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">board5</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="778172441"/>
-					</object>
-					<int key="connectionID">680</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">chatView</string>
 						<reference key="source" ref="484487917"/>
 						<reference key="destination" ref="61334635"/>
@@ -4044,6 +3996,62 @@
 						<reference key="destination" ref="342405319"/>
 					</object>
 					<int key="connectionID">764</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">eventDelegate</string>
+						<reference key="source" ref="701483452"/>
+						<reference key="destination" ref="484487917"/>
+					</object>
+					<int key="connectionID">766</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">field1</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="763875518"/>
+					</object>
+					<int key="connectionID">767</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">field2</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="514836372"/>
+					</object>
+					<int key="connectionID">768</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">field3</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="372708780"/>
+					</object>
+					<int key="connectionID">769</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">field4</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="946716394"/>
+					</object>
+					<int key="connectionID">770</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">field5</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="778172441"/>
+					</object>
+					<int key="connectionID">771</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">localFieldView</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="701483452"/>
+					</object>
+					<int key="connectionID">772</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -6085,8 +6093,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{207, 87}, {824, 713}}</string>
-					<string>{{207, 87}, {824, 713}}</string>
+					<string>{{254, -9}, {824, 713}}</string>
+					<string>{{254, -9}, {824, 713}}</string>
 					<reference ref="9"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<reference ref="5"/>
@@ -6289,7 +6297,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">764</int>
+			<int key="maxID">772</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -6355,27 +6363,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">iTetBoardView</string>
-					<string key="superclassName">iTetThemedView</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSMutableArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>nicknameField</string>
-							<string>numberField</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSTextField</string>
-							<string>NSTextField</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetBoardView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">iTetChatViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -6403,6 +6390,27 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">iTetFieldView</string>
+					<string key="superclassName">iTetThemedView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>nicknameField</string>
+							<string>numberField</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTextField</string>
+							<string>NSTextField</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetFieldView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">iTetGameViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -6415,13 +6423,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionListView</string>
 							<string>appController</string>
-							<string>board1</string>
-							<string>board2</string>
-							<string>board3</string>
-							<string>board4</string>
-							<string>board5</string>
 							<string>chatView</string>
-							<string>localBoardView</string>
+							<string>field1</string>
+							<string>field2</string>
+							<string>field3</string>
+							<string>field4</string>
+							<string>field5</string>
+							<string>localFieldView</string>
 							<string>messageField</string>
 							<string>nextBlockView</string>
 							<string>specialsView</string>
@@ -6430,13 +6438,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSTableView</string>
 							<string>iTetAppController</string>
-							<string>iTetBoardView</string>
-							<string>iTetBoardView</string>
-							<string>iTetBoardView</string>
-							<string>iTetBoardView</string>
-							<string>iTetBoardView</string>
 							<string>NSTextView</string>
-							<string>iTetLocalBoardView</string>
+							<string>iTetFieldView</string>
+							<string>iTetFieldView</string>
+							<string>iTetFieldView</string>
+							<string>iTetFieldView</string>
+							<string>iTetFieldView</string>
+							<string>iTetLocalFieldView</string>
 							<string>NSTextField</string>
 							<string>iTetNextBlockView</string>
 							<string>iTetSpecialsView</string>
@@ -6448,11 +6456,15 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">iTetLocalBoardView</string>
-					<string key="superclassName">iTetBoardView</string>
+					<string key="className">iTetLocalFieldView</string>
+					<string key="superclassName">iTetFieldView</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">eventDelegate</string>
+						<string key="NS.object.0">id</string>
+					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetLocalBoardView.h</string>
+						<string key="minorKey">iTetLocalFieldView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

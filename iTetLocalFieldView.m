@@ -1,15 +1,15 @@
 //
-//  iTetLocalBoardView.m
+//  iTetLocalFieldView.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 8/28/09.
 //
 
-#import "iTetLocalBoardView.h"
+#import "iTetLocalFieldView.h"
 #import "iTetBlock+Drawing.h"
 #import "iTetLocalPlayer.h"
 
-@implementation iTetLocalBoardView
+@implementation iTetLocalFieldView
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -41,7 +41,7 @@
 
 - (void)drawRect:(NSRect)rect
 {
-	// Call the default iTetBoardView drawRect:
+	// Call the default iTetFieldView drawRect:
 	[super drawRect:rect];
 	
 	// Get the view's owner as a local player
@@ -59,8 +59,8 @@
 		return;
 	
 	// Determine the size at which the block should be drawn
-	NSSize cellSize = NSMakeSize(([self bounds].size.width / ITET_BOARD_WIDTH),
-					     ([self bounds].size.height / ITET_BOARD_HEIGHT));
+	NSSize cellSize = NSMakeSize(([self bounds].size.width / ITET_FIELD_WIDTH),
+					     ([self bounds].size.height / ITET_FIELD_HEIGHT));
 	NSSize blockSize = NSMakeSize((4 * cellSize.width), (4 * cellSize.height));
 	
 	// Draw the block to an image of that size
@@ -79,11 +79,9 @@
 #pragma mark -
 #pragma mark Event Handling
 
-- (void)keyDown:(NSEvent*)keyEvent
+- (void)keyDown:(NSEvent*)event
 {
 	// FIXME: WRITEME
-	
-	[super keyDown:keyEvent];
 }
 
 #pragma mark -
@@ -97,7 +95,7 @@
 	if ([owner isKindOfClass:[iTetLocalPlayer class]])
 		return (iTetLocalPlayer*)owner;
 	
-	NSLog(@"Warning: LocalBoardView owned by non-local player");
+	NSLog(@"Warning: LocalFieldView owned by non-local player");
 	return nil;
 }
 
