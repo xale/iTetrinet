@@ -11,10 +11,14 @@
 #import "iTetFieldView.h"
 #import "iTetLocalPlayerView.h"
 
+@class iTetKeyNamePair;
+
 @interface iTetLocalFieldView : iTetFieldView <iTetLocalPlayerView>
 {
-	
+	IBOutlet id eventDelegate;
 }
+
+- (void)keyPressed:(iTetKeyNamePair*)key;
 
 - (iTetLocalPlayer*)ownerAsLocalPlayer;
 

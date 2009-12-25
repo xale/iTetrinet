@@ -193,7 +193,8 @@ NSString* const iTetSpecialEventDescriptionFormat = @"@% used on %@ by %@";
 	     onPlayer:(iTetPlayer*)target
 {
 	// Perform the action
-	// FIXME: WRITEME	
+	// FIXME: WRITEME
+	
 	// Add a description of the event to the list of actions
 	// Determine the name of the target ("All", if the target is not a specific player)
 	NSString* targetName;
@@ -253,6 +254,19 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 {
 	[actionHistory removeAllObjects];
 	[actionListView reloadData];
+}
+
+#pragma mark -
+#pragma mark iTetLocalBoardView Event Delegate Methods
+
+- (void)keyPressed:(iTetKeyNamePair*)key
+  onLocalFieldView:(iTetLocalFieldView*)fieldView
+{
+	// If there is no game in progress, or the game is paused, ignore
+	if (![self gameInProgress] || [self gamePaused])
+		return;
+	
+	// FIXME: WRITEME
 }
 
 #pragma mark -

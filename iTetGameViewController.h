@@ -15,6 +15,7 @@
 @class iTetSpecialsView;
 @class iTetPlayer;
 @class iTetGameRules;
+@class iTetKeyNamePair;
 
 @interface iTetGameViewController : NSObject
 {
@@ -70,6 +71,9 @@
 	    byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSString*)description;
 - (void)clearActions;
+
+- (void)keyPressed:(iTetKeyNamePair*)key
+  onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
 @property (readonly) BOOL gameInProgress;
 @property (readwrite) BOOL gamePaused;

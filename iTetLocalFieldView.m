@@ -8,6 +8,8 @@
 #import "iTetLocalFieldView.h"
 #import "iTetBlock+Drawing.h"
 #import "iTetLocalPlayer.h"
+#import "iTetKeyNamePair.h"
+#import "iTetGameViewController.h" // Quiets warnings on calls to delegate
 
 @implementation iTetLocalFieldView
 
@@ -81,7 +83,23 @@
 
 - (void)keyDown:(NSEvent*)event
 {
-	// FIXME: WRITEME
+	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:event]];
+}
+
+- (void)flagsChanged:(NSEvent*)event
+{
+	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:event]];
+}
+
+- (void)keyPressed:(iTetKeyNamePair*)key
+{
+	// Check if we have a delegate, and whether or not it is interested
+	if ((eventDelegate != nil) && [eventDelegate respondsToSelector:@selector(keyPressed:onLocalFieldView:)])
+	{
+		// Inform the delegate
+		[eventDelegate keyPressed:key
+			   onLocalFieldView:self];
+	}
 }
 
 #pragma mark -
