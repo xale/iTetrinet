@@ -263,7 +263,7 @@
 	char cellNum;
 	for (cellNum = 0; cellNum < ITET_NUM_CELL_COLORS; cellNum++)
 	{
-		targetRect.origin.y = (cellNum * ITET_DEF_CELL_HEIGHT);
+		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
 		
 		[[cellImages objectAtIndex:cellNum] drawInRect:targetRect
 								  fromRect:NSZeroRect
@@ -275,7 +275,7 @@
 	targetRect.origin.x = ITET_DEF_CELL_WIDTH;
 	for (cellNum = 0; cellNum < ITET_NUM_SPECIAL_TYPES; cellNum++)
 	{
-		targetRect.origin.y = (cellNum * ITET_DEF_CELL_HEIGHT);
+		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
 		
 		[[specialImages objectAtIndex:cellNum] drawInRect:targetRect
 								     fromRect:NSZeroRect
