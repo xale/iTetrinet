@@ -31,7 +31,7 @@
 	if ([self highlighted])
 	{
 		// FIXME: make this prettier
-		[[NSColor darkGrayColor] set];
+		[[NSColor alternateSelectedControlColor] set];
 		[NSBezierPath fillRect:[self bounds]];
 	}
 	
