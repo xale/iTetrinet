@@ -787,6 +787,14 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 }
 
 #pragma mark -
+#pragma mark NSWindow Delegate Methods
+
+- (void)windowWillClose:(NSNotification*)n
+{
+	[NSApp terminate:self];
+}
+
+#pragma mark -
 #pragma mark Players
 
 #define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= ITET_MAX_PLAYERS))
