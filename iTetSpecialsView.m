@@ -18,7 +18,7 @@
 		return nil;
 	
 	[self addObserver:self
-		 forKeyPath:@"owner.specialsQueue"
+		 forKeyPath:@"owner.specialsQueue.allObjects"
 		    options:0
 		    context:NULL];
 	

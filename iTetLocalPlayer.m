@@ -36,7 +36,7 @@
 @synthesize nextBlock;
 
 - (void)setSpecialsQueue:(Queue*)newSpecialsQueue
-{	
+{
 	// Wrap in KVC notifications
 	[self willChangeValueForKey:@"specialsQueue"];
 	
@@ -55,20 +55,15 @@
 	if ([specialsQueue count] > [self queueSize])
 		[self trimSpecialsQueue];
 }
+
 - (void)enqueueSpecial:(iTetSpecialType)special
 {	
 	// Check if there is space to add another special
 	if ([specialsQueue count] >= queueSize)
 		return;
 	
-	// Wrap enqueue operation in KVC notifications
-	[self willChangeValueForKey:@"specialsQueue"];
-	
 	// Enqueue the special
 	[specialsQueue enqueueObject:[NSNumber numberWithInt:(int)special]];
-	
-	// End wrap
-	[self didChangeValueForKey:@"specialsQueue"];
 }
 - (iTetSpecialType)dequeueSpecial
 {
@@ -76,14 +71,8 @@
 	if ([specialsQueue count] == 0)
 		return invalidSpecial;
 	
-	// Wrap dequeue operation in KVC notifications
-	[self willChangeValueForKey:@"specialsQueue"];
-	
 	// Dequeue the first special
 	iTetSpecialType special = (iTetSpecialType)[[specialsQueue dequeueFirstObject] intValue];
-	
-	// End wrap
-	[self didChangeValueForKey:@"specialsQueue"];
 	
 	// Return the dequeued special
 	return special;
