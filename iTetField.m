@@ -202,7 +202,7 @@ char partialUpdateCell(char cellType);
 	// Iterate over the whole field
 	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (int col = 0; col < ITET_FIELD_HEIGHT; col++)
+		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the contents of this cell
 			cell = contents[row][col];
@@ -246,7 +246,7 @@ char partialUpdateCell(char cellType)
 	}
 	
 	// Non-special cells are indexed from ASCII 33 ('!')
-	return (cellType + '!');
+	return (cellType + 33);
 }
 
 @synthesize lastPartialUpdate;
