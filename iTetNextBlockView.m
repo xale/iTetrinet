@@ -12,24 +12,12 @@
 
 @implementation iTetNextBlockView
 
-- (id)initWithFrame:(NSRect)frame
-{
-	if (![super initWithFrame:frame])
-		return nil;
-	
-	[self addObserver:self
-		 forKeyPath:@"owner.nextBlock"
-		    options:0
-		    context:NULL];
-	
-	return self;
-}
-
 #pragma mark -
 #pragma mark Drawing
 
 - (void)drawRect:(NSRect)rect
 {
+	/*
 	// Get the view's owner as a local player
 	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
 	
@@ -53,22 +41,11 @@
 			   fromRect:rect
 			  operation:NSCompositeSourceOver
 			   fraction:1.0];
+	 */
 }
 
 #pragma mark -
 #pragma mark Accessors
-
-- (iTetLocalPlayer*)ownerAsLocalPlayer
-{
-	if (owner == nil)
-		return nil;
-	
-	if ([owner isKindOfClass:[iTetLocalPlayer class]])
-		return (iTetLocalPlayer*)owner;
-	
-	NSLog(@"Warning: NextBlockView owned by non-local player");
-	return nil;
-}
 
 - (BOOL)isOpaque
 {

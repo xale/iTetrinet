@@ -13,31 +13,6 @@
 
 @implementation iTetLocalFieldView
 
-- (id)initWithFrame:(NSRect)frame
-{
-	if (![super initWithFrame:frame])
-		return nil;
-	
-	[self addObserver:self
-		 forKeyPath:@"owner.currentBlock"
-		    options:0
-		    context:NULL];
-	[self addObserver:self
-		 forKeyPath:@"owner.currentBlock.rowPos"
-		    options:0
-		    context:NULL];
-	[self addObserver:self
-		 forKeyPath:@"owner.currentBlock.colPos"
-		    options:0
-		    context:NULL];
-	[self addObserver:self
-		 forKeyPath:@"owner.currentBlock.orientation"
-		    options:0
-		    context:NULL];
-	
-	return self;
-}
-
 #pragma mark -
 #pragma mark Drawing
 
@@ -46,6 +21,7 @@
 	// Call the default iTetFieldView drawRect:
 	[super drawRect:rect];
 	
+	/* FIXME: needs rewrite
 	// Get the view's owner as a local player
 	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
 	
@@ -76,6 +52,7 @@
 			   fromRect:NSZeroRect
 			  operation:NSCompositeSourceOver
 			   fraction:1.0];
+	 */
 }
 
 #pragma mark -
@@ -104,18 +81,6 @@
 
 #pragma mark -
 #pragma mark Accessors
-
-- (iTetLocalPlayer*)ownerAsLocalPlayer
-{
-	if (owner == nil)
-		return nil;
-	
-	if ([owner isKindOfClass:[iTetLocalPlayer class]])
-		return (iTetLocalPlayer*)owner;
-	
-	NSLog(@"Warning: LocalFieldView owned by non-local player");
-	return nil;
-}
 
 - (BOOL)acceptsFirstResponder
 {

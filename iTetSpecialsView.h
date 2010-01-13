@@ -8,13 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
-#import "iTetLocalPlayerView.h"
 
-@interface iTetSpecialsView : iTetThemedView <iTetLocalPlayerView>
+@interface iTetSpecialsView : iTetThemedView
 {
 	
 }
-
-- (iTetLocalPlayer*)ownerAsLocalPlayer;
 
 @end

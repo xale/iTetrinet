@@ -35,8 +35,6 @@
 	// Release the theme
 	[theme release];
 	
-	// "Owner" pointer is not retained, do not release
-	
 	[super dealloc];
 }
 
@@ -46,19 +44,6 @@
 - (void)currentThemeChanged:(NSNotification*)notification
 {
 	[self setTheme:[[iTetPreferencesController preferencesController] currentTheme]];
-}
-
-#pragma mark -
-#pragma mark Key-Value Observing
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-			    ofObject:(id)object
-				change:(NSDictionary *)change
-			     context:(void *)context
-{
-	// Subclasses "watch" various properties of their owners for changes,
-	// and will need to be redrawn when those changes occur
-	[self setNeedsDisplay:YES];
 }
 
 #pragma mark -
@@ -78,7 +63,5 @@
 	[self setNeedsDisplay:YES];
 }
 @synthesize theme;
-
-@synthesize owner;
 
 @end

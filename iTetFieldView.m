@@ -11,39 +11,6 @@
 
 @implementation iTetFieldView
 
-- (id)initWithFrame:(NSRect)frame
-{
-	if (![super initWithFrame:frame])
-		return nil;
-	
-	[self addObserver:self
-		 forKeyPath:@"owner.field"
-		    options:0
-		    context:NULL];
-	
-	return self;
-}
-
-- (void)awakeFromNib
-{
-	if (numberField != nil)
-	{
-		[numberField bind:@"value"
-			   toObject:self
-			withKeyPath:@"owner.playerNumber"
-			    options:[NSDictionary dictionaryWithObject:@""
-									    forKey:NSNullPlaceholderBindingOption]];
-	}
-	if (nicknameField != nil)
-	{
-		[nicknameField bind:@"value"
-			     toObject:self
-			  withKeyPath:@"owner.nickname"
-				options:[NSDictionary dictionaryWithObject:@"No Player"
-										forKey:NSNullPlaceholderBindingOption]];
-	}
-}
-
 #pragma mark -
 #pragma mark Drawing
 
@@ -75,6 +42,7 @@
 			  operation:NSCompositeCopy
 			   fraction:1.0];
 	
+	/* FIXME: needs rewrite
 	// If we have no field contents to draw, we are finished
 	if (owner == nil)
 	{
@@ -84,7 +52,7 @@
 	}
 	
 	// Draw the field contents
-	iTetField* field = [owner field];
+	iTetField* field;
 	char cell;
 	NSImage* cellImage;
 	NSPoint drawPoint = NSZeroPoint;
@@ -114,6 +82,7 @@
 					  fraction:1.0];
 		}
 	}
+	 */
 	
 	// Pop the graphics context
 	[graphicsContext restoreGraphicsState];
@@ -125,11 +94,6 @@
 - (BOOL)isOpaque
 {
 	return YES;
-}
-
-- (BOOL)acceptsFirstResponder
-{
-	return NO;
 }
 
 @end

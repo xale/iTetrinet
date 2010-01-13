@@ -21,20 +21,6 @@
 {
 	IBOutlet iTetAppController* appController;
 	
-	// Interface objects
-	// Local player's views
-	IBOutlet iTetLocalFieldView* localFieldView;
-	IBOutlet iTetNextBlockView* nextBlockView;
-	IBOutlet iTetSpecialsView* specialsView;
-	
-	// Remote players' field views
-	IBOutlet iTetFieldView* field1;
-	IBOutlet iTetFieldView* field2;
-	IBOutlet iTetFieldView* field3;
-	IBOutlet iTetFieldView* field4;
-	IBOutlet iTetFieldView* field5;
-	NSArray* fieldViews;
-	
 	// Chat views
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
@@ -54,8 +40,8 @@
 
 - (IBAction)sendMessage:(id)sender;
 
-- (void)assignFieldViewToPlayer:(iTetPlayer*)player;
-- (void)removeFieldViewAssignmentForPlayer:(iTetPlayer*)player;
+- (void)addPlayer:(iTetPlayer*)player;
+- (void)removePlayer:(iTetPlayer*)player;
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;

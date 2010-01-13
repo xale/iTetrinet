@@ -810,7 +810,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: local player assigned to occupied player slot");
-		[gameController removeFieldViewAssignmentForPlayer:players[(number -1)]];
+		[gameController removePlayer:players[(number -1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
@@ -843,7 +843,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		playerCount++;
 		
 		// Assign the local field view to this player
-		[gameController assignFieldViewToPlayer:localPlayer];
+		[gameController addPlayer:localPlayer];
 		
 		// Send the player's team name to the server
 		if (![[[self localPlayer] teamName] isEqualToString:@""])
@@ -870,7 +870,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (players[(number - 1)] != nil)
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
-		[gameController removeFieldViewAssignmentForPlayer:players[(number - 1)]];
+		[gameController removePlayer:players[(number - 1)]];
 		[players[(number - 1)] release];
 		playerCount--;
 	}
@@ -884,8 +884,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	[self didChangeValueForKey:@"playerList"];
 	
-	// Assign a field for the new player
-	[gameController assignFieldViewToPlayer:players[(number - 1)]];
+	// Inform the game controller of the new player
+	[gameController addPlayer:players[(number - 1)]];
 }
 
 - (void)setTeamName:(NSString*)team
@@ -917,8 +917,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		return;
 	}
 	
-	// Remove the player's field view assignment
-	[gameController removeFieldViewAssignmentForPlayer:players[(number - 1)]];
+	// Inform the game controller
+	[gameController removePlayer:players[(number - 1)]];
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -941,13 +941,13 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		if (players[i] != nil)
 		{
-			[gameController removeFieldViewAssignmentForPlayer:players[i]];
+			[gameController removePlayer:players[i]];
 			[players[i] release];
 			players[i] = nil;
 		}
 	}
 	
-	// nil the local player pointer (released with the others)
+	// nil the local player pointer (non-retained ivar, released with the others)
 	[self setLocalPlayer:nil];
 	
 	// Reset the player count

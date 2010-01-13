@@ -28,15 +28,8 @@
 {
 	[currentGameRules release];
 	[actionHistory release];
-	[fieldViews release];
 	
 	[super dealloc];
-}
-
-- (void)awakeFromNib
-{
-	fieldViews = [[NSArray alloc] initWithObjects:
-			  field1, field2, field3, field4, field5, nil];
 }
 
 #pragma mark -
@@ -50,54 +43,14 @@
 #pragma mark -
 #pragma mark Player-Field Assignment
 
-- (void)assignFieldViewToPlayer:(iTetPlayer*)player
+- (void)addPlayer:(iTetPlayer*)player
 {	
-	// If this player is the local player, assign the local field and related views
-	if ([player isKindOfClass:[iTetLocalPlayer class]])
-	{
-		[localFieldView setOwner:player];
-		[nextBlockView setOwner:player];
-		[specialsView setOwner:player];
-		return;
-	}
-	
-	// Otherwise, find an un-assigned field view, and assign it to the player
-	for (iTetFieldView* field in fieldViews)
-	{
-		if ([field owner] == nil)
-		{
-			[field setOwner:player];
-			return;
-		}
-	}
-	
-	// No available field views (shouldn't happen)
-	NSLog(@"Warning: iTetGameController -assignFieldViewToPlayer: called with no available field views");
+	// FIXME: needs rewrite
 }
 
-- (void)removeFieldViewAssignmentForPlayer:(iTetPlayer*)player
+- (void)removePlayer:(iTetPlayer*)player
 {
-	// If this is the local player, remove the local views' owner
-	if ([player isKindOfClass:[iTetLocalPlayer class]])
-	{
-		[localFieldView setOwner:nil];
-		[nextBlockView setOwner:nil];
-		[specialsView setOwner:nil];
-		return;
-	}
-	
-	// Otherwise, find the field view belonging to this player, and un-assign it
-	for (iTetFieldView* field in fieldViews)
-	{
-		if ([[field owner] playerNumber] == [player playerNumber])
-		{
-			[field setOwner:nil];
-			return;
-		}
-	}
-	
-	// Player is not assigned to a field view (shouldn't happen)
-	NSLog(@"Warning: iTetGameController -removeFieldViewAssignmentForPlayer: called with player not assigned to a field view");
+	// FIXME: needs rewrite
 }
 
 #pragma mark -

@@ -9,17 +9,14 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetFieldView.h"
-#import "iTetLocalPlayerView.h"
 
 @class iTetKeyNamePair;
 
-@interface iTetLocalFieldView : iTetFieldView <iTetLocalPlayerView>
+@interface iTetLocalFieldView : iTetFieldView
 {
 	IBOutlet id eventDelegate;
 }
 
 - (void)keyPressed:(iTetKeyNamePair*)key;
-
-- (iTetLocalPlayer*)ownerAsLocalPlayer;
 
 @end

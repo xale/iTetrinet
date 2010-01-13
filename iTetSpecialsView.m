@@ -12,19 +12,6 @@
 
 @implementation iTetSpecialsView
 
-- (id)initWithFrame:(NSRect)frame
-{
-	if (![super initWithFrame:frame])
-		return nil;
-	
-	[self addObserver:self
-		 forKeyPath:@"owner.specialsQueue.allObjects"
-		    options:0
-		    context:NULL];
-	
-	return self;
-}
-
 #pragma mark -
 #pragma mark Drawing
 
@@ -36,6 +23,7 @@
 	[[NSColor whiteColor] setFill];
 	[NSBezierPath fillRect:[self bounds]];
 	
+	/* FIXME: needs rewrite
 	// Get the view's owner as a local player
 	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
 	
@@ -95,22 +83,11 @@
 	[[NSColor redColor] setStroke];
 	[NSBezierPath setDefaultLineWidth:LINE_WIDTH];
 	[NSBezierPath strokeRect:boxRect];
+	 */
 }
 
 #pragma mark -
 #pragma mark Accessors
-
-- (iTetLocalPlayer*)ownerAsLocalPlayer
-{
-	if (owner == nil)
-		return nil;
-	
-	if ([owner isKindOfClass:[iTetLocalPlayer class]])
-		return (iTetLocalPlayer*)owner;
-	
-	NSLog(@"Warning: SpecialsView owned by non-local player");
-	return nil;
-}
 
 - (BOOL)isOpaque
 {
