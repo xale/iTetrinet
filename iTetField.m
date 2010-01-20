@@ -25,8 +25,7 @@ char partialUpdateCell(char cellType);
 
 - (id)init
 {
-	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
-		memset((void*)(contents[row]), 0, ITET_FIELD_WIDTH);
+	contents = calloc(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT, sizeof(char));
 	
 	return self;
 }
@@ -70,6 +69,8 @@ char partialUpdateCell(char cellType);
 
 - (id)initWithRandomContents
 {
+	contents = malloc((ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
+	
 	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
 		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
@@ -77,20 +78,29 @@ char partialUpdateCell(char cellType);
 	return self;
 }
 
-#pragma mark Duplicate Fields
+#pragma mark Copying Fields
 
-+ (id)fieldWithField:(iTetField*)field
+- (id)copyWithZone:(NSZone*)zone
 {
-	return [[[self alloc] initWithField:field] autorelease];
+	return [[[self class] allocWithZone:zone] initWithContents:contents];
 }
 
-- (id)initWithField:(iTetField*)field
+- (id)initWithContents:(char**)fieldContents
 {
-	for (int row; row < ITET_FIELD_HEIGHT; row++)
-		for (int col; row < ITET_FIELD_WIDTH; col++)
-			contents[row][col] = [field cellAtRow:row column:col];
+	contents = malloc((ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
+	
+	memcpy(contents, fieldContents, (ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	free(contents);
+	
+	[lastPartialUpdate release];
+	
+	[super dealloc];
 }
 
 #pragma mark -

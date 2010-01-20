@@ -19,9 +19,9 @@ typedef enum
 
 @class iTetBlock;
 
-@interface iTetField: NSObject
+@interface iTetField: NSObject <NSCopying>
 {
-	char contents[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
+	char** contents;
 	
 	NSString* lastPartialUpdate;
 }
@@ -37,9 +37,8 @@ typedef enum
 + (id)fieldWithRandomContents;
 - (id)initWithRandomContents;
 
-// Initializers for copying an existing field
-+ (id)fieldWithField:(iTetField*)field;
-- (id)initWithField:(iTetField*)field;
+// Copy initializer
+- (id)initWithContents:(char**)fieldContents;
 
 // Checks whether a block is in a valid position on the field
 - (ObstructionState)blockObstructed:(iTetBlock*)block;
