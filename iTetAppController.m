@@ -39,6 +39,11 @@
 	// messages recieved from the server
 	networkController = [[iTetNetworkController alloc] initWithDelegate:self];
 	
+	// Create the players array (initially filled with NSNull placeholders)
+	players = [[NSMutableArray alloc] initWithCapacity:ITET_MAX_PLAYERS];
+	for (int i = 0; i < ITET_MAX_PLAYERS; i++)
+		[players addObject:[NSNull null]];
+	
 	return self;
 }
 
@@ -54,8 +59,7 @@
 {	
 	[networkController release];
 	[prefsWindowController release];
-	
-	[self removeAllPlayers];
+	[players release];
 	
 	[super dealloc];
 }
@@ -714,9 +718,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		iTetPlayer* sender = nil;
 		iTetPlayer* target = nil;
 		if (senderNum > 0)
-			sender = players[(senderNum - 1)];
+			sender = [players objectAtIndex:(senderNum - 1)];
 		if (targetNum > 0)
-			target = players[(targetNum - 1)];
+			target = [players objectAtIndex:(targetNum - 1)];
 		
 		// Check if this is a classic-style addline
 		if (([special length] > 1) && ([[special substringToIndex:2] isEqualToString:@"cs"]))
@@ -807,43 +811,41 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Check that the assigned slot is not already occupied
-	if (players[(number - 1)] != nil)
+	if ([players objectAtIndex:(number - 1)] != [NSNull null])
 	{
 		NSLog(@"WARNING: local player assigned to occupied player slot");
-		[gameController removePlayer:players[(number -1)]];
-		[players[(number - 1)] release];
 		playerCount--;
 	}
 	
 	// Check if our player already exists; if so, this is a move operation
 	if ([self localPlayer] != nil)
 	{
-		// nil the old location in the players array
-		players[([[self localPlayer] playerNumber] - 1)] = nil;
+		// Clear the old location in the players array
+		[players replaceObjectAtIndex:([localPlayer playerNumber] - 1)
+					 withObject:[NSNull null]];
 		
 		// Change the local player's number
 		[[self localPlayer] setPlayerNumber:number];
 		
 		// Move to the new location in the players array
-		players[(number - 1)] = (iTetPlayer*)[self localPlayer];
+		[players replaceObjectAtIndex:(number - 1)
+					 withObject:[self localPlayer]];
 		
 		// No need to notify game controller; field assignment will not change
 	}
 	else
 	{
 		// Create the local player
-		[self setLocalPlayer:[[iTetLocalPlayer alloc] initWithNickname:[[networkController currentServer] nickname]
-											  number:number
-											teamName:[[networkController currentServer] playerTeam]]];
+		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:[[networkController currentServer] nickname]
+										  number:number
+										teamName:[[networkController currentServer] playerTeam]]];
 		
 		// Place the player in the players array
-		players[(number - 1)] = localPlayer;
+		[players replaceObjectAtIndex:(number - 1)
+					 withObject:[self localPlayer]];
 		
 		// Update player count
 		playerCount++;
-		
-		// Assign the local field view to this player
-		[gameController addPlayer:localPlayer];
 		
 		// Send the player's team name to the server
 		if (![[[self localPlayer] teamName] isEqualToString:@""])
@@ -867,25 +869,21 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Check that the slot is not already occupied
-	if (players[(number - 1)] != nil)
+	if ([players objectAtIndex:(number - 1)] != [NSNull null])
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
-		[gameController removePlayer:players[(number - 1)]];
-		[players[(number - 1)] release];
 		playerCount--;
 	}
 	
 	// Create the new player
-	players[(number - 1)] = [[iTetPlayer alloc] initWithNickname:nick
-										number:number];
+	[players replaceObjectAtIndex:(number - 1)
+				 withObject:[iTetPlayer playerWithNickname:nick
+										number:number]];
 	
 	// Update player count
 	playerCount++;
 	
 	[self didChangeValueForKey:@"playerList"];
-	
-	// Inform the game controller of the new player
-	[gameController addPlayer:players[(number - 1)]];
 }
 
 - (void)setTeamName:(NSString*)team
@@ -893,38 +891,31 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(number);
-	if (players[(number - 1)] == nil)
+	if ([players objectAtIndex:(number - 1)] == [NSNull null])
 	{
 		NSLog(@"WARNING: attempt to assign team name to player in empty player slot");
 		return;
 	}
 	
-	[self willChangeValueForKey:@"playerList"];
-	
 	// Assign the team name
-	[players[(number - 1)] setTeamName:team];
-	
-	[self didChangeValueForKey:@"playerList"];
+	[[players objectAtIndex:(number - 1)] setTeamName:team];
 }
 
 - (void)removePlayerNumber:(int)number
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(number);
-	if (players[(number - 1)] == nil)
+	if ([players objectAtIndex:(number - 1)] == [NSNull null])
 	{
 		NSLog(@"WARNING: attempt to remove player in empty player slot");
 		return;
 	}
 	
-	// Inform the game controller
-	[gameController removePlayer:players[(number - 1)]];
-	
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove the player
-	[players[(number - 1)] release];
-	players[(number - 1)] = nil;
+	[players replaceObjectAtIndex:(number - 1)
+				 withObject:[NSNull null]];
 	
 	// Update player count
 	playerCount--;
@@ -936,18 +927,14 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	[self willChangeValueForKey:@"playerList"];
 	
-	// Remove all players
+	// Remove all players in the players array
 	for (int i = 0; i < ITET_MAX_PLAYERS; i++)
 	{
-		if (players[i] != nil)
-		{
-			[gameController removePlayer:players[i]];
-			[players[i] release];
-			players[i] = nil;
-		}
+		[players replaceObjectAtIndex:i
+					 withObject:[NSNull null]];
 	}
 	
-	// nil the local player pointer (non-retained ivar, released with the others)
+	// Remove the local player
 	[self setLocalPlayer:nil];
 	
 	// Reset the player count
@@ -961,14 +948,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 - (NSArray*)playerList
 {
-	NSMutableArray* list = [NSMutableArray arrayWithCapacity:playerCount];
-	for (int i = 0; i < ITET_MAX_PLAYERS; i++)
-	{
-		if (players[i] != nil)
-			[list addObject:players[i]];
-	}
-	
-	return [NSArray arrayWithArray:list];
+	return [players filteredArrayUsingPredicate:
+		  [NSPredicate predicateWithFormat:@"SELF != %@", [NSNull null]]];
 }
 
 @synthesize localPlayer;
@@ -978,7 +959,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (number == 0)
 		return @"SERVER";
 	else
-		return [players[(number - 1)] nickname];
+		return [[players objectAtIndex:(number - 1)] nickname];
 }
 
 @synthesize networkController;

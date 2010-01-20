@@ -9,6 +9,14 @@
 
 @implementation iTetPlayer
 
++ (id)playerWithNickname:(NSString*)nick
+			number:(int)number
+		    teamName:(NSString*)team
+{
+	return [[[self alloc] initWithNickname:nick
+						  number:number
+						teamName:team] autorelease];
+}
 - (id)initWithNickname:(NSString*)nick
 		    number:(int)number
 		  teamName:(NSString*)team
@@ -22,6 +30,12 @@
 	return self;
 }
 
++ (id)playerWithNickname:(NSString*)nick
+			number:(int)number
+{
+	return [[[self alloc] initWithNickname:nick
+						  number:number] autorelease];
+}
 - (id)initWithNickname:(NSString*)nick
 		    number:(int)number
 {
@@ -30,6 +44,10 @@
 				   teamName:@""];
 }
 
++ (id)playerWithNumber:(int)number
+{
+	return [[[self alloc] initWithNumber:number] autorelease];
+}
 - (id)initWithNumber:(int)number
 {
 	return [self initWithNickname:@"Unnamed Player"

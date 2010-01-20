@@ -18,11 +18,19 @@
 	int level;
 }
 
++ (id)playerWithNickname:(NSString*)nick
+			number:(int)number
+		    teamName:(NSString*)team;
 - (id)initWithNickname:(NSString*)nick
 		    number:(int)number
 		  teamName:(NSString*)team;
+
++ (id)playerWithNickname:(NSString*)nick
+			number:(int)number;
 - (id)initWithNickname:(NSString*)nick
 		    number:(int)number;
+
++ (id)playerWithNumber:(int)number;
 - (id)initWithNumber:(int)number;
 
 @property (readwrite, copy) NSString* nickname;

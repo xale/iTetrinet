@@ -21,8 +21,6 @@
 	NSUInteger queueSize;
 }
 
-- (id)initWithNumber:(int)number;
-
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
 

@@ -24,22 +24,10 @@
 	return self;
 }
 
-- (void)awakeFromNib
-{
-	playerControllers = [[NSArray alloc] initWithObjects:
-				   remotePlayerController1,
-				   remotePlayerController2,
-				   remotePlayerController3,
-				   remotePlayerController4,
-				   remotePlayerController5, nil];
-}
-
 - (void)dealloc
 {
 	[currentGameRules release];
 	[actionHistory release];
-	
-	[playerControllers release];
 	
 	[super dealloc];
 }
@@ -57,49 +45,18 @@
 
 - (void)addPlayer:(iTetPlayer*)player
 {	
-	// If this is the local player, assign the local player controller
-	if ([player isKindOfClass:[iTetLocalPlayer class]])
-	{
-		[localPlayerController setContent:player];
-		return;
-	}
-	
-	// Otherwise, assign an open remote-player controller
-	for (NSObjectController* controller in playerControllers)
-	{
-		if ([controller content] == nil)
-		{
-			[controller setContent:player];
-			return;
-		}
-	}
+	// FIXME: WRITEME
 	
 	// No available controllers (shouldn't happen)
-	NSLog(@"WARNING: gameController addPlayer: called with no available controllers");
+	//NSLog(@"WARNING: gameController addPlayer: called with no available controllers");
 }
 
 - (void)removePlayer:(iTetPlayer*)player
 {
-	// Check if this is the local player
-	if ([player isKindOfClass:[iTetLocalPlayer class]])
-	{
-		[localPlayerController setContent:nil];
-		return;
-	}
-	
-	// Otherwise, find the responsible controller
-	for (NSObjectController* controller in playerControllers)
-	{
-		iTetPlayer* p = [controller content];
-		if ([p playerNumber] == [player playerNumber])
-		{
-			[controller setContent:nil];
-			return;
-		}
-	}
+	// FIXME: WRITEME
 	
 	// Player not assigned to a controller (shouldn't happen)
-	NSLog(@"WARNING: gameController removePlayer: called on un-assigned player");
+	//NSLog(@"WARNING: gameController removePlayer: called on un-assigned player");
 }
 
 #pragma mark -

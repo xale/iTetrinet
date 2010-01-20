@@ -47,7 +47,7 @@
 	NSTimer* connectionTimer;
 	
 	// Players
-	iTetPlayer* players[ITET_MAX_PLAYERS];
+	NSMutableArray* players;
 	int playerCount;
 	iTetLocalPlayer* localPlayer;
 	
@@ -76,7 +76,7 @@
 - (NSString*)playerNameForNumber:(int)number;
 
 @property (readonly) NSArray* playerList;
-@property (readwrite, assign) iTetLocalPlayer* localPlayer;
+@property (readwrite, retain) iTetLocalPlayer* localPlayer;
 
 @property (readonly) iTetNetworkController* networkController;
 @property (readonly) iTetPreferencesController* preferencesController;

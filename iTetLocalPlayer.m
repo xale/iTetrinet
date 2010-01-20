@@ -11,14 +11,6 @@
 
 @implementation iTetLocalPlayer
 
-- (id)initWithNumber:(int)number
-{
-	if (![super initWithNumber:number])
-		return nil;
-	
-	return self;
-}
-
 - (void)dealloc
 {
 	[currentBlock release];

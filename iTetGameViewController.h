@@ -21,17 +21,6 @@
 {
 	IBOutlet iTetAppController* appController;
 	
-	// Local-player controller
-	IBOutlet NSObjectController* localPlayerController;
-	
-	// Remote-player controllers
-	IBOutlet NSObjectController* remotePlayerController1;
-	IBOutlet NSObjectController* remotePlayerController2;
-	IBOutlet NSObjectController* remotePlayerController3;
-	IBOutlet NSObjectController* remotePlayerController4;
-	IBOutlet NSObjectController* remotePlayerController5;
-	NSArray* playerControllers;
-	
 	// Chat views
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
