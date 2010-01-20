@@ -24,9 +24,7 @@ char partialUpdateCell(char cellType);
 }
 
 - (id)init
-{
-	contents = calloc(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT, sizeof(char));
-	
+{	
 	return self;
 }
 
@@ -68,12 +66,15 @@ char partialUpdateCell(char cellType);
 }
 
 - (id)initWithRandomContents
-{
-	contents = malloc((ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
-	
+{	
 	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
 		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
+		{	
 			contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+		}
+	}
+		
 	
 	return self;
 }
@@ -85,10 +86,8 @@ char partialUpdateCell(char cellType);
 	return [[[self class] allocWithZone:zone] initWithContents:contents];
 }
 
-- (id)initWithContents:(char**)fieldContents
-{
-	contents = malloc((ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
-	
+- (id)initWithContents:(char[ITET_FIELD_WIDTH][ITET_FIELD_HEIGHT])fieldContents
+{	
 	memcpy(contents, fieldContents, (ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
 	
 	return self;
@@ -96,8 +95,6 @@ char partialUpdateCell(char cellType);
 
 - (void)dealloc
 {
-	free(contents);
-	
 	[lastPartialUpdate release];
 	
 	[super dealloc];
