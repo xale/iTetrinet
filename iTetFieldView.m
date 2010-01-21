@@ -7,7 +7,6 @@
 
 #import "iTetFieldView.h"
 #import "iTetField.h"
-#import "iTetBlock.h"
 
 @implementation iTetFieldView
 
@@ -42,9 +41,8 @@
 			  operation:NSCompositeCopy
 			   fraction:1.0];
 	
-	/* FIXME: needs rewrite
 	// If we have no field contents to draw, we are finished
-	if (owner == nil)
+	if ([self field] == nil)
 	{
 		// Pop graphics context before returning
 		[graphicsContext restoreGraphicsState];
@@ -52,7 +50,6 @@
 	}
 	
 	// Draw the field contents
-	iTetField* field;
 	char cell;
 	NSImage* cellImage;
 	NSPoint drawPoint = NSZeroPoint;
@@ -61,19 +58,19 @@
 		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the cell type
-			cell = [field cellAtRow:row
-					     column:col];
+			cell = [[self field] cellAtRow:row
+							column:col];
 			
 			// If there is nothing to draw, skip to next iteration of loop
 			if (cell == 0)
 				continue;
 			
 			// Get the image for this cell
-			cellImage = [theme imageForCellType:cell];
+			cellImage = [[self theme] imageForCellType:cell];
 			
 			// Move the point at which to draw the cell
-			drawPoint.x = col * [theme cellSize].height;
-			drawPoint.y = row * [theme cellSize].width;
+			drawPoint.x = col * [[self theme] cellSize].height;
+			drawPoint.y = row * [[self theme] cellSize].width;
 			
 			// Draw the cell
 			[cellImage drawAtPoint:drawPoint
@@ -82,7 +79,6 @@
 					  fraction:1.0];
 		}
 	}
-	 */
 	
 	// Pop the graphics context
 	[graphicsContext restoreGraphicsState];
@@ -95,5 +91,13 @@
 {
 	return YES;
 }
+
+- (void)setField:(iTetField*)newField
+{
+	[field release];
+	field = [newField retain];
+	[self setNeedsDisplay:YES];
+}
+@synthesize field;
 
 @end

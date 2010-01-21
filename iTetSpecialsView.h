@@ -11,7 +11,9 @@
 
 @interface iTetSpecialsView : iTetThemedView
 {
-	
+	NSArray* specials;
 }
+
+@property (readwrite, retain) NSArray* specials;
 
 @end

@@ -9,10 +9,13 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
 
+@class iTetField;
+
 @interface iTetFieldView : iTetThemedView
 {
-	IBOutlet NSTextField* numberField;
-	IBOutlet NSTextField* nicknameField;
+	iTetField* field;
 }
+
+@property (readwrite, retain) iTetField* field;
 
 @end

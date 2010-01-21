@@ -6,11 +6,16 @@
 //
 
 #import "iTetSpecialsView.h"
-#import "iTetLocalPlayer.h"
 #import "iTetSpecials.h"
-#import "Queue.h"
 
 @implementation iTetSpecialsView
+
+- (void)dealloc
+{
+	[specials release];
+	
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Drawing
@@ -23,16 +28,8 @@
 	[[NSColor whiteColor] setFill];
 	[NSBezierPath fillRect:[self bounds]];
 	
-	/* FIXME: needs rewrite
-	// Get the view's owner as a local player
-	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
-	
-	// Get the player's queue of specials
-	NSArray* specials = [[player specialsQueue] allObjects];
-	
-	// If the player has no specials, skip the associated graphics context
-	// transforms, and don't even try to draw them
-	if ([specials count] > 0)
+	// If we have specials to draw, scale the graphics context and draw them
+	if ((specials != nil) && ([specials count] > 0))
 	{
 		// Get the graphics context, and push a copy onto the stack
 		NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
@@ -40,7 +37,7 @@
 		
 		// Create a scale transform from the cell height to the height of the view
 		NSAffineTransform* scaleTransform = [NSAffineTransform transform];
-		[scaleTransform scaleBy:([theme cellSize].height / [self bounds].size.height)];
+		[scaleTransform scaleBy:([[self theme] cellSize].height / [self bounds].size.height)];
 		
 		// Apply the transform to the graphics context
 		[scaleTransform concat];
@@ -51,12 +48,12 @@
 		NSImage* specialImage;
 		NSPoint drawPoint = NSZeroPoint;
 		
-		// Draw the remaining specials in the queue
-		for (index = 0; (index < [specials count]); index++)
+		// Draw the specials
+		for (index = 0; index < [specials count]; index++)
 		{
 			// Get the special and it's image
 			special = (iTetSpecialType)[[specials objectAtIndex:index] intValue];
-			specialImage = [theme imageForCellType:(char)special];
+			specialImage = [[self theme] imageForCellType:(char)special];
 			
 			// Draw the special
 			[specialImage drawAtPoint:drawPoint
@@ -65,7 +62,7 @@
 					     fraction:1.0];
 			
 			// Move the drawing point to the next position
-			drawPoint.x += [theme cellSize].width;
+			drawPoint.x += [[self theme] cellSize].width;
 			
 			// Check that we are still on the view
 			if (drawPoint.x > [self bounds].size.width)
@@ -83,7 +80,6 @@
 	[[NSColor redColor] setStroke];
 	[NSBezierPath setDefaultLineWidth:LINE_WIDTH];
 	[NSBezierPath strokeRect:boxRect];
-	 */
 }
 
 #pragma mark -
@@ -93,5 +89,13 @@
 {
 	return YES;
 }
+
+- (void)setSpecials:(NSArray*)newSpecials
+{
+	[specials release];
+	specials = [newSpecials retain];
+	[self setNeedsDisplay:YES];
+}
+@synthesize specials;
 
 @end

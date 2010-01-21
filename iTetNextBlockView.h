@@ -9,9 +9,13 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
 
+@class iTetBlock;
+
 @interface iTetNextBlockView : iTetThemedView
 {
-	
+	iTetBlock* block;
 }
+
+@property (readwrite, retain) iTetBlock* block;
 
 @end

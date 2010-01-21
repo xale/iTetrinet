@@ -6,42 +6,36 @@
 //
 
 #import "iTetNextBlockView.h"
-#import "iTetLocalPlayer.h"
 #import "iTetBlock.h"
 #import "iTetBlock+Drawing.h"
 
 @implementation iTetNextBlockView
+
+- (void)dealloc
+{
+	[block release];
+	
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Drawing
 
 - (void)drawRect:(NSRect)rect
 {
-	/*
-	// Get the view's owner as a local player
-	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
-	
-	// If we have no owner, we have nothing else to draw
-	if (player == nil)
-		return;
-	
-	// Get the player's next block
-	iTetBlock* nextBlock = [player nextBlock];
-	
 	// Check that there is a block to draw
-	if (nextBlock == nil)
+	if ([self block] == nil)
 		return;
 	
 	// Ask the block to draw itself to an NSImage of this view's size
-	NSImage* blockImage = [nextBlock imageWithSize:[self bounds].size
-							     theme:[self theme]];
+	NSImage* blockImage = [[self block] imageWithSize:[self bounds].size
+								  theme:[self theme]];
 	
 	// Draw the image
 	[blockImage drawAtPoint:rect.origin
 			   fromRect:rect
 			  operation:NSCompositeSourceOver
 			   fraction:1.0];
-	 */
 }
 
 #pragma mark -
@@ -51,5 +45,13 @@
 {
 	return NO;
 }
+
+- (void)setBlock:(iTetBlock*)newBlock
+{
+	[block release];
+	block = [newBlock retain];
+	[self setNeedsDisplay:YES];
+}
+@synthesize block;
 
 @end

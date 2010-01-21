@@ -11,12 +11,17 @@
 #import "iTetFieldView.h"
 
 @class iTetKeyNamePair;
+@class iTetBlock;
 
 @interface iTetLocalFieldView : iTetFieldView
 {
+	iTetBlock* block;
+	
 	IBOutlet id eventDelegate;
 }
 
 - (void)keyPressed:(iTetKeyNamePair*)key;
+
+@property (readwrite, retain) iTetBlock* block;
 
 @end

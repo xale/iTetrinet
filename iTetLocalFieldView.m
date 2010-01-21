@@ -7,11 +7,17 @@
 
 #import "iTetLocalFieldView.h"
 #import "iTetBlock+Drawing.h"
-#import "iTetLocalPlayer.h"
 #import "iTetKeyNamePair.h"
 #import "iTetGameViewController.h" // Quiets warnings on calls to delegate
 
 @implementation iTetLocalFieldView
+
+- (void)dealloc
+{
+	[block release];
+	
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Drawing
@@ -21,19 +27,8 @@
 	// Call the default iTetFieldView drawRect:
 	[super drawRect:rect];
 	
-	/* FIXME: needs rewrite
-	// Get the view's owner as a local player
-	iTetLocalPlayer* player = [self ownerAsLocalPlayer];
-	
-	// If we have no owner, we have nothing else to draw
-	if (player == nil)
-		return;
-	
-	// Get the player's active (falling) block
-	iTetBlock* currentBlock = [player currentBlock];
-	
 	// If we have no block to draw, we're done
-	if (currentBlock == nil)
+	if ([self block] == nil)
 		return;
 	
 	// Determine the size at which the block should be drawn
@@ -42,17 +37,16 @@
 	NSSize blockSize = NSMakeSize((4 * cellSize.width), (4 * cellSize.height));
 	
 	// Draw the block to an image of that size
-	NSImage* blockImage = [currentBlock imageWithSize:blockSize
+	NSImage* blockImage = [[self block] imageWithSize:blockSize
 								  theme:[self theme]];
 	
 	// Draw the image at the block's position
-	NSPoint drawPoint = NSMakePoint(([currentBlock colPos] * cellSize.width),
-						  ([currentBlock rowPos] * cellSize.height));
+	NSPoint drawPoint = NSMakePoint(([[self block] colPos] * cellSize.width),
+						  ([[self block] rowPos] * cellSize.height));
 	[blockImage drawAtPoint:drawPoint
 			   fromRect:NSZeroRect
 			  operation:NSCompositeSourceOver
 			   fraction:1.0];
-	 */
 }
 
 #pragma mark -
@@ -86,5 +80,13 @@
 {
 	return YES;
 }
+
+- (void)setBlock:(iTetBlock*)newBlock
+{
+	[block release];
+	block = [newBlock retain];
+	[self setNeedsDisplay:YES];
+}
+@synthesize block;
 
 @end
