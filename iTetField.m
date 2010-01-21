@@ -23,11 +23,6 @@ char partialUpdateCell(char cellType);
 	return [[[self alloc] init] autorelease];
 }
 
-- (id)init
-{	
-	return self;
-}
-
 #pragma mark Fields with Starting Stack
 
 + (id)fieldWithStackHeight:(int)stackHeight
@@ -36,10 +31,7 @@ char partialUpdateCell(char cellType);
 }
 
 - (id)initWithStackHeight:(int)stackHeight
-{
-	// Start with an empty field
-	[self init];
-	
+{	
 	// For each row of the starting stack, fill with debris
 	// Uses gtetrinet's method; bizarre, but whatever
 	for (int row = 0; row < stackHeight; row++)
@@ -86,7 +78,7 @@ char partialUpdateCell(char cellType);
 	return [[[self class] allocWithZone:zone] initWithContents:contents];
 }
 
-- (id)initWithContents:(char[ITET_FIELD_WIDTH][ITET_FIELD_HEIGHT])fieldContents
+- (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
 {	
 	memcpy(contents, fieldContents, (ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
 	
