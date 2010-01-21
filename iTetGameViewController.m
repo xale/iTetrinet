@@ -24,6 +24,37 @@
 	return self;
 }
 
+- (void)awakeFromNib
+{
+	// Bind the game views to the app controller
+	[localFieldView bind:@"field"
+			toObject:appController
+		   withKeyPath:@"localPlayer.field"
+			 options:nil];
+	// FIXME: bind next block view
+	// FIXME: bind specials view
+	[remoteFieldView1 bind:@"field"
+			  toObject:appController
+		     withKeyPath:@"remotePlayer1.field"
+			   options:nil];
+	[remoteFieldView2 bind:@"field"
+			  toObject:appController
+		     withKeyPath:@"remotePlayer2.field"
+			   options:nil];
+	[remoteFieldView3 bind:@"field"
+			  toObject:appController
+		     withKeyPath:@"remotePlayer3.field"
+			   options:nil];
+	[remoteFieldView4 bind:@"field"
+			  toObject:appController
+		     withKeyPath:@"remotePlayer4.field"
+			   options:nil];
+	[remoteFieldView5 bind:@"field"
+			  toObject:appController
+		     withKeyPath:@"remotePlayer5.field"
+			   options:nil];
+}
+
 - (void)dealloc
 {
 	[currentGameRules release];
@@ -62,7 +93,16 @@
 		[player setLevel:[rules startingLevel]];
 	}
 	
-	// FIXME: create local player's field, send fieldstring
+	// If there is a starting stack, give the local player a board with garbage
+	if ([rules initialStackHeight] > 0)
+	{
+		// Create the board
+		[[appController localPlayer] setField:
+		 [iTetField fieldWithStackHeight:[rules initialStackHeight]]];
+		
+		// Send the board to the server
+		[self sendFieldstring];
+	}
 	
 	// Set up the timer to spawn the first falling block
 	// FIXME: WRITEME: block timer
@@ -85,27 +125,21 @@
 NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 
 - (void)sendFieldstring
-{
+{	
 	// Send the string for the local player's field to the server
-	/* FIXME: REWRITE
-	 [[appController networkController] sendMessage:
+	iTetPlayer* player = [appController localPlayer];
+	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat,
-	  [player playerNumber],
-	  [[player field] fieldstring]]];
-	 */
+	  iTetFieldstringMessageFormat, [player playerNumber], [[player field] fieldstring]]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	/* FIXME: REWRITE
+	iTetPlayer* player = [appController localPlayer];
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat,
-	  [player playerNumber],
-	  [[player field] fieldstring]]];
-	 */
+	  iTetFieldstringMessageFormat, [player playerNumber], [[player field] lastPartialUpdate]]];
 }
 
 #pragma mark -

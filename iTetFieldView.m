@@ -10,6 +10,18 @@
 
 @implementation iTetFieldView
 
++ (void)initialize
+{
+	[self exposeBinding:@"field"];
+}
+
+- (void)dealloc
+{
+	[field release];
+	
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark Drawing
 
@@ -94,8 +106,11 @@
 
 - (void)setField:(iTetField*)newField
 {
+	[self willChangeValueForKey:@"field"];
 	[field release];
 	field = [newField retain];
+	[self didChangeValueForKey:@"field"];
+	
 	[self setNeedsDisplay:YES];
 }
 @synthesize field;

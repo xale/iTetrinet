@@ -21,6 +21,18 @@
 {
 	IBOutlet iTetAppController* appController;
 	
+	// Local player's views
+	IBOutlet iTetLocalFieldView* localFieldView;
+	IBOutlet iTetNextBlockView* nextBlockView;
+	IBOutlet iTetSpecialsView* specialsView;
+	
+	// Remote players' views
+	IBOutlet iTetFieldView* remoteFieldView1;
+	IBOutlet iTetFieldView* remoteFieldView2;
+	IBOutlet iTetFieldView* remoteFieldView3;
+	IBOutlet iTetFieldView* remoteFieldView4;
+	IBOutlet iTetFieldView* remoteFieldView5;
+	
 	// Chat views
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;

@@ -10,6 +10,11 @@
 
 @implementation iTetSpecialsView
 
++ (void)initialize
+{
+	[self exposeBinding:@"specials"];
+}
+
 - (void)dealloc
 {
 	[specials release];
@@ -92,8 +97,11 @@
 
 - (void)setSpecials:(NSArray*)newSpecials
 {
+	[self willChangeValueForKey:@"specials"];
 	[specials release];
 	specials = [newSpecials retain];
+	[self didChangeValueForKey:@"specials"];
+	
 	[self setNeedsDisplay:YES];
 }
 @synthesize specials;

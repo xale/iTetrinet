@@ -13,9 +13,11 @@
 {
 	IBOutlet iTetAppController* appController;
 	
+	// Chat views
 	IBOutlet NSTextView* chatView;
 	IBOutlet NSTextField* messageField;
 	
+	// Channels array
 	NSMutableArray* channels;
 }
 

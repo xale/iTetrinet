@@ -12,6 +12,11 @@
 
 @implementation iTetLocalFieldView
 
++ (void)initialize
+{
+	[self exposeBinding:@"block"];
+}
+
 - (void)dealloc
 {
 	[block release];
@@ -83,8 +88,11 @@
 
 - (void)setBlock:(iTetBlock*)newBlock
 {
+	[self willChangeValueForKey:@"block"];
 	[block release];
 	block = [newBlock retain];
+	[self didChangeValueForKey:@"block"];
+	
 	[self setNeedsDisplay:YES];
 }
 @synthesize block;
