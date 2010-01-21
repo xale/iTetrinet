@@ -9,7 +9,7 @@
 #import "iTetAppController.h"
 #import "iTetNetworkController.h"
 #import "iTetChannelInfo.h"
-#import "iTetLocalPlayer.h"
+#import "iTetPlayer.h"
 
 @implementation iTetChatViewController
 
@@ -49,7 +49,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 		return;
 	
 	NSString* format;
-	iTetLocalPlayer* localPlayer = [appController localPlayer];
+	iTetPlayer* localPlayer = [appController localPlayer];
 	
 	BOOL action = ([line length] > 3) && [[line substringToIndex:3] isEqualToString:@"/me"];
 	

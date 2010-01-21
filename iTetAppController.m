@@ -11,7 +11,7 @@
 #import "iTetChatViewController.h"
 #import "iTetGameViewController.h"
 #import "iTetServerInfo.h"
-#import "iTetLocalPlayer.h"
+#import "iTetPlayer.h"
 #import "iTetGameRules.h"
 #import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
@@ -836,9 +836,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	else
 	{
 		// Create the local player
-		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:[[networkController currentServer] nickname]
-										  number:number
-										teamName:[[networkController currentServer] playerTeam]]];
+		[self setLocalPlayer:[iTetPlayer playerWithNickname:[[networkController currentServer] nickname]
+									   number:number
+									 teamName:[[networkController currentServer] playerTeam]]];
 		
 		// Place the player in the players array
 		[players replaceObjectAtIndex:(number - 1)
@@ -925,6 +925,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 - (void)removeAllPlayers
 {
+	// Remove the local player
+	[self setLocalPlayer:nil];
+	
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove all players in the players array
@@ -933,9 +936,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		[players replaceObjectAtIndex:i
 					 withObject:[NSNull null]];
 	}
-	
-	// Remove the local player
-	[self setLocalPlayer:nil];
 	
 	// Reset the player count
 	playerCount = 0;
@@ -953,6 +953,50 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 }
 
 @synthesize localPlayer;
+
+-(iTetPlayer*)remotePlayer1
+{
+	return [self remotePlayerNumber:1];
+}
+-(iTetPlayer*)remotePlayer2
+{
+	return [self remotePlayerNumber:2];
+}
+-(iTetPlayer*)remotePlayer3
+{
+	return [self remotePlayerNumber:3];
+}
+-(iTetPlayer*)remotePlayer4
+{
+	return [self remotePlayerNumber:4];
+}
+-(iTetPlayer*)remotePlayer5
+{
+	return [self remotePlayerNumber:5];
+}
+- (iTetPlayer*)remotePlayerNumber:(NSUInteger)n
+{	
+	// Shift index to account for the local player's number
+	if ([localPlayer playerNumber] > n)
+		n--;
+		
+	// Return the player at that index, or nil
+	id object = [players objectAtIndex:n];
+	if (object == [NSNull null])
+			return nil;
+		
+	return (iTetPlayer*)object;
+}
+
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key
+{
+	if ([key rangeOfString:@"remotePlayer"].location != NSNotFound)
+	{
+		return [NSSet setWithObject:@"playerList"];
+	}
+	
+	return [super keyPathsForValuesAffectingValueForKey:key];
+}
 
 - (NSString*)playerNameForNumber:(int)number
 {

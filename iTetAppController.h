@@ -12,7 +12,6 @@
 @class iTetChatViewController;
 @class iTetGameViewController;
 @class iTetPlayer;
-@class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
 
 #define ITET_MAX_PLAYERS	(6)
@@ -49,7 +48,7 @@
 	// Players
 	NSMutableArray* players;
 	int playerCount;
-	iTetLocalPlayer* localPlayer;
+	iTetPlayer* localPlayer;
 	
 	// Preferences window
 	iTetPreferencesWindowController* prefsWindowController;
@@ -76,7 +75,13 @@
 - (NSString*)playerNameForNumber:(int)number;
 
 @property (readonly) NSArray* playerList;
-@property (readwrite, retain) iTetLocalPlayer* localPlayer;
+@property (readwrite, retain) iTetPlayer* localPlayer;
+@property (readonly) iTetPlayer* remotePlayer1;
+@property (readonly) iTetPlayer* remotePlayer2;
+@property (readonly) iTetPlayer* remotePlayer3;
+@property (readonly) iTetPlayer* remotePlayer4;
+@property (readonly) iTetPlayer* remotePlayer5;
+- (iTetPlayer*)remotePlayerNumber:(NSUInteger)n;
 
 @property (readonly) iTetNetworkController* networkController;
 @property (readonly) iTetPreferencesController* preferencesController;

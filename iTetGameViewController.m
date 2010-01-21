@@ -7,7 +7,7 @@
 
 #import "iTetGameViewController.h"
 #import "iTetAppController.h"
-#import "iTetLocalPlayer.h"
+#import "iTetPlayer.h"
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
@@ -74,28 +74,14 @@
 	// Set up the players' fields
 	for (iTetPlayer* player in players)
 	{
-		// If this is the local player, do some extra stuff
-		if ([player isKindOfClass:[iTetLocalPlayer class]])
-		{	
-			// Create a field with initial random garbage
-			[player setField:[iTetField fieldWithStackHeight:[rules initialStackHeight]]];
-			
-			// Send the newly-created field to the server
-			[self sendFieldstring];
-		}
-		// Otherwise, just give the player a blank field
-		else
-		{
+		// Give the player a blank field
 			[player setField:[iTetField field]];
-		}
 		
 		// Set the starting level
 		[player setLevel:[rules startingLevel]];
 	}
 	
-	// Create a clean specials queue for the local player
-	[[appController localPlayer] setQueueSize:[rules specialCapacity]];
-	[[appController localPlayer] setSpecialsQueue:[Queue queue]];
+	// FIXME: create local player's field, send fieldstring
 	
 	// Set up the timer to spawn the first falling block
 	// FIXME: WRITEME: block timer
@@ -119,27 +105,26 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 
 - (void)sendFieldstring
 {
-	iTetLocalPlayer* player = [appController localPlayer];
-	
 	// Send the string for the local player's field to the server
-	[[appController networkController] sendMessage:
+	/* FIXME: REWRITE
+	 [[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
 	  iTetFieldstringMessageFormat,
 	  [player playerNumber],
 	  [[player field] fieldstring]]];
-	 
+	 */
 }
 
 - (void)sendPartialFieldstring
 {
-	iTetLocalPlayer* player = [appController localPlayer];
-	
 	// Send the last partial update on the local player's field to the server
+	/* FIXME: REWRITE
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
 	  iTetFieldstringMessageFormat,
 	  [player playerNumber],
 	  [[player field] fieldstring]]];
+	 */
 }
 
 #pragma mark -
