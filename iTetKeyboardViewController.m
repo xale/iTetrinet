@@ -407,7 +407,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	NSUInteger i = [index unsignedIntValue];
 	
 	// Make a copy of the unsaved configuration
-	NSMutableDictionary* newConfig = [unsavedConfiguration mutableCopy];
+	NSMutableDictionary* newConfig = [[unsavedConfiguration mutableCopy] autorelease];
 	
 	// Set the configuration name (same as the config we are replacing)
 	[newConfig setConfigurationName:
