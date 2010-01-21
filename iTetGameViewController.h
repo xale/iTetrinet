@@ -40,9 +40,6 @@
 
 - (IBAction)sendMessage:(id)sender;
 
-- (void)addPlayer:(iTetPlayer*)player;
-- (void)removePlayer:(iTetPlayer*)player;
-
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;

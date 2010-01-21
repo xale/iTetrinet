@@ -41,25 +41,6 @@
 }
 
 #pragma mark -
-#pragma mark Player-Field Assignment
-
-- (void)addPlayer:(iTetPlayer*)player
-{	
-	// FIXME: WRITEME
-	
-	// No available controllers (shouldn't happen)
-	//NSLog(@"WARNING: gameController addPlayer: called with no available controllers");
-}
-
-- (void)removePlayer:(iTetPlayer*)player
-{
-	// FIXME: WRITEME
-	
-	// Player not assigned to a controller (shouldn't happen)
-	//NSLog(@"WARNING: gameController removePlayer: called on un-assigned player");
-}
-
-#pragma mark -
 #pragma mark Controlling Game State
 
 - (void)newGameWithPlayers:(NSArray*)players
@@ -75,7 +56,7 @@
 	for (iTetPlayer* player in players)
 	{
 		// Give the player a blank field
-			[player setField:[iTetField field]];
+		[player setField:[iTetField field]];
 		
 		// Set the starting level
 		[player setLevel:[rules startingLevel]];
