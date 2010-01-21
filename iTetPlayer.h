@@ -11,32 +11,32 @@
 @interface iTetPlayer : NSObject
 {
 	NSString* nickname;
-	int playerNumber;
+	NSInteger playerNumber;
 	NSString* teamName;
 	
 	iTetField* field;
-	int level;
+	NSInteger level;
 }
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(int)number
+			number:(NSInteger)number
 		    teamName:(NSString*)team;
 - (id)initWithNickname:(NSString*)nick
-		    number:(int)number
+		    number:(NSInteger)number
 		  teamName:(NSString*)team;
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(int)number;
+			number:(NSInteger)number;
 - (id)initWithNickname:(NSString*)nick
-		    number:(int)number;
+		    number:(NSInteger)number;
 
-+ (id)playerWithNumber:(int)number;
-- (id)initWithNumber:(int)number;
++ (id)playerWithNumber:(NSInteger)number;
+- (id)initWithNumber:(NSInteger)number;
 
 @property (readwrite, copy) NSString* nickname;
-@property (readwrite, assign) int playerNumber;
+@property (readwrite, assign) NSInteger playerNumber;
 @property (readwrite, copy) NSString* teamName;
 @property (readwrite, retain) iTetField* field;
-@property (readwrite, assign) int level;
+@property (readwrite, assign) NSInteger level;
 
 @end

@@ -348,9 +348,10 @@
 		6A96B57810098E97003D353E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6A9EEFFC107C351D0006A064 /* Players */,
 				6A96B57910098EAC003D353E /* Game Objects */,
 				6AFBE88910AC634C008336EC /* Key Bindings */,
+				6A96B56010098E88003D353E /* iTetPlayer.h */,
+				6A96B56110098E88003D353E /* iTetPlayer.m */,
 				6A96B55E10098E88003D353E /* iTetChannelInfo.h */,
 				6A96B55F10098E88003D353E /* iTetChannelInfo.m */,
 				6A96B56210098E88003D353E /* iTetServerInfo.h */,
@@ -439,15 +440,6 @@
 				6A12A26410E4A03400EA67B7 /* gtetblocks.png */,
 			);
 			name = Themes;
-			sourceTree = "<group>";
-		};
-		6A9EEFFC107C351D0006A064 /* Players */ = {
-			isa = PBXGroup;
-			children = (
-				6A96B56010098E88003D353E /* iTetPlayer.h */,
-				6A96B56110098E88003D353E /* iTetPlayer.m */,
-			);
-			name = Players;
 			sourceTree = "<group>";
 		};
 		6AB76D51101D141700734661 /* Preferences Window Controllers */ = {
