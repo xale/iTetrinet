@@ -184,7 +184,7 @@ char partialUpdateCell(char cellType);
 	}
 	
 	// Retain this as the most recent partial update
-	[self setLastPartialUpdate:[update copy]];
+	[self setLastPartialUpdate:update];
 }
 
 - (char)cellAtRow:(int)row
