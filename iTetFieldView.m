@@ -107,8 +107,9 @@
 - (void)setField:(iTetField*)newField
 {
 	[self willChangeValueForKey:@"field"];
+	[newField retain];
 	[field release];
-	field = [newField retain];
+	field = newField;
 	[self didChangeValueForKey:@"field"];
 	
 	[self setNeedsDisplay:YES];

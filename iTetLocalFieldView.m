@@ -89,8 +89,9 @@
 - (void)setBlock:(iTetBlock*)newBlock
 {
 	[self willChangeValueForKey:@"block"];
+	[newBlock retain];
 	[block release];
-	block = [newBlock retain];
+	block = newBlock;
 	[self didChangeValueForKey:@"block"];
 	
 	[self setNeedsDisplay:YES];

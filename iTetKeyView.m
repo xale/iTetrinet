@@ -214,8 +214,9 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 
 - (void)setCurrentKeyImage:(NSImage*)image
 {
+	[image retain];
 	[currentKeyImage release];
-	currentKeyImage = [image retain];
+	currentKeyImage = image;
 	[self setNeedsDisplay:YES];
 }
 @synthesize currentKeyImage;

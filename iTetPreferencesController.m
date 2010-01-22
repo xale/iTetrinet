@@ -340,11 +340,14 @@ static iTetPreferencesController* preferencesController = nil;
 	// Stop observing all objects in the old list
 	[self stopObservingServersInArray:serverList];
 	
+	// Retain the new list
+	[servers retain]
+	
 	// Release the old list
 	[serverList release];
 	
-	// Retain the new list
-	serverList = [servers retain];
+	// Assign the list
+	serverList = servers;
 	
 	// Start observing all objects in the new list
 	[self startObservingServersInArray:serverList];

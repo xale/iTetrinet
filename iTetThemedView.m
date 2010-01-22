@@ -58,8 +58,12 @@
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
+	[self willChangeValueForKey:@"theme"];
+	[newTheme retain];
 	[theme release];
-	theme = [newTheme retain];
+	theme = newTheme;
+	[self didChangeValueForKey:@"theme"];
+	
 	[self setNeedsDisplay:YES];
 }
 @synthesize theme;

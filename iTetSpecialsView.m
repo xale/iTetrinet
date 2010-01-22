@@ -98,8 +98,9 @@
 - (void)setSpecials:(NSArray*)newSpecials
 {
 	[self willChangeValueForKey:@"specials"];
+	[newSpecials retain];
 	[specials release];
-	specials = [newSpecials retain];
+	specials = newSpecials;
 	[self didChangeValueForKey:@"specials"];
 	
 	[self setNeedsDisplay:YES];
