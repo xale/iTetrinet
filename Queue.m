@@ -44,8 +44,9 @@
 		// Queue is empty; the new node is both the head and tail
 		[self willChangeValueForKey:@"firstObject"];
 		head = [newNode retain];
-		tail = newNode;
 		[self didChangeValueForKey:@"firstObject"];
+		
+		tail = newNode;
 	}
 	
 	// Increment the count of nodes in the queue
@@ -81,14 +82,11 @@
 	else
 	{
 		// Last remaining node; set the head and tail pointers to nil
-		[self willChangeValueForKey:@"lastObject"];
 		head = nil;
+		[self willChangeValueForKey:@"lastObject"];
 		tail = nil;
 		[self didChangeValueForKey:@"lastObject"];
 	}
-	
-	// Release the node
-	[firstNode release];
 	
 	// Decrement the count of nodes
 	count--;
@@ -96,6 +94,9 @@
 	[self didChangeValueForKey:@"count"];
 	[self didChangeValueForKey:@"allObjects"];
 	[self didChangeValueForKey:@"firstObject"];
+	
+	// Release the node
+	[firstNode release];
 	
 	// Return the object removed from the first node
 	return [object autorelease];
@@ -129,9 +130,9 @@
 #pragma mark Properties
 
 - (id)firstObject
-{
+{	
 	// Simple "peek" operation
-	if (count > 0)
+	if (head != nil)
 		return [head contents];
 	
 	return nil;
@@ -139,7 +140,7 @@
 
 - (id)lastObject
 {
-	if (count > 0)
+	if (tail != nil)
 		return [tail contents];
 	
 	return nil;
@@ -160,10 +161,6 @@
 	return output;
 }
 
-- (NSUInteger)count
-{
-	// Return the number of nodes in the queue
-	return count;
-}
+@synthesize count;
 
 @end
