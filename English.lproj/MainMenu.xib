@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="501"/>
 			<integer value="575"/>
+			<integer value="451"/>
 			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -4382,6 +4382,41 @@
 					</object>
 					<int key="connectionID">1005</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: specialsQueue.firstObject</string>
+						<reference key="source" ref="1003838065"/>
+						<reference key="destination" ref="484487917"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1003838065"/>
+							<reference key="NSDestination" ref="484487917"/>
+							<string key="NSLabel">value: specialsQueue.firstObject</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">specialsQueue.firstObject</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSAllowsEditingMultipleValuesSelection</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<boolean value="NO"/>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>TetrinetSpecialNameTransformer</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1011</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -6610,7 +6645,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1005</int>
+			<int key="maxID">1011</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
