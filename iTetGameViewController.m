@@ -12,6 +12,7 @@
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
 #import "iTetField.h"
+#import "iTetBlock.h"
 #import "iTetGameRules.h"
 #import "Queue.h"
 
@@ -27,12 +28,29 @@
 - (void)awakeFromNib
 {
 	// Bind the game views to the app controller
+	// Local field view (field and falling block)
 	[localFieldView bind:@"field"
 			toObject:appController
 		   withKeyPath:@"localPlayer.field"
 			 options:nil];
-	// FIXME: bind next block view
-	// FIXME: bind specials view
+	[localFieldView bind:@"block"
+			toObject:self
+		   withKeyPath:@"currentBlock"
+			 options:nil];
+
+	// Next block view
+	[nextBlockView bind:@"block"
+		     toObject:self
+		  withKeyPath:@"nextBlock"
+			options:nil];
+	
+	// Specials queue view
+	[specialsView bind:@"specials"
+		    toObject:self
+		 withKeyPath:@"specialsQueue.allObjects"
+		     options:nil];
+	
+	// Remote field views
 	[remoteFieldView1 bind:@"field"
 			  toObject:appController
 		     withKeyPath:@"remotePlayer1.field"
@@ -59,6 +77,10 @@
 {
 	[currentGameRules release];
 	[actionHistory release];
+	
+	[currentBlock release];
+	[nextBlock release];
+	[specialsQueue release];
 	
 	[super dealloc];
 }
@@ -104,10 +126,16 @@
 		[self sendFieldstring];
 	}
 	
-	// Set up the timer to spawn the first falling block
-	// FIXME: WRITEME: block timer
+	// Create the first block to add to the field
+	[self setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules blockFrequencies]]];
 	
-	// FIXME: anything else to do here?
+	// Move the block to the field
+	[self moveNextBlockToField];
+	
+	// Create a new specials queue
+	[self setSpecialsQueue:[Queue queue]];
+	
+	// FIXME: anything else?
 }
 
 - (void)endGame
@@ -117,6 +145,36 @@
 	// Release and nil the game rules pointer
 	[currentGameRules release];
 	currentGameRules = nil;
+}
+
+#pragma mark -
+#pragma mark Gameplay Events
+
+- (void)moveNextBlockToField
+{
+	// Transfer the next block to the field
+	// FIXME: move block to top of field
+	[self setCurrentBlock:[self nextBlock]];
+	
+	// FIXME: test if there is anything in the way of the block
+	
+	// Generate a new next block
+	[self setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules blockFrequencies]]];
+	
+	// Set block fall timer
+	// FIXME: WRITEME: falling block timer
+}
+
+#pragma mark iTetLocalBoardView Event Delegate Methods
+
+- (void)keyPressed:(iTetKeyNamePair*)key
+  onLocalFieldView:(iTetLocalFieldView*)fieldView
+{
+	// If there is no game in progress, or the game is paused, ignore
+	if (![self gameInProgress] || [self gamePaused])
+		return;
+	
+	// FIXME: WRITEME
 }
 
 #pragma mark -
@@ -216,19 +274,6 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 }
 
 #pragma mark -
-#pragma mark iTetLocalBoardView Event Delegate Methods
-
-- (void)keyPressed:(iTetKeyNamePair*)key
-  onLocalFieldView:(iTetLocalFieldView*)fieldView
-{
-	// If there is no game in progress, or the game is paused, ignore
-	if (![self gameInProgress] || [self gamePaused])
-		return;
-	
-	// FIXME: WRITEME
-}
-
-#pragma mark -
 #pragma mark NSTableView Data Source Methods
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView*)tableView
@@ -245,6 +290,10 @@ objectValueForTableColumn:(NSTableColumn*)column
 
 #pragma mark -
 #pragma mark Accessors
+
+@synthesize currentBlock;
+@synthesize nextBlock;
+@synthesize specialsQueue;
 
 - (BOOL)gameInProgress
 {

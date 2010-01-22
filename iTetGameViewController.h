@@ -15,7 +15,9 @@
 @class iTetSpecialsView;
 @class iTetPlayer;
 @class iTetGameRules;
+@class iTetBlock;
 @class iTetKeyNamePair;
+@class Queue;
 
 @interface iTetGameViewController : NSObject
 {
@@ -43,6 +45,11 @@
 	// Rules for game in progress (nil indicates no game in progress)
 	iTetGameRules* currentGameRules;
 	
+	// Local player's current falling block, next block and specials queue
+	iTetBlock* currentBlock;
+	iTetBlock* nextBlock;
+	Queue* specialsQueue;
+	
 	// Pause/play state of current game
 	BOOL gamePaused;
 	
@@ -55,6 +62,8 @@
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;
+
+- (void)moveNextBlockToField;
 
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
@@ -69,6 +78,10 @@
 
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;
+
+@property (readwrite, retain) iTetBlock* currentBlock;
+@property (readwrite, retain) iTetBlock* nextBlock;
+@property (readwrite, retain) Queue* specialsQueue;
 
 @property (readonly) BOOL gameInProgress;
 @property (readwrite) BOOL gamePaused;

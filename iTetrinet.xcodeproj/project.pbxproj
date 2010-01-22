@@ -333,7 +333,7 @@
 			name = "Local Player's Views";
 			sourceTree = "<group>";
 		};
-		6A934974100C44D700A7CF51 /* Themed NSView Subclasses */ = {
+		6A934974100C44D700A7CF51 /* Themed Views */ = {
 			isa = PBXGroup;
 			children = (
 				6A2923CD100BFB7A0008A3C3 /* iTetThemedView.h */,
@@ -342,7 +342,7 @@
 				6A96B55D10098E88003D353E /* iTetFieldView.m */,
 				6A8B72FB107F9C5A00F82C44 /* Local Player's Views */,
 			);
-			name = "Themed NSView Subclasses";
+			name = "Themed Views";
 			sourceTree = "<group>";
 		};
 		6A96B57810098E97003D353E /* Model */ = {
@@ -380,7 +380,7 @@
 		6A96B57A10098ED8003D353E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6A934974100C44D700A7CF51 /* Themed NSView Subclasses */,
+				6A934974100C44D700A7CF51 /* Themed Views */,
 				6A96B55610098E88003D353E /* iTetBlock+Drawing.h */,
 				6A96B55710098E88003D353E /* iTetBlock+Drawing.m */,
 				6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */,
