@@ -15,15 +15,15 @@
 
 - (id)initWithContents:(id)object
 {
-	[self setContents:object];
+	contents = [object retain];
 	
 	return self;
 }
 
 - (void)dealloc
 {
-	[self setContents:nil];
-	[self setNext:nil];
+	[contents release];
+	[next release];
 	
 	[super dealloc];
 }
