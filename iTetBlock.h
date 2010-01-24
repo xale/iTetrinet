@@ -50,8 +50,8 @@ typedef enum
 - (void)moveLeft;
 - (void)moveRight;
 - (void)moveDown;
-@property (readonly) NSInteger rowPos;
-@property (readonly) NSInteger colPos;
+@property (readwrite, assign) NSInteger rowPos;
+@property (readwrite, assign) NSInteger colPos;
 
 // The block's present orientation (rotation)
 - (void)rotateClockwise;

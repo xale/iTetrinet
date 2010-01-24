@@ -172,7 +172,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 - (char)cellAtRow:(NSInteger)row
 	     column:(NSInteger)col
 {
-	return blocks[type][orientation][row][col];
+	return blocks[type][orientation][(ITET_BLOCK_WIDTH - row) - 1][col];
 }
 
 - (void)moveLeft
@@ -204,7 +204,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 - (void)rotateCounterclockwise
 {
 	[self willChangeValueForKey:@"orientation"];
-	orientation = (orientation - 1) % orientationCount[type];
+	orientation = (orientation - 1 + orientationCount[type]) % orientationCount[type];
 	[self didChangeValueForKey:@"orientation"];
 }
 @synthesize orientation;
