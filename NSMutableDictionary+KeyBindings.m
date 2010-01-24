@@ -40,6 +40,9 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 	[keyDict setAction:discardSpecial
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:2
 									     name:@"d"]];
+	[keyDict setAction:selfSpecial
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:1
+									     name:@"s"]];
 	[keyDict setAction:gameChat
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:17
 									     name:@"t"]];
@@ -69,6 +72,9 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 	[keyDict setAction:discardSpecial
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:2
 									     name:@"d"]];
+	[keyDict setAction:selfSpecial
+			forKey:[iTetKeyNamePair keyNamePairForKeyCode:1
+									     name:@"s"]];
 	[keyDict setAction:gameChat
 			forKey:[iTetKeyNamePair keyNamePairForKeyCode:17
 									     name:@"t"]];

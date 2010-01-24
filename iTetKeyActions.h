@@ -19,6 +19,7 @@ typedef enum
 	movePieceDown,
 	dropPiece,
 	discardSpecial,
+	selfSpecial,
 	gameChat
 } iTetGameAction;
 
@@ -28,8 +29,9 @@ extern NSString* const iTetRotatePieceCounterclockwiseActionName;
 extern NSString* const iTetRotatePieceClockwiseActionName;
 extern NSString* const iTetMovePieceDownActionName;
 extern NSString* const iTetDropPieceActionName;
-extern NSString* const iTetGameChatActionName;
 extern NSString* const iTetDiscardSpecialActionName;
+extern NSString* const iTetSelfSpecialActionName;
+extern NSString* const iTetGameChatActionName;
 extern NSString* const iTetNoActionName;
 
 NSString* iTetNameForAction(iTetGameAction action);
