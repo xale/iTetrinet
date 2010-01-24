@@ -12,9 +12,9 @@
 
 typedef enum
 {
-	obstructNone,
-	obstructVert,
-	obstructHoriz
+	obstructNone =	0,
+	obstructVert =	1,
+	obstructHoriz =	2
 } ObstructionState;
 
 @class iTetBlock;
