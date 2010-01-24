@@ -95,11 +95,11 @@ char partialUpdateCell(char cellType);
 #pragma mark -
 #pragma mark Obstruction Testing
 
-- (ObstructionState)blockObstructed:(iTetBlock*)block
+- (iTetObstructionState)blockObstructed:(iTetBlock*)block
 {
 	int row, col;
 	char cell;
-	ObstructionState side = obstructNone;
+	iTetObstructionState side = obstructNone;
 	
 	// For each cell in the block, check if it is obstructed on the field
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
@@ -132,7 +132,7 @@ char partialUpdateCell(char cellType);
 	return side;
 }
 
-- (ObstructionState)cellObstructedAtRow:(int)row
+- (iTetObstructionState)cellObstructedAtRow:(int)row
 					   column:(int)col
 {
 	// Check if obstructed by sides of field

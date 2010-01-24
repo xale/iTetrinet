@@ -15,7 +15,7 @@ typedef enum
 	obstructNone =	0,
 	obstructVert =	1,
 	obstructHoriz =	2
-} ObstructionState;
+} iTetObstructionState;
 
 @class iTetBlock;
 
@@ -41,10 +41,10 @@ typedef enum
 - (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents;
 
 // Checks whether a block is in a valid position on the field
-- (ObstructionState)blockObstructed:(iTetBlock*)block;
+- (iTetObstructionState)blockObstructed:(iTetBlock*)block;
 
 // Checks whether the specified cell is valid (i.e., on the field) and empty
-- (ObstructionState)cellObstructedAtRow:(int)row
+- (iTetObstructionState)cellObstructedAtRow:(int)row
 					   column:(int)col;
 
 // Add the cells of the specified block to the field's contents
