@@ -79,6 +79,26 @@
 }
 
 #pragma mark -
+#pragma mark Key-Value Observing
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+			    ofObject:(id)object
+				change:(NSDictionary *)change
+			     context:(void *)context
+{
+	if ([object isKindOfClass:[iTetBlock class]])
+	{
+		[self setNeedsDisplay:YES];
+		return;
+	}
+	
+	[super observeValueForKeyPath:keyPath
+				   ofObject:object
+				     change:change
+				    context:context];
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 - (BOOL)acceptsFirstResponder
@@ -89,9 +109,22 @@
 - (void)setBlock:(iTetBlock*)newBlock
 {
 	[self willChangeValueForKey:@"block"];
+	
+	// Stop observing the old block
+	[block removeObserver:self forKeyPath:@"rowPos"];
+	[block removeObserver:self forKeyPath:@"colPos"];
+	[block removeObserver:self forKeyPath:@"orientation"];
+	
+	// Swap the new block for the old
 	[newBlock retain];
 	[block release];
 	block = newBlock;
+	
+	// Start observing the new block
+	[block addObserver:self forKeyPath:@"rowPos" options:nil context:NULL];
+	[block addObserver:self forKeyPath:@"colPos" options:nil context:NULL];
+	[block addObserver:self forKeyPath:@"orientation" options:nil context:NULL];
+	
 	[self didChangeValueForKey:@"block"];
 	
 	[self setNeedsDisplay:YES];
