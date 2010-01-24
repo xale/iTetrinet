@@ -780,7 +780,13 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// FIXME: debug logging
 		NSLog(@"DEBUG: MESSAGE: game ended");
 		
-		// FIXME: WRITEME: game over message
+		// Change the "end game" toolbar item
+		[gameButton setLabel:@"New Game"];
+		[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
+		
+		// Change the "new game" menu item
+		[gameMenuItem setTitle:@"New Game"];
+		[gameMenuItem setKeyEquivalent:@"n"];
 	}
 	else
 	{
