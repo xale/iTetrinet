@@ -341,7 +341,7 @@ static iTetPreferencesController* preferencesController = nil;
 	[self stopObservingServersInArray:serverList];
 	
 	// Retain the new list
-	[servers retain]
+	[servers retain];
 	
 	// Release the old list
 	[serverList release];
