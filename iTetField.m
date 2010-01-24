@@ -104,7 +104,7 @@ char partialUpdateCell(char cellType);
 	// For each cell in the block, check if it is obstructed on the field
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
-		for (col = 0; col < ITET_BLOCK_WIDTH; row++)
+		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
 			cell = [block cellAtRow:row column:col];
 			if (cell)
