@@ -26,6 +26,13 @@ typedef enum
 
 typedef enum
 {
+	moveLeft =	-1,
+	moveNone =	0,
+	moveRight =	1
+} iTetMoveDirection;
+
+typedef enum
+{
 	rotateCounterclockwise = -1,
 	rotateNone = 0,
 	rotateClockwise = 1
@@ -66,9 +73,9 @@ typedef enum
 	     column:(NSInteger)col;
 
 // The block's position
-- (void)moveLeft;
-- (void)moveRight;
-- (void)moveDown;
+- (void)moveHorizontal:(iTetMoveDirection)direction
+		   onField:(iTetField*)field;
+- (BOOL)moveDownOnField:(iTetField*)field;
 @property (readwrite, assign) NSInteger rowPos;
 @property (readwrite, assign) NSInteger colPos;
 

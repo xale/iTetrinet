@@ -63,6 +63,7 @@
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;
 
+- (void)solidifyCurrentBlock;
 - (void)moveNextBlockToField;
 
 - (void)sendFieldstring;

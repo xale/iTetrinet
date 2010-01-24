@@ -202,26 +202,43 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 	return blocks[type][orientation][(ITET_BLOCK_WIDTH - row) - 1][col];
 }
 
-- (void)moveLeft
+- (void)moveHorizontal:(iTetMoveDirection)direction
+		   onField:(iTetField*)field
 {
-	[self willChangeValueForKey:@"colPos"];
-	colPos--;
-	[self didChangeValueForKey:@"colPos"];
+	// Determine the block's new position
+	NSInteger newColPos = [self colPos] + direction;
+	
+	// Check if the block would be obstructed in the new position
+	if ([field blockObstructed:[iTetBlock blockWithType:type
+							    orientation:[self orientation]
+							    rowPosition:[self rowPos]
+							 columnPosition:newColPos]])
+		return; // Block obstructed
+	
+	// Otherwise, move the block to the new position
+	[self setColPos:newColPos];
 }
-- (void)moveRight
+- (BOOL)moveDownOnField:(iTetField*)field
 {
-	[self willChangeValueForKey:@"colPos"];
-	colPos++;
-	[self didChangeValueForKey:@"colPos"];
-}
-- (void)moveDown
-{
-	[self willChangeValueForKey:@"rowPos"];
-	rowPos--;
-	[self didChangeValueForKey:@"rowPos"];
+	// Determine the block's new position
+	NSInteger newRowPos = [self rowPos] - 1;
+	
+	// Check if the block would be obstructed in the new position
+	if ([field blockObstructed:[iTetBlock blockWithType:type
+							    orientation:[self orientation]
+							    rowPosition:newRowPos
+							 columnPosition:[self colPos]]])
+	{
+		// Block does not move down, but solidifies instead
+		return YES;
+	}
+	
+	// If unobstructed, move to new position
+	[self setRowPos:newRowPos];
+	
+	return NO;
 }
 @synthesize rowPos, colPos;
-
 
 - (void)rotate:(iTetRotationDirection)direction
 	 onField:(iTetField*)field

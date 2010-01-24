@@ -154,6 +154,21 @@
 #pragma mark -
 #pragma mark Gameplay Events
 
+- (void)solidifyCurrentBlock
+{
+	// Solidify the block
+	[[LOCALPLAYER field] solidifyBlock:[self currentBlock]];
+	
+	// Remove the current block
+	[self setCurrentBlock:nil];
+	
+	// Start the timer to spawn the next block
+	// FIXME: WRITEME: next block timer
+	
+	// FIXME: debug
+	[self moveNextBlockToField];
+}
+
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
@@ -197,31 +212,51 @@
 	switch (action)
 	{
 		case movePieceLeft:
-			[[self currentBlock] moveLeft];
+			[[self currentBlock] moveHorizontal:moveLeft
+							    onField:[LOCALPLAYER field]];
 			return;
+			
 		case movePieceRight:
-			[[self currentBlock] moveRight];
+			[[self currentBlock] moveHorizontal:moveRight
+							    onField:[LOCALPLAYER field]];
 			return;
+			
 		case rotatePieceCounterclockwise:
 			[[self currentBlock] rotate:rotateCounterclockwise
 						  onField:[LOCALPLAYER field]];
 			return;
+			
 		case rotatePieceClockwise:
 			[[self currentBlock] rotate:rotateClockwise
 						  onField:[LOCALPLAYER field]];
 			return;
+			
 		case movePieceDown:
-			[[self currentBlock] moveDown];
+			// Attempt to move the block down
+			if ([[self currentBlock] moveDownOnField:[LOCALPLAYER field]])
+			{
+				// If the block solidifies, add it to the field
+				[self solidifyCurrentBlock];
+			}
 			return;
+			
 		case dropPiece:
-			// FIXME: WRITEME: 'drop piece' key
+			// Move the block down until it stops
+			while (![[self currentBlock] moveDownOnField:[LOCALPLAYER field]]);
+			
+			// Solidify the block
+			[self solidifyCurrentBlock];
+			
 			return;
+			
 		case discardSpecial:
 			// FIXME: WRITEME: 'discard special' key
 			return;
+			
 		case selfSpecial:
 			// FIXME: WRITEME: 'use special on self' key
 			return;
+			
 		case gameChat:
 			// FIXME: WRITEME: 'game chat' key
 			return;
