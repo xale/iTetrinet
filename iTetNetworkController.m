@@ -100,17 +100,17 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Split the server's IP address into integer components
 	NSArray* ipComponents = [address componentsSeparatedByString:@"."];
-	int ip[4];
+	NSInteger ip[4];
 	NSUInteger i;
 	for (i = 0; i < 4; i++)
-		ip[i] = [[ipComponents objectAtIndex:i] intValue];
+		ip[i] = [[ipComponents objectAtIndex:i] integerValue];
 	
 	// Create the hash of the IP address
 	NSString* ipHash = [NSString stringWithFormat:@"%d",
 				  (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
 	
 	// Start with a random salt, and use it to create the initialization request
-	int x = random() % 255;
+	NSInteger x = random() % 255;
 	NSMutableString* encodedString = [NSMutableString stringWithFormat:@"%02X", x];
 	
 	// For each character in the connection request, create the two-character

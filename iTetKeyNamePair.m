@@ -14,7 +14,7 @@
 	return [[[self alloc] initWithKeyEvent:event] autorelease];
 }
 
-+ (id)keyNamePairForKeyCode:(int)code
++ (id)keyNamePairForKeyCode:(NSInteger)code
 			     name:(NSString*)name
 {
 	return [[[self alloc] initWithKeyCode:code
@@ -39,7 +39,7 @@
 	
 }
 
-- (id)initWithKeyCode:(int)code
+- (id)initWithKeyCode:(NSInteger)code
 		     name:(NSString*)name
 {
 	keyCode = code;
@@ -173,7 +173,7 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
-	[encoder encodeInt:[self keyCode]
+	[encoder encodeInteger:[self keyCode]
 			forKey:iTetKeyNamePairCodeKey];
 	[encoder encodeObject:[self keyName]
 			   forKey:iTetKeyNamePairNameKey];
@@ -181,7 +181,7 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-	keyCode = [decoder decodeIntForKey:iTetKeyNamePairCodeKey];
+	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
 	
 	return self;

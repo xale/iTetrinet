@@ -11,16 +11,16 @@
 @interface iTetChannelInfo : NSObject
 {
 	NSString* channelName;
-	int currentPlayers;
-	int maxPlayers;
-	int channelState;
+	NSInteger currentPlayers;
+	NSInteger maxPlayers;
+	NSInteger channelState;
 	NSString* description;
 }
 
 @property (readwrite, copy) NSString* channelName;
-@property (readwrite, assign) int currentPlayers;
-@property (readwrite, assign) int maxPlayers;
-@property (readwrite, assign) int channelState;
+@property (readwrite, assign) NSInteger currentPlayers;
+@property (readwrite, assign) NSInteger maxPlayers;
+@property (readwrite, assign) NSInteger channelState;
 @property (readwrite, copy) NSString* description;
 
 @end

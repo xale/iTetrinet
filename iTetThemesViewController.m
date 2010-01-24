@@ -47,7 +47,7 @@
 }
 
 - (void)openSheetDidEnd:(NSOpenPanel*)openSheet
-		 returnCode:(int)returnCode
+		 returnCode:(NSInteger)returnCode
 		contextInfo:(void*)contextInfo
 {
 	if (returnCode != NSOKButton)
@@ -147,14 +147,14 @@
 #pragma mark Error Sheet Callbacks
 
 - (void)themeErrorAlertEnded:(NSAlert*)alert
-			returnCode:(int)returnCode
+			returnCode:(NSInteger)returnCode
 		     contextInfo:(void*)contextInfo
 {
 	// Does nothing
 }
 
 - (void)duplicateThemeAlertEnded:(NSAlert*)alert
-			    returnCode:(int)returnCode
+			    returnCode:(NSInteger)returnCode
 				   theme:(iTetTheme*)newTheme
 {
 	// Balance the retain used to hold onto the theme

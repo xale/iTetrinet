@@ -27,15 +27,15 @@ typedef enum
 @interface iTetBlock: NSObject
 {
 	iTetBlockType type;
-	int orientation;
-	int rowPos, colPos;
+	NSInteger orientation;
+	NSInteger rowPos, colPos;
 }
 
 // Create blocks with specific types and orientations
 + (id)blockWithType:(iTetBlockType)newType
-	  orientation:(int)orientation;
+	  orientation:(NSInteger)orientation;
 - (id)initWithType:(iTetBlockType)newType
-	 orientation:(int)newOrientation;
+	 orientation:(NSInteger)newOrientation;
 
 // Create random blocks using the frequency information from the game rules
 // NOTE: The frequency information must be an array of length 100
@@ -43,22 +43,22 @@ typedef enum
 - (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies;
 
 // Returns the contents of this block at the specified cell
-- (char)cellAtRow:(int)row
-	     column:(int)col;
+- (char)cellAtRow:(NSInteger)row
+	     column:(NSInteger)col;
 
 // The block's position
 - (void)moveLeft;
 - (void)moveRight;
 - (void)moveDown;
-@property (readonly) int rowPos;
-@property (readonly) int colPos;
+@property (readonly) NSInteger rowPos;
+@property (readonly) NSInteger colPos;
 
 // The block's present orientation (rotation)
 - (void)rotateClockwise;
 - (void)rotateCounterclockwise;
-@property (readonly) int orientation;
+@property (readonly) NSInteger orientation;
 
 // Returns the number of possible orientations for this block
-- (int)numOrientations;
+- (NSInteger)numOrientations;
 
 @end

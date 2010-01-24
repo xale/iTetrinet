@@ -29,22 +29,22 @@ extern NSString* const iTetAltOptionKeyPlaceholderString;
 
 @interface iTetKeyNamePair : NSObject <NSCoding, NSCopying>
 {
-	int keyCode;
+	NSInteger keyCode;
 	NSString* keyName;
 }
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
-+ (id)keyNamePairForKeyCode:(int)code
++ (id)keyNamePairForKeyCode:(NSInteger)code
 			     name:(NSString*)name;
 
 - (id)initWithKeyEvent:(NSEvent*)event;
-- (id)initWithKeyCode:(int)code
+- (id)initWithKeyCode:(NSInteger)code
 		     name:(NSString*)name;
 
 - (NSString*)keyNameForEvent:(NSEvent*)event;
 - (NSString*)modifierNameForEvent:(NSEvent*)event;
 
-@property (readonly) int keyCode;
+@property (readonly) NSInteger keyCode;
 @property (readonly) NSString* keyName;
 @property (readonly) NSString* printedName;
 

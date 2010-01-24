@@ -62,8 +62,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Fill the pop-up menu with the available keyboard configurations
 	NSArray* configurations = [PREFS keyConfigurations];
-	int numConfigs = [configurations count];
-	for (int i = 0; i < numConfigs; i++)
+	NSUInteger numConfigs = [configurations count];
+	for (NSUInteger i = 0; i < numConfigs; i++)
 	{
 		[self insertConfiguration:[configurations objectAtIndex:i]
 			 inPopUpMenuAtIndex:i
@@ -406,7 +406,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// If the user pressed "replace", replace the existing configuration
 	// Get the index of the configuration to replace
-	NSUInteger i = [index unsignedIntValue];
+	NSUInteger i = [index unsignedIntegerValue];
 	
 	// Make a copy of the unsaved configuration
 	NSMutableDictionary* newConfig = [[unsavedConfiguration mutableCopy] autorelease];

@@ -133,19 +133,19 @@ static BLOCK bT[4] = {
 };
 
 static BLOCK *blocks[ITET_NUM_BLOCK_TYPES] = {bI, bO, bJ, bL, bZ, bS, bT};
-static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
+static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 
 @implementation iTetBlock
 
 + (id)blockWithType:(iTetBlockType)t
-	  orientation:(int)o
+	  orientation:(NSInteger)o
 {
 	return [[[iTetBlock alloc] initWithType:t
 					    orientation:o] autorelease];
 }
 
 - (id)initWithType:(iTetBlockType)t
-	 orientation:(int)o
+	 orientation:(NSInteger)o
 {
 	type = t;
 	orientation = o;
@@ -169,8 +169,8 @@ static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 #pragma mark -
 #pragma mark Accessors
 
-- (char)cellAtRow:(int)row
-	     column:(int)col
+- (char)cellAtRow:(NSInteger)row
+	     column:(NSInteger)col
 {
 	return blocks[type][orientation][row][col];
 }
@@ -209,7 +209,7 @@ static int orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 }
 @synthesize orientation;
 
-- (int)numOrientations
+- (NSInteger)numOrientations
 {
 	return orientationCount[type];
 }

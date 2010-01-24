@@ -47,7 +47,7 @@
 	
 	// Players
 	NSMutableArray* players;
-	int playerCount;
+	NSInteger playerCount;
 	iTetPlayer* localPlayer;
 	
 	// Preferences window
@@ -65,14 +65,14 @@
 - (void)connectionError:(NSError*)error;
 - (void)messageRecieved:(NSString*)message;
 
-- (void)setLocalPlayerNumber:(int)number;
-- (void)addPlayerWithNumber:(int)number
+- (void)setLocalPlayerNumber:(NSInteger)number;
+- (void)addPlayerWithNumber:(NSInteger)number
 			 nickname:(NSString*)nick;
 - (void)setTeamName:(NSString*)team
-    forPlayerNumber:(int)number;
-- (void)removePlayerNumber:(int)number;
+    forPlayerNumber:(NSInteger)number;
+- (void)removePlayerNumber:(NSInteger)number;
 - (void)removeAllPlayers;
-- (NSString*)playerNameForNumber:(int)number;
+- (NSString*)playerNameForNumber:(NSInteger)number;
 
 @property (readonly) NSArray* playerList;
 @property (readwrite, retain) iTetPlayer* localPlayer;
