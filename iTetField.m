@@ -160,6 +160,7 @@ char partialUpdateCell(char cellType);
 	
 	NSMutableString* update = [NSMutableString string];
 	
+	[self willChangeValueForKey:@"contents"];
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
@@ -182,6 +183,7 @@ char partialUpdateCell(char cellType);
 			}
 		}
 	}
+	[self didChangeValueForKey:@"contents"];
 	
 	// Retain this as the most recent partial update
 	[self setLastPartialUpdate:update];

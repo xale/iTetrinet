@@ -45,7 +45,7 @@ typedef enum
 
 // Checks whether the specified cell is valid (i.e., on the field) and empty
 - (iTetObstructionState)cellObstructedAtRow:(int)row
-					   column:(int)col;
+						 column:(int)col;
 
 // Add the cells of the specified block to the field's contents
 - (void)solidifyBlock:(iTetBlock*)block;

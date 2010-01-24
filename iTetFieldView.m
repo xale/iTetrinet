@@ -97,6 +97,26 @@
 }
 
 #pragma mark -
+#pragma mark Key-Value Observing
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+			    ofObject:(id)object
+				change:(NSDictionary *)change
+			     context:(void *)context
+{
+	if ([object isKindOfClass:[iTetField class]])
+	{
+		[self setNeedsDisplay:YES];
+		return;
+	}
+	
+	[super observeValueForKeyPath:keyPath
+				   ofObject:object
+				     change:change
+				    context:context];
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 - (BOOL)isOpaque
@@ -107,9 +127,18 @@
 - (void)setField:(iTetField*)newField
 {
 	[self willChangeValueForKey:@"field"];
+	
+	// Stop observing the old field
+	[field removeObserver:self forKeyPath:@"contents"];
+	
+	// Swap in new field
 	[newField retain];
 	[field release];
 	field = newField;
+	
+	// Start observing the new field
+	[field addObserver:self forKeyPath:@"contents" options:0 context:NULL];
+	
 	[self didChangeValueForKey:@"field"];
 	
 	[self setNeedsDisplay:YES];
