@@ -121,9 +121,9 @@
 	block = newBlock;
 	
 	// Start observing the new block
-	[block addObserver:self forKeyPath:@"rowPos" options:nil context:NULL];
-	[block addObserver:self forKeyPath:@"colPos" options:nil context:NULL];
-	[block addObserver:self forKeyPath:@"orientation" options:nil context:NULL];
+	[block addObserver:self forKeyPath:@"rowPos" options:0 context:NULL];
+	[block addObserver:self forKeyPath:@"colPos" options:0 context:NULL];
+	[block addObserver:self forKeyPath:@"orientation" options:0 context:NULL];
 	
 	[self didChangeValueForKey:@"block"];
 	
