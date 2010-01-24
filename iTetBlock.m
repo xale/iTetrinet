@@ -6,6 +6,7 @@
 //
 
 #import "iTetBlock.h"
+#import "iTetField.h"
 
 typedef char BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
 
@@ -137,20 +138,46 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 
 @implementation iTetBlock
 
-+ (id)blockWithType:(iTetBlockType)t
-	  orientation:(NSInteger)o
++ (id)blockWithType:(iTetBlockType)blockType
+	  orientation:(NSInteger)blockOrientation
+	  rowPosition:(NSInteger)row
+     columnPosition:(NSInteger)column
 {
-	return [[[iTetBlock alloc] initWithType:t
-					    orientation:o] autorelease];
+	return [[[self alloc] initWithType:blockType
+				     orientation:blockOrientation
+				     rowPosition:row
+				  columnPosition:column] autorelease];
 }
 
-- (id)initWithType:(iTetBlockType)t
-	 orientation:(NSInteger)o
+- (id)initWithType:(iTetBlockType)blockType
+	 orientation:(NSInteger)blockOrientation
+	 rowPosition:(NSInteger)row
+    columnPosition:(NSInteger)column
 {
-	type = t;
-	orientation = o;
+	type = blockType;
+	orientation = blockOrientation;
+	rowPos = row;
+	colPos = column;
 	
 	return self;
+}
+
++ (id)blockWithType:(iTetBlockType)blockType
+	  orientation:(NSInteger)blockOrientation
+{
+	return [self blockWithType:blockType
+			   orientation:blockOrientation
+			   rowPosition:0
+			columnPosition:0];
+}
+
+- (id)initWithType:(iTetBlockType)blockType
+	 orientation:(NSInteger)blockOrientation
+{	
+	return [self initWithType:blockType
+			  orientation:blockOrientation
+			  rowPosition:0
+		     columnPosition:0];
 }
 
 + (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies
@@ -195,17 +222,46 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 }
 @synthesize rowPos, colPos;
 
-- (void)rotateClockwise
+
+- (void)rotate:(iTetRotationDirection)direction
+	 onField:(iTetField*)field
 {
-	[self willChangeValueForKey:@"orientation"];
-	orientation = (orientation + 1) % orientationCount[type];
-	[self didChangeValueForKey:@"orientation"];
-}
-- (void)rotateCounterclockwise
-{
-	[self willChangeValueForKey:@"orientation"];
-	orientation = (orientation - 1 + orientationCount[type]) % orientationCount[type];
-	[self didChangeValueForKey:@"orientation"];
+	// Determine the new orientation
+	NSInteger newOrientation = ([self orientation] + direction + [self numOrientations]) % [self numOrientations];
+	
+	// Check if the block would be obstructed in the new orientation
+	switch ([field blockObstructed:[iTetBlock blockWithType:type
+								  orientation:newOrientation
+								  rowPosition:[self rowPos]
+							     columnPosition:[self colPos]]])
+	{
+		case obstructVert:
+			// Block cannot be rotated
+			return;
+		case obstructHoriz:
+		{
+			// Attempt to shift the block to accommodate rotation
+			// (blatently stolen from gTetrinet source)
+			NSInteger shifts[4] = {1, -1, 2, -2};
+			for (NSUInteger i = 0; i < 4; i++)
+			{
+				if (![field blockObstructed:[iTetBlock blockWithType:type
+										     orientation:newOrientation
+										     rowPosition:[self rowPos]
+										  columnPosition:[self colPos] + shifts[i]]])
+				{
+					[self setColPos:([self colPos] + shifts[i])];
+					goto successfulShift;
+				}
+			}
+			// Still can't rotate, even after shifting
+			return;
+		}
+	}
+	
+	// If unobstructed, or if shifting was successful, change the orientation
+successfulShift:
+	[self setOrientation:newOrientation];
 }
 @synthesize orientation;
 

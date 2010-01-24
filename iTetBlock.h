@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class iTetField;
+
 #define ITET_BLOCK_WIDTH	4
 #define ITET_BLOCK_HEIGHT	4
 
@@ -22,6 +24,13 @@ typedef enum
 	T_block
 } iTetBlockType;
 
+typedef enum
+{
+	rotateCounterclockwise = -1,
+	rotateNone = 0,
+	rotateClockwise = 1
+} iTetRotationDirection;
+
 #define ITET_NUM_CELL_COLORS 5
 
 @interface iTetBlock: NSObject
@@ -31,11 +40,21 @@ typedef enum
 	NSInteger rowPos, colPos;
 }
 
+// Create blocks with specific types, orientations and positions
++ (id)blockWithType:(iTetBlockType)blockType
+	  orientation:(NSInteger)blockOrientation
+	  rowPosition:(NSInteger)row
+     columnPosition:(NSInteger)column;
+- (id)initWithType:(iTetBlockType)blockType
+	 orientation:(NSInteger)blockOrientation
+	 rowPosition:(NSInteger)row
+    columnPosition:(NSInteger)column;
+
 // Create blocks with specific types and orientations
-+ (id)blockWithType:(iTetBlockType)newType
-	  orientation:(NSInteger)orientation;
-- (id)initWithType:(iTetBlockType)newType
-	 orientation:(NSInteger)newOrientation;
++ (id)blockWithType:(iTetBlockType)blockType
+	  orientation:(NSInteger)blockOrientation;
+- (id)initWithType:(iTetBlockType)blockType
+	 orientation:(NSInteger)blockOrientation;
 
 // Create random blocks using the frequency information from the game rules
 // NOTE: The frequency information must be an array of length 100
@@ -54,9 +73,9 @@ typedef enum
 @property (readwrite, assign) NSInteger colPos;
 
 // The block's present orientation (rotation)
-- (void)rotateClockwise;
-- (void)rotateCounterclockwise;
-@property (readonly) NSInteger orientation;
+- (void)rotate:(iTetRotationDirection)direction
+	 onField:(iTetField*)field;
+@property (readwrite, assign) NSInteger orientation;
 
 // Returns the number of possible orientations for this block
 - (NSInteger)numOrientations;

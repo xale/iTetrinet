@@ -19,6 +19,8 @@
 #import "NSMutableDictionary+KeyBindings.h"
 #import "Queue.h"
 
+#define LOCALPLAYER [appController localPlayer]
+
 @implementation iTetGameViewController
 
 - (id)init
@@ -122,8 +124,7 @@
 	if ([rules initialStackHeight] > 0)
 	{
 		// Create the board
-		[[appController localPlayer] setField:
-		 [iTetField fieldWithStackHeight:[rules initialStackHeight]]];
+		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules initialStackHeight]]];
 		
 		// Send the board to the server
 		[self sendFieldstring];
@@ -202,10 +203,12 @@
 			[[self currentBlock] moveRight];
 			return;
 		case rotatePieceCounterclockwise:
-			[[self currentBlock] rotateCounterclockwise];
+			[[self currentBlock] rotate:rotateCounterclockwise
+						  onField:[LOCALPLAYER field]];
 			return;
 		case rotatePieceClockwise:
-			[[self currentBlock] rotateClockwise];
+			[[self currentBlock] rotate:rotateClockwise
+						  onField:[LOCALPLAYER field]];
 			return;
 		case movePieceDown:
 			[[self currentBlock] moveDown];
@@ -235,19 +238,17 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 - (void)sendFieldstring
 {	
 	// Send the string for the local player's field to the server
-	iTetPlayer* player = [appController localPlayer];
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat, [player playerNumber], [[player field] fieldstring]]];
+	  iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	iTetPlayer* player = [appController localPlayer];
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat, [player playerNumber], [[player field] lastPartialUpdate]]];
+	  iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
 }
 
 #pragma mark -
