@@ -7,6 +7,7 @@
 
 #import "iTetGameViewController.h"
 #import "iTetAppController.h"
+#import "iTetPreferencesController.h"
 #import "iTetPlayer.h"
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
@@ -14,6 +15,8 @@
 #import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetGameRules.h"
+#import "iTetKeyActions.h"
+#import "NSMutableDictionary+KeyBindings.h"
 #import "Queue.h"
 
 @implementation iTetGameViewController
@@ -152,8 +155,19 @@
 
 - (void)moveNextBlockToField
 {
+	// Set the block's position to the top of the field
+	[[self nextBlock] setColPos:(ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2];
+	if (([[self nextBlock] cellAtRow:3 column:1] == 0) &&
+	    ([[self nextBlock] cellAtRow:3 column:2] == 0))
+	{
+		[[self nextBlock] setRowPos:((ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + 1)];
+	}
+	else
+	{
+		[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
+	}
+	
 	// Transfer the next block to the field
-	// FIXME: move block to top of field
 	[self setCurrentBlock:[self nextBlock]];
 	
 	// FIXME: test if there is anything in the way of the block
@@ -174,7 +188,43 @@
 	if (![self gameInProgress] || [self gamePaused])
 		return;
 	
-	// FIXME: WRITEME
+	// Determine whether the pressed key is bound to a game action
+	NSMutableDictionary* keyConfig = [[iTetPreferencesController preferencesController] currentKeyConfiguration];
+	iTetGameAction action = [keyConfig actionForKey:key];
+	
+	// Perform the relevant action
+	switch (action)
+	{
+		case movePieceLeft:
+			[[self currentBlock] moveLeft];
+			return;
+		case movePieceRight:
+			[[self currentBlock] moveRight];
+			return;
+		case rotatePieceCounterclockwise:
+			[[self currentBlock] rotateCounterclockwise];
+			return;
+		case rotatePieceClockwise:
+			[[self currentBlock] rotateClockwise];
+			return;
+		case movePieceDown:
+			[[self currentBlock] moveDown];
+			return;
+		case dropPiece:
+			// FIXME: WRITEME: 'drop piece' key
+			return;
+		case discardSpecial:
+			// FIXME: WRITEME: 'discard special' key
+			return;
+		case selfSpecial:
+			// FIXME: WRITEME: 'use special on self' key
+			return;
+		case gameChat:
+			// FIXME: WRITEME: 'game chat' key
+			return;
+	}
+	
+	// FIXME: WRITEME: test for number keys to send specials
 }
 
 #pragma mark -
