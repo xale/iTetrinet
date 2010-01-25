@@ -159,6 +159,25 @@
 	// Solidify the block
 	[[LOCALPLAYER field] solidifyBlock:[self currentBlock]];
 	
+	// Check for cleared lines
+	NSUInteger lines = [[LOCALPLAYER field] clearLines];
+	if (lines)
+	{
+		// Add the lines to the player's count
+		// FIXME: WRITEME
+		
+		// Check for level updates
+		// FIXME: WRITEME
+		
+		// Send the updated field to the server
+		[self sendFieldstring];
+	}
+	else
+	{
+		// Send the field with the new block to the server
+		[self sendPartialFieldstring];
+	}
+	
 	// Remove the current block
 	[self setCurrentBlock:nil];
 	
@@ -173,15 +192,7 @@
 {
 	// Set the block's position to the top of the field
 	[[self nextBlock] setColPos:(ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2];
-	if (([[self nextBlock] cellAtRow:3 column:1] == 0) &&
-	    ([[self nextBlock] cellAtRow:3 column:2] == 0))
-	{
-		[[self nextBlock] setRowPos:((ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + 1)];
-	}
-	else
-	{
-		[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
-	}
+	[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
 	
 	// Transfer the next block to the field
 	[self setCurrentBlock:[self nextBlock]];
