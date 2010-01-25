@@ -30,8 +30,8 @@ typedef enum
 + (id)field;
 
 // Initializers for a field with a starting stack height
-+ (id)fieldWithStackHeight:(int)stackHeight;
-- (id)initWithStackHeight:(int)stackHeight;
++ (id)fieldWithStackHeight:(NSUInteger)stackHeight;
+- (id)initWithStackHeight:(NSUInteger)stackHeight;
 
 // Initializers for a random field
 + (id)fieldWithRandomContents;
@@ -50,9 +50,12 @@ typedef enum
 // Add the cells of the specified block to the field's contents
 - (void)solidifyBlock:(iTetBlock*)block;
 
+// Check for and clear completed lines on the board; returns the number of lines cleared
+- (NSUInteger)clearLines;
+
 // Returns the contents of the specified cell of the field
-- (char)cellAtRow:(int)row
-	     column:(int)column;
+- (char)cellAtRow:(NSUInteger)row
+	     column:(NSUInteger)column;
 
 // The current fieldstring that describes the state of the field
 @property (readonly) NSString* fieldstring;

@@ -10,9 +10,9 @@
 #import "iTetSpecials.h"
 
 // For the partial update string, rows are indexed from '3' (decimal 51), top to bottom...
-#define ITET_PARTIAL_ROW(row)	((ITET_FIELD_HEIGHT - row) + '3')
+#define ITET_PARTIAL_ROW(row)	((ITET_FIELD_HEIGHT - 1 - row) + '3')
 // ...columns from '3' (51), right to left...
-#define ITET_PARTIAL_COL(col)	((ITET_FIELD_WIDTH - col) + '3')
+#define ITET_PARTIAL_COL(col)	((ITET_FIELD_WIDTH - 1 - col) + '3')
 // ...and the cell contents are mapped to different characters
 char partialUpdateCell(char cellType);
 
@@ -25,23 +25,23 @@ char partialUpdateCell(char cellType);
 
 #pragma mark Fields with Starting Stack
 
-+ (id)fieldWithStackHeight:(int)stackHeight
++ (id)fieldWithStackHeight:(NSUInteger)stackHeight
 {
 	return [[[self alloc] initWithStackHeight:stackHeight] autorelease];
 }
 
-- (id)initWithStackHeight:(int)stackHeight
+- (id)initWithStackHeight:(NSUInteger)stackHeight
 {	
 	// For each row of the starting stack, fill with debris
 	// Uses gtetrinet's method; bizarre, but whatever
-	for (int row = 0; row < stackHeight; row++)
+	for (NSUInteger row = 0; row < stackHeight; row++)
 	{
 		// Fill the row randomly
-		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSUInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[row][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 		
 		// Choose a random column index
-		int emptyCol = random() % ITET_FIELD_WIDTH;
+		NSUInteger emptyCol = random() % ITET_FIELD_WIDTH;
 		
 		// Ensure that at least one column index is empty
 		contents[row][emptyCol] = 0;
@@ -66,7 +66,6 @@ char partialUpdateCell(char cellType);
 			contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
 		}
 	}
-		
 	
 	return self;
 }
@@ -80,7 +79,7 @@ char partialUpdateCell(char cellType);
 
 - (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
 {	
-	memcpy(contents, fieldContents, (ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT) * sizeof(char));
+	memcpy(contents, fieldContents, sizeof(fieldContents));
 	
 	return self;
 }
@@ -151,7 +150,7 @@ char partialUpdateCell(char cellType);
 }
 
 #pragma mark -
-#pragma mark Accessors
+#pragma mark Board Updates
 
 - (void)solidifyBlock:(iTetBlock*)block
 {
@@ -179,7 +178,7 @@ char partialUpdateCell(char cellType);
 				}
 					
 				// Add the changed cell's coordinates to the update string
-				[update appendFormat:@"%c%c", ITET_PARTIAL_ROW(row), ITET_PARTIAL_COL(col)];
+				[update appendFormat:@"%c%c", ITET_PARTIAL_COL(col), ITET_PARTIAL_ROW(row)];
 			}
 		}
 	}
@@ -189,8 +188,48 @@ char partialUpdateCell(char cellType);
 	[self setLastPartialUpdate:update];
 }
 
-- (char)cellAtRow:(int)row
-	     column:(int)col
+- (NSUInteger)clearLines
+{
+	NSUInteger linesCleared = 0;
+	
+	// Scan the field for complete lines
+	NSUInteger row, col;
+	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			if (contents[row][col] == 0)
+				break;
+		}
+		
+		// If all cells in this row are filled, increment the number of cleared lines
+		if (col == ITET_FIELD_WIDTH)
+		{
+			linesCleared++;
+		}
+		// Otherwise, move the line down by the number of lines cleared below it
+		else if (linesCleared > 0)
+		{
+			[self willChangeValueForKey:@"contents"];
+			
+			// Move the row
+			memcpy(contents[row - linesCleared], contents[row], sizeof(contents[row]));
+			
+			// Clear the old row
+			memset(contents[row], 0, sizeof(contents[row]));
+			
+			[self didChangeValueForKey:@"contents"];
+		}
+	}
+	
+	return linesCleared;
+}
+
+#pragma mark -
+#pragma mark Accessors
+
+- (char)cellAtRow:(NSUInteger)row
+	     column:(NSUInteger)col
 {
 	return contents[row][col];
 }
@@ -200,8 +239,8 @@ char partialUpdateCell(char cellType);
 	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT)];
 	
 	char cell;
-	// Iterate over the whole field
-	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+	// Iterate over the whole field (TOP TO BOTTOM)
+	for (int row = (ITET_FIELD_HEIGHT - 1); row >= 0; row--)
 	{
 		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
