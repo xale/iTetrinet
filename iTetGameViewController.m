@@ -146,6 +146,9 @@
 {
 	// FIXME: WRITEME: additional actions to stop game?
 	
+	// Clear the falling block
+	[self setCurrentBlock:nil];
+	
 	// Release and nil the game rules pointer
 	[currentGameRules release];
 	currentGameRules = nil;
@@ -191,7 +194,8 @@
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
-	[[self nextBlock] setColPos:(ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2];
+	[[self nextBlock] setColPos:
+	 ((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [[self nextBlock] initialColumnOffset]];
 	[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
 	
 	// Transfer the next block to the field

@@ -12,15 +12,15 @@ typedef char BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
 
 static BLOCK bI[2] = {
 	{
+		{0,1,0,0},
+		{0,1,0,0},
+		{0,1,0,0},
+		{0,1,0,0}
+	}, {
 		{1,1,1,1},
 		{0,0,0,0},
 		{0,0,0,0},
 		{0,0,0,0}
-	}, {
-		{1,0,0,0},
-		{1,0,0,0},
-		{1,0,0,0},
-		{1,0,0,0}
 	}
 };
 
@@ -59,16 +59,6 @@ static BLOCK bJ[4] = {
 
 static BLOCK bL[4] = {
 	{
-		{0,4,0,0},
-		{0,4,0,0},
-		{0,4,4,0},
-		{0,0,0,0}
-	}, {
-		{0,0,0,0},
-		{4,4,4,0},
-		{4,0,0,0},
-		{0,0,0,0}
-	}, {
 		{4,4,0,0},
 		{0,4,0,0},
 		{0,4,0,0},
@@ -77,6 +67,16 @@ static BLOCK bL[4] = {
 		{0,0,4,0},
 		{4,4,4,0},
 		{0,0,0,0},
+		{0,0,0,0}
+	}, {
+		{0,4,0,0},
+		{0,4,0,0},
+		{0,4,4,0},
+		{0,0,0,0}
+	}, {
+		{0,0,0,0},
+		{4,4,4,0},
+		{4,0,0,0},
 		{0,0,0,0}
 	}
 };
@@ -285,6 +285,19 @@ successfulShift:
 - (NSInteger)numOrientations
 {
 	return orientationCount[type];
+}
+
+- (NSInteger)initialColumnOffset
+{
+	// All block configurations with offsets are orientation 0
+	if (orientation != 0)
+		return 0;
+	
+	// I- and Z-blocks don't need offsets
+	if ((type == I_block) || (type == Z_block))
+		return 0;
+	
+	return 1;
 }
 
 @end
