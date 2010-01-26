@@ -189,10 +189,11 @@ char partialUpdateCell(char cellType);
 }
 
 - (NSUInteger)clearLines
-{
+{	
 	NSUInteger linesCleared = 0;
 	
 	// Scan the field for complete lines
+	[self willChangeValueForKey:@"contents"];
 	NSUInteger row, col;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
@@ -210,17 +211,15 @@ char partialUpdateCell(char cellType);
 		// Otherwise, move the line down by the number of lines cleared below it
 		else if (linesCleared > 0)
 		{
-			[self willChangeValueForKey:@"contents"];
-			
 			// Move the row
 			memcpy(contents[row - linesCleared], contents[row], sizeof(contents[row]));
 			
-			// Clear the old row
+			// Clear the row's previous location
 			memset(contents[row], 0, sizeof(contents[row]));
-			
-			[self didChangeValueForKey:@"contents"];
 		}
 	}
+	
+	[self didChangeValueForKey:@"contents"];
 	
 	return linesCleared;
 }

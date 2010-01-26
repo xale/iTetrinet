@@ -58,7 +58,7 @@ typedef enum
 	     column:(NSUInteger)column;
 
 // The current fieldstring that describes the state of the field
-@property (readonly) NSString* fieldstring;
+- (NSString*)fieldstring;
 
 // The fieldstring for last partial update
 @property (readwrite, retain) NSString* lastPartialUpdate;
