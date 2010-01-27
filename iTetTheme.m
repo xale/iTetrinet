@@ -238,12 +238,14 @@
 			     [cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
+#define PREVIEW_HEIGHT (225)
+
 - (void)createPreview
 {
 	// Determine the size of the background when scaled to fit the preview
 	CGFloat bgRatio = ([background size].width / [background size].height);
 	NSSize bgSize;
-	bgSize.height = (ITET_DEF_CELL_HEIGHT * ITET_NUM_SPECIAL_TYPES);
+	bgSize.height = 225;
 	bgSize.width = (bgSize.height * bgRatio);
 	
 	// Determine the full size of the preview
