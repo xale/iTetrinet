@@ -15,6 +15,7 @@ NSString* const iTetCurrentThemePrefKey =		@"currentTheme";
 NSString* const iTetServerListPrefKey =		@"serverList";
 NSString* const iTetKeyConfigsPrefKey =		@"keyConfigs";
 NSString* const iTetCurrentKeyConfigNumberKey =	@"currentKeyConfigNum";
+NSString* const iTetConnectionTimeoutKey =	@"connectionTimeout";
 
 NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange";
 
@@ -27,6 +28,8 @@ static iTetPreferencesController* preferencesController = nil;
 	// Create a "factory settings" defaults dictionary
 	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
 	
+	[defaults setObject:[NSNumber numberWithDouble:5.0]
+			 forKey:iTetConnectionTimeoutKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemeList]]
 			 forKey:iTetThemeListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultTheme]]
@@ -46,6 +49,9 @@ static iTetPreferencesController* preferencesController = nil;
 {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
 	NSData* prefsData;
+	
+	// Load the connection timeout
+	connectionTimeout = [[defaults objectForKey:iTetConnectionTimeoutKey] doubleValue];
 	
 	// Load the list of themes from user defaults
 	prefsData = [defaults objectForKey:iTetThemeListPrefKey];
@@ -86,11 +92,11 @@ static iTetPreferencesController* preferencesController = nil;
 
 - (void)dealloc
 {
-	[themeList release];
-	[currentTheme release];
-	
 	[self stopObservingServersInArray:serverList];
 	[serverList release];
+	
+	[themeList release];
+	[currentTheme release];
 	
 	[super dealloc];
 }
@@ -266,38 +272,18 @@ static iTetPreferencesController* preferencesController = nil;
 #pragma mark -
 #pragma mark Accessors
 
-#pragma mark Themes
-- (void)setThemeList:(NSMutableArray*)themes
-{
-	// Release the old list
-	[themeList release];
-	
-	// Retain the new list
-	themeList = [themes retain];
-	
-	// Write the new list to User Defaults
-	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
-								forKey:iTetThemeListPrefKey];
-}
-@synthesize themeList;
+#pragma mark Connection Timeout
 
-- (void)setCurrentTheme:(iTetTheme*)theme
+- (void)setConnectionTimeout:(NSTimeInterval)timeout
 {
-	// Release the old theme
-	[currentTheme release];
+	// Change the timeout interval
+	connectionTimeout = timeout;
 	
-	// Retain the new theme
-	currentTheme = [theme retain];
-	
-	// Write the new theme (serialized) to User Defaults
-	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:theme]
-								forKey:iTetCurrentThemePrefKey];
-	
-	// Post a notification informing views of the new theme
-	[[NSNotificationCenter defaultCenter] postNotificationName:iTetCurrentThemeDidChangeNotification
-									    object:self];
+	// Update the value in user defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:timeout]
+								forKey:iTetConnectionTimeoutKey];
 }
-@synthesize currentTheme;
+@synthesize connectionTimeout;
 
 #pragma mark Servers
 
@@ -357,6 +343,39 @@ static iTetPreferencesController* preferencesController = nil;
 								forKey:iTetServerListPrefKey];
 }
 @synthesize serverList;
+
+#pragma mark Themes
+- (void)setThemeList:(NSMutableArray*)themes
+{
+	// Release the old list
+	[themeList release];
+	
+	// Retain the new list
+	themeList = [themes retain];
+	
+	// Write the new list to User Defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
+								forKey:iTetThemeListPrefKey];
+}
+@synthesize themeList;
+
+- (void)setCurrentTheme:(iTetTheme*)theme
+{
+	// Release the old theme
+	[currentTheme release];
+	
+	// Retain the new theme
+	currentTheme = [theme retain];
+	
+	// Write the new theme (serialized) to User Defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:theme]
+								forKey:iTetCurrentThemePrefKey];
+	
+	// Post a notification informing views of the new theme
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetCurrentThemeDidChangeNotification
+									    object:self];
+}
+@synthesize currentTheme;
 
 - (void)addKeyConfiguration:(NSMutableDictionary*)config
 {

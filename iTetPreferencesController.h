@@ -20,10 +20,12 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 
 @interface iTetPreferencesController : NSObject
 {
-	NSMutableArray* themeList;
-	iTetTheme* currentTheme;
+	NSTimeInterval connectionTimeout;
 	
 	NSMutableArray* serverList;
+	
+	NSMutableArray* themeList;
+	iTetTheme* currentTheme;
 	
 	NSMutableArray* keyConfigurations;
 	NSUInteger currentKeyConfigurationNumber;
@@ -36,8 +38,7 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 - (void)startObservingServersInArray:(NSArray*)array;
 - (void)stopObservingServersInArray:(NSArray*)array;
 
-@property (readwrite, retain) NSMutableArray* themeList;
-@property (readwrite, retain) iTetTheme* currentTheme;
+@property (readwrite, assign) NSTimeInterval connectionTimeout;
 
 - (NSUInteger)countOfServerList;
 - (iTetServerInfo*)objectInServerListAtIndex:(NSUInteger)index;
@@ -45,6 +46,9 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
  inServerListAtIndex:(NSUInteger)index;
 - (void)removeObjectFromServerListAtIndex:(NSUInteger)index;
 @property (readwrite, retain) NSMutableArray* serverList;
+
+@property (readwrite, retain) NSMutableArray* themeList;
+@property (readwrite, retain) iTetTheme* currentTheme;
 
 - (void)addKeyConfiguration:(NSMutableDictionary*)config;
 - (void)removeKeyConfigurationAtIndex:(NSUInteger)index;

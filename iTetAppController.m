@@ -247,7 +247,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	 [NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
 	
 	// Start the connection timer
-	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:5.0
+	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:[[iTetPreferencesController preferencesController] connectionTimeout]
 									   target:self
 									 selector:@selector(connectionTimedOut:)
 									 userInfo:nil
