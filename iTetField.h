@@ -29,6 +29,10 @@ typedef enum
 // Initializer for an empty field
 + (id)field;
 
+// Initializer from a fieldstring sent by the server
++ (id)fieldFromFieldstring:(NSString*)fieldstring;
+- (id)initWithFieldstring:(NSString*)fieldstring;
+
 // Initializers for a field with a starting stack height
 + (id)fieldWithStackHeight:(NSUInteger)stackHeight;
 - (id)initWithStackHeight:(NSUInteger)stackHeight;
@@ -50,8 +54,11 @@ typedef enum
 // Add the cells of the specified block to the field's contents
 - (void)solidifyBlock:(iTetBlock*)block;
 
-// Check for and clear completed lines on the board; returns the number of lines cleared
+// Check for and clear completed lines on the field; returns the number of lines cleared
 - (NSUInteger)clearLines;
+
+// Add a partial update from the server to the field
+- (void)applyPartialUpdate:(NSString*)partialUpdate;
 
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSUInteger)row

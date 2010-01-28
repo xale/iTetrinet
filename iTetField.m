@@ -9,18 +9,54 @@
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
-// For the partial update string, rows are indexed from '3' (decimal 51), top to bottom...
-#define ITET_PARTIAL_ROW(row)	((ITET_FIELD_HEIGHT - 1 - row) + '3')
-// ...columns from '3' (51), right to left...
-#define ITET_PARTIAL_COL(col)	((ITET_FIELD_WIDTH - 1 - col) + '3')
+// For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
+// (conveniently, this function is its own inverse)
+#define ITET_CONVERT_ROW(coord)	(((ITET_FIELD_HEIGHT - 1) - (coord)) + 51)
+#define ITET_CONVERT_COL(coord)	(((ITET_FIELD_WIDTH - 1) - (coord)) + 51)
 // ...and the cell contents are mapped to different characters
-char partialUpdateCell(char cellType);
+char cellToPartialUpdateChar(char cellType);
+char partialUpdateCharToCell(char updateChar);
 
 @implementation iTetField
 
 + (id)field
 {
 	return [[[self alloc] init] autorelease];
+}
+
+#pragma mark Fields from a Fieldstring
++ (id)fieldFromFieldstring:(NSString*)fieldstring
+{
+	return [[[self alloc] initWithFieldstring:fieldstring] autorelease];
+}
+
+- (id)initWithFieldstring:(NSString*)fieldstring
+{
+	// Convert the field string to a standard ASCII C string
+	const char* field = [fieldstring cStringUsingEncoding:NSASCIIStringEncoding];
+	char currentCell;
+	
+	// Iterate through the fieldstring
+	NSUInteger row, col;
+	for (NSUInteger i = 0; i < [fieldstring length]; i++)
+	{
+		// Get the cell value at this index
+		currentCell = field[i];
+		
+		// If the current cell is a numeric value, convert
+		if (isdigit(currentCell))
+			currentCell -= '0';
+		
+		// Find the coordinates this index corresponds to
+		row = (ITET_FIELD_HEIGHT - 1) - (i / ITET_FIELD_WIDTH);
+		col = i % ITET_FIELD_WIDTH;
+		
+		// Set the cell at those coordinates to the value at this index
+		contents[row][col] = currentCell;
+	}
+	
+	
+	return self;
 }
 
 #pragma mark Fields with Starting Stack
@@ -156,6 +192,7 @@ char partialUpdateCell(char cellType);
 {
 	int row, col;
 	char cell, lastCell = 0;
+	char rowCoord, colCoord;
 	
 	NSMutableString* update = [NSMutableString string];
 	
@@ -173,12 +210,14 @@ char partialUpdateCell(char cellType);
 				// If this cell is a different "color" from the last one in the partial update, add that information to the update string
 				if (cell != lastCell)
 				{
-					[update appendFormat:@"%c", partialUpdateCell(cell)];
+					[update appendFormat:@"%c", cellToPartialUpdateChar(cell)];
 					lastCell = cell;
 				}
 					
 				// Add the changed cell's coordinates to the update string
-				[update appendFormat:@"%c%c", ITET_PARTIAL_COL(col), ITET_PARTIAL_ROW(row)];
+				rowCoord = ITET_CONVERT_ROW([block rowPos] + row);
+				colCoord = ITET_CONVERT_COL([block colPos] + col);
+				[update appendFormat:@"%c%c", colCoord, rowCoord];
 			}
 		}
 	}
@@ -192,8 +231,9 @@ char partialUpdateCell(char cellType);
 {	
 	NSUInteger linesCleared = 0;
 	
-	// Scan the field for complete lines
 	[self willChangeValueForKey:@"contents"];
+	
+	// Scan the field for complete lines
 	NSUInteger row, col;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
@@ -222,6 +262,45 @@ char partialUpdateCell(char cellType);
 	[self didChangeValueForKey:@"contents"];
 	
 	return linesCleared;
+}
+
+- (void)applyPartialUpdate:(NSString *)partialUpdate
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Get the first type of cell we are adding
+	const char* update = [partialUpdate cStringUsingEncoding:NSASCIIStringEncoding];
+	char cellType = partialUpdateCharToCell(update[0]);
+	
+	char currentChar;
+	NSUInteger row, col;
+	for (NSUInteger i = 1; i < [partialUpdate length]; i++)
+	{
+		currentChar = update[i];
+		
+		// Check if this character specifies a new cell type
+		if ((currentChar >= 0x21) && (currentChar <= 0x2F))
+		{
+			cellType = partialUpdateCharToCell(currentChar);
+		}
+		// If not, this character is a column-index, and the next is a row-index
+		else
+		{
+			// Convert to our coordinate system
+			col = ITET_CONVERT_COL(currentChar);
+			row = ITET_CONVERT_ROW(update[i+1]);
+			
+			// Change the cell on the field at the specified coordinates
+			contents[row][col] = cellType;
+			
+			// Skip the next character (we just used it)
+			i++;
+		}
+	}
+	
+	[self didChangeValueForKey:@"contents"];
+	
+	[self setLastPartialUpdate:partialUpdate];
 }
 
 #pragma mark -
@@ -259,7 +338,7 @@ char partialUpdateCell(char cellType);
 	return [NSString stringWithString:field];
 }
 
-char partialUpdateCell(char cellType)
+char cellToPartialUpdateChar(char cellType)
 {
 	// Special cells map to a sequential set of ASCII characters, which sadly means we can't just do an add or subtract
 	switch ((iTetSpecialType)cellType)
@@ -286,6 +365,35 @@ char partialUpdateCell(char cellType)
 	
 	// Non-special cells are indexed from ASCII 33 ('!')
 	return (cellType + 33);
+}
+
+char partialUpdateCharToCell(char updateChar)
+{
+	// Switch to see if the update character maps to a special type
+	switch (updateChar)
+	{
+		case '\'':
+			return (char)addLine;
+		case '(':
+			return (char)clearLine;
+		case ')':
+			return (char)nukeField;
+		case '*':
+			return (char)randomClear;
+		case '+':
+			return (char)switchField;
+		case ',':
+			return (char)clearSpecials;
+		case '-':
+			return (char)gravity;
+		case '.':
+			return (char)quakeField;
+		case '/':
+			return (char)blockBomb;
+	}
+	
+	// Otherwise, just reverse-index from ASCII 33
+	return (updateChar - 33);
 }
 
 @synthesize lastPartialUpdate;
