@@ -588,23 +588,18 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		NSString* update = [tokens objectAtIndex:2];
 		
 		// Determine if this is a partial update
-		BOOL partial = NO;
 		char first = [update cStringUsingEncoding:NSASCIIStringEncoding][0];
 		if ((first >= 0x21) && (first <= 0x2F))
 		{
-			// Partial update
-			partial = YES;
-			update = [update substringFromIndex:1];
+			// Update the player's field with a partial update
+			[[[self playerNumber:playerNum] field] applyPartialUpdate:update];
 		}
-		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: fieldstate update for player number %d:", playerNum);
-		NSLog(@"       MESSAGE: update: %@", update);
-		NSLog(@"       MESSAGE: partial: %d", partial);
-		if (partial)
-			NSLog(@"       MESSAGE: blockType: %c", first);
-		
-		// FIXME: WRITEME: fieldstate updates
+		else
+		{
+			// Give the player a new field created from the fieldstring
+			[[self playerNumber:playerNum] setField:
+			 [iTetField fieldFromFieldstring:update]];
+		}
 	}
 	// Player lost
 	else if ([messageType isEqualToString:PlayerLostMessage])
@@ -718,9 +713,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		iTetPlayer* sender = nil;
 		iTetPlayer* target = nil;
 		if (senderNum > 0)
-			sender = [players objectAtIndex:(senderNum - 1)];
+			sender = [self playerNumber:senderNum];
 		if (targetNum > 0)
-			target = [players objectAtIndex:(targetNum - 1)];
+			target = [self playerNumber:targetNum];
 		
 		// Check if this is a classic-style addline
 		if (([special length] > 1) && ([[special substringToIndex:2] isEqualToString:@"cs"]))
@@ -817,7 +812,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Check that the assigned slot is not already occupied
-	if ([players objectAtIndex:(number - 1)] != [NSNull null])
+	if ([self playerNumber:number] != nil)
 	{
 		NSLog(@"WARNING: local player assigned to occupied player slot");
 		playerCount--;
@@ -875,7 +870,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Check that the slot is not already occupied
-	if ([players objectAtIndex:(number - 1)] != [NSNull null])
+	if ([self playerNumber:number] != nil)
 	{
 		NSLog(@"WARNING: new player assigned to occupied player slot");
 		playerCount--;
@@ -897,21 +892,21 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(number);
-	if ([players objectAtIndex:(number - 1)] == [NSNull null])
+	if ([self playerNumber:number] == nil)
 	{
 		NSLog(@"WARNING: attempt to assign team name to player in empty player slot");
 		return;
 	}
 	
 	// Assign the team name
-	[[players objectAtIndex:(number - 1)] setTeamName:team];
+	[[self playerNumber:number] setTeamName:team];
 }
 
 - (void)removePlayerNumber:(NSInteger)number
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(number);
-	if ([players objectAtIndex:(number - 1)] == [NSNull null])
+	if ([self playerNumber:number - 1] == nil)
 	{
 		NSLog(@"WARNING: attempt to remove player in empty player slot");
 		return;
@@ -1004,12 +999,23 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	return [super keyPathsForValuesAffectingValueForKey:key];
 }
 
+- (iTetPlayer*)playerNumber:(NSInteger)number
+{
+	iTetCheckPlayerNumber(number);
+	
+	id player = [players objectAtIndex:(number - 1)];
+	if (player == [NSNull null])
+		return nil;
+	
+	return (iTetPlayer*)player;
+}
+
 - (NSString*)playerNameForNumber:(NSInteger)number
 {
 	if (number == 0)
 		return @"SERVER";
 	else
-		return [[players objectAtIndex:(number - 1)] nickname];
+		return [[self playerNumber:number] nickname];
 }
 
 @synthesize networkController;

@@ -72,6 +72,7 @@
     forPlayerNumber:(NSInteger)number;
 - (void)removePlayerNumber:(NSInteger)number;
 - (void)removeAllPlayers;
+- (iTetPlayer*)playerNumber:(NSInteger)number;
 - (NSString*)playerNameForNumber:(NSInteger)number;
 
 @property (readonly) NSArray* playerList;
