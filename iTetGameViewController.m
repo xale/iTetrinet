@@ -184,19 +184,36 @@
 	// Remove the current block
 	[self setCurrentBlock:nil];
 	
-	// Start the timer to spawn the next block
-	// FIXME: WRITEME: next block timer
-	
-	// FIXME: debug
+	if ([currentGameRules gameType] == tetrifastProtocol)
+	{
+		// Spawn the next block immediately
+		[self moveNextBlockToField];
+	}
+	else
+	{
+		// Start the timer to spawn the next block
+		blockTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+									    target:self
+									  selector:@selector(blockTimerFired:)
+									  userInfo:NULL
+									   repeats:NO];
+	}
+}
+
+- (void)blockTimerFired:(NSTimer*)timer
+{
+	// Spawn the next block
 	[self moveNextBlockToField];
 }
 
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
+	[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
+	
+	// Center the block
 	[[self nextBlock] setColPos:
 	 ((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [[self nextBlock] initialColumnOffset]];
-	[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
 	
 	// Transfer the next block to the field
 	[self setCurrentBlock:[self nextBlock]];

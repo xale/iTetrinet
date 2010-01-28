@@ -50,6 +50,9 @@
 	iTetBlock* nextBlock;
 	Queue* specialsQueue;
 	
+	// Timer for falling block
+	NSTimer* blockTimer;
+	
 	// Pause/play state of current game
 	BOOL gamePaused;
 	
