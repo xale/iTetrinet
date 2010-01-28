@@ -255,6 +255,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 		case obstructVert:
 			// Block cannot be rotated
 			return;
+			
 		case obstructHoriz:
 		{
 			// Attempt to shift the block to accommodate rotation
