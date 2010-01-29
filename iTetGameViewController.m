@@ -224,7 +224,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		for (NSNumber* special in specials)
 		{
 			// Check if there is space in the queue
-			if ([[LOCALPLAYER specials] count] >= [[self currentGameRules] specialCapacity])
+			if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
 				break;
 			
 			// Add to player's queue
