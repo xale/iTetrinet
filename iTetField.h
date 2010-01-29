@@ -55,7 +55,7 @@ typedef enum
 - (void)solidifyBlock:(iTetBlock*)block;
 
 // Check for and clear completed lines on the field; returns the number of lines cleared
-- (NSUInteger)clearLines;
+- (NSUInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials;
 
 // Add a partial update from the server to the field
 - (void)applyPartialUpdate:(NSString*)partialUpdate;

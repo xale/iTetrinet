@@ -227,7 +227,7 @@ char partialUpdateCharToCell(char updateChar);
 	[self setLastPartialUpdate:update];
 }
 
-- (NSUInteger)clearLines
+- (NSUInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials
 {	
 	NSUInteger linesCleared = 0;
 	
@@ -243,10 +243,20 @@ char partialUpdateCharToCell(char updateChar);
 				break;
 		}
 		
-		// If all cells in this row are filled, increment the number of cleared lines
+		// If all cells in this row are filled...
 		if (col == ITET_FIELD_WIDTH)
 		{
+			// ...increment the number of cleared lines...
 			linesCleared++;
+			
+			// ...and scan for specials
+			char cell;
+			for (col = 0; col < ITET_FIELD_WIDTH; col++)
+			{
+				cell = contents[row][col];
+				if (!isdigit(cell))
+					[specials addObject:[NSNumber numberWithChar:cell]];
+			}
 		}
 		// Otherwise, move the line down by the number of lines cleared below it
 		else if (linesCleared > 0)

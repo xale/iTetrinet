@@ -185,7 +185,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[[LOCALPLAYER field] solidifyBlock:[LOCALPLAYER currentBlock]];
 	
 	// Check for cleared lines
-	NSUInteger lines = [[LOCALPLAYER field] clearLines];
+	NSMutableArray* specials = [NSMutableArray array];
+	NSUInteger lines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
 	if (lines > 0)
 	{
 		// Add the lines to the player's counts
@@ -218,15 +219,23 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		
 		// Send the updated field to the server
 		[self sendFieldstring];
+		
+		// Add any specials retrieved to the local player's queue
+		for (NSNumber* special in specials)
+		{
+			// Check if there is space in the queue
+			if ([[LOCALPLAYER specials] count] >= [[self currentGameRules] specialCapacity])
+				break;
+			
+			// Add to player's queue
+			[[LOCALPLAYER specialsQueue] enqueueObject:special];
+		}
 	}
 	else
 	{
 		// Send the field with the new block to the server
 		[self sendPartialFieldstring];
 	}
-	
-	// Remove the current block
-	[LOCALPLAYER setCurrentBlock:nil];
 	
 	// Depending on the protocol, either start the next block immediately, or set a time delay
 	if ([[self currentGameRules] gameType] == tetrifastProtocol)
@@ -236,6 +245,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	else
 	{
+		// Remove the current block
+		[LOCALPLAYER setCurrentBlock:nil];
+		
 		// Set a timer to spawn the next block
 		blockTimer = [self nextBlockTimer];
 	}
