@@ -45,12 +45,7 @@
 	// Rules for game in progress (nil indicates no game in progress)
 	iTetGameRules* currentGameRules;
 	
-	// Local player's current falling block, next block and specials queue
-	iTetBlock* currentBlock;
-	iTetBlock* nextBlock;
-	Queue* specialsQueue;
-	
-	// Timer for falling block
+	// Timer for local player's falling block
 	NSTimer* blockTimer;
 	
 	// Pause/play state of current game
@@ -72,6 +67,7 @@
 
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
+- (void)sendCurrentLevel;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
@@ -84,13 +80,10 @@
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
-@property (readwrite, retain) iTetBlock* currentBlock;
-@property (readwrite, retain) iTetBlock* nextBlock;
-@property (readwrite, retain) Queue* specialsQueue;
-
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
 
+@property (readwrite, retain) iTetGameRules* currentGameRules;
 @property (readonly) BOOL gameInProgress;
 @property (readwrite) BOOL gamePaused;
 

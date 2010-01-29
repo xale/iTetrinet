@@ -11,7 +11,7 @@
 #import "iTetChatViewController.h"
 #import "iTetGameViewController.h"
 #import "iTetServerInfo.h"
-#import "iTetPlayer.h"
+#import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
 #import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
@@ -837,9 +837,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	else
 	{
 		// Create the local player
-		[self setLocalPlayer:[iTetPlayer playerWithNickname:[[networkController currentServer] nickname]
-									   number:number
-									 teamName:[[networkController currentServer] playerTeam]]];
+		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:[[networkController currentServer] nickname]
+										  number:number
+										teamName:[[networkController currentServer] playerTeam]]];
 		
 		// Place the player in the players array
 		[players replaceObjectAtIndex:(number - 1)
@@ -878,8 +878,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Create the new player
 	[players replaceObjectAtIndex:(number - 1)
-				 withObject:[iTetPlayer playerWithNickname:nick
-										number:number]];
+				 withObject:[iTetLocalPlayer playerWithNickname:nick
+										     number:number]];
 	
 	// Update player count
 	playerCount++;

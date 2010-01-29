@@ -49,7 +49,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 		return;
 	
 	NSString* format;
-	iTetPlayer* localPlayer = [appController localPlayer];
+	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
 	
 	BOOL action = ([line length] > 3) && [[line substringToIndex:3] isEqualToString:@"/me"];
 	

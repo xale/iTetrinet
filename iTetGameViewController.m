@@ -8,7 +8,7 @@
 #import "iTetGameViewController.h"
 #import "iTetAppController.h"
 #import "iTetPreferencesController.h"
-#import "iTetPlayer.h"
+#import "iTetLocalPlayer.h"
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
@@ -41,20 +41,20 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		   withKeyPath:@"localPlayer.field"
 			 options:nil];
 	[localFieldView bind:@"block"
-			toObject:self
-		   withKeyPath:@"currentBlock"
+			toObject:appController
+		   withKeyPath:@"localPlayer.currentBlock"
 			 options:nil];
 
 	// Next block view
 	[nextBlockView bind:@"block"
-		     toObject:self
-		  withKeyPath:@"nextBlock"
+		     toObject:appController
+		  withKeyPath:@"localPlayer.nextBlock"
 			options:nil];
 	
 	// Specials queue view
 	[specialsView bind:@"specials"
-		    toObject:self
-		 withKeyPath:@"specialsQueue.allObjects"
+		    toObject:appController
+		 withKeyPath:@"localPlayer.specialsQueue.allObjects"
 		     options:nil];
 	
 	// Remote field views
@@ -85,10 +85,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[currentGameRules release];
 	[actionHistory release];
 	
-	[currentBlock release];
-	[nextBlock release];
-	[specialsQueue release];
-	
 	// FIXME: ?
 	[blockTimer invalidate];
 	
@@ -113,7 +109,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self clearActions];
 	
 	// Retain the game rules
-	currentGameRules = [rules retain];
+	[self setCurrentGameRules:rules];
 	
 	// Set up the players' fields
 	for (iTetPlayer* player in players)
@@ -136,13 +132,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	
 	// Create the first block to add to the field
-	[self setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules blockFrequencies]]];
+	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
 	
 	// Move the block to the field
 	[self moveNextBlockToField];
 	
 	// Create a new specials queue
-	[self setSpecialsQueue:[Queue queue]];
+	[LOCALPLAYER setSpecialsQueue:[Queue queue]];
 	
 	// FIXME: anything else?
 }
@@ -155,11 +151,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[blockTimer invalidate];
 	
 	// Clear the falling block
-	[self setCurrentBlock:nil];
+	[LOCALPLAYER setCurrentBlock:nil];
 	
-	// Release and nil the game rules pointer
-	[currentGameRules release];
-	currentGameRules = nil;
+	// Remove the current game rules
+	[self setCurrentGameRules:nil];
 }
 
 #pragma mark -
@@ -168,7 +163,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)moveCurrentPieceDown
 {
 	// Attempt to move the block down
-	if ([[self currentBlock] moveDownOnField:[LOCALPLAYER field]])
+	if ([[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]])
 	{
 		// If the block solidifies, add it to the field
 		[self solidifyCurrentBlock];
@@ -187,17 +182,24 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[blockTimer invalidate];
 	
 	// Solidify the block
-	[[LOCALPLAYER field] solidifyBlock:[self currentBlock]];
+	[[LOCALPLAYER field] solidifyBlock:[LOCALPLAYER currentBlock]];
 	
 	// Check for cleared lines
 	NSUInteger lines = [[LOCALPLAYER field] clearLines];
-	if (lines)
+	if (lines > 0)
 	{
-		// Add the lines to the player's count
-		// FIXME: WRITEME
-		
 		// Check for level updates
-		// FIXME: WRITEME
+		if ((([LOCALPLAYER linesCleared] % [[self currentGameRules] linesPerLevel]) + lines) >= [[self currentGameRules] linesPerLevel])
+		{
+			// Increase the level
+			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
+			
+			// Send a level increase message to the server
+			[self sendCurrentLevel];
+		}
+		
+		// Add the lines to the player's count
+		[LOCALPLAYER setLinesCleared:([LOCALPLAYER linesCleared] + lines)];
 		
 		// Send the updated field to the server
 		[self sendFieldstring];
@@ -209,10 +211,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	
 	// Remove the current block
-	[self setCurrentBlock:nil];
+	[LOCALPLAYER setCurrentBlock:nil];
 	
 	// Depending on the protocol, either start the next block immediately, or set a time delay
-	if ([currentGameRules gameType] == tetrifastProtocol)
+	if ([[self currentGameRules] gameType] == tetrifastProtocol)
 	{
 		// Spawn the next block immediately
 		[self moveNextBlockToField];
@@ -227,20 +229,20 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
-	[[self nextBlock] setRowPos:
-	 (ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [[self nextBlock] initialRowOffset]];
+	[[LOCALPLAYER nextBlock] setRowPos:
+	 (ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [[LOCALPLAYER nextBlock] initialRowOffset]];
 	
 	// Center the block
-	[[self nextBlock] setColPos:
-	 ((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [[self nextBlock] initialColumnOffset]];
+	[[LOCALPLAYER nextBlock] setColPos:
+	 ((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [[LOCALPLAYER nextBlock] initialColumnOffset]];
 	
 	// Transfer the next block to the field
-	[self setCurrentBlock:[self nextBlock]];
+	[LOCALPLAYER setCurrentBlock:[LOCALPLAYER nextBlock]];
 	
 	// FIXME: test if there is anything in the way of the block
 	
 	// Generate a new next block
-	[self setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules blockFrequencies]]];
+	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
 	
 	// Set the fall timer
 	blockTimer = [self fallTimer];
@@ -263,22 +265,22 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	switch (action)
 	{
 		case movePieceLeft:
-			[[self currentBlock] moveHorizontal:moveLeft
+			[[LOCALPLAYER currentBlock] moveHorizontal:moveLeft
 							    onField:[LOCALPLAYER field]];
 			return;
 			
 		case movePieceRight:
-			[[self currentBlock] moveHorizontal:moveRight
+			[[LOCALPLAYER currentBlock] moveHorizontal:moveRight
 							    onField:[LOCALPLAYER field]];
 			return;
 			
 		case rotatePieceCounterclockwise:
-			[[self currentBlock] rotate:rotateCounterclockwise
+			[[LOCALPLAYER currentBlock] rotate:rotateCounterclockwise
 						  onField:[LOCALPLAYER field]];
 			return;
 			
 		case rotatePieceClockwise:
-			[[self currentBlock] rotate:rotateClockwise
+			[[LOCALPLAYER currentBlock] rotate:rotateClockwise
 						  onField:[LOCALPLAYER field]];
 			return;
 			
@@ -298,7 +300,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			blockTimer = nil;
 			
 			// Move the block down until it stops
-			while (![[self currentBlock] moveDownOnField:[LOCALPLAYER field]]);
+			while (![[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]]);
 			
 			// Solidify the block
 			[self solidifyCurrentBlock];
@@ -340,6 +342,14 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 	[[appController networkController] sendMessage:
 	 [NSString stringWithFormat:
 	  iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
+}
+
+NSString* const iTetLevelMessageFormat = @"lvl %d %d";
+
+- (void)sendCurrentLevel
+{
+	// Send the local player's level to the server
+	// FIXME: WRITEME
 }
 
 #pragma mark -
@@ -433,10 +443,6 @@ objectValueForTableColumn:(NSTableColumn*)column
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize currentBlock;
-@synthesize nextBlock;
-@synthesize specialsQueue;
-
 - (NSTimer*)nextBlockTimer
 {
 	// Create an invocation
@@ -475,9 +481,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	return time;
 }
 
+@synthesize currentGameRules;
+
 - (BOOL)gameInProgress
 {
-	return (currentGameRules != nil);
+	return ([self currentGameRules] != nil);
 }
 
 - (void)setGamePaused:(BOOL)paused
