@@ -12,14 +12,17 @@ static NSMutableDictionary *cache = nil;
 
 + (id)cacheDictionary
 {
-	if (!cache)
+	@synchronized(self)
 	{
-		cache = [[NSMutableDictionary alloc] init];
-		
-		[[NSNotificationCenter defaultCenter] addObserver:cache
-								     selector:@selector(cleanupCache:)
-									   name:NSApplicationWillTerminateNotification
-									 object:NSApp];
+		if (cache == nil)
+		{
+			cache = [[NSMutableDictionary alloc] init];
+			
+			[[NSNotificationCenter defaultCenter] addObserver:cache
+									     selector:@selector(cleanupCache:)
+										   name:NSApplicationWillTerminateNotification
+										 object:NSApp];
+		}
 	}
 	
 	return cache;
