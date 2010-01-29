@@ -87,7 +87,8 @@ typedef enum
 // Returns the number of possible orientations for this block
 - (NSInteger)numOrientations;
 
-// Returns the starting column position offset for this block
+// Returns the starting position offset for this block
 - (NSInteger)initialColumnOffset;
+- (NSInteger)initialRowOffset;
 
 @end

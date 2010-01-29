@@ -290,15 +290,33 @@ successfulShift:
 
 - (NSInteger)initialColumnOffset
 {
-	// All block configurations with offsets are orientation 0
+	// All block configurations with column offsets are orientation 0
 	if (orientation != 0)
 		return 0;
 	
-	// I- and Z-blocks don't need offsets
+	// I- and Z-blocks don't need column offsets
 	if ((type == I_block) || (type == Z_block))
 		return 0;
 	
 	return 1;
+}
+
+- (NSInteger)initialRowOffset
+{
+	// All block configurations with row offsets are orientation 3
+	if (orientation != 3)
+		return 0;
+	
+	// Only J-, L-, and T-blocks need row offsets
+	switch (type)
+	{
+		case J_block:
+		case L_block:
+		case T_block:
+			return 1;
+	}
+	
+	return 0;
 }
 
 @end
