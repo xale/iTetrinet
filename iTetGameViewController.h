@@ -66,6 +66,7 @@
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;
 
+- (void)moveCurrentPieceDown;
 - (void)solidifyCurrentBlock;
 - (void)moveNextBlockToField;
 
@@ -86,6 +87,9 @@
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
 @property (readwrite, retain) Queue* specialsQueue;
+
+- (NSTimer*)nextBlockTimer;
+- (NSTimer*)fallTimer;
 
 @property (readonly) BOOL gameInProgress;
 @property (readwrite) BOOL gamePaused;

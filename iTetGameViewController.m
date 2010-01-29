@@ -19,7 +19,9 @@
 #import "NSMutableDictionary+KeyBindings.h"
 #import "Queue.h"
 
-#define LOCALPLAYER [appController localPlayer]
+#define LOCALPLAYER			[appController localPlayer]
+
+NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 @implementation iTetGameViewController
 
@@ -87,6 +89,9 @@
 	[nextBlock release];
 	[specialsQueue release];
 	
+	// FIXME: ?
+	[blockTimer invalidate];
+	
 	[super dealloc];
 }
 
@@ -146,6 +151,9 @@
 {
 	// FIXME: WRITEME: additional actions to stop game?
 	
+	// Invalidate the block timer
+	[blockTimer invalidate];
+	
 	// Clear the falling block
 	[self setCurrentBlock:nil];
 	
@@ -157,8 +165,27 @@
 #pragma mark -
 #pragma mark Gameplay Events
 
+- (void)moveCurrentPieceDown
+{
+	// Attempt to move the block down
+	if ([[self currentBlock] moveDownOnField:[LOCALPLAYER field]])
+	{
+		// If the block solidifies, add it to the field
+		[self solidifyCurrentBlock];
+	}
+	// If the block hasn't solidified, check if we need a new fall timer
+	else if (blockTimer == nil)
+	{
+		// Re-create the fall timer
+		blockTimer = [self fallTimer];
+	}
+}
+
 - (void)solidifyCurrentBlock
 {
+	// Invalidate the old block timer (may be nil)
+	[blockTimer invalidate];
+	
 	// Solidify the block
 	[[LOCALPLAYER field] solidifyBlock:[self currentBlock]];
 	
@@ -184,6 +211,7 @@
 	// Remove the current block
 	[self setCurrentBlock:nil];
 	
+	// Depending on the protocol, either start the next block immediately, or set a time delay
 	if ([currentGameRules gameType] == tetrifastProtocol)
 	{
 		// Spawn the next block immediately
@@ -191,25 +219,16 @@
 	}
 	else
 	{
-		// Start the timer to spawn the next block
-		blockTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
-									    target:self
-									  selector:@selector(blockTimerFired:)
-									  userInfo:NULL
-									   repeats:NO];
+		// Set a timer to spawn the next block
+		blockTimer = [self nextBlockTimer];
 	}
-}
-
-- (void)blockTimerFired:(NSTimer*)timer
-{
-	// Spawn the next block
-	[self moveNextBlockToField];
 }
 
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
-	[[self nextBlock] setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT)];
+	[[self nextBlock] setRowPos:
+	 (ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [[self nextBlock] initialRowOffset]];
 	
 	// Center the block
 	[[self nextBlock] setColPos:
@@ -223,8 +242,8 @@
 	// Generate a new next block
 	[self setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules blockFrequencies]]];
 	
-	// Set block fall timer
-	// FIXME: WRITEME: falling block timer
+	// Set the fall timer
+	blockTimer = [self fallTimer];
 }
 
 #pragma mark iTetLocalBoardView Event Delegate Methods
@@ -264,15 +283,20 @@
 			return;
 			
 		case movePieceDown:
-			// Attempt to move the block down
-			if ([[self currentBlock] moveDownOnField:[LOCALPLAYER field]])
-			{
-				// If the block solidifies, add it to the field
-				[self solidifyCurrentBlock];
-			}
+			// Invalidate the fall timer
+			[blockTimer invalidate];
+			blockTimer = nil;
+			
+			// Move the piece down
+			[self moveCurrentPieceDown];
+			
 			return;
 			
 		case dropPiece:
+			// Invalidate the fall timer
+			[blockTimer invalidate];
+			blockTimer = nil;
+			
 			// Move the block down until it stops
 			while (![[self currentBlock] moveDownOnField:[LOCALPLAYER field]]);
 			
@@ -321,7 +345,7 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 #pragma mark -
 #pragma mark Server-to-Client Events
 
-NSString* const iTetSpecialEventDescriptionFormat = @"@% used on %@ by %@";
+NSString* const iTetSpecialEventDescriptionFormat = @"%@ used on %@ by %@";
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
@@ -412,6 +436,44 @@ objectValueForTableColumn:(NSTableColumn*)column
 @synthesize currentBlock;
 @synthesize nextBlock;
 @synthesize specialsQueue;
+
+- (NSTimer*)nextBlockTimer
+{
+	// Create an invocation
+	NSInvocation* i = [NSInvocation invocationWithMethodSignature:
+				 [self methodSignatureForSelector:@selector(moveNextBlockToField)]];
+	[i setTarget:self];
+	[i setSelector:@selector(moveNextBlockToField)];
+	
+	// Start the timer to spawn the next block
+	return [NSTimer scheduledTimerWithTimeInterval:1.0
+							invocation:i
+							   repeats:NO];
+}
+
+- (NSTimer*)fallTimer
+{
+	// Create an invocation
+	NSInvocation* i = [NSInvocation invocationWithMethodSignature:
+				 [self methodSignatureForSelector:@selector(moveCurrentPieceDown)]];
+	[i setTarget:self];
+	[i setSelector:@selector(moveCurrentPieceDown)];
+	
+	// Start the timer to move the block down
+	return [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
+							invocation:i
+							   repeats:YES];
+}
+
+NSTimeInterval blockFallDelayForLevel(NSInteger level)
+{
+	NSTimeInterval time = 1.005 - (level * 0.01);
+	
+	if (time < 0.005)
+		return 0.005;
+	
+	return time;
+}
 
 - (BOOL)gameInProgress
 {
