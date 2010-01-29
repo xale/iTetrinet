@@ -11,8 +11,8 @@
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
 // (conveniently, this function is its own inverse)
-#define ITET_CONVERT_ROW(coord)	(((ITET_FIELD_HEIGHT - 1) - (coord)) + 51)
-#define ITET_CONVERT_COL(coord)	(((ITET_FIELD_WIDTH - 1) - (coord)) + 51)
+#define ITET_CONVERT_ROW(coord)	(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3')
+#define ITET_CONVERT_COL(coord)	(((ITET_FIELD_WIDTH - 1) - (coord)) + '3')
 // ...and the cell contents are mapped to different characters
 char cellToPartialUpdateChar(char cellType);
 char partialUpdateCharToCell(char updateChar);
