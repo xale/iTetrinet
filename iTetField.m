@@ -254,7 +254,7 @@ char partialUpdateCharToCell(char updateChar);
 			for (col = 0; col < ITET_FIELD_WIDTH; col++)
 			{
 				cell = contents[row][col];
-				if (!isdigit(cell))
+				if (cell > ITET_NUM_CELL_COLORS)
 					[specials addObject:[NSNumber numberWithChar:cell]];
 			}
 		}
@@ -311,6 +311,99 @@ char partialUpdateCharToCell(char updateChar);
 	[self didChangeValueForKey:@"contents"];
 	
 	[self setLastPartialUpdate:partialUpdate];
+}
+
+- (void)addSpecials:(NSInteger)count
+   usingFrequencies:(char*)specialFrequencies
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Count the number of non-special filled cells on the board
+	NSInteger row, col, numNonSpecialCells = 0;
+	char cell;
+	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			cell = contents[row][col];
+			if ((cell > 0) && (cell < ITET_NUM_CELL_COLORS))
+				numNonSpecialCells++;
+		}
+	}
+	
+	// Attempt to add the specified number of specials
+	for (NSInteger specialsAdded = 0; specialsAdded < count; specialsAdded++)
+	{
+		// If there are non-special cells on the board, replace one at random with a special
+		if (numNonSpecialCells > 0)
+		{
+			// Choose a random number of cells to pass over before dropping the special
+			NSInteger cellsLeftToSkip = random() % numNonSpecialCells;
+			
+			// Iterate over the board
+			for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+			{
+				for (col = 0; col < ITET_FIELD_WIDTH; col++)
+				{
+					// If this is a non-special cell, check whether to add the special
+					cell = contents[row][col];
+					if ((cell > 0) && (cell < ITET_NUM_CELL_COLORS))
+					{
+						// If we have skipped the predetermined number of cells, add the special
+						if (cellsLeftToSkip == 0)
+						{
+							// Replace the cell with a random special
+							contents[row][col] = specialFrequencies[random() % 100];
+							
+							// Decrement the number of non-special cells remaining
+							numNonSpecialCells--;
+							
+							// Jump to the next iteration of the special-adding loop
+							goto nextspecial;
+						}
+						
+						// Haven't reached the predetermined number of cells yet
+						cellsLeftToSkip--;
+					}
+				}
+			}
+		}
+		else
+		{
+			// Make 20 attempts to find an empty column
+			NSInteger tries;
+			for (tries = 0; tries < 20; tries++)
+			{
+				// Choose a random column
+				col = random() % ITET_FIELD_WIDTH;
+				
+				// Check if the column is empty
+				for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+				{
+					if (contents[row][col] > 0)
+						break;
+				}
+				
+				// If the column was empty, add the new special
+				if (row == ITET_FIELD_HEIGHT)
+				{
+					// Add the new special to the bottom row
+					contents[0][col] = specialFrequencies[random() % 100];
+					
+					// Go to the next iteration of the special-adding loop
+					goto nextspecial;
+				}
+			}
+			// If we've tried 20 times and not found an empty column, abandon adding more specials
+			if (tries == 20)
+				goto abort;
+		}
+		
+	nextspecial:; // Next iteration of special-adding loop
+	}
+abort:; // Unable to add more specials; bail
+
+	[self didChangeValueForKey:@"contents"];
 }
 
 #pragma mark -

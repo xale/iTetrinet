@@ -189,47 +189,55 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	NSUInteger lines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
 	if (lines > 0)
 	{
-		// Add the lines to the player's counts
-		[LOCALPLAYER addLines:lines];
-		
-		// Check for level updates
-		NSInteger linesPer = [[self currentGameRules] linesPerLevel];
-		while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
+		while (lines > 0)
 		{
-			// Increase the level
-			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
+			// Add the lines to the player's counts
+			[LOCALPLAYER addLines:lines];
 			
-			// Send a level increase message to the server
-			[self sendCurrentLevel];
+			// Add any specials retrieved to the local player's queue
+			for (NSNumber* special in specials)
+			{
+				// Check if there is space in the queue
+				if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
+					break;
+				
+				// Add to player's queue
+				[[LOCALPLAYER specialsQueue] enqueueObject:special];
+			}
 			
-			// Decrement the lines cleared since the last level update
-			[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
-		}
-		
-		// Check whether to add specials
-		linesPer = [[self currentGameRules] linesPerSpecial];
-		while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
-		{
-			// Add specials
-			// FIXME: WRITME: add specials to board
+			// Check for level updates
+			NSInteger linesPer = [[self currentGameRules] linesPerLevel];
+			while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
+			{
+				// Increase the level
+				[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
+				
+				// Send a level increase message to the server
+				[self sendCurrentLevel];
+				
+				// Decrement the lines cleared since the last level update
+				[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
+			}
 			
-			// Decrement the lines cleared since last specials added
-			[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+			// Check whether to add specials to the field
+			linesPer = [[self currentGameRules] linesPerSpecial];
+			while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
+			{
+				// Add specials
+				[[LOCALPLAYER field] addSpecials:[[self currentGameRules] specialsAdded]
+						    usingFrequencies:[[self currentGameRules] specialFrequencies]];
+				
+				// Decrement the lines cleared since last specials added
+				[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+			}
+			
+			// Check for additional lines cleared (an unusual occurrence, but still possible)
+			[specials removeAllObjects];
+			lines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
 		}
 		
 		// Send the updated field to the server
 		[self sendFieldstring];
-		
-		// Add any specials retrieved to the local player's queue
-		for (NSNumber* special in specials)
-		{
-			// Check if there is space in the queue
-			if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
-				break;
-			
-			// Add to player's queue
-			[[LOCALPLAYER specialsQueue] enqueueObject:special];
-		}
 	}
 	else
 	{

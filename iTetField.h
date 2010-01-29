@@ -60,6 +60,11 @@ typedef enum
 // Add a partial update from the server to the field
 - (void)applyPartialUpdate:(NSString*)partialUpdate;
 
+// Adds the specified number of specials to the board, using the provided frequencies
+// note: specialFrequencies must be exactly 100 characters in length
+- (void)addSpecials:(NSInteger)count
+   usingFrequencies:(char*)specialFrequencies;
+
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSUInteger)row
 	     column:(NSUInteger)column;
