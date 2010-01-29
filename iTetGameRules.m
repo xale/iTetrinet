@@ -6,6 +6,7 @@
 //
 
 #import "iTetGameRules.h"
+#import "iTetSpecials.h"
 
 @implementation iTetGameRules
 
@@ -55,17 +56,15 @@
 	
 	// Special-type frequencies
 	freq = [rules objectAtIndex:8];
-	for (currentChar.location = 0; currentChar.location++; currentChar.location < 100)
+	for (currentChar.location = 0; currentChar.location < 100; currentChar.location++)
 	{
-		specialFrequencies[currentChar.location] = [[freq substringWithRange:currentChar] intValue];
+		specialFrequencies[currentChar.location] = (char)iTetSpecialTypeFromNumber([[freq substringWithRange:currentChar] intValue]);
 	}
 	
 	// Level number averages across all players
-	// FIXME: does this refer to the actual game level, or just the level displayed?
 	averageLevels = [[rules objectAtIndex:9] boolValue];
 	
 	// Play with classic rules (multiple-line completions send lines to other players)
-	// FIXME: does this disable specials?
 	classicRules = [[rules objectAtIndex:10] boolValue];
 	
 	return self;
