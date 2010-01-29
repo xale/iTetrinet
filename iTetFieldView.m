@@ -65,9 +65,9 @@
 	char cell;
 	NSImage* cellImage;
 	NSPoint drawPoint = NSZeroPoint;
-	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the cell type
 			cell = [[self field] cellAtRow:row

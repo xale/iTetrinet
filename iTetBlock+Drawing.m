@@ -23,7 +23,7 @@
 	[image lockFocus];
 	
 	// For each occupied cell of the block, draw the fill for that region
-	int row, col;
+	NSInteger row, col;
 	char cellType;
 	NSImage* cellImage;
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)

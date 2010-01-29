@@ -95,9 +95,9 @@ char partialUpdateCharToCell(char updateChar);
 
 - (id)initWithRandomContents
 {	
-	for (int row = 0; row < ITET_FIELD_HEIGHT; row++)
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{	
 			contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
 		}
@@ -132,7 +132,7 @@ char partialUpdateCharToCell(char updateChar);
 
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block
 {
-	int row, col;
+	NSInteger row, col;
 	char cell;
 	iTetObstructionState side = obstructNone;
 	
@@ -190,7 +190,7 @@ char partialUpdateCharToCell(char updateChar);
 
 - (void)solidifyBlock:(iTetBlock*)block
 {
-	int row, col;
+	NSInteger row, col;
 	char cell, lastCell = 0;
 	char rowCoord, colCoord;
 	
@@ -421,9 +421,9 @@ abort:; // Unable to add more specials; bail
 	
 	char cell;
 	// Iterate over the whole field (TOP TO BOTTOM)
-	for (int row = (ITET_FIELD_HEIGHT - 1); row >= 0; row--)
+	for (NSInteger row = (ITET_FIELD_HEIGHT - 1); row >= 0; row--)
 	{
-		for (int col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the contents of this cell
 			cell = contents[row][col];
