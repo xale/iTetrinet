@@ -49,7 +49,7 @@
 		
 		// Get the image for the first special in the queue
 		NSUInteger index;
-		iTetSpecialType special;
+		char special;
 		NSImage* specialImage;
 		NSPoint drawPoint = NSZeroPoint;
 		
@@ -57,13 +57,13 @@
 		for (index = 0; index < [specials count]; index++)
 		{
 			// Get the special and it's image
-			special = (iTetSpecialType)[[specials objectAtIndex:index] intValue];
-			specialImage = [[self theme] imageForCellType:(char)special];
+			special = (char)[[specials objectAtIndex:index] intValue];
+			specialImage = [[self theme] imageForCellType:special];
 			
 			// Draw the special
 			[specialImage drawAtPoint:drawPoint
 					     fromRect:NSZeroRect
-					    operation:NSCompositeCopy
+					    operation:NSCompositeSourceOver
 					     fraction:1.0];
 			
 			// Move the drawing point to the next position

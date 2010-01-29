@@ -343,7 +343,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			return;
 			
 		case discardSpecial:
-			// FIXME: WRITEME: 'discard special' key
+			[[LOCALPLAYER specialsQueue] dequeueFirstObject];
 			return;
 			
 		case selfSpecial:

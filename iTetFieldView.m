@@ -87,7 +87,7 @@
 			// Draw the cell
 			[cellImage drawAtPoint:drawPoint
 					  fromRect:NSZeroRect
-					 operation:NSCompositeCopy
+					 operation:NSCompositeSourceOver
 					  fraction:1.0];
 		}
 	}
