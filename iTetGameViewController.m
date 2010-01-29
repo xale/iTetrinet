@@ -188,18 +188,33 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	NSUInteger lines = [[LOCALPLAYER field] clearLines];
 	if (lines > 0)
 	{
+		// Add the lines to the player's counts
+		[LOCALPLAYER addLines:lines];
+		
 		// Check for level updates
-		if ((([LOCALPLAYER linesCleared] % [[self currentGameRules] linesPerLevel]) + lines) >= [[self currentGameRules] linesPerLevel])
+		NSInteger linesPer = [[self currentGameRules] linesPerLevel];
+		while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
 		{
 			// Increase the level
 			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
 			
 			// Send a level increase message to the server
 			[self sendCurrentLevel];
+			
+			// Decrement the lines cleared since the last level update
+			[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
 		}
 		
-		// Add the lines to the player's count
-		[LOCALPLAYER setLinesCleared:([LOCALPLAYER linesCleared] + lines)];
+		// Check whether to add specials
+		linesPer = [[self currentGameRules] linesPerSpecial];
+		while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
+		{
+			// Add specials
+			// FIXME: WRITME: add specials to board
+			
+			// Decrement the lines cleared since last specials added
+			[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+		}
 		
 		// Send the updated field to the server
 		[self sendFieldstring];

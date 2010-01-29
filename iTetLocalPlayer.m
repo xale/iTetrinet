@@ -21,11 +21,20 @@
 }
 
 #pragma mark -
-#pragma mark Accessors (Synthesized)
+#pragma mark Accessors
+
+- (void)addLines:(NSInteger)lines
+{
+	[self setLinesCleared:([self linesCleared] + lines)];
+	[self setLinesSinceLastLevel:([self linesSinceLastLevel] + lines)];
+	[self setLinesSinceLastSpecials:([self linesSinceLastSpecials] + lines)];
+}
 
 @synthesize currentBlock;
 @synthesize nextBlock;
 @synthesize specialsQueue;
 @synthesize linesCleared;
+@synthesize linesSinceLastLevel;
+@synthesize linesSinceLastSpecials;
 
 @end

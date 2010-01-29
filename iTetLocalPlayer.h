@@ -18,11 +18,17 @@
 	Queue* specialsQueue;
 	
 	NSInteger linesCleared;
+	NSInteger linesSinceLastLevel;
+	NSInteger linesSinceLastSpecials;
 }
+
+- (void)addLines:(NSInteger)lines;
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
 @property (readwrite, retain) Queue* specialsQueue;
 @property (readwrite, assign) NSInteger linesCleared;
+@property (readwrite, assign) NSInteger linesSinceLastLevel;
+@property (readwrite, assign) NSInteger linesSinceLastSpecials;
 
 @end
