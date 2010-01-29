@@ -64,7 +64,7 @@ typedef enum
 	 orientation:(NSInteger)blockOrientation;
 
 // Create random blocks using the frequency information from the game rules
-// NOTE: The frequency information must be an array of length 100
+// note: blockFrequencies must be exactly 100 characters in length
 + (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies;
 - (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies;
 
