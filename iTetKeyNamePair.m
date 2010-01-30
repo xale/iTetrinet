@@ -63,9 +63,9 @@
 NSString* const iTetEscapeKeyPlaceholderString =	@"esc";
 NSString* const iTetSpacebarPlaceholderString =		@"     space     ";
 NSString* const iTetTabKeyPlaceholderString =		@"  tab  ";
-NSString* const iTetReturnKeyPlaceholderString =	@"return";
-NSString* const iTetEnterKeyPlaceholderString =		@"enter";
-NSString* const iTetDeleteKeyPlaceholderString =	@"delete";
+NSString* const iTetReturnKeyPlaceholderString =	@"  return  ";
+NSString* const iTetEnterKeyPlaceholderString =		@" enter ";
+NSString* const iTetDeleteKeyPlaceholderString =	@"  delete  ";
 
 - (NSString*)keyNameForEvent:(NSEvent*)keyEvent
 {
