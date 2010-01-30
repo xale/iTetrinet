@@ -441,7 +441,9 @@ NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 #pragma mark -
 #pragma mark Server-to-Client Events
 
-NSString* const iTetSpecialEventDescriptionFormat = @"%@ used on %@ by %@";
+NSString* const iTetSpecialEventDescriptionFormat =	@"%@ used on %@ by %@";
+NSString* const iTetNilSenderNamePlaceholder =		@"Server";
+NSString* const iTetNilTargetNamePlaceholder =		@"All";
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
@@ -451,18 +453,24 @@ NSString* const iTetSpecialEventDescriptionFormat = @"%@ used on %@ by %@";
 	// FIXME: WRITEME
 	
 	// Add a description of the event to the list of actions
+	// FIXME: needs colors/formatting
+	// Determine the name of the sender ("Server", if the sender is not a specific player)
+	NSString* senderName;
+	if (sender == nil)
+		senderName = iTetNilSenderNamePlaceholder;
+	else
+		senderName = [sender nickname];
+	    
 	// Determine the name of the target ("All", if the target is not a specific player)
 	NSString* targetName;
 	if (target == nil)
-		targetName = @"All";
+		targetName = iTetNilTargetNamePlaceholder;
 	else
 		targetName = [target nickname];
 	
 	// Create the description string
-	// FIXME: colors/formatting
-	NSString* desc = [NSString stringWithFormat:iTetSpecialEventDescriptionFormat,
-				iTetNameForSpecialType(special),
-				targetName, [sender nickname]];
+	NSString* desc;
+	desc = [NSString stringWithFormat:iTetSpecialEventDescriptionFormat, iTetNameForSpecialType(special), targetName, senderName];
 	
 	// Record the event
 	[self recordAction:desc];
@@ -478,18 +486,20 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	// FIXME: WRITEME
 	
 	// Create a description
-	// FIXME: colors/formatting
+	// FIXME: needs colors/formatting
+	// Determine the name of the sender
+	NSString* senderName;
+	if (sender == nil)
+		senderName = iTetNilSenderNamePlaceholder;
+	else
+		senderName = [sender nickname];
+	
+	// Choose a discription based on how many lines were added
 	NSString* desc;
 	if (numLines > 1)
-	{
-		desc = [NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat,
-			  numLines, [sender nickname]];
-	}
+		desc = [NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, numLines, senderName];
 	else
-	{
-		desc = [NSString stringWithFormat:iTetLineAddedEventDescriptionFormat,
-			  [sender nickname]];
-	}
+		desc = [NSString stringWithFormat:iTetLineAddedEventDescriptionFormat, senderName];
 	
 	// Record the event
 	[self recordAction:desc];
