@@ -283,6 +283,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	blockTimer = [self fallTimer];
 }
 
+- (void)useSpecialOnPlayerNumber:(NSInteger)playerNumber
+{
+	// FIXME: WRITEME:
+}
+
 #pragma mark iTetLocalBoardView Event Delegate Methods
 
 - (void)keyPressed:(iTetKeyNamePair*)key
@@ -301,23 +306,23 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		case movePieceLeft:
 			[[LOCALPLAYER currentBlock] moveHorizontal:moveLeft
-							    onField:[LOCALPLAYER field]];
-			return;
+								     onField:[LOCALPLAYER field]];
+			break;
 			
 		case movePieceRight:
 			[[LOCALPLAYER currentBlock] moveHorizontal:moveRight
-							    onField:[LOCALPLAYER field]];
-			return;
+								     onField:[LOCALPLAYER field]];
+			break;
 			
 		case rotatePieceCounterclockwise:
 			[[LOCALPLAYER currentBlock] rotate:rotateCounterclockwise
-						  onField:[LOCALPLAYER field]];
-			return;
+							   onField:[LOCALPLAYER field]];
+			break;
 			
 		case rotatePieceClockwise:
 			[[LOCALPLAYER currentBlock] rotate:rotateClockwise
-						  onField:[LOCALPLAYER field]];
-			return;
+							   onField:[LOCALPLAYER field]];
+			break;
 			
 		case movePieceDown:
 			// Invalidate the fall timer
@@ -327,7 +332,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// Move the piece down
 			[self moveCurrentPieceDown];
 			
-			return;
+			break;
 			
 		case dropPiece:
 			// Invalidate the fall timer
@@ -340,22 +345,47 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// Solidify the block
 			[self solidifyCurrentBlock];
 			
-			return;
+			break;
 			
 		case discardSpecial:
 			[[LOCALPLAYER specialsQueue] dequeueFirstObject];
-			return;
+			break;
 			
 		case selfSpecial:
-			// FIXME: WRITEME: 'use special on self' key
-			return;
+			[self useSpecialOnPlayerNumber:[LOCALPLAYER playerNumber]];
+			break;
+			
+		case specialPlayer1:
+			[self useSpecialOnPlayerNumber:1];
+			break;
+			
+		case specialPlayer2:
+			[self useSpecialOnPlayerNumber:2];
+			break;
+			
+		case specialPlayer3:
+			[self useSpecialOnPlayerNumber:3];
+			break;
+			
+		case specialPlayer4:
+			[self useSpecialOnPlayerNumber:4];
+			break;
+			
+		case specialPlayer5:
+			[self useSpecialOnPlayerNumber:5];
+			break;
+			
+		case specialPlayer6:
+			[self useSpecialOnPlayerNumber:6];
+			break;
 			
 		case gameChat:
 			// FIXME: WRITEME: 'game chat' key
-			return;
+			break;
 	}
 	
-	// FIXME: WRITEME: test for number keys to send specials
+	// Not a recognized key
+	return;
 }
 
 #pragma mark -
@@ -384,7 +414,9 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 - (void)sendCurrentLevel
 {
 	// Send the local player's level to the server
-	// FIXME: WRITEME
+	[[appController networkController] sendMessage:
+	 [NSString stringWithFormat:
+	  iTetLevelMessageFormat, [LOCALPLAYER playerNumber], [LOCALPLAYER level]]];
 }
 
 #pragma mark -
@@ -478,6 +510,8 @@ objectValueForTableColumn:(NSTableColumn*)column
 #pragma mark -
 #pragma mark Accessors
 
+#define TETRINET_BLOCK_DELAY	1.0
+
 - (NSTimer*)nextBlockTimer
 {
 	// Create an invocation
@@ -487,7 +521,7 @@ objectValueForTableColumn:(NSTableColumn*)column
 	[i setSelector:@selector(moveNextBlockToField)];
 	
 	// Start the timer to spawn the next block
-	return [NSTimer scheduledTimerWithTimeInterval:1.0
+	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_BLOCK_DELAY
 							invocation:i
 							   repeats:NO];
 }

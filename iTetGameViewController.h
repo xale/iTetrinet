@@ -64,6 +64,9 @@
 - (void)moveCurrentPieceDown;
 - (void)solidifyCurrentBlock;
 - (void)moveNextBlockToField;
+- (void)useSpecialOnPlayerNumber:(NSInteger)playerNumber;
+- (void)keyPressed:(iTetKeyNamePair*)key
+  onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
@@ -76,9 +79,6 @@
 	    byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSString*)description;
 - (void)clearActions;
-
-- (void)keyPressed:(iTetKeyNamePair*)key
-  onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
