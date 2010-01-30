@@ -20,6 +20,7 @@
 #import "Queue.h"
 
 #define LOCALPLAYER			[appController localPlayer]
+#define NETCONTROLLER			[appController networkController]
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
@@ -283,9 +284,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	blockTimer = [self fallTimer];
 }
 
-- (void)useSpecialOnPlayerNumber:(NSInteger)playerNumber
+- (void)activateSpecial:(NSNumber*)special
 {
-	// FIXME: WRITEME:
+	// FIXME: WRITEME
 }
 
 #pragma mark iTetLocalBoardView Event Delegate Methods
@@ -352,31 +353,37 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case selfSpecial:
-			[self useSpecialOnPlayerNumber:[LOCALPLAYER playerNumber]];
+			[self activateSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]];
 			break;
 			
 		case specialPlayer1:
-			[self useSpecialOnPlayerNumber:1];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:1];
 			break;
 			
 		case specialPlayer2:
-			[self useSpecialOnPlayerNumber:2];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:2];
 			break;
 			
 		case specialPlayer3:
-			[self useSpecialOnPlayerNumber:3];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:3];
 			break;
 			
 		case specialPlayer4:
-			[self useSpecialOnPlayerNumber:4];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:4];
 			break;
 			
 		case specialPlayer5:
-			[self useSpecialOnPlayerNumber:5];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:5];
 			break;
 			
 		case specialPlayer6:
-			[self useSpecialOnPlayerNumber:6];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:6];
 			break;
 			
 		case gameChat:
@@ -396,17 +403,13 @@ NSString* const iTetFieldstringMessageFormat = @"f %d %@";
 - (void)sendFieldstring
 {	
 	// Send the string for the local player's field to the server
-	[[appController networkController] sendMessage:
-	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	[[appController networkController] sendMessage:
-	 [NSString stringWithFormat:
-	  iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
 }
 
 NSString* const iTetLevelMessageFormat = @"lvl %d %d";
@@ -414,9 +417,25 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 - (void)sendCurrentLevel
 {
 	// Send the local player's level to the server
-	[[appController networkController] sendMessage:
-	 [NSString stringWithFormat:
-	  iTetLevelMessageFormat, [LOCALPLAYER playerNumber], [LOCALPLAYER level]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetLevelMessageFormat, [LOCALPLAYER playerNumber], [LOCALPLAYER level]]];
+}
+
+NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
+
+- (void)sendSpecial:(NSNumber*)special
+     toPlayerNumber:(NSInteger)playerNumber
+{
+	// Check if the target player is the local player
+	NSInteger localNumber = [LOCALPLAYER playerNumber];
+	if (playerNumber == localNumber)
+	{
+		// Use the special on the local player's field
+		[self activateSpecial:special];
+		return;
+	}
+	
+	// Otherwise, send a message to the server
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, playerNumber, [special charValue], localNumber]];
 }
 
 #pragma mark -
@@ -510,7 +529,7 @@ objectValueForTableColumn:(NSTableColumn*)column
 #pragma mark -
 #pragma mark Accessors
 
-#define TETRINET_BLOCK_DELAY	1.0
+#define TETRINET_NEXT_BLOCK_DELAY	1.0
 
 - (NSTimer*)nextBlockTimer
 {
@@ -521,7 +540,7 @@ objectValueForTableColumn:(NSTableColumn*)column
 	[i setSelector:@selector(moveNextBlockToField)];
 	
 	// Start the timer to spawn the next block
-	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_BLOCK_DELAY
+	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
 							invocation:i
 							   repeats:NO];
 }
@@ -540,12 +559,16 @@ objectValueForTableColumn:(NSTableColumn*)column
 							   repeats:YES];
 }
 
+#define ITET_MAX_DELAY_TIME			(1.005)
+#define ITET_DELAY_REDUCTION_PER_LEVEL	(0.01)
+#define ITET_MIN_DELAY_TIME			(0.005)
+
 NSTimeInterval blockFallDelayForLevel(NSInteger level)
 {
-	NSTimeInterval time = 1.005 - (level * 0.01);
+	NSTimeInterval time = ITET_MAX_DELAY_TIME - (level * ITET_DELAY_REDUCTION_PER_LEVEL);
 	
-	if (time < 0.005)
-		return 0.005;
+	if (time < ITET_MIN_DELAY_TIME)
+		return ITET_MIN_DELAY_TIME;
 	
 	return time;
 }

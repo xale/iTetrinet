@@ -64,13 +64,15 @@
 - (void)moveCurrentPieceDown;
 - (void)solidifyCurrentBlock;
 - (void)moveNextBlockToField;
-- (void)useSpecialOnPlayerNumber:(NSInteger)playerNumber;
+- (void)activateSpecial:(NSNumber*)special;
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
 - (void)sendCurrentLevel;
+- (void)sendSpecial:(NSNumber*)special
+     toPlayerNumber:(NSInteger)playerNumber;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
