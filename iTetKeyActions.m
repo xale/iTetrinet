@@ -15,6 +15,12 @@ NSString* const iTetMovePieceDownActionName =			@"Move Piece Down";
 NSString* const iTetDropPieceActionName =				@"Drop Piece";
 NSString* const iTetDiscardSpecialActionName =			@"Discard Special";
 NSString* const iTetSelfSpecialActionName =			@"Use Special on Self";
+NSString* const iTetSpecialPlayer1ActionName =			@"Use Special on Player Number 1";
+NSString* const iTetSpecialPlayer2ActionName =			@"Use Special on Player Number 2";
+NSString* const iTetSpecialPlayer3ActionName =			@"Use Special on Player Number 3";
+NSString* const iTetSpecialPlayer4ActionName =			@"Use Special on Player Number 4";
+NSString* const iTetSpecialPlayer5ActionName =			@"Use Special on Player Number 5";
+NSString* const iTetSpecialPlayer6ActionName =			@"Use Special on Player Number 6";
 NSString* const iTetGameChatActionName =				@"Game Chat";
 NSString* const iTetNoActionName =					@"No Action";
 
@@ -45,6 +51,24 @@ NSString* iTetNameForAction(iTetGameAction action)
 			
 		case selfSpecial:
 			return iTetSelfSpecialActionName;
+			
+		case specialPlayer1:
+			return iTetSpecialPlayer1ActionName;
+			
+		case specialPlayer2:
+			return iTetSpecialPlayer2ActionName;
+			
+		case specialPlayer3:
+			return iTetSpecialPlayer3ActionName;
+			
+		case specialPlayer4:
+			return iTetSpecialPlayer4ActionName;
+			
+		case specialPlayer5:
+			return iTetSpecialPlayer5ActionName;
+			
+		case specialPlayer6:
+			return iTetSpecialPlayer6ActionName;
 			
 		case gameChat:
 			return iTetGameChatActionName;

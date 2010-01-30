@@ -564,16 +564,28 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 		boundAction = [currentConfig actionForKey:key];
 	}
 	
+	// If the action is already bound, disallow the binding
 	if (boundAction != noAction)
 	{
-		if (boundAction != [keyView associatedAction])
+		// If the key is reserved, warn the user
+		if ((boundAction >= specialPlayer1) && (boundAction <= specialPlayer6))
 		{
+			NSBeep();
+			
+			// Place a warning in the text field
+			[keyDescriptionField setStringValue:
+			 [NSString stringWithFormat:@"The key \'%@\' is reserved. Please choose another key.",
+			  [key printedName]]];
+		}
+		// If the key is bound to another action, inform the user
+		else if (boundAction != [keyView associatedAction])
+		{
+			NSBeep();
+			
 			// Place a warning in the text field
 			[keyDescriptionField setStringValue:
 			 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
 			  [key printedName], iTetNameForAction(boundAction)]];
-			
-			NSBeep();
 		}
 		
 		return NO;

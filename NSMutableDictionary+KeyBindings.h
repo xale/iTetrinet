@@ -15,6 +15,8 @@ extern NSString* const iTetKeyConfigurationNameKey;
 @interface NSMutableDictionary (KeyBindings)
 
 + (NSMutableArray*)defaultKeyConfigurations;
++ (NSMutableDictionary*)keyConfigurationDictionary;
++ (NSMutableDictionary*)specialTargetsDictionary;
 
 - (void)setAction:(iTetGameAction)action
 	     forKey:(iTetKeyNamePair*)key;
