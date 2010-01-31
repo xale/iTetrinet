@@ -17,8 +17,8 @@ static BLOCK bI[2] = {
 		{0,1,0,0},
 		{0,1,0,0}
 	}, {
-		{1,1,1,1},
 		{0,0,0,0},
+		{1,1,1,1},
 		{0,0,0,0},
 		{0,0,0,0}
 	}
@@ -270,7 +270,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 			// Attempt to shift the block horizontally to accommodate rotation
 			// (blatently stolen from gTetrinet source)
 			NSInteger shifts[4] = {1, -1, 2, -2};
-			for (NSUInteger i = 0; i < 4; i++)
+			for (NSInteger i = 0; i < 4; i++)
 			{
 				if (![field blockObstructed:[iTetBlock blockWithType:type
 										     orientation:newOrientation
@@ -311,18 +311,26 @@ successfulShift:
 }
 
 - (NSInteger)initialRowOffset
-{
-	// All block configurations with row offsets are orientation 3
-	if (orientation != 3)
-		return 0;
-	
-	// Only J-, L-, and T-blocks need row offsets
+{	
+	// Determine whether the block needs an offset
 	switch (type)
 	{
+		// I-blocks in orientation 1
+		case I_block:
+			if (orientation == 1)
+				return 1;
+			break;
+			
+		// J-, L-, and T-blocks in orientation 3
 		case J_block:
 		case L_block:
 		case T_block:
-			return 1;
+			if (orientation == 3)
+				return 1;
+			break;
+		
+		default:
+			break;
 	}
 	
 	return 0;
