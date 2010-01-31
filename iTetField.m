@@ -186,7 +186,7 @@ char partialUpdateCharToCell(char updateChar);
 }
 
 #pragma mark -
-#pragma mark Board Updates
+#pragma mark Board Changes/Updates
 
 - (void)solidifyBlock:(iTetBlock*)block
 {
@@ -404,6 +404,48 @@ char partialUpdateCharToCell(char updateChar);
 abort:; // Unable to add more specials; bail
 
 	[self didChangeValueForKey:@"contents"];
+}
+
+#pragma mark Specials
+
+- (BOOL)addLines:(NSInteger)linesToAdd
+{
+	// Repeat for each line to add
+	NSInteger row, col;
+	for (NSInteger linesAdded = 0; linesAdded < linesToAdd; linesAdded++)
+	{
+		// Check the top row to see if the player has lost
+		row = (ITET_FIELD_HEIGHT - 1);
+		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			// If any cell is filled, adding the next line will overflow
+			if (contents[row][col] > 0)
+				return YES;
+		}
+		
+		[self willChangeValueForKey:@"contents"];
+		
+		// Shift all rows up
+		for (row = (ITET_FIELD_HEIGHT - 2); row >= 0; row--)
+		{
+			// Copy this row to the row above
+			memcpy(contents[row + 1], contents[row], sizeof(contents[row]));
+		}
+		
+		// Fill the bottom row randomly
+		for (NSUInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+			contents[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
+		
+		// Choose a random column index
+		NSUInteger emptyCol = random() % ITET_FIELD_WIDTH;
+		
+		// Ensure that at least one column index is empty
+		contents[0][emptyCol] = 0;
+		
+		[self didChangeValueForKey:@"contents"];
+	}
+	
+	return NO;
 }
 
 #pragma mark -

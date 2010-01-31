@@ -65,6 +65,10 @@ typedef enum
 - (void)addSpecials:(NSInteger)count
    usingFrequencies:(char*)specialFrequencies;
 
+// Adds lines of garbage to the bottom of the field, pushing other lines up
+// Returns YES if the field overflows (player loses)
+- (BOOL)addLines:(NSInteger)count;
+
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSUInteger)row
 	     column:(NSUInteger)column;
