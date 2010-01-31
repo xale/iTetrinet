@@ -410,20 +410,22 @@ abort:; // Unable to add more specials; bail
 
 - (BOOL)addLines:(NSInteger)linesToAdd
 {
+	[self willChangeValueForKey:@"contents"];
+	
+	BOOL playerLost = NO;
+	
 	// Repeat for each line to add
 	NSInteger row, col;
 	for (NSInteger linesAdded = 0; linesAdded < linesToAdd; linesAdded++)
 	{
 		// Check the top row to see if the player has lost
 		row = (ITET_FIELD_HEIGHT - 1);
-		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (col = 0; !playerLost && (col < ITET_FIELD_WIDTH); col++)
 		{
 			// If any cell is filled, adding the next line will overflow
 			if (contents[row][col] > 0)
-				return YES;
+				playerLost = YES;
 		}
-		
-		[self willChangeValueForKey:@"contents"];
 		
 		// Shift all rows up
 		for (row = (ITET_FIELD_HEIGHT - 2); row >= 0; row--)
@@ -441,11 +443,11 @@ abort:; // Unable to add more specials; bail
 		
 		// Ensure that at least one column index is empty
 		contents[0][emptyCol] = 0;
-		
-		[self didChangeValueForKey:@"contents"];
 	}
 	
-	return NO;
+	[self didChangeValueForKey:@"contents"];
+	
+	return playerLost;
 }
 
 #pragma mark -
