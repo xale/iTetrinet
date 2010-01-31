@@ -186,57 +186,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[[LOCALPLAYER field] solidifyBlock:[LOCALPLAYER currentBlock]];
 	
 	// Check for cleared lines
-	NSMutableArray* specials = [NSMutableArray array];
-	NSUInteger lines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
-	if (lines > 0)
+	if ([self checkForLinesCleared])
 	{
-		while (lines > 0)
-		{
-			// Add the lines to the player's counts
-			[LOCALPLAYER addLines:lines];
-			
-			// Add any specials retrieved to the local player's queue
-			for (NSNumber* special in specials)
-			{
-				// Check if there is space in the queue
-				if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
-					break;
-				
-				// Add to player's queue
-				[[LOCALPLAYER specialsQueue] enqueueObject:special];
-			}
-			
-			// Check for level updates
-			NSInteger linesPer = [[self currentGameRules] linesPerLevel];
-			while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
-			{
-				// Increase the level
-				[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
-				
-				// Send a level increase message to the server
-				[self sendCurrentLevel];
-				
-				// Decrement the lines cleared since the last level update
-				[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
-			}
-			
-			// Check whether to add specials to the field
-			linesPer = [[self currentGameRules] linesPerSpecial];
-			while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
-			{
-				// Add specials
-				[[LOCALPLAYER field] addSpecials:[[self currentGameRules] specialsAdded]
-						    usingFrequencies:[[self currentGameRules] specialFrequencies]];
-				
-				// Decrement the lines cleared since last specials added
-				[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
-			}
-			
-			// Check for additional lines cleared (an unusual occurrence, but still possible)
-			[specials removeAllObjects];
-			lines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
-		}
-		
 		// Send the updated field to the server
 		[self sendFieldstring];
 	}
@@ -262,6 +213,65 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 }
 
+- (BOOL)checkForLinesCleared
+{
+	// Attempt to clear lines on the board
+	BOOL linesCleared = NO;
+	NSMutableArray* specials = [NSMutableArray array];
+	NSUInteger numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
+	while (numLines > 0)
+	{
+		// Make a note that some lines were cleared
+		linesCleared = YES;
+		
+		// Add the lines to the player's counts
+		[LOCALPLAYER addLines:numLines];
+		
+		// Add any specials retrieved to the local player's queue
+		for (NSNumber* special in specials)
+		{
+			// Check if there is space in the queue
+			if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
+				break;
+			
+			// Add to player's queue
+			[[LOCALPLAYER specialsQueue] enqueueObject:special];
+		}
+		
+		// Check for level updates
+		NSInteger linesPer = [[self currentGameRules] linesPerLevel];
+		while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
+		{
+			// Increase the level
+			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
+			
+			// Send a level increase message to the server
+			[self sendCurrentLevel];
+			
+			// Decrement the lines cleared since the last level update
+			[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
+		}
+		
+		// Check whether to add specials to the field
+		linesPer = [[self currentGameRules] linesPerSpecial];
+		while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
+		{
+			// Add specials
+			[[LOCALPLAYER field] addSpecials:[[self currentGameRules] specialsAdded]
+					    usingFrequencies:[[self currentGameRules] specialFrequencies]];
+			
+			// Decrement the lines cleared since last specials added
+			[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+		}
+		
+		// Check for additional lines cleared (an unusual occurrence, but still possible)
+		[specials removeAllObjects];
+		numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
+	}
+	
+	return linesCleared;
+}
+
 - (void)moveNextBlockToField
 {
 	// Set the block's position to the top of the field
@@ -284,9 +294,95 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	blockTimer = [self fallTimer];
 }
 
-- (void)activateSpecial:(NSNumber*)special
+- (void)useSpecial:(NSNumber*)special
+	    onTarget:(iTetPlayer*)target
+	  fromSender:(iTetPlayer*)sender
+		   
 {
-	// FIXME: WRITEME
+	// Get the affected player numbers
+	NSInteger localNum, targetNum, senderNum;
+	localNum = [LOCALPLAYER playerNumber];
+	targetNum = [target playerNumber];
+	senderNum = [sender playerNumber];
+	
+	// Check if this action affects the local player
+	if ((targetNum != localNum) && (senderNum != localNum))
+		return;
+	
+	// Determine the action to take
+	iTetSpecialType type = (iTetSpecialType)[special intValue];
+	switch (type)
+	{
+		case addLine:
+			// If the local player is the target, add a line to the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: add line
+			break;
+			
+		case clearLine:
+			// If the // If the local player is the target, remove the bottom line from the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: clear line
+			break;
+			
+		case nukeField:
+			// If the local player is the target, clear the field
+			if (targetNum == localNum)
+				[LOCALPLAYER setField:[iTetField field]];
+			break;
+			
+		case randomClear:
+			// If the local player is the target, clear random cells from the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: clear specials
+			// FIXME: WRITEME: random clear
+			break;
+			
+		case switchField:
+			// If the local player is the target, get the sender's field
+			if (targetNum == localNum)
+				[LOCALPLAYER setField:[sender field]];
+			// If the local player is the sender, get the target's field
+			else if (senderNum == localNum)
+				[LOCALPLAYER setField:[target field]];
+			break;
+			
+		case clearSpecials:
+			// If the local player is the target, clear all specials from the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: clear specials
+			break;
+			
+		case gravity:
+			// If the local player is the target, apply gravity to the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: gravity
+			
+			// Lines may be cleared after a gravity special is used
+			[self checkForLinesCleared];
+			
+			break;
+			
+		case quakeField:
+			// If the local player is the target, quake the field
+			if (targetNum == localNum);
+				// FIXME: WRITEME: quakefield
+			
+			break;
+			
+		case blockBomb:
+			// If the local player is the target, use block bomb
+			if (targetNum == localNum);
+				// FIXME: WRITEME: clear specials
+			
+			break;
+			
+		default:
+			NSLog(@"WARNING: gameViewController -activateSpecial: called with invalid special type: %d", type);
+	}
+	
+	// Send field changes to the server
+	[self sendFieldstring];
 }
 
 #pragma mark iTetLocalBoardView Event Delegate Methods
@@ -353,7 +449,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case selfSpecial:
-			[self activateSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]];
+			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+			   toPlayerNumber:[LOCALPLAYER playerNumber]];
 			break;
 			
 		case specialPlayer1:
@@ -391,8 +488,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 	}
 	
-	// Not a recognized key
-	return;
+	// Not a recognized key; fall through
 }
 
 #pragma mark -
@@ -424,18 +520,14 @@ NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
 - (void)sendSpecial:(NSNumber*)special
      toPlayerNumber:(NSInteger)playerNumber
-{
-	// Check if the target player is the local player
-	NSInteger localNumber = [LOCALPLAYER playerNumber];
-	if (playerNumber == localNumber)
-	{
-		// Use the special on the local player's field
-		[self activateSpecial:special];
-		return;
-	}
+{	
+	// Send a message to the server
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, playerNumber, [special charValue], [LOCALPLAYER playerNumber]]];
 	
-	// Otherwise, send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, playerNumber, [special charValue], localNumber]];
+	// Record and perform the action
+	[self specialUsed:(iTetSpecialType)[special intValue]
+		   byPlayer:LOCALPLAYER
+		   onPlayer:[appController playerNumber:playerNumber]];
 }
 
 #pragma mark -
@@ -449,8 +541,10 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	     byPlayer:(iTetPlayer*)sender
 	     onPlayer:(iTetPlayer*)target
 {
-	// Perform the action
-	// FIXME: WRITEME
+	// If the local player is the target, perform the action
+	[self useSpecial:[NSNumber numberWithInt:(int)special]
+		  onTarget:target
+		fromSender:sender];
 	
 	// Add a description of the event to the list of actions
 	// FIXME: needs colors/formatting
@@ -482,7 +576,7 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 - (void)linesAdded:(int)numLines
 	    byPlayer:(iTetPlayer*)sender
 {
-	// Add the lines
+	// If the local player is the target, add the lines to the field
 	// FIXME: WRITEME
 	
 	// Create a description

@@ -63,8 +63,11 @@
 
 - (void)moveCurrentPieceDown;
 - (void)solidifyCurrentBlock;
+- (BOOL)checkForLinesCleared;
 - (void)moveNextBlockToField;
-- (void)activateSpecial:(NSNumber*)special;
+- (void)useSpecial:(NSNumber*)special
+	    onTarget:(iTetPlayer*)target
+	  fromSender:(iTetPlayer*)sender;
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
