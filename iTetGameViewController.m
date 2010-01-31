@@ -399,6 +399,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	iTetGameAction action = [keyConfig actionForKey:key];
 	
 	// Perform the relevant action
+	iTetPlayer* targetPlayer;
 	switch (action)
 	{
 		case movePieceLeft:
@@ -422,7 +423,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case movePieceDown:
-			// Invalidate the fall timer
+			// Invalidate the fall timer ("move down" method will reset)
 			[blockTimer invalidate];
 			blockTimer = nil;
 			
@@ -445,42 +446,77 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case discardSpecial:
+			// Drop the first special from the local player's queue
 			[[LOCALPLAYER specialsQueue] dequeueFirstObject];
 			break;
 			
 		case selfSpecial:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:[LOCALPLAYER playerNumber]];
+			// If the local player has specials, use one
+			if ([[LOCALPLAYER specialsQueue] count] > 0)
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:LOCALPLAYER];
+			}
 			break;
 			
 		case specialPlayer1:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:1];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:1];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case specialPlayer2:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:2];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:2];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case specialPlayer3:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:3];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:3];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case specialPlayer4:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:4];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:4];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case specialPlayer5:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:5];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:5];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case specialPlayer6:
-			[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
-			   toPlayerNumber:6];
+			// If there is a player in the target slot, and the local player has specials, use one
+			targetPlayer = [appController playerNumber:6];
+			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+			{
+				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+					   toPlayer:targetPlayer];
+			}
 			break;
 			
 		case gameChat:
@@ -519,15 +555,15 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
 - (void)sendSpecial:(NSNumber*)special
-     toPlayerNumber:(NSInteger)playerNumber
+	     toPlayer:(iTetPlayer*)player
 {	
 	// Send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, playerNumber, [special charValue], [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [player playerNumber], [special charValue], [LOCALPLAYER playerNumber]]];
 	
 	// Record and perform the action
 	[self specialUsed:(iTetSpecialType)[special intValue]
 		   byPlayer:LOCALPLAYER
-		   onPlayer:[appController playerNumber:playerNumber]];
+		   onPlayer:player];
 }
 
 #pragma mark -
@@ -573,7 +609,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 NSString* const iTetLineAddedEventDescriptionFormat = @"1 Line Added to All by %@";
 NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All by %@";
 
-- (void)linesAdded:(int)numLines
+- (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender
 {
 	// If the local player is the target, add the lines to the field

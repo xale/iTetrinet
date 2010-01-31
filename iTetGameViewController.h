@@ -75,12 +75,12 @@
 - (void)sendPartialFieldstring;
 - (void)sendCurrentLevel;
 - (void)sendSpecial:(NSNumber*)special
-     toPlayerNumber:(NSInteger)playerNumber;
+	     toPlayer:(iTetPlayer*)player;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
 	     onPlayer:(iTetPlayer*)target;
-- (void)linesAdded:(int)numLines
+- (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSString*)description;
 - (void)clearActions;
