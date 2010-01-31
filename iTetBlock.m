@@ -253,12 +253,21 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 							     columnPosition:[self colPos]]])
 	{
 		case obstructVert:
-			// Block cannot be rotated
+			// Attempt to shift the block down to accommodate rotation
+			if (![field blockObstructed:[iTetBlock blockWithType:type
+									     orientation:newOrientation
+									     rowPosition:([self rowPos] - 1)
+									  columnPosition:[self colPos]]])
+			{
+				[self setRowPos:([self rowPos] - 1)];
+				goto successfulShift;
+			}
+			// Still can't rotate, even after shift
 			return;
 			
 		case obstructHoriz:
 		{
-			// Attempt to shift the block to accommodate rotation
+			// Attempt to shift the block horizontally to accommodate rotation
 			// (blatently stolen from gTetrinet source)
 			NSInteger shifts[4] = {1, -1, 2, -2};
 			for (NSUInteger i = 0; i < 4; i++)
@@ -266,7 +275,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 				if (![field blockObstructed:[iTetBlock blockWithType:type
 										     orientation:newOrientation
 										     rowPosition:[self rowPos]
-										  columnPosition:[self colPos] + shifts[i]]])
+										  columnPosition:([self colPos] + shifts[i])]])
 				{
 					[self setColPos:([self colPos] + shifts[i])];
 					goto successfulShift;
