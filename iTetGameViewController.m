@@ -335,8 +335,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case randomClear:
 			// If the local player is the target, clear random cells from the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: random clear
+			if (targetNum == localNum)
+				[[LOCALPLAYER field] clearRandomCells];
 			break;
 			
 		case switchField:

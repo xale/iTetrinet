@@ -72,6 +72,9 @@ typedef enum
 // Clears the bottom line of the field, shifting others down; does not collect specials
 - (void)clearBottomLine;
 
+// Clears ten random cells on the board
+- (void)clearRandomCells;
+
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSUInteger)row
 	     column:(NSUInteger)column;

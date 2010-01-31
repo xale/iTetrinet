@@ -467,6 +467,19 @@ abort:; // Unable to add more specials; bail
 	[self didChangeValueForKey:@"contents"];
 }
 
+#define ITET_NUM_RANDOM_CLEARS	(10)
+
+- (void)clearRandomCells
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Clear ten random cells on the board
+	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
+		contents[(random() % ITET_FIELD_HEIGHT)][(random() % ITET_FIELD_WIDTH)] = 0;
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
 #pragma mark -
 #pragma mark Accessors
 
