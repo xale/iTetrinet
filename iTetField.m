@@ -37,8 +37,8 @@ char partialUpdateCharToCell(char updateChar);
 	char currentCell;
 	
 	// Iterate through the fieldstring
-	NSUInteger row, col;
-	for (NSUInteger i = 0; i < [fieldstring length]; i++)
+	NSInteger row, col;
+	for (NSInteger i = 0; i < [fieldstring length]; i++)
 	{
 		// Get the cell value at this index
 		currentCell = field[i];
@@ -61,23 +61,23 @@ char partialUpdateCharToCell(char updateChar);
 
 #pragma mark Fields with Starting Stack
 
-+ (id)fieldWithStackHeight:(NSUInteger)stackHeight
++ (id)fieldWithStackHeight:(NSInteger)stackHeight
 {
 	return [[[self alloc] initWithStackHeight:stackHeight] autorelease];
 }
 
-- (id)initWithStackHeight:(NSUInteger)stackHeight
+- (id)initWithStackHeight:(NSInteger)stackHeight
 {	
 	// For each row of the starting stack, fill with debris
 	// Uses gtetrinet's method; bizarre, but whatever
-	for (NSUInteger row = 0; row < stackHeight; row++)
+	for (NSInteger row = 0; row < stackHeight; row++)
 	{
 		// Fill the row randomly
-		for (NSUInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[row][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 		
 		// Choose a random column index
-		NSUInteger emptyCol = random() % ITET_FIELD_WIDTH;
+		NSInteger emptyCol = random() % ITET_FIELD_WIDTH;
 		
 		// Ensure that at least one column index is empty
 		contents[row][emptyCol] = 0;
@@ -227,14 +227,14 @@ char partialUpdateCharToCell(char updateChar);
 	[self setLastPartialUpdate:update];
 }
 
-- (NSUInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials
+- (NSInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials
 {	
-	NSUInteger linesCleared = 0;
+	NSInteger linesCleared = 0;
 	
 	[self willChangeValueForKey:@"contents"];
 	
 	// Scan the field for complete lines
-	NSUInteger row, col;
+	NSInteger row, col;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_FIELD_WIDTH; col++)
@@ -283,8 +283,8 @@ char partialUpdateCharToCell(char updateChar);
 	char cellType = partialUpdateCharToCell(update[0]);
 	
 	char currentChar;
-	NSUInteger row, col;
-	for (NSUInteger i = 1; i < [partialUpdate length]; i++)
+	NSInteger row, col;
+	for (NSInteger i = 1; i < [partialUpdate length]; i++)
 	{
 		currentChar = update[i];
 		
@@ -326,7 +326,7 @@ char partialUpdateCharToCell(char updateChar);
 		for (col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			cell = contents[row][col];
-			if ((cell > 0) && (cell < ITET_NUM_CELL_COLORS))
+			if ((cell > 0) && (cell <= ITET_NUM_CELL_COLORS))
 				numNonSpecialCells++;
 		}
 	}
@@ -347,7 +347,7 @@ char partialUpdateCharToCell(char updateChar);
 				{
 					// If this is a non-special cell, check whether to add the special
 					cell = contents[row][col];
-					if ((cell > 0) && (cell < ITET_NUM_CELL_COLORS))
+					if ((cell > 0) && (cell <= ITET_NUM_CELL_COLORS))
 					{
 						// If we have skipped the predetermined number of cells, add the special
 						if (cellsLeftToSkip == 0)
@@ -435,11 +435,11 @@ abort:; // Unable to add more specials; bail
 		}
 		
 		// Fill the bottom row randomly
-		for (NSUInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 			contents[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 		
 		// Choose a random column index
-		NSUInteger emptyCol = random() % ITET_FIELD_WIDTH;
+		NSInteger emptyCol = random() % ITET_FIELD_WIDTH;
 		
 		// Ensure that at least one column index is empty
 		contents[0][emptyCol] = 0;
@@ -473,9 +473,27 @@ abort:; // Unable to add more specials; bail
 {
 	[self willChangeValueForKey:@"contents"];
 	
-	// Clear ten random cells on the board
+	// Clear ten random cells on the field
 	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
 		contents[(random() % ITET_FIELD_HEIGHT)][(random() % ITET_FIELD_WIDTH)] = 0;
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
+- (void)removeAllSpecials
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Iterate over the field
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			// If this cell is a special, replace it with a random normal cell
+			if (contents[row][col] > ITET_NUM_CELL_COLORS)
+				contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+		}
+	}
 	
 	[self didChangeValueForKey:@"contents"];
 }
@@ -483,8 +501,8 @@ abort:; // Unable to add more specials; bail
 #pragma mark -
 #pragma mark Accessors
 
-- (char)cellAtRow:(NSUInteger)row
-	     column:(NSUInteger)col
+- (char)cellAtRow:(NSInteger)row
+	     column:(NSInteger)col
 {
 	return contents[row][col];
 }

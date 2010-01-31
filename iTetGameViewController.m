@@ -350,8 +350,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case clearSpecials:
 			// If the local player is the target, clear all specials from the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: clear specials
+			if (targetNum == localNum)
+				[[LOCALPLAYER field] removeAllSpecials];
 			break;
 			
 		case gravity:
