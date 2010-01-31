@@ -262,9 +262,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (returnCode == NSAlertFirstButtonReturn)
 		return;
 	
-	// Otherwise, stop the game in progress
-	[gameController endGame];
-	
 	// Send the server an "end game" message
 	[networkController sendMessage:
 	 [NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
@@ -473,7 +470,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #define PlayerNumMessage	((protocol == tetrinetProtocol)?@"playernum":@")#)(!@(*3")
 #define PlayerJoinedMessage	@"playerjoin"
 #define PlayerTeamMessage	@"team"
-#define FieldStateMessage	@"f"
+#define FieldstringMessage	@"f"
 #define PlayerLostMessage	@"playerlost"
 #define ServerInGameMessage	@"ingame"
 #define PauseMessage		@"pause"
@@ -533,25 +530,15 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Player number
 	else if ([messageType isEqualToString:PlayerNumMessage])
 	{
-		// Get the number
-		NSInteger playerNum = [[tokens objectAtIndex:1] integerValue];
-		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: player number received: %d", playerNum);
-		
-		[self setLocalPlayerNumber:playerNum];
+		// Set the local player's number
+		[self setLocalPlayerNumber:[[tokens objectAtIndex:1] integerValue]];
 	}
 	// Player joined
 	else if ([messageType isEqualToString:PlayerJoinedMessage])
 	{
-		// Get the player number and nickname
-		NSInteger playerNum = [[tokens objectAtIndex:1] integerValue];
+		// Add a new player with specified name and number
 		NSString* nick = [tokens objectAtIndex:2];
-		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: player joined: #%d; nick: %@", playerNum, nick);
-		
-		[self addPlayerWithNumber:playerNum
+		[self addPlayerWithNumber:[[tokens objectAtIndex:1] integerValue]
 				     nickname:nick];
 		
 		// Add a message to the chat view
@@ -568,18 +555,16 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		NSString* team = @"";
 		if ([tokens count] >= 3)
 		{
-			team = [[tokens subarrayWithRange:NSMakeRange(2, [tokens count])] 
+			// Remaining tokens are part of the team name
+			team = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] 
 				  componentsJoinedByString:@" "];
 		}
 		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: player number %d joined team '%@'", playerNum, team);
-		
-		[self setTeamName:team
-		  forPlayerNumber:playerNum];
+		// Change the player's team name
+		[[self playerNumber:playerNum] setTeamName:team];
 	}
-	// Fieldstate
-	else if ([messageType isEqualToString:FieldStateMessage])
+	// Fieldstring
+	else if ([messageType isEqualToString:FieldstringMessage])
 	{
 		// Get the player number
 		NSInteger playerNum = [[tokens objectAtIndex:1] integerValue];
@@ -597,8 +582,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		else
 		{
 			// Give the player a new field created from the fieldstring
-			[[self playerNumber:playerNum] setField:
-			 [iTetField fieldFromFieldstring:update]];
+			[[self playerNumber:playerNum] setField:[iTetField fieldFromFieldstring:update]];
 		}
 	}
 	// Player lost
@@ -610,7 +594,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// FIXME: Debug logging
 		NSLog(@"DEBUG: MESSAGE: player number %d lost", playerNum);
 		
-		// FIXME: WRITEME: player lost
+		// FIXME: WRITEME: post message to the game view
 	}
 	// Server "in-game"
 	else if ([messageType isEqualToString:ServerInGameMessage])
@@ -626,9 +610,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Get pause state
 		BOOL paused = ([[tokens objectAtIndex:1] integerValue] == 1);
 		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: game pause state: %d", paused);
-		
+		// Pause or resume the game
 		[gameController setGamePaused:paused];
 	}
 	// Player left
@@ -637,14 +619,12 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Get player number
 		NSInteger playerNum = [[tokens objectAtIndex:1] integerValue];
 		
-		// FIXME: Debug logging
-		NSLog(@"DEBUG: MESSAGE: player number %d left game", playerNum);
-		
 		// Add a chat line
 		[chatController appendChatLine:
 		 [NSString stringWithFormat:@"* Player %@ has left the channel *",
 		  [self playerNameForNumber:playerNum]]];
 		
+		// Remove the player from the game
 		[self removePlayerNumber:playerNum];
 	}
 	// Partyline message
@@ -731,7 +711,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		else
 		{	
 			// Pass to game controller
-			[gameController specialUsed:(iTetSpecialType)[special integerValue]
+			[gameController specialUsed:(iTetSpecialType)[special cStringUsingEncoding:NSASCIIStringEncoding][0]
 						 byPlayer:sender
 						 onPlayer:target];
 		}
@@ -749,14 +729,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Level update
 	else if ([messageType isEqualToString:LevelUpdateMessage])
 	{
-		// Get player and level number
-		NSInteger playerNum = [[tokens objectAtIndex:1] integerValue];
-		NSInteger levelNum = [[tokens objectAtIndex:2] integerValue];
-		
-		// FIXME: debug logging
-		NSLog(@"DEBUG: MESSAGE: player number %d reached level %d", playerNum, levelNum);
-		
-		// FIXME: WRITEME: level update
+		// Update the specified player's level
+		[[self playerNumber:[[tokens objectAtIndex:1] integerValue]] setLevel:[[tokens objectAtIndex:2] integerValue]];
 	}
 	// Player won
 	else if ([messageType isEqualToString:PlayerWonMessage])
@@ -772,8 +746,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Game ended
 	else if ([messageType isEqualToString:EndGameMessage])
 	{
-		// FIXME: debug logging
-		NSLog(@"DEBUG: MESSAGE: game ended");
+		// End the game
+		[gameController endGame];
 		
 		// Change the "end game" toolbar item
 		[gameButton setLabel:@"New Game"];
@@ -885,21 +859,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	playerCount++;
 	
 	[self didChangeValueForKey:@"playerList"];
-}
-
-- (void)setTeamName:(NSString*)team
-    forPlayerNumber:(NSInteger)number
-{
-	// Sanity checks
-	iTetCheckPlayerNumber(number);
-	if ([self playerNumber:number] == nil)
-	{
-		NSLog(@"WARNING: attempt to assign team name to player in empty player slot");
-		return;
-	}
-	
-	// Assign the team name
-	[[self playerNumber:number] setTeamName:team];
 }
 
 - (void)removePlayerNumber:(NSInteger)number

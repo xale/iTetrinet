@@ -69,8 +69,6 @@
 - (void)setLocalPlayerNumber:(NSInteger)number;
 - (void)addPlayerWithNumber:(NSInteger)number
 			 nickname:(NSString*)nick;
-- (void)setTeamName:(NSString*)team
-    forPlayerNumber:(NSInteger)number;
 - (void)removePlayerNumber:(NSInteger)number;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)number;
