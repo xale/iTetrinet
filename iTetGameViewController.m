@@ -294,7 +294,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	blockTimer = [self fallTimer];
 }
 
-- (void)useSpecial:(NSNumber*)special
+- (void)useSpecial:(iTetSpecialType)special
 	    onTarget:(iTetPlayer*)target
 	  fromSender:(iTetPlayer*)sender
 		   
@@ -310,13 +310,15 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		return;
 	
 	// Determine the action to take
-	iTetSpecialType type = (iTetSpecialType)[special intValue];
-	switch (type)
+	switch (special)
 	{
 		case addLine:
 			// If the local player is the target, add a line to the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: add line
+			if (targetNum == localNum)
+			{
+				[[LOCALPLAYER field] addLines:1];
+				// FIXME: test for game over
+			}
 			break;
 			
 		case clearLine:
@@ -378,7 +380,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		default:
-			NSLog(@"WARNING: gameViewController -activateSpecial: called with invalid special type: %d", type);
+			NSLog(@"WARNING: gameViewController -activateSpecial: called with invalid special type: %d", special);
 	}
 	
 	// Send field changes to the server
@@ -577,8 +579,8 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	     byPlayer:(iTetPlayer*)sender
 	     onPlayer:(iTetPlayer*)target
 {
-	// If the local player is the target, perform the action
-	[self useSpecial:[NSNumber numberWithInt:(int)special]
+	// Perform the action, if applicable to the local player
+	[self useSpecial:special
 		  onTarget:target
 		fromSender:sender];
 	
@@ -612,8 +614,12 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 - (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender
 {
-	// If the local player is the target, add the lines to the field
-	// FIXME: WRITEME
+	// If the local player is not the sender, add the lines
+	if ((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber]))
+	{
+		[[LOCALPLAYER field] addLines:numLines];
+		// FIXME: check for game over
+	}
 	
 	// Create a description
 	// FIXME: needs colors/formatting

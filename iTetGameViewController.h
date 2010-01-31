@@ -65,7 +65,7 @@
 - (void)solidifyCurrentBlock;
 - (BOOL)checkForLinesCleared;
 - (void)moveNextBlockToField;
-- (void)useSpecial:(NSNumber*)special
+- (void)useSpecial:(iTetSpecialType)special
 	    onTarget:(iTetPlayer*)target
 	  fromSender:(iTetPlayer*)sender;
 - (void)keyPressed:(iTetKeyNamePair*)key
