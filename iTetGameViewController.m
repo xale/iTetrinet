@@ -323,8 +323,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case clearLine:
 			// If the // If the local player is the target, remove the bottom line from the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: clear line
+			if (targetNum == localNum)
+				[[LOCALPLAYER field] clearBottomLine];
 			break;
 			
 		case nukeField:
@@ -336,8 +336,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case randomClear:
 			// If the local player is the target, clear random cells from the field
 			if (targetNum == localNum);
-				// FIXME: WRITEME: clear specials
-			// FIXME: WRITEME: random clear
+				// FIXME: WRITEME: random clear
 			break;
 			
 		case switchField:

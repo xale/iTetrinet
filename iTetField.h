@@ -69,6 +69,9 @@ typedef enum
 // Returns YES if the field overflows (player loses)
 - (BOOL)addLines:(NSInteger)count;
 
+// Clears the bottom line of the field, shifting others down; does not collect specials
+- (void)clearBottomLine;
+
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSUInteger)row
 	     column:(NSUInteger)column;

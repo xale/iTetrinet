@@ -427,7 +427,7 @@ abort:; // Unable to add more specials; bail
 				playerLost = YES;
 		}
 		
-		// Shift all rows up
+		// Shift all rows (except the top row) up
 		for (row = (ITET_FIELD_HEIGHT - 2); row >= 0; row--)
 		{
 			// Copy this row to the row above
@@ -448,6 +448,23 @@ abort:; // Unable to add more specials; bail
 	[self didChangeValueForKey:@"contents"];
 	
 	return playerLost;
+}
+
+- (void)clearBottomLine
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Shift all lines (except the bottom) down
+	for (NSInteger row = 1; row < ITET_FIELD_HEIGHT; row++)
+	{
+		// Move this row to the row below
+		memcpy(contents[row - 1], contents[row], sizeof(contents[row]));
+	}
+	
+	// Clear the top line
+	memset(contents[(ITET_FIELD_HEIGHT - 1)], 0, sizeof(contents[(ITET_FIELD_HEIGHT - 1)]));
+	
+	[self didChangeValueForKey:@"contents"];
 }
 
 #pragma mark -
