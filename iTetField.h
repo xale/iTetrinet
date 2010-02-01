@@ -21,8 +21,10 @@ typedef enum
 
 @interface iTetField: NSObject <NSCopying>
 {
+	// Contents of the field, indexed row/column, bottom-to-top, left-to-right
 	char contents[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
 	
+	// The delta created by the last block added to the field
 	NSString* lastPartialUpdate;
 }
 
@@ -57,6 +59,9 @@ typedef enum
 // Check for and clear completed lines on the field; returns the number of lines cleared
 - (NSInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials;
 
+// Clear completed lines, without retrieving specials or counting lines
+- (void)clearLines;
+
 // Add a partial update from the server to the field
 - (void)applyPartialUpdate:(NSString*)partialUpdate;
 
@@ -77,6 +82,9 @@ typedef enum
 
 // Turns all special blocks on the board into normal cells
 - (void)removeAllSpecials;
+
+// Pulls all cells down, filling gaps
+- (void)pullCellsDown;
 
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSInteger)row

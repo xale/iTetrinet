@@ -197,6 +197,7 @@ char partialUpdateCharToCell(char updateChar);
 	NSMutableString* update = [NSMutableString string];
 	
 	[self willChangeValueForKey:@"contents"];
+	
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
@@ -221,6 +222,7 @@ char partialUpdateCharToCell(char updateChar);
 			}
 		}
 	}
+	
 	[self didChangeValueForKey:@"contents"];
 	
 	// Retain this as the most recent partial update
@@ -233,7 +235,7 @@ char partialUpdateCharToCell(char updateChar);
 	
 	[self willChangeValueForKey:@"contents"];
 	
-	// Scan the field for complete lines
+	// Scan the field for complete lines, bottom-to-top
 	NSInteger row, col;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
@@ -250,12 +252,15 @@ char partialUpdateCharToCell(char updateChar);
 			linesCleared++;
 			
 			// ...and scan for specials
-			char cell;
-			for (col = 0; col < ITET_FIELD_WIDTH; col++)
+			if (specials != nil)
 			{
-				cell = contents[row][col];
-				if (cell > ITET_NUM_CELL_COLORS)
-					[specials addObject:[NSNumber numberWithChar:cell]];
+				char cell;
+				for (col = 0; col < ITET_FIELD_WIDTH; col++)
+				{
+					cell = contents[row][col];
+					if (cell > ITET_NUM_CELL_COLORS)
+						[specials addObject:[NSNumber numberWithChar:cell]];
+				}
 			}
 		}
 		// Otherwise, move the line down by the number of lines cleared below it
@@ -272,6 +277,11 @@ char partialUpdateCharToCell(char updateChar);
 	[self didChangeValueForKey:@"contents"];
 	
 	return linesCleared;
+}
+
+- (void)clearLines
+{
+	[self clearLinesAndRetrieveSpecials:nil];
 }
 
 - (void)applyPartialUpdate:(NSString *)partialUpdate
@@ -492,6 +502,38 @@ abort:; // Unable to add more specials; bail
 			// If this cell is a special, replace it with a random normal cell
 			if (contents[row][col] > ITET_NUM_CELL_COLORS)
 				contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+		}
+	}
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
+- (void)pullCellsDown
+{
+	[self willChangeValueForKey:@"contents"];
+	
+	// Iterate over the field in column-row order (my apologies to the CPU cache)
+	NSInteger gapsBelow;
+	for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+	{
+		// Scan the column for gaps, bottom-to-top
+		gapsBelow = 0;
+		for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+		{
+			// If the cell is empty, increment the number of gaps in the column
+			if (contents[row][col] == 0)
+			{
+				gapsBelow++;
+			}
+			// Otherwise, copy the cell down by the number of gaps below it
+			else if (gapsBelow > 0)
+			{
+				// Move the cell down
+				contents[row - gapsBelow][col] = contents[row][col];
+				
+				// Clear the old location
+				contents[row][col] = 0;
+			}
 		}
 	}
 	
