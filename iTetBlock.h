@@ -40,7 +40,7 @@ typedef enum
 
 #define ITET_NUM_CELL_COLORS 5
 
-@interface iTetBlock: NSObject
+@interface iTetBlock: NSObject <NSCopying>
 {
 	iTetBlockType type;
 	NSInteger orientation;

@@ -180,6 +180,14 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 		     columnPosition:0];
 }
 
+- (id)copyWithZone:(NSZone*)zone
+{
+	return [[[self class] allocWithZone:zone] initWithType:type
+								 orientation:orientation
+								 rowPosition:rowPos
+							    columnPosition:colPos];
+}
+
 + (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies
 {
 	return [[[self alloc] initWithRandomTypeAndOrientationUsingFrequencies:blockFrequencies] autorelease];
