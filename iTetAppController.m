@@ -72,6 +72,8 @@
 	// If there is already a connection open, disconnect
 	if ([networkController connected])
 	{
+		// FIXME: check for game in progress
+		
 		[networkController disconnect];
 		return;
 	}

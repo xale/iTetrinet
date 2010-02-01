@@ -86,6 +86,14 @@ typedef enum
 // Pulls all cells down, filling gaps
 - (void)pullCellsDown;
 
+// Randomly shifts all rows on the board 0-3 columns left or right
+- (void)randomShiftRows;
+
+// Shifts the specified row horizontally by the specified number of columns in the specified direction
+- (void)shiftRow:(NSInteger)row
+	  byAmount:(NSInteger)shiftAmount
+     inDirection:(BOOL)shiftLeft;
+
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSInteger)row
 	     column:(NSInteger)column;

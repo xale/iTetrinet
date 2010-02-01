@@ -365,8 +365,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case quakeField:
 			// If the local player is the target, quake the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: quakefield
+			if (targetNum == localNum)
+				[[LOCALPLAYER field] randomShiftRows];
 			
 			break;
 			

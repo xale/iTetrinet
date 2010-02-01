@@ -541,6 +541,63 @@ abort:; // Unable to add more specials; bail
 	[self didChangeValueForKey:@"contents"];
 }
 
+- (void)randomShiftRows
+{	
+	// Iterate over each row of the board
+	NSInteger randomNumber, shiftAmount;
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		// Doing this GTetrinet-style: pick a random number in [0, 22)
+		randomNumber = random() % 22;
+		
+		// Use the random value to pick a shift amount
+		if (randomNumber < 1)
+			shiftAmount = 3;
+		else if (randomNumber < 4)
+			shiftAmount = 2;
+		else if (randomNumber < 11)
+			shiftAmount = 1;
+		else
+			continue; // No shift
+		
+		[self shiftRow:row
+			byAmount:shiftAmount
+		   inDirection:(random() % 2)];
+	}
+}
+
+- (void)shiftRow:(NSInteger)row
+	  byAmount:(NSInteger)shiftAmount
+     inDirection:(BOOL)shiftLeft
+{
+	NSInteger col;
+	
+	[self willChangeValueForKey:@"contents"];
+	
+	if (shiftLeft)
+	{	
+		// Shift cells in the row to the left
+		for (col = 0; col < (ITET_FIELD_WIDTH - shiftAmount); col++)
+			contents[row][col] = contents[row][col + shiftAmount];
+		
+		// Clear the cells to the right of the shifted columns
+		for (; col < ITET_FIELD_WIDTH; col++)
+			contents[row][col] = 0;
+	}
+	else
+	{
+		// Shift cells in the row to the right
+		for (col = ((ITET_FIELD_WIDTH - 1) - shiftAmount); col >= 0; col--)
+			contents[row][col + shiftAmount] = contents[row][col];
+		
+		// Clear the cells to the left
+		for (col = 0; col < shiftAmount; col++)
+			contents[row][col] = 0;
+	}
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
 #pragma mark -
 #pragma mark Accessors
 
