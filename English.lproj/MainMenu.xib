@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="501"/>
 			<integer value="29"/>
 			<integer value="575"/>
+			<integer value="453"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1037,6 +1037,7 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{227, 197}</string>
 																<reference key="NSSuperview" ref="178493177"/>
+																<bool key="NSEnabled">YES</bool>
 																<object class="NSTableHeaderView" key="NSHeaderView" id="104114768">
 																	<reference key="NSNextResponder" ref="522450691"/>
 																	<int key="NSvFlags">256</int>
@@ -1057,7 +1058,7 @@
 																		<double key="NSMinWidth">40</double>
 																		<double key="NSMaxWidth">1000</double>
 																		<object class="NSTableHeaderCell" key="NSHeaderCell">
-																			<int key="NSCellFlags">612499008</int>
+																			<int key="NSCellFlags">75628096</int>
 																			<int key="NSCellFlags2">2048</int>
 																			<string key="NSContents">Attacks and Defenses</string>
 																			<object class="NSFont" key="NSSupport" id="26">
@@ -1094,11 +1095,11 @@
 																					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 																				</object>
 																			</object>
-																			<object class="NSColor" key="NSTextColor">
+																			<object class="NSColor" key="NSTextColor" id="1002094199">
 																				<int key="NSColorSpace">6</int>
 																				<string key="NSCatalogName">System</string>
-																				<string key="NSColorName">selectedInactiveColor</string>
-																				<reference key="NSColor" ref="133591378"/>
+																				<string key="NSColorName">controlTextColor</string>
+																				<reference key="NSColor" ref="432121657"/>
 																			</object>
 																		</object>
 																		<int key="NSResizingMask">1</int>
@@ -1204,12 +1205,7 @@
 														<string key="NSColorName">controlColor</string>
 														<reference key="NSColor" ref="133591378"/>
 													</object>
-													<object class="NSColor" key="NSTextColor" id="1002094199">
-														<int key="NSColorSpace">6</int>
-														<string key="NSCatalogName">System</string>
-														<string key="NSColorName">controlTextColor</string>
-														<reference key="NSColor" ref="432121657"/>
-													</object>
+													<reference key="NSTextColor" ref="1002094199"/>
 												</object>
 											</object>
 											<object class="NSTextField" id="15250015">
@@ -6612,9 +6608,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{549, 245}, {824, 713}}</string>
+					<string>{{166, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{549, 245}, {824, 713}}</string>
+					<string>{{166, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
