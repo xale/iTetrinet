@@ -16,6 +16,6 @@
 	iTetBlock* block;
 }
 
-@property (readwrite, retain) iTetBlock* block;
+@property (readwrite, copy) iTetBlock* block;
 
 @end
