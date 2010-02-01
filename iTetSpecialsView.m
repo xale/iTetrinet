@@ -48,17 +48,14 @@
 		[scaleTransform concat];
 		
 		// Get the image for the first special in the queue
-		NSUInteger index;
-		char special;
 		NSImage* specialImage;
 		NSPoint drawPoint = NSZeroPoint;
 		
-		// Draw the specials
-		for (index = 0; index < [specials count]; index++)
+		// Draw the specials (in reverse order)
+		for (NSNumber* special in [specials reverseObjectEnumerator])
 		{
-			// Get the special and it's image
-			special = (char)[[specials objectAtIndex:index] intValue];
-			specialImage = [[self theme] imageForCellType:special];
+			// Get the special's image
+			specialImage = [[self theme] imageForCellType:[special charValue]];
 			
 			// Draw the special
 			[specialImage drawAtPoint:drawPoint
@@ -96,11 +93,10 @@
 }
 
 - (void)setSpecials:(NSArray*)newSpecials
-{
+{	
 	[self willChangeValueForKey:@"specials"];
-	[newSpecials retain];
-	[specials release];
-	specials = newSpecials;
+	[specials autorelease];
+	specials = [newSpecials copy];
 	[self didChangeValueForKey:@"specials"];
 	
 	[self setNeedsDisplay:YES];

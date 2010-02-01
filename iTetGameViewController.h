@@ -74,7 +74,7 @@
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
 - (void)sendCurrentLevel;
-- (void)sendSpecial:(NSNumber*)special
+- (void)sendSpecial:(iTetSpecialType)special
 	     toPlayer:(iTetPlayer*)player;
 
 - (void)specialUsed:(iTetSpecialType)special

@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetPlayer.h"
+#import "iTetSpecials.h"
 
 @class iTetBlock;
 @class Queue;
@@ -15,7 +16,7 @@
 {
 	iTetBlock* currentBlock;
 	iTetBlock* nextBlock;
-	Queue* specialsQueue;
+	NSMutableArray* specialsQueue;
 	
 	NSInteger linesCleared;
 	NSInteger linesSinceLastLevel;
@@ -23,10 +24,13 @@
 }
 
 - (void)addLines:(NSInteger)lines;
+- (void)addSpecialToQueue:(NSNumber*)special;
+- (iTetSpecialType)dequeueNextSpecial;
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
-@property (readwrite, retain) Queue* specialsQueue;
+@property (readwrite, retain) NSMutableArray* specialsQueue;
+@property (readonly) NSNumber* nextSpecial;
 @property (readwrite, assign) NSInteger linesCleared;
 @property (readwrite, assign) NSInteger linesSinceLastLevel;
 @property (readwrite, assign) NSInteger linesSinceLastSpecials;

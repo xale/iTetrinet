@@ -14,6 +14,6 @@
 	NSArray* specials;
 }
 
-@property (readwrite, retain) NSArray* specials;
+@property (readwrite, copy) NSArray* specials;
 
 @end

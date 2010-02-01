@@ -17,7 +17,6 @@
 #import "iTetGameRules.h"
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
-#import "Queue.h"
 
 #define LOCALPLAYER			[appController localPlayer]
 #define NETCONTROLLER			[appController networkController]
@@ -55,7 +54,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Specials queue view
 	[specialsView bind:@"specials"
 		    toObject:appController
-		 withKeyPath:@"localPlayer.specialsQueue.allObjects"
+		 withKeyPath:@"localPlayer.specialsQueue"
 		     options:nil];
 	
 	// Remote field views
@@ -139,7 +138,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self moveNextBlockToField];
 	
 	// Create a new specials queue
-	[LOCALPLAYER setSpecialsQueue:[Queue queue]];
+	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[[self currentGameRules] specialCapacity]]];
 	
 	// FIXME: anything else?
 }
@@ -235,7 +234,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 				break;
 			
 			// Add to player's queue
-			[[LOCALPLAYER specialsQueue] enqueueObject:special];
+			[LOCALPLAYER addSpecialToQueue:special];
 		}
 		
 		// Check for level updates
@@ -356,11 +355,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case gravity:
 			// If the local player is the target, apply gravity to the field
-			if (targetNum == localNum);
-				// FIXME: WRITEME: gravity
+			if (targetNum == localNum)
+				[[LOCALPLAYER field] pullCellsDown];
 			
-			// Lines may be cleared after a gravity special is used
-			[self checkForLinesCleared];
+			// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
+			[[LOCALPLAYER field] clearLines];
 			
 			break;
 			
@@ -448,14 +447,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case discardSpecial:
 			// Drop the first special from the local player's queue
-			[[LOCALPLAYER specialsQueue] dequeueFirstObject];
+			[LOCALPLAYER dequeueNextSpecial];
 			break;
 			
 		case selfSpecial:
 			// If the local player has specials, use one
 			if ([[LOCALPLAYER specialsQueue] count] > 0)
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:LOCALPLAYER];
 			}
 			break;
@@ -465,7 +464,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:1];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -475,7 +474,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:2];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -485,7 +484,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:3];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -495,7 +494,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:4];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -505,7 +504,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:5];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -515,7 +514,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			targetPlayer = [appController playerNumber:6];
 			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
 			{
-				[self sendSpecial:[[LOCALPLAYER specialsQueue] dequeueFirstObject]
+				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 					   toPlayer:targetPlayer];
 			}
 			break;
@@ -555,14 +554,14 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 
 NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
-- (void)sendSpecial:(NSNumber*)special
+- (void)sendSpecial:(iTetSpecialType)special
 	     toPlayer:(iTetPlayer*)player
 {	
 	// Send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [player playerNumber], [special charValue], [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [player playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
 	
 	// Record and perform the action
-	[self specialUsed:(iTetSpecialType)[special intValue]
+	[self specialUsed:special
 		   byPlayer:LOCALPLAYER
 		   onPlayer:player];
 }
