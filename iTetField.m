@@ -25,6 +25,7 @@ char partialUpdateCharToCell(char updateChar);
 }
 
 #pragma mark Fields from a Fieldstring
+
 + (id)fieldFromFieldstring:(NSString*)fieldstring
 {
 	return [[[self alloc] initWithFieldstring:fieldstring] autorelease];
