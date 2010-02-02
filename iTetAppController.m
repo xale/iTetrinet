@@ -72,9 +72,26 @@
 	// If there is already a connection open, disconnect
 	if ([networkController connected])
 	{
-		// FIXME: check for game in progress
+		// If there is a game in progress, ask the user before disconnecting
+		if ([gameController gameplayState] != gameNotPlaying)
+		{
+			// Create an alert
+			NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+			[alert setMessageText:@"Game in Progress"];
+			[alert setInformativeText:@"A game is currently in progress. Are you sure you want to disconnect from the server?"];
+			[alert addButtonWithTitle:@"Disconnect"];
+			[alert addButtonWithTitle:@"Continue Playing"];
+			
+			// Run the alert as a sheet
+			[alert beginSheetModalForWindow:window
+						modalDelegate:self
+					     didEndSelector:@selector(disconnectWithGameInProgressAlertDidEnd:returnCode:contextInfo:)
+						  contextInfo:NULL];
+			
+			return;
+		}
 		
-		// Disconnect from the server
+		// Otherwise, just disconnect from the server
 		[networkController disconnect];
 		
 		return;
@@ -110,7 +127,7 @@
 	// Otherwise, open the server list
 	
 	// Create an alert for the server selection dialog
-	NSAlert* dialog = [[NSAlert alloc] init];
+	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
 	[dialog setMessageText:@"Connect to Server"];
 	[dialog setInformativeText:@"Select a server to connect to:"];
 	[dialog addButtonWithTitle:@"Connect"];
@@ -137,11 +154,11 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 	{
 		// Confirm with user before ending game
 		// Create a confirmation dialog
-		NSAlert* dialog = [[NSAlert alloc] init];
+		NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
 		[dialog setMessageText:@"End Game in Progress?"];
 		[dialog setInformativeText:@"Are you sure you want to end the game in progress?"];
-		[dialog addButtonWithTitle:@"Continue Playing"];
 		[dialog addButtonWithTitle:@"End Game"];
+		[dialog addButtonWithTitle:@"Continue Playing"];
 		
 		// Run the dialog as a window-modal sheet
 		[dialog beginSheetModalForWindow:window
@@ -257,12 +274,28 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		    contextInfo:(void*)contextInfo
 {
 	// If the user pressed "continue playing", do nothing
-	if (returnCode == NSAlertFirstButtonReturn)
+	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
 	// Send the server an "end game" message
 	[networkController sendMessage:
 	 [NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
+}
+
+- (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert
+						 returnCode:(NSInteger)returnCode
+						contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Otherwise, tell the game controller that the game is over
+	// (Do not tell the server to end game, so other players can keep playing)
+	[gameController endGame];
+	
+	// Disconnect from the server
+	[networkController disconnect];
 }
 
 #pragma mark -
@@ -402,7 +435,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 - (void)connectionError:(NSError*)error
 {
-	NSAlert* alert = [[NSAlert alloc] init];
+	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 	[alert setMessageText:@"Error connecting to server"];
 	
 	// If we were attempting to connect, invalidate the timeout timer
