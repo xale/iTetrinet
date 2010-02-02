@@ -134,17 +134,11 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #pragma mark -
 #pragma mark Disconnecting
 
-NSString* const iTetDisconnectMessage = @"disconnect";
-
 - (void)disconnect
 {
 	// If we are already disconnected, ignore
 	if (![self connected])
 		return;
-	
-	// Send a "disconnect" message
-	// (Some servers just ignore this)
-	[self sendMessage:iTetDisconnectMessage];
 	
 	// Close and free the streams
 	[readStream close];
@@ -167,6 +161,7 @@ NSString* const iTetDisconnectMessage = @"disconnect";
 	// Empty the write queue
 	[writeQueue removeAllObjects];
 	
+	// Change connection state
 	[self setConnected:NO];
 }
 
@@ -320,16 +315,6 @@ NSString* const iTetDisconnectMessage = @"disconnect";
 		// Get the raw data
 		dataRaw = [data bytes];
 		dataSize = [data length];
-		
-		// FIXME: Outgoing message debug logging
-		/*
-		NSMutableString* byteString = [NSMutableString string];
-		for (int i = 0; i < [data length]; i++)
-		{
-			[byteString appendFormat:@"%02X ", dataRaw[i]];
-		}
-		NSLog(@"DEBUG: sending bytes: %@", byteString);
-		 */
 		
 		// Attempt to write the bytes to the stream
 		bytesWritten = [writeStream write:dataRaw

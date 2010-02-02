@@ -74,7 +74,9 @@
 	{
 		// FIXME: check for game in progress
 		
+		// Disconnect from the server
 		[networkController disconnect];
+		
 		return;
 	}
 	
