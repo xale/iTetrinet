@@ -133,7 +133,7 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 - (IBAction)startStopGame:(id)sender
 {	
 	// Check if a game is already in progress
-	if ([gameController gameInProgress])
+	if ([gameController gameplayState] != gameNotPlaying)
 	{
 		// Confirm with user before ending game
 		// Create a confirmation dialog
@@ -164,11 +164,8 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 - (IBAction)pauseResumeGame:(id)sender
 {
 	// Check if game is already paused
-	if ([gameController gamePaused])
-	{
-		// Unpause the game
-		[gameController setGamePaused:NO];
-		
+	if ([gameController gameplayState] == gamePaused)
+	{	
 		// Send a message asking the server to resume play
 		[networkController sendMessage:
 		 [NSString stringWithFormat:ResumeGameFormat, [[self localPlayer] playerNumber]]];
@@ -182,9 +179,6 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	}
 	else
 	{
-		// Pause the game
-		[gameController setGamePaused:YES];
-		
 		// Send a message asking the server to pause
 		[networkController sendMessage:
 		 [NSString stringWithFormat:PauseGameFormat, [[self localPlayer] playerNumber]]];
@@ -334,7 +328,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (itemAction == @selector(pauseResumeGame:))
 	{
 		// FIXME: can non-op players pause the game?
-		if ([gameController gameInProgress] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
+		if (([gameController gameplayState] != gameNotPlaying) && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
 			return YES;
 		
 		return NO;
@@ -612,10 +606,13 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	else if ([messageType isEqualToString:PauseMessage])
 	{
 		// Get pause state
-		BOOL paused = ([[tokens objectAtIndex:1] integerValue] == 1);
+		BOOL pauseGame = ([[tokens objectAtIndex:1] integerValue] == 1);
 		
 		// Pause or resume the game
-		[gameController setGamePaused:paused];
+		if (pauseGame && ([gameController gameplayState] == gamePlaying))
+			[gameController setGameplayState:gamePaused];
+		else if (!pauseGame && ([gameController gameplayState] == gamePaused))
+			[gameController setGameplayState:gamePlaying];
 	}
 	// Player left
 	else if ([messageType isEqualToString:PlayerLeftMessage])

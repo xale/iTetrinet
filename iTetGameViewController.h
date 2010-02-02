@@ -19,6 +19,14 @@
 @class iTetKeyNamePair;
 @class Queue;
 
+typedef enum
+{
+	gameNotPlaying,
+	gamePlaying,
+	gamePaused,
+	gameOver
+} iTetGameplayState;
+
 @interface iTetGameViewController : NSObject
 {
 	IBOutlet iTetAppController* appController;
@@ -42,14 +50,14 @@
 	// Action history view
 	IBOutlet NSTableView* actionListView;
 	
-	// Rules for game in progress (nil indicates no game in progress)
+	// Rules for game in progress
 	iTetGameRules* currentGameRules;
 	
 	// Timer for local player's falling block
 	NSTimer* blockTimer;
 	
-	// Pause/play state of current game
-	BOOL gamePaused;
+	// State of current game
+	iTetGameplayState gameplayState;
 	
 	// List of player actions (e.g., specials)
 	NSMutableArray* actionHistory;
@@ -89,7 +97,6 @@
 - (NSTimer*)fallTimer;
 
 @property (readwrite, retain) iTetGameRules* currentGameRules;
-@property (readonly) BOOL gameInProgress;
-@property (readwrite) BOOL gamePaused;
+@property (readwrite, assign) iTetGameplayState gameplayState;
 
 @end

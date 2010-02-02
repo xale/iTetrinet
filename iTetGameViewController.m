@@ -140,12 +140,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Create a new specials queue
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[[self currentGameRules] specialCapacity]]];
 	
-	// FIXME: anything else?
+	// Set the game state to "playing"
+	[self setGameplayState:gamePlaying];
 }
 
 - (void)endGame
 {
-	// FIXME: WRITEME: additional actions to stop game?
+	// Set the game state to "not playing"
+	[self setGameplayState:gameNotPlaying];
 	
 	// Invalidate the block timer
 	[blockTimer invalidate];
@@ -380,8 +382,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView
 {
-	// If there is no game in progress, or the game is paused, ignore
-	if (![self gameInProgress] || [self gamePaused])
+	// If the game is not in-play, ignore
+	if ([self gameplayState] != gamePlaying)
 		return;
 	
 	// Determine whether the pressed key is bound to a game action
@@ -674,17 +676,31 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 
 @synthesize currentGameRules;
 
-- (BOOL)gameInProgress
-{
-	return ([self currentGameRules] != nil);
-}
-
-- (void)setGamePaused:(BOOL)paused
-{
-	// FIXME: pause game in progress
+- (void)setGameplayState:(iTetGameplayState)newState
+{	
+	if ((gameplayState == gamePlaying) && (newState == gamePaused))
+	{
+		NSLog(@"DEBUG: game paused");
+		// FIXME: WRITEME: pause game
+	}
+	else if ((gameplayState == gamePaused) && (newState == gamePlaying))
+	{
+		NSLog(@"DEBUG: game unpaused");
+		// FIXME: WRITEME: unpause game
+	}
 	
-	gamePaused = paused;
+	[self willChangeValueForKey:@"gameplayState"];
+	gameplayState = newState;
+	[self didChangeValueForKey:@"gameplayState"];
 }
-@synthesize gamePaused;
+@synthesize gameplayState;
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"gameplayState"])
+		return NO;
+	
+	return [super automaticallyNotifiesObserversForKey:key];
+}
 
 @end
