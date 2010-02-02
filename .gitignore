@@ -2,7 +2,7 @@
 build/*
 *.pbxuser
 *.mode1v3
-iTetrinet.xcodeproj/alex_heinz.perspectivev3
+*.perspectivev3
 
 # old skool
 .svn
