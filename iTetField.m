@@ -598,6 +598,65 @@ abort:; // Unable to add more specials; bail
 	[self didChangeValueForKey:@"contents"];
 }
 
+- (void)explodeBlockBombs
+{
+	NSMutableArray* scatteredCells = [NSMutableArray array];
+	
+	[self willChangeValueForKey:@"contents"];
+	
+	// Scan the board for block bomb specials
+	NSInteger row, col;
+	char cell;
+	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			// If this cell is a block bomb, remove it, and the cells around it
+			if (contents[row][col] == blockBomb)
+			{
+				// Remove the block bomb
+				contents[row][col] = 0;
+				
+				// Check the surrounding cells
+				for (NSInteger rowOffset = -1; rowOffset <= 1; rowOffset++)
+				{
+					for (NSInteger colOffset = -1; colOffset <= 1; colOffset++)
+					{
+						// Check if this cell is off-field
+						if (((row + rowOffset) < 0) || ((row + rowOffset) >= ITET_FIELD_HEIGHT) ||
+						    ((col + colOffset) < 0) || ((col + colOffset) >= ITET_FIELD_WIDTH))
+							continue;
+						
+						// Get the contents of each (on-field) cell around the block bomb
+						cell = contents[row + rowOffset][col + colOffset];
+						
+						// Treat other block bomb cells as already empty
+						if (cell == blockBomb)
+							cell = 0;
+						// Clear all other cells
+						else
+							contents[row + rowOffset][col + colOffset] = 0;
+						
+						// Collect the cells, to be scattered around the field
+						[scatteredCells addObject:[NSNumber numberWithChar:cell]];
+					}
+				}
+			}
+		}
+	}
+	
+	// Scatter the collected cells around the field, keeping the top six rows clear
+	// note: this is GTetrinet's implemetation; some cells may overwrite others
+	for (NSNumber* cell in scatteredCells)
+	{
+		row = random() % (ITET_FIELD_HEIGHT - 6);
+		col = random() % ITET_FIELD_WIDTH;
+		contents[row][col] = [cell charValue];
+	}
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
 #pragma mark -
 #pragma mark Accessors
 

@@ -89,6 +89,9 @@ typedef enum
 // Randomly shifts all rows on the board 0-3 columns left or right
 - (void)randomShiftRows;
 
+// "Explodes" all block bomb specials on the field, scattering the cells around them
+- (void)explodeBlockBombs;
+
 // Shifts the specified row horizontally by the specified number of columns in the specified direction
 - (void)shiftRow:(NSInteger)row
 	  byAmount:(NSInteger)shiftAmount

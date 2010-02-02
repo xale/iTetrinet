@@ -375,7 +375,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// If the local player is the target, "explode" block bomb blocks
 			if (targetNum == localNum)
 			{
-				// FIXME: WRITEME: block bomb
+				[[LOCALPLAYER field] explodeBlockBombs];
 				
 				// Block bombs may (very rarely) complete lines; see note at "gravity"
 				[[LOCALPLAYER field] clearLines];
