@@ -305,37 +305,31 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	senderNum = [sender playerNumber];
 	
 	// Check if this action affects the local player
-	if ((targetNum != localNum) && (senderNum != localNum))
+	if ((targetNum != localNum) && ((senderNum != localNum) || (special != switchField)))
 		return;
 	
 	// Determine the action to take
 	switch (special)
 	{
 		case addLine:
-			// If the local player is the target, add a line to the field
-			if (targetNum == localNum)
-			{
-				[[LOCALPLAYER field] addLines:1];
-				// FIXME: test for game over
-			}
+			// Add a line to the field
+			[[LOCALPLAYER field] addLines:1];
+			// FIXME: test for game over
 			break;
 			
 		case clearLine:
-			// If the // If the local player is the target, remove the bottom line from the field
-			if (targetNum == localNum)
-				[[LOCALPLAYER field] clearBottomLine];
+			// Remove the bottom line from the field
+			[[LOCALPLAYER field] clearBottomLine];
 			break;
 			
 		case nukeField:
-			// If the local player is the target, clear the field
-			if (targetNum == localNum)
-				[LOCALPLAYER setField:[iTetField field]];
+			// Clear the field
+			[LOCALPLAYER setField:[iTetField field]];
 			break;
 			
 		case randomClear:
-			// If the local player is the target, clear random cells from the field
-			if (targetNum == localNum)
-				[[LOCALPLAYER field] clearRandomCells];
+			// Clear random cells from the field
+			[[LOCALPLAYER field] clearRandomCells];
 			break;
 			
 		case switchField:
@@ -348,38 +342,29 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case clearSpecials:
-			// If the local player is the target, clear all specials from the field
-			if (targetNum == localNum)
-				[[LOCALPLAYER field] removeAllSpecials];
+			// Clear all specials from the field
+			[[LOCALPLAYER field] removeAllSpecials];
 			break;
 			
 		case gravity:
-			// If the local player is the target, apply gravity to the field
-			if (targetNum == localNum)
-			{
-				[[LOCALPLAYER field] pullCellsDown];
-				
-				// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
-				[[LOCALPLAYER field] clearLines];
-			}
+			// Apply gravity to the field
+			[[LOCALPLAYER field] pullCellsDown];
+			
+			// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
+			[[LOCALPLAYER field] clearLines];
 			break;
 			
 		case quakeField:
-			// If the local player is the target, quake the field
-			if (targetNum == localNum)
-				[[LOCALPLAYER field] randomShiftRows];
-			
+			// "Quake" the field
+			[[LOCALPLAYER field] randomShiftRows];
 			break;
 			
 		case blockBomb:
-			// If the local player is the target, "explode" block bomb blocks
-			if (targetNum == localNum)
-			{
-				[[LOCALPLAYER field] explodeBlockBombs];
+			// "Explode" block bomb blocks
+			[[LOCALPLAYER field] explodeBlockBombs];
 				
-				// Block bombs may (very rarely) complete lines; see note at "gravity"
-				[[LOCALPLAYER field] clearLines];
-			}
+			// Block bombs may (very rarely) complete lines; see note at "gravity"
+			[[LOCALPLAYER field] clearLines];
 			break;
 			
 		default:
