@@ -224,6 +224,16 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	[prefsWindowController displayViewControllerAtIndex:tabNumber];
 }
 
+- (IBAction)switchToChatTab:(id)sender
+{
+	[tabView selectTabViewItemAtIndex:1];
+}
+
+- (IBAction)swtichToGameTab:(id)sender
+{
+	[tabView selectTabViewItemAtIndex:0];
+}
+
 #pragma mark -
 #pragma mark Modal Sheet Callbacks
 

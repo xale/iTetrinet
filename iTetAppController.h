@@ -22,6 +22,9 @@
 	// Window
 	IBOutlet NSWindow* window;
 	
+	// Main tab view
+	IBOutlet NSTabView* tabView;
+	
 	// View Controllers
 	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetGameViewController* gameController;
@@ -60,6 +63,8 @@
 - (IBAction)pauseResumeGame:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;
+- (IBAction)switchToChatTab:(id)sender;
+- (IBAction)swtichToGameTab:(id)sender;
 
 - (void)connectionOpened;
 - (void)connectionClosed;
