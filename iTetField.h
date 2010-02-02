@@ -17,6 +17,12 @@ typedef enum
 	obstructHoriz =	2
 } iTetObstructionState;
 
+typedef enum
+{
+	specialStyle,
+	classicStyle
+} iTetLineAddStyle;
+
 @class iTetBlock;
 
 @interface iTetField: NSObject <NSCopying>
@@ -72,7 +78,8 @@ typedef enum
 
 // Adds lines of garbage to the bottom of the field, pushing other lines up
 // Returns YES if the field overflows (player loses)
-- (BOOL)addLines:(NSInteger)count;
+- (BOOL)addLines:(NSInteger)count
+	     style:(iTetLineAddStyle)style;
 
 // Clears the bottom line of the field, shifting others down; does not collect specials
 - (void)clearBottomLine;

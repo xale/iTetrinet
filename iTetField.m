@@ -420,6 +420,7 @@ abort:; // Unable to add more specials; bail
 #pragma mark Specials
 
 - (BOOL)addLines:(NSInteger)linesToAdd
+	     style:(iTetLineAddStyle)style
 {
 	[self willChangeValueForKey:@"contents"];
 	
@@ -445,15 +446,25 @@ abort:; // Unable to add more specials; bail
 			memcpy(contents[row + 1], contents[row], sizeof(contents[row]));
 		}
 		
-		// Fill the bottom row randomly
-		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
-			contents[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
-		
-		// Choose a random column index
-		NSInteger emptyCol = random() % ITET_FIELD_WIDTH;
-		
-		// Ensure that at least one column index is empty
-		contents[0][emptyCol] = 0;
+		// Determine what style of line add to perform
+		if (style == classicStyle)
+		{
+			// Fill the bottom row completely
+			for (col = 0; col < ITET_FIELD_WIDTH; col++)
+				contents[0][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+			
+			// Clear a random cell in the row
+			contents[0][(random() % ITET_FIELD_WIDTH)] = 0;
+		}
+		else
+		{
+			// Fill the bottom row randomly
+			for (col = 0; col < ITET_FIELD_WIDTH; col++)
+				contents[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
+			
+			// Ensure that at least one column index is empty
+			contents[0][(random() % ITET_FIELD_WIDTH)] = 0;
+		}
 	}
 	
 	[self didChangeValueForKey:@"contents"];

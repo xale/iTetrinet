@@ -321,7 +321,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		case addLine:
 			// Add a line to the field
-			[[LOCALPLAYER field] addLines:1];
+			[[LOCALPLAYER field] addLines:1
+							style:specialStyle];
 			// FIXME: test for game over
 			break;
 			
@@ -578,7 +579,8 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	// If the local player is not the sender, add the lines
 	if ((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber]))
 	{
-		[[LOCALPLAYER field] addLines:numLines];
+		[[LOCALPLAYER field] addLines:numLines
+						style:classicStyle];
 		// FIXME: check for game over
 	}
 	
