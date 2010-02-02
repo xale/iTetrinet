@@ -373,6 +373,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Change the connection status label
 	[connectionStatusLabel setStringValue:@"Disconnected"];
 	
+	// Reset all toolbar and menu items
 	// Change the connection toolbar item
 	[connectionButton setLabel:@"Connect"];
 	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
@@ -380,6 +381,21 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Change the connection menu item
 	[connectionMenuItem setTitle:@"Connect to Server..."];
 	[connectionMenuItem setKeyEquivalent:@"o"];
+	
+	// Change the "end game" toolbar item
+	[gameButton setLabel:@"New Game"];
+	[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
+	
+	// Change the "new game" menu item
+	[gameMenuItem setTitle:@"New Game"];
+	[gameMenuItem setKeyEquivalent:@"n"];
+	
+	// Change the "resume" button back into pause button
+	[pauseButton setLabel:@"Pause Game"];
+	[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+	
+	// Change the menu item
+	[pauseMenuItem setTitle:@"Pause Game"];
 	
 	[chatController appendChatLine:@"* Connection Closed *"];
 }
@@ -754,9 +770,16 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		[gameButton setLabel:@"New Game"];
 		[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
 		
-		// Change the "new game" menu item
+		// Change the "end game" menu item
 		[gameMenuItem setTitle:@"New Game"];
 		[gameMenuItem setKeyEquivalent:@"n"];
+		
+		// Change the "resume" button back into pause button
+		[pauseButton setLabel:@"Pause Game"];
+		[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+		
+		// Change the menu item
+		[pauseMenuItem setTitle:@"Pause Game"];
 	}
 	else
 	{

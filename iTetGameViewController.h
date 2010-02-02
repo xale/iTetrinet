@@ -59,6 +59,10 @@ typedef enum
 	// State of current game
 	iTetGameplayState gameplayState;
 	
+	// Data stored when game is paused
+	NSTimeInterval timeUntilNextTimerFire;
+	NSString* lastTimerType;
+	
 	// List of player actions (e.g., specials)
 	NSMutableArray* actionHistory;
 }
@@ -69,7 +73,7 @@ typedef enum
 			   rules:(iTetGameRules*)rules;
 - (void)endGame;
 
-- (void)moveCurrentPieceDown;
+- (void)moveCurrentBlockDown;
 - (void)solidifyCurrentBlock;
 - (BOOL)checkForLinesCleared;
 - (void)moveNextBlockToField;

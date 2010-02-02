@@ -84,8 +84,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 {
 	[currentGameRules release];
 	[actionHistory release];
+	[lastTimerType release];
 	
-	// FIXME: ?
 	[blockTimer invalidate];
 	
 	[super dealloc];
@@ -151,6 +151,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Invalidate the block timer
 	[blockTimer invalidate];
+	blockTimer = nil;
+	
+	// Release the last timer type string
+	[lastTimerType release];
+	lastTimerType = nil;
 	
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
@@ -162,12 +167,16 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark -
 #pragma mark Gameplay Events
 
-- (void)moveCurrentPieceDown
+- (void)moveCurrentBlockDown
 {
 	// Attempt to move the block down
 	if ([[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]])
 	{
 		// If the block solidifies, add it to the field
+		// Invalidate the old block timer (may already be nil)
+		[blockTimer invalidate];
+		
+		// Add the block to the field
 		[self solidifyCurrentBlock];
 	}
 	// If the block hasn't solidified, check if we need a new fall timer
@@ -180,9 +189,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)solidifyCurrentBlock
 {
-	// Invalidate the old block timer (may be nil)
-	[blockTimer invalidate];
-	
 	// Solidify the block
 	[[LOCALPLAYER field] solidifyBlock:[LOCALPLAYER currentBlock]];
 	
@@ -420,7 +426,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			blockTimer = nil;
 			
 			// Move the piece down
-			[self moveCurrentPieceDown];
+			[self moveCurrentBlockDown];
 			
 			break;
 			
@@ -628,36 +634,49 @@ objectValueForTableColumn:(NSTableColumn*)column
 }
 
 #pragma mark -
-#pragma mark Accessors
+#pragma mark Timers
+
+NSString* const iTetNextBlockTimerType = @"nextBlock";
+NSString* const iTetBlockFallTimerType = @"blockFall";
 
 #define TETRINET_NEXT_BLOCK_DELAY	1.0
 
 - (NSTimer*)nextBlockTimer
-{
-	// Create an invocation
-	NSInvocation* i = [NSInvocation invocationWithMethodSignature:
-				 [self methodSignatureForSelector:@selector(moveNextBlockToField)]];
-	[i setTarget:self];
-	[i setSelector:@selector(moveNextBlockToField)];
-	
+{	
 	// Start the timer to spawn the next block
 	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
-							invocation:i
+							    target:self
+							  selector:@selector(timerFired:)
+							  userInfo:iTetNextBlockTimerType
 							   repeats:NO];
 }
 
 - (NSTimer*)fallTimer
-{
-	// Create an invocation
-	NSInvocation* i = [NSInvocation invocationWithMethodSignature:
-				 [self methodSignatureForSelector:@selector(moveCurrentPieceDown)]];
-	[i setTarget:self];
-	[i setSelector:@selector(moveCurrentPieceDown)];
-	
+{	
 	// Start the timer to move the block down
 	return [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
-							invocation:i
+							    target:self
+							  selector:@selector(timerFired:)
+							  userInfo:iTetBlockFallTimerType
 							   repeats:YES];
+}
+
+- (void)timerFired:(NSTimer*)timer
+{
+	NSString* timerType = [timer userInfo];
+	
+	if ([timerType isEqualToString:iTetNextBlockTimerType])
+	{
+		[self moveNextBlockToField];
+		return;
+	}
+	else if ([timerType isEqualToString:iTetBlockFallTimerType])
+	{
+		[self moveCurrentBlockDown];
+		return;
+	}
+	
+	NSLog(@"WARNING: invalid timer type in GameViewController timerFired:");
 }
 
 #define ITET_MAX_DELAY_TIME			(1.005)
@@ -674,6 +693,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	return time;
 }
 
+#pragma mark -
+#pragma mark Accessors
+
 @synthesize currentGameRules;
 
 - (void)setGameplayState:(iTetGameplayState)newState
@@ -681,12 +703,37 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	if ((gameplayState == gamePlaying) && (newState == gamePaused))
 	{
 		NSLog(@"DEBUG: game paused");
-		// FIXME: WRITEME: pause game
+		
+		// Record the time until next firing
+		timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
+		
+		// Record the type of timer
+		lastTimerType = [[blockTimer userInfo] retain];
+		
+		// Invalidate and nil the timer
+		[blockTimer invalidate];
+		blockTimer = nil;
 	}
 	else if ((gameplayState == gamePaused) && (newState == gamePlaying))
 	{
 		NSLog(@"DEBUG: game unpaused");
-		// FIXME: WRITEME: unpause game
+		
+		// Create a timer with a firing date calculated from the time recorded when the game was paused
+		BOOL timerRepeats = [lastTimerType isEqualToString:iTetBlockFallTimerType];
+		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
+								   interval:blockFallDelayForLevel([LOCALPLAYER level])
+								     target:self
+								   selector:@selector(timerFired:)
+								   userInfo:lastTimerType
+								    repeats:timerRepeats] autorelease];
+		
+		// Add the timer to the current run loop
+		[[NSRunLoop currentRunLoop] addTimer:blockTimer
+						     forMode:NSDefaultRunLoopMode];
+		
+		// Clear the last timer type
+		[lastTimerType release];
+		lastTimerType = nil;
 	}
 	
 	[self willChangeValueForKey:@"gameplayState"];
