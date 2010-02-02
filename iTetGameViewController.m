@@ -356,11 +356,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case gravity:
 			// If the local player is the target, apply gravity to the field
 			if (targetNum == localNum)
+			{
 				[[LOCALPLAYER field] pullCellsDown];
-			
-			// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
-			[[LOCALPLAYER field] clearLines];
-			
+				
+				// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
+				[[LOCALPLAYER field] clearLines];
+			}
 			break;
 			
 		case quakeField:
@@ -371,10 +372,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case blockBomb:
-			// If the local player is the target, use block bomb
-			if (targetNum == localNum);
-				// FIXME: WRITEME: clear specials
-			
+			// If the local player is the target, "explode" block bomb blocks
+			if (targetNum == localNum)
+			{
+				// FIXME: WRITEME: block bomb
+				
+				// Block bombs may (very rarely) complete lines; see note at "gravity"
+				[[LOCALPLAYER field] clearLines];
+			}
 			break;
 			
 		default:
@@ -397,9 +402,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Determine whether the pressed key is bound to a game action
 	NSMutableDictionary* keyConfig = [[iTetPreferencesController preferencesController] currentKeyConfiguration];
 	iTetGameAction action = [keyConfig actionForKey:key];
+	iTetPlayer* targetPlayer = nil;
 	
 	// Perform the relevant action
-	iTetPlayer* targetPlayer;
 	switch (action)
 	{
 		case movePieceLeft:
@@ -451,80 +456,45 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case selfSpecial:
-			// If the local player has specials, use one
-			if ([[LOCALPLAYER specialsQueue] count] > 0)
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:LOCALPLAYER];
-			}
+			// Send special to self
+			targetPlayer = LOCALPLAYER;
 			break;
 			
+		// Attempt to send special to the player in the specified slot
 		case specialPlayer1:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:1];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
-			
 		case specialPlayer2:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:2];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
-			
 		case specialPlayer3:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:3];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
-			
 		case specialPlayer4:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:4];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
-			
 		case specialPlayer5:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:5];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
-			
 		case specialPlayer6:
-			// If there is a player in the target slot, and the local player has specials, use one
 			targetPlayer = [appController playerNumber:6];
-			if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
-			{
-				[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-					   toPlayer:targetPlayer];
-			}
 			break;
 			
 		case gameChat:
 			// FIXME: WRITEME: 'game chat' key
 			break;
+			
+		default:
+			// Unrecognized key
+			break;
 	}
 	
-	// Not a recognized key; fall through
+	// If we have a target and a special to send, send the special
+	if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+	{
+		[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
+			   toPlayer:targetPlayer];
+	}
 }
 
 #pragma mark -
