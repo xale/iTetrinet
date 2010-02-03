@@ -404,9 +404,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[connectionMenuItem setTitle:@"Disconnect from Server"];
 	[connectionMenuItem setKeyEquivalent:@"w"];
 	
-	// Clear the chat view
+	// Clear the chat views
 	[chatController clearChat];
 	[chatController appendChatLine:@"* Connection Opened *"];
+	[gameController clearChat];
 }
 
 - (void)connectionClosed
@@ -766,9 +767,26 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Game Chat Message
 	else if ([messageType isEqualToString:GameChatMessage])
 	{
-		message = [tokens componentsJoinedByString:@" "];
+		// Check if the second token is a player's nickname
+		NSString* firstWord = [tokens objectAtIndex:1];
+		for (id player in players)
+		{
+			if ([player isKindOfClass:[iTetPlayer class]] && ([firstWord rangeOfString:[player nickname]].location != NSNotFound))
+			{
+				// Compose the message from the remaining tokens
+				message = [[tokens subarrayWithRange:NSMakeRange(2, [tokens count] - 2)] componentsJoinedByString:@" "];
+				
+				// Add the message to the game chat view
+				[gameController appendChatLine:message
+						    fromPlayerName:[player nickname]];
+				
+				return;
+			}
+		}
 		
-		// FIXME: WRITEME: game chat message recieved
+		// Otherwise, just dump the message on the game chat view
+		message = [[tokens subarrayWithRange:NSMakeRange(1, [tokens count] - 1)] componentsJoinedByString:@" "];
+		[gameController appendChatLine:message];
 	}
 #pragma mark Level Update Message
 	else if ([messageType isEqualToString:LevelUpdateMessage])

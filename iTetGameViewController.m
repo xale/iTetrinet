@@ -78,6 +78,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			  toObject:appController
 		     withKeyPath:@"remotePlayer5.field"
 			   options:nil];
+	
+	// Clear the chat text
+	[self clearChat];
 }
 
 - (void)dealloc
@@ -92,11 +95,47 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 }
 
 #pragma mark -
-#pragma mark Interface Actions
+#pragma mark Chat Actions
+
+// Game messages are sent GTetrinet-style: nickname wrapped in angle-brackets
+NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 
 - (IBAction)sendMessage:(id)sender
 {
-	// FIXME: WRITEME
+	// FIXME: formatting
+	NSString* message = [messageField stringValue];
+	
+	// Check that there is a message to send
+	if ([message length] == 0)
+		return;
+	
+	// Send the message to the server
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetGameChatMessageFormat, [LOCALPLAYER nickname], message]];
+	
+	// Do not add the message to our chat view; the server will echo it back to us
+	
+	// Clear the message field
+	[messageField setStringValue:@""];
+}
+
+- (void)appendChatLine:(NSString*)line
+	  fromPlayerName:(NSString*)playerName
+{
+	[self appendChatLine:[NSString stringWithFormat:@"%@: %@", playerName, line]];
+}
+
+- (void)appendChatLine:(NSString*)line
+{
+	[chatView replaceCharactersInRange:NSMakeRange([[chatView textStorage] length], 0)
+					withString:[NSString stringWithFormat:@"%@%C",
+							line, NSLineSeparatorCharacter]];
+	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
+}
+
+- (void)clearChat
+{
+	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
+					withString:@""];
 }
 
 #pragma mark -
@@ -121,27 +160,27 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[player setLevel:[rules startingLevel]];
 	}
 	
-	// If there is a starting stack, give the local player a board with garbage
+	// If there is a starting stack, give the local player a field with garbage
 	if ([rules initialStackHeight] > 0)
 	{
-		// Create the board
+		// Create the field
 		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules initialStackHeight]]];
 		
-		// Send the board to the server
+		// Send the field to the server
 		[self sendFieldstring];
 	}
 	
 	// Create the first block to add to the field
 	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
 	
-	// Reset the local player's cleared lines
-	[LOCALPLAYER resetLinesCleared];
-	
 	// Move the block to the field
 	[self moveNextBlockToField];
 	
 	// Create a new specials queue for the local player
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[[self currentGameRules] specialCapacity]]];
+	
+	// Reset the local player's cleared lines
+	[LOCALPLAYER resetLinesCleared];
 	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
@@ -225,7 +264,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (BOOL)checkForLinesCleared
 {
-	// Attempt to clear lines on the board
+	// Attempt to clear lines on the field
 	BOOL linesCleared = NO;
 	NSMutableArray* specials = [NSMutableArray array];
 	NSUInteger numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
@@ -415,7 +454,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self sendFieldstring];
 }
 
-#pragma mark iTetLocalBoardView Event Delegate Methods
+#pragma mark iTetLocalFieldView Event Delegate Methods
 
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView

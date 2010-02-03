@@ -68,6 +68,10 @@ typedef enum
 }
 
 - (IBAction)sendMessage:(id)sender;
+- (void)appendChatLine:(NSString*)line
+	  fromPlayerName:(NSString*)playerName;
+- (void)appendChatLine:(NSString*)line;
+- (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
