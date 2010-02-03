@@ -288,8 +288,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		return;
 	
 	// Send the server an "end game" message
-	[networkController sendMessage:
-	 [NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
+	[networkController sendMessage:[NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
 }
 
 - (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert

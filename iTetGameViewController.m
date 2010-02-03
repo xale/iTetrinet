@@ -516,7 +516,8 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			
 		case discardSpecial:
 			// Drop the first special from the local player's queue
-			[LOCALPLAYER dequeueNextSpecial];
+			if ([[LOCALPLAYER specialsQueue] count] > 0)
+				[LOCALPLAYER dequeueNextSpecial];
 			break;
 			
 		case selfSpecial:
