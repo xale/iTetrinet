@@ -134,10 +134,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Create the first block to add to the field
 	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
 	
+	// Reset the local player's cleared lines
+	[LOCALPLAYER resetLinesCleared];
+	
 	// Move the block to the field
 	[self moveNextBlockToField];
 	
-	// Create a new specials queue
+	// Create a new specials queue for the local player
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[[self currentGameRules] specialCapacity]]];
 	
 	// Set the game state to "playing"
@@ -243,6 +246,34 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 			// Add to player's queue
 			[LOCALPLAYER addSpecialToQueue:special];
+		}
+		
+		// Check whether to send lines to other players
+		if ([currentGameRules classicRules])
+		{
+			// Determine how many lines to send
+			NSInteger linesToSend = 0;
+			switch (numLines)
+			{
+				// For two lines cleared, send one line
+				case 2:
+					linesToSend = 1;
+					break;
+				// For three lines cleared, send two lines
+				case 3:
+					linesToSend = 2;
+					break;
+				// For four lines cleared, send four lines
+				case 4:
+					linesToSend = 4;
+					break;
+				// For one line, send nothing
+				default:
+					break;
+			}
+			// Send the lines
+			if (linesToSend > 0)
+				[self sendLines:linesToSend];
 		}
 		
 		// Check for level updates
@@ -524,10 +555,22 @@ NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 	// Send a message to the server
 	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
 	
-	// Record and perform the action
+	// Perform and record the action
 	[self specialUsed:special
 		   byPlayer:LOCALPLAYER
 		   onPlayer:target];
+}
+
+NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
+
+- (void)sendLines:(NSInteger)lines
+{	
+	// Send the message to the server
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendLinesMessageFormat, lines, [LOCALPLAYER playerNumber]]];
+	
+	// Perform and record the action
+	[self linesAdded:lines
+		  byPlayer:LOCALPLAYER];
 }
 
 #pragma mark -

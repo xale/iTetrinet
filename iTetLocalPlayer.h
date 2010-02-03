@@ -24,6 +24,7 @@
 }
 
 - (void)addLines:(NSInteger)lines;
+- (void)resetLinesCleared;
 - (void)addSpecialToQueue:(NSNumber*)special;
 - (iTetSpecialType)dequeueNextSpecial;
 

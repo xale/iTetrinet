@@ -87,7 +87,8 @@ typedef enum
 - (void)sendPartialFieldstring;
 - (void)sendCurrentLevel;
 - (void)sendSpecial:(iTetSpecialType)special
-	     toPlayer:(iTetPlayer*)player;
+	     toPlayer:(iTetPlayer*)target;
+- (void)sendLines:(NSInteger)lines;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender

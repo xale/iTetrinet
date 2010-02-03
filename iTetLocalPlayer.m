@@ -23,12 +23,27 @@
 #pragma mark -
 #pragma mark Accessors
 
+#pragma mark Lines
+
 - (void)addLines:(NSInteger)lines
 {
 	[self setLinesCleared:([self linesCleared] + lines)];
 	[self setLinesSinceLastLevel:([self linesSinceLastLevel] + lines)];
 	[self setLinesSinceLastSpecials:([self linesSinceLastSpecials] + lines)];
 }
+
+- (void)resetLinesCleared
+{
+	[self setLinesCleared:0];
+	[self setLinesSinceLastLevel:0];
+	[self setLinesSinceLastSpecials:0];
+}
+
+@synthesize linesCleared;
+@synthesize linesSinceLastLevel;
+@synthesize linesSinceLastSpecials;
+
+#pragma mark Specials
 
 - (void)addSpecialToQueue:(NSNumber*)special
 {
@@ -61,9 +76,6 @@
 	return special;
 }
 
-@synthesize currentBlock;
-@synthesize nextBlock;
-
 - (void)setSpecialsQueue:(NSMutableArray*)specials
 {
 	// The specialsQueue key uses manual KVO notifications, so we have to implement this ourselves
@@ -87,9 +99,10 @@
 	return [[self specialsQueue] lastObject];
 }
 
-@synthesize linesCleared;
-@synthesize linesSinceLastLevel;
-@synthesize linesSinceLastSpecials;
+#pragma mark Blocks
+
+@synthesize currentBlock;
+@synthesize nextBlock;
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
