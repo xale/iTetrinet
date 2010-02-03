@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="501"/>
+			<integer value="451"/>
 			<integer value="575"/>
 			<integer value="29"/>
 		</object>
@@ -821,7 +821,7 @@
 			<object class="NSWindowTemplate" id="1048072440">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{335, 37}, {824, 713}}</string>
+				<string key="NSWindowRect">{{311, 165}, {824, 713}}</string>
 				<int key="NSWTFlags">1946158080</int>
 				<string key="NSWindowTitle">iTetrinet</string>
 				<string key="NSWindowClass">NSWindow</string>
@@ -6684,9 +6684,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{115, 87}, {824, 713}}</string>
+					<string>{{243, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{115, 87}, {824, 713}}</string>
+					<string>{{243, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
