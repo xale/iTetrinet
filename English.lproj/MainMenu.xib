@@ -821,8 +821,8 @@
 			<object class="NSWindowTemplate" id="1048072440">
 				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{311, 165}, {824, 713}}</string>
-				<int key="NSWTFlags">1946158080</int>
+				<string key="NSWindowRect">{{299, 165}, {824, 713}}</string>
+				<int key="NSWTFlags">1948255232</int>
 				<string key="NSWindowTitle">iTetrinet</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<object class="NSToolbar" key="NSViewClass" id="889693687">
