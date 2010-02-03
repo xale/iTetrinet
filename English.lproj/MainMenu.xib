@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="457"/>
 			<integer value="575"/>
-			<integer value="453"/>
-			<integer value="24"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1032,7 +1032,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">2</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1992,7 +1992,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2001,7 +2000,7 @@
 								<object class="NSTabViewItem" id="886642519">
 									<string key="NSIdentifier">1</string>
 									<object class="NSView" key="NSView" id="88341571">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2624,20 +2623,21 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Chat</string>
 									<reference key="NSColor" ref="751214572"/>
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="210918728"/>
+							<reference key="NSSelectedTabViewItem" ref="886642519"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="1052209441"/>
+								<reference ref="88341571"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -4586,11 +4586,11 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
-						<string key="label">swtichToGameTab:</string>
+						<string key="label">switchToGameTab:</string>
 						<reference key="source" ref="742664187"/>
 						<reference key="destination" ref="868311026"/>
 					</object>
-					<int key="connectionID">1051</int>
+					<int key="connectionID">1052</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -6624,11 +6624,11 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{621, 502}, {194, 123}}</string>
+					<string>{{667, 432}, {194, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{361, 625}, {392, 20}}</string>
+					<string>{{407, 555}, {392, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -6882,7 +6882,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1051</int>
+			<int key="maxID">1052</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -6899,7 +6899,7 @@
 							<string>showPreferences:</string>
 							<string>startStopGame:</string>
 							<string>switchToChatTab:</string>
-							<string>swtichToGameTab:</string>
+							<string>switchToGameTab:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>

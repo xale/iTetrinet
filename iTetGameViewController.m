@@ -519,15 +519,15 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
 - (void)sendSpecial:(iTetSpecialType)special
-	     toPlayer:(iTetPlayer*)player
+	     toPlayer:(iTetPlayer*)target
 {	
 	// Send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [player playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
 	
 	// Record and perform the action
 	[self specialUsed:special
 		   byPlayer:LOCALPLAYER
-		   onPlayer:player];
+		   onPlayer:target];
 }
 
 #pragma mark -

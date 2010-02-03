@@ -19,7 +19,7 @@
 
 @interface iTetAppController : NSObject <NSUserInterfaceValidations>
 {
-	// Window
+	// Main window
 	IBOutlet NSWindow* window;
 	
 	// Main tab view
@@ -64,7 +64,7 @@
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;
 - (IBAction)switchToChatTab:(id)sender;
-- (IBAction)swtichToGameTab:(id)sender;
+- (IBAction)switchToGameTab:(id)sender;
 
 - (void)connectionOpened;
 - (void)connectionClosed;
