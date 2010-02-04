@@ -15,9 +15,7 @@
 {
 	// Create an NSImage to draw to
 	NSSize cellSize = [theme cellSize];
-	NSImage* image = [[NSImage alloc] initWithSize:
-				NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH),
-					     (cellSize.height * ITET_BLOCK_HEIGHT))];
+	NSImage* image = [[NSImage alloc] initWithSize:NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH), (cellSize.height * ITET_BLOCK_HEIGHT))];
 	
 	// Prepare the image for drawing
 	[image lockFocus];
@@ -31,7 +29,7 @@
 		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
 			cellType = [self cellAtRow:row column:col];
-			if (cellType)
+			if (cellType > 0)
 			{
 				cellImage = [theme imageForCellType:cellType];
 				[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
