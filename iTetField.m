@@ -10,9 +10,10 @@
 #import "iTetSpecials.h"
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
-// (conveniently, this function is its own inverse)
+// (conveniently, the row function is its own inverse)
 #define ITET_CONVERT_ROW(coord)	(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3')
-#define ITET_CONVERT_COL(coord)	(((ITET_FIELD_WIDTH - 1) - (coord)) + '3')
+#define ITET_PARTIAL_TO_COL(coord)	((coord) - '3')
+#define ITET_COL_TO_PARTIAL(coord)	((coord) + '3')
 // ...and the cell contents are mapped to different characters
 char cellToPartialUpdateChar(char cellType);
 char partialUpdateCharToCell(char updateChar);
@@ -218,7 +219,7 @@ char partialUpdateCharToCell(char updateChar);
 					
 				// Add the changed cell's coordinates to the update string
 				rowCoord = ITET_CONVERT_ROW([block rowPos] + row);
-				colCoord = ITET_CONVERT_COL([block colPos] + col);
+				colCoord = ITET_COL_TO_PARTIAL([block colPos] + col);
 				[update appendFormat:@"%c%c", colCoord, rowCoord];
 			}
 		}
@@ -308,7 +309,7 @@ char partialUpdateCharToCell(char updateChar);
 		else
 		{
 			// Convert to our coordinate system
-			col = ITET_CONVERT_COL(currentChar);
+			col = ITET_PARTIAL_TO_COL(currentChar);
 			row = ITET_CONVERT_ROW(update[i+1]);
 			
 			// Change the cell on the field at the specified coordinates
