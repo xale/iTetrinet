@@ -14,6 +14,7 @@
 	NSInteger playerNumber;
 	NSString* teamName;
 	
+	BOOL playing;
 	iTetField* field;
 	NSInteger level;
 }
@@ -36,6 +37,7 @@
 @property (readwrite, copy) NSString* nickname;
 @property (readwrite, assign) NSInteger playerNumber;
 @property (readwrite, copy) NSString* teamName;
+@property (readwrite, assign, getter=isPlaying) BOOL playing;
 @property (readwrite, retain) iTetField* field;
 @property (readwrite, assign) NSInteger level;
 

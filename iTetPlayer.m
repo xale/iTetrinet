@@ -69,6 +69,7 @@
 @synthesize nickname;
 @synthesize playerNumber;
 @synthesize teamName;
+@synthesize playing;
 @synthesize field;
 @synthesize level;
 
