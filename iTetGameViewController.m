@@ -414,18 +414,24 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 
 - (void)moveNextBlockToField
 {
+	iTetBlock* block = [LOCALPLAYER nextBlock];
+	
 	// Set the block's position to the top of the field
-	[[LOCALPLAYER nextBlock] setRowPos:
-	 (ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [[LOCALPLAYER nextBlock] initialRowOffset]];
+	[block setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [block initialRowOffset]];
 	
 	// Center the block
-	[[LOCALPLAYER nextBlock] setColPos:
-	 ((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [[LOCALPLAYER nextBlock] initialColumnOffset]];
+	[block setColPos:((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [block initialColumnOffset]];
 	
-	// Transfer the next block to the field
-	[LOCALPLAYER setCurrentBlock:[LOCALPLAYER nextBlock]];
+	// Check if the block can be moved to the field
+	if ([[LOCALPLAYER field] blockObstructed:block])
+	{
+		// Player has lost
+		[self playerLost];
+		return;
+	}
 	
-	// FIXME: test if there is anything in the way of the block
+	// Transfer the block to the field
+	[LOCALPLAYER setCurrentBlock:block];
 	
 	// Generate a new next block
 	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
@@ -453,10 +459,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	switch (special)
 	{
 		case addLine:
-			// Add a line to the field
-			[[LOCALPLAYER field] addLines:1
-							style:specialStyle];
-			// FIXME: test for game over
+			// Add a line to the field, check for field overflow
+			if ([[LOCALPLAYER field] addLines:1 style:specialStyle])
+				[self playerLost];
 			break;
 			
 		case clearLine:
@@ -481,6 +486,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			// If the local player is the sender, get the target's field
 			else if (senderNum == localNum)
 				[LOCALPLAYER setField:[target field]];
+			
+			// FIXME: safety check?
+			
 			break;
 			
 		case clearSpecials:
@@ -751,10 +759,12 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	// If the local player is playing, and is not the sender, add the lines
 	if (((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber])) && [LOCALPLAYER isPlaying])
 	{
-		[[LOCALPLAYER field] addLines:numLines
-						style:classicStyle];
+		// Add lines, and check for field overflow
+		if ([[LOCALPLAYER field] addLines:numLines style:classicStyle])
+			[self playerLost];
 		
-		// FIXME: check for game over
+		// Send field to server
+		[self sendFieldstring];
 	}
 	
 	// Create a description
