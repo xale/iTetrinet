@@ -267,7 +267,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	// Attempt to clear lines on the field
 	BOOL linesCleared = NO;
 	NSMutableArray* specials = [NSMutableArray array];
-	NSUInteger numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
+	NSInteger numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
 	while (numLines > 0)
 	{
 		// Make a note that some lines were cleared
@@ -276,16 +276,22 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		// Add the lines to the player's counts
 		[LOCALPLAYER addLines:numLines];
 		
-		// Add any specials retrieved to the local player's queue
-		for (NSNumber* special in specials)
+		// For each line cleared, add a copy of each special in the cleared lines to the player's queue
+		for (NSInteger specialsAdded = 0; specialsAdded < numLines; specialsAdded++)
 		{
-			// Check if there is space in the queue
-			if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
-				break;
-			
-			// Add to player's queue
-			[LOCALPLAYER addSpecialToQueue:special];
+			// Add a copy of each special for each line cleared
+			for (NSNumber* special in specials)
+			{
+				// Check if there is space in the queue
+				if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
+					goto specialsfull;
+				
+				// Add to player's queue
+				[LOCALPLAYER addSpecialToQueue:special];
+			}
 		}
+		
+	specialsfull:
 		
 		// Check whether to send lines to other players
 		if ([currentGameRules classicRules])
