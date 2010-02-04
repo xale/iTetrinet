@@ -59,6 +59,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		    toObject:appController
 		 withKeyPath:@"localPlayer.specialsQueue"
 		     options:nil];
+	[specialsView bind:@"capacity"
+		    toObject:self
+		 withKeyPath:@"currentGameRules.specialCapacity"
+		     options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
+								     forKey:NSNullPlaceholderBindingOption]];
 	
 	// Remote field views
 	[remoteFieldView1 bind:@"field"

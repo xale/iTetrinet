@@ -13,6 +13,7 @@
 + (void)initialize
 {
 	[self exposeBinding:@"specials"];
+	[self exposeBinding:@"capacity"];
 }
 
 - (void)dealloc
@@ -29,9 +30,26 @@
 
 - (void)drawRect:(NSRect)rect
 {
-	// Fill the background
+	// Fill the background with white
 	[[NSColor whiteColor] setFill];
-	[NSBezierPath fillRect:[self bounds]];
+	
+	// Start with the full size of the view
+	NSRect boundsRect = [self bounds];
+	CGFloat width;
+	
+	// If a specials capacity has been set, resize the background to indicate it
+	if ([self capacity] > 0)
+	{
+		// Calculate the width of the resized background
+		width = (boundsRect.size.height * [self capacity]);
+		
+		// Check that the resized background fits on the view
+		if (width < [self bounds].size.width)
+			boundsRect.size.width = width;
+	}
+	
+	// Fill the background
+	[NSBezierPath fillRect:boundsRect];
 	
 	// If we have specials to draw, scale the graphics context and draw them
 	if ((specials != nil) && ([specials count] > 0))
@@ -42,7 +60,7 @@
 		
 		// Create a scale transform from the cell height to the height of the view
 		NSAffineTransform* scaleTransform = [NSAffineTransform transform];
-		[scaleTransform scaleBy:([[self theme] cellSize].height / [self bounds].size.height)];
+		[scaleTransform scaleBy:([self bounds].size.height / [[self theme] cellSize].height)];
 		
 		// Apply the transform to the graphics context
 		[scaleTransform concat];
@@ -89,7 +107,7 @@
 
 - (BOOL)isOpaque
 {
-	return YES;
+	return NO;
 }
 
 - (void)setSpecials:(NSArray*)newSpecials
@@ -102,5 +120,23 @@
 	[self setNeedsDisplay:YES];
 }
 @synthesize specials;
+
+- (void)setCapacity:(NSInteger)newCapacity
+{
+	[self willChangeValueForKey:@"capacity"];
+	capacity = newCapacity;
+	[self didChangeValueForKey:@"capacity"];
+	
+	[self setNeedsDisplay:YES];
+}
+@synthesize capacity;
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"specials"] || [key isEqualToString:@"capacity"])
+		return NO;
+	
+	return [super automaticallyNotifiesObserversForKey:key];
+}
 
 @end
