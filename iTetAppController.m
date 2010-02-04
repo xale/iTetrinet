@@ -174,7 +174,6 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 	}
 }
 
-// FIXME: not sure about these:
 NSString* const PauseGameFormat =	@"pause 1 %d";
 NSString* const ResumeGameFormat =	@"pause 0 %d";
 
@@ -563,7 +562,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Winlist Message
 	else if ([messageType isEqualToString:WinlistMessage])
 	{
-		// FIXME: WRITEME: Winlist parsing
+		// FIXME: WRITEME: winlist
 	}
 #pragma mark Player Number Message
 	else if ([messageType isEqualToString:PlayerNumMessage])
