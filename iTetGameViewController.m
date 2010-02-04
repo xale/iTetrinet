@@ -21,6 +21,9 @@
 #define LOCALPLAYER			[appController localPlayer]
 #define NETCONTROLLER			[appController networkController]
 
+NSString* const iTetNextBlockTimerType = @"nextBlock";
+NSString* const iTetBlockFallTimerType = @"blockFall";
+
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 @implementation iTetGameViewController
@@ -153,6 +156,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	// Set up the players' fields
 	for (iTetPlayer* player in players)
 	{
+		// Set the player's "playing" status
+		[player setPlaying:YES];
+		
 		// Give the player a blank field
 		[player setField:[iTetField field]];
 		
@@ -186,10 +192,61 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	[self setGameplayState:gamePlaying];
 }
 
+- (void)pauseGame
+{
+	// Pause the game
+	[self setGameplayState:gamePaused];
+	
+	// If the local player is still in the game, record the time until the next timer fires
+	if ([LOCALPLAYER isPlaying])
+	{
+		// Record the time until next firing
+		timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
+		
+		// Record the type of timer
+		lastTimerType = [[blockTimer userInfo] retain];
+		
+		// Invalidate and nil the timer
+		[blockTimer invalidate];
+		blockTimer = nil;
+	}
+}
+
+- (void)resumeGame
+{
+	// Resume the game
+	[self setGameplayState:gamePlaying];
+	
+	// If the local player is in the game, re-create the block timer
+	if ([LOCALPLAYER isPlaying])
+	{
+		// Create a timer with a firing date calculated from the time recorded when the game was paused
+		BOOL timerRepeats = [lastTimerType isEqualToString:iTetBlockFallTimerType];
+		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
+								   interval:blockFallDelayForLevel([LOCALPLAYER level])
+								     target:self
+								   selector:@selector(timerFired:)
+								   userInfo:lastTimerType
+								    repeats:timerRepeats] autorelease];
+		
+		// Add the timer to the current run loop
+		[[NSRunLoop currentRunLoop] addTimer:blockTimer
+						     forMode:NSDefaultRunLoopMode];
+		
+		// Clear the last timer type
+		[lastTimerType release];
+		lastTimerType = nil;
+	}
+}
+
 - (void)endGame
 {
 	// Set the game state to "not playing"
 	[self setGameplayState:gameNotPlaying];
+	
+	// Set all players to "not playing"
+	for (iTetPlayer* player in [appController playerList])
+		[player setPlaying:NO];
 	
 	// Invalidate the block timer
 	[blockTimer invalidate];
@@ -460,13 +517,31 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	[self sendFieldstring];
 }
 
+- (void)playerLost
+{
+	// Set the local player's status to "not playing"
+	[LOCALPLAYER setPlaying:NO];
+	
+	// Clear the falling block
+	[LOCALPLAYER setCurrentBlock:nil];
+	
+	// Clear the block timer
+	[blockTimer invalidate];
+	blockTimer = nil;
+	
+	//FIXME: WRITEME: more?
+	
+	// Send a message to the server
+	[self sendPlayerLostMessage];
+}
+
 #pragma mark iTetLocalFieldView Event Delegate Methods
 
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView
 {
-	// If the game is not in-play, ignore
-	if ([self gameplayState] != gamePlaying)
+	// If the game is not in-play, or the local player has lost, ignore
+	if (([self gameplayState] != gamePlaying) || ![LOCALPLAYER isPlaying])
 		return;
 	
 	// Determine whether the pressed key is bound to a game action
@@ -561,7 +636,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	}
 	
 	// If we have a target and a special to send, send the special
-	if ((targetPlayer != nil) && ([[LOCALPLAYER specialsQueue] count] > 0))
+	if ((targetPlayer != nil) && [targetPlayer isPlaying] && ([[LOCALPLAYER specialsQueue] count] > 0))
 	{
 		[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 			   toPlayer:targetPlayer];
@@ -619,6 +694,14 @@ NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
 		  byPlayer:LOCALPLAYER];
 }
 
+NSString* const iTetPlayerLostMessageFormat = @"playerlost %d";
+
+- (void)sendPlayerLostMessage
+{
+	// Send the message to the server
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetPlayerLostMessageFormat, [LOCALPLAYER playerNumber]]];
+}
+
 #pragma mark -
 #pragma mark Server-to-Client Events
 
@@ -665,11 +748,12 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 - (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender
 {
-	// If the local player is not the sender, add the lines
-	if ((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber]))
+	// If the local player is playing, and is not the sender, add the lines
+	if (((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber])) && [LOCALPLAYER isPlaying])
 	{
 		[[LOCALPLAYER field] addLines:numLines
 						style:classicStyle];
+		
 		// FIXME: check for game over
 	}
 	
@@ -726,9 +810,6 @@ objectValueForTableColumn:(NSTableColumn*)column
 
 #pragma mark -
 #pragma mark Timers
-
-NSString* const iTetNextBlockTimerType = @"nextBlock";
-NSString* const iTetBlockFallTimerType = @"blockFall";
 
 #define TETRINET_NEXT_BLOCK_DELAY	1.0
 
@@ -788,57 +869,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 #pragma mark Accessors
 
 @synthesize currentGameRules;
-
-- (void)setGameplayState:(iTetGameplayState)newState
-{	
-	if ((gameplayState == gamePlaying) && (newState == gamePaused))
-	{
-		NSLog(@"DEBUG: game paused");
-		
-		// Record the time until next firing
-		timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
-		
-		// Record the type of timer
-		lastTimerType = [[blockTimer userInfo] retain];
-		
-		// Invalidate and nil the timer
-		[blockTimer invalidate];
-		blockTimer = nil;
-	}
-	else if ((gameplayState == gamePaused) && (newState == gamePlaying))
-	{
-		NSLog(@"DEBUG: game unpaused");
-		
-		// Create a timer with a firing date calculated from the time recorded when the game was paused
-		BOOL timerRepeats = [lastTimerType isEqualToString:iTetBlockFallTimerType];
-		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
-								   interval:blockFallDelayForLevel([LOCALPLAYER level])
-								     target:self
-								   selector:@selector(timerFired:)
-								   userInfo:lastTimerType
-								    repeats:timerRepeats] autorelease];
-		
-		// Add the timer to the current run loop
-		[[NSRunLoop currentRunLoop] addTimer:blockTimer
-						     forMode:NSDefaultRunLoopMode];
-		
-		// Clear the last timer type
-		[lastTimerType release];
-		lastTimerType = nil;
-	}
-	
-	[self willChangeValueForKey:@"gameplayState"];
-	gameplayState = newState;
-	[self didChangeValueForKey:@"gameplayState"];
-}
 @synthesize gameplayState;
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
-{
-	if ([key isEqualToString:@"gameplayState"])
-		return NO;
-	
-	return [super automaticallyNotifiesObserversForKey:key];
-}
 
 @end

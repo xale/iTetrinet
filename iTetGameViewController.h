@@ -23,8 +23,7 @@ typedef enum
 {
 	gameNotPlaying,
 	gamePlaying,
-	gamePaused,
-	gameOver
+	gamePaused
 } iTetGameplayState;
 
 @interface iTetGameViewController : NSObject
@@ -75,6 +74,8 @@ typedef enum
 
 - (void)newGameWithPlayers:(NSArray*)players
 			   rules:(iTetGameRules*)rules;
+- (void)pauseGame;
+- (void)resumeGame;
 - (void)endGame;
 
 - (void)moveCurrentBlockDown;
@@ -84,6 +85,8 @@ typedef enum
 - (void)useSpecial:(iTetSpecialType)special
 	    onTarget:(iTetPlayer*)target
 	  fromSender:(iTetPlayer*)sender;
+- (void)playerLost;
+
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
@@ -93,6 +96,7 @@ typedef enum
 - (void)sendSpecial:(iTetSpecialType)special
 	     toPlayer:(iTetPlayer*)target;
 - (void)sendLines:(NSInteger)lines;
+- (void)sendPlayerLostMessage;
 
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender

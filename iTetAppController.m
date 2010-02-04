@@ -72,8 +72,8 @@
 	// If there is already a connection open, disconnect
 	if ([networkController connected])
 	{
-		// If there is a game in progress, ask the user before disconnecting
-		if ([gameController gameplayState] != gameNotPlaying)
+		// If local player is playing a game, ask the user before disconnecting
+		if ([localPlayer isPlaying])
 		{
 			// Create an alert
 			NSAlert* alert = [[[NSAlert alloc] init] autorelease];
@@ -184,28 +184,12 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	if ([gameController gameplayState] == gamePaused)
 	{	
 		// Send a message asking the server to resume play
-		[networkController sendMessage:
-		 [NSString stringWithFormat:ResumeGameFormat, [[self localPlayer] playerNumber]]];
-		
-		// Change the "resume" button back into pause button
-		[pauseButton setLabel:@"Pause Game"];
-		[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
-		
-		// Change the menu item
-		[pauseMenuItem setTitle:@"Pause Game"];
+		[networkController sendMessage:[NSString stringWithFormat:ResumeGameFormat, [[self localPlayer] playerNumber]]];
 	}
 	else
 	{
 		// Send a message asking the server to pause
-		[networkController sendMessage:
-		 [NSString stringWithFormat:PauseGameFormat, [[self localPlayer] playerNumber]]];
-		
-		// Change the pause button to a "resume" button
-		[pauseButton setLabel:@"Resume Game"];
-		[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
-		
-		// Change the menu item
-		[pauseMenuItem setTitle:@"Resume Game"];
+		[networkController sendMessage:[NSString stringWithFormat:PauseGameFormat, [[self localPlayer] playerNumber]]];
 	}
 }
 
@@ -369,7 +353,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// "Pause" button/menu item
 	if (itemAction == @selector(pauseResumeGame:))
 	{
-		// FIXME: can non-op players pause the game?
 		if (([gameController gameplayState] != gameNotPlaying) && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
 			return YES;
 		
@@ -645,12 +628,39 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Get the player number
 		playerNum = [[tokens objectAtIndex:1] integerValue];
 		
-		// FIXME: WRITEME: player lost message
+		// Set that player to "not playing"
+		[[self playerNumber:playerNum] setPlaying:NO];
+		
+		// FIXME: anything else?
 	}
 #pragma mark Server In-Game Message
 	else if ([messageType isEqualToString:ServerInGameMessage])
 	{
-		// FIXME: WRITEME: server in-game on join
+		// Set all players to "playing" (server will send "playerlost" for players not playing)
+		for (iTetPlayer* player in [self playerList])
+		{
+			if (![player isKindOfClass:[iTetLocalPlayer class]])
+			{
+				[player setPlaying:YES];
+				
+				// Give the player a clear field (server will send updated fields)
+				[player setField:[iTetField field]];
+			}
+		}
+		
+		// Set the game view controller's state as "playing"
+		[gameController setGameplayState:gamePlaying];
+		
+		// Tell the game view controller to send the local player's field to the server
+		[gameController sendFieldstring];
+		
+		// Change the "new game" toolbar item
+		[gameButton setLabel:@"End Game"];
+		[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
+		
+		// Change the "new game" menu item
+		[gameMenuItem setTitle:@"End Game..."];
+		[gameMenuItem setKeyEquivalent:@"e"];
 	}
 #pragma mark Pause Game Message
 	else if ([messageType isEqualToString:PauseMessage])
@@ -660,9 +670,29 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		
 		// Pause or resume the game
 		if (pauseGame && ([gameController gameplayState] == gamePlaying))
-			[gameController setGameplayState:gamePaused];
+		{
+			// Pause the game
+			[gameController pauseGame];
+			
+			// Change the pause button to a "resume" button
+			[pauseButton setLabel:@"Resume Game"];
+			[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
+			
+			// Change the menu item
+			[pauseMenuItem setTitle:@"Resume Game"];
+		}
 		else if (!pauseGame && ([gameController gameplayState] == gamePaused))
-			[gameController setGameplayState:gamePlaying];
+		{
+			// Resume the game
+			[gameController resumeGame];
+			
+			// Change the "resume" button back into pause button
+			[pauseButton setLabel:@"Pause Game"];
+			[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+			
+			// Change the menu item
+			[pauseMenuItem setTitle:@"Pause Game"];
+		}
 	}
 #pragma mark Player Left Message
 	else if ([messageType isEqualToString:PlayerLeftMessage])
@@ -768,9 +798,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		// Check if the second token is a player's nickname
 		NSString* firstWord = [tokens objectAtIndex:1];
-		for (id player in players)
+		for (iTetPlayer* player in [self playerList])
 		{
-			if ([player isKindOfClass:[iTetPlayer class]] && ([firstWord rangeOfString:[player nickname]].location != NSNotFound))
+			if ([firstWord rangeOfString:[player nickname]].location != NSNotFound)
 			{
 				// Compose the message from the remaining tokens
 				message = [[tokens subarrayWithRange:NSMakeRange(2, [tokens count] - 2)] componentsJoinedByString:@" "];
@@ -918,8 +948,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Create the new player
 	[players replaceObjectAtIndex:(number - 1)
-				 withObject:[iTetLocalPlayer playerWithNickname:nick
-										     number:number]];
+				 withObject:[iTetPlayer playerWithNickname:nick
+										number:number]];
 	
 	// Update player count
 	playerCount++;
@@ -931,7 +961,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(number);
-	if ([self playerNumber:number - 1] == nil)
+	if ([self playerNumber:number] == nil)
 	{
 		NSLog(@"WARNING: attempt to remove player in empty player slot");
 		return;
@@ -1016,12 +1046,14 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key
 {
+	NSSet* keys = [super keyPathsForValuesAffectingValueForKey:key];
+	
 	if ([key rangeOfString:@"remotePlayer"].location != NSNotFound)
 	{
-		return [NSSet setWithObject:@"playerList"];
+		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"playerList", @"localPlayer", nil]];
 	}
 	
-	return [super keyPathsForValuesAffectingValueForKey:key];
+	return keys;
 }
 
 - (iTetPlayer*)playerNumber:(NSInteger)number
