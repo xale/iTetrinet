@@ -605,20 +605,24 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Get the player number
 		playerNum = [[tokens objectAtIndex:1] integerValue];
 		
-		// Get the update string
-		NSString* update = [tokens objectAtIndex:2];
-		
-		// Determine if this is a partial update
-		char first = [update cStringUsingEncoding:NSASCIIStringEncoding][0];
-		if ((first >= 0x21) && (first <= 0x2F))
+		// If the message includes an update string, apply it to the relevant field
+		if ([tokens count] > 2)
 		{
-			// Update the player's field with a partial update
-			[[[self playerNumber:playerNum] field] applyPartialUpdate:update];
-		}
-		else
-		{
-			// Give the player a new field created from the fieldstring
-			[[self playerNumber:playerNum] setField:[iTetField fieldFromFieldstring:update]];
+			// Get the update string
+			NSString* update = [tokens objectAtIndex:2];
+			
+			// Determine if this is a partial update
+			char first = [update cStringUsingEncoding:NSASCIIStringEncoding][0];
+			if ((first >= 0x21) && (first <= 0x2F))
+			{
+				// Update the player's field with a partial update
+				[[[self playerNumber:playerNum] field] applyPartialUpdate:update];
+			}
+			else
+			{
+				// Give the player a new field created from the fieldstring
+				[[self playerNumber:playerNum] setField:[iTetField fieldFromFieldstring:update]];
+			}
 		}
 	}
 #pragma mark Player Lost Message
