@@ -43,8 +43,7 @@
 	// Release drawing focus
 	[image unlockFocus];
 	
-	// Scale the image to fill the specified rectangle
-	[image setScalesWhenResized:YES];
+	// Resize the image to fill the specified rectangle
 	[image setSize:size];
 	
 	// Return the image
