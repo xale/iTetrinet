@@ -73,7 +73,7 @@
 	if ([networkController connected])
 	{
 		// If local player is playing a game, ask the user before disconnecting
-		if ([localPlayer isPlaying])
+		if ([[self localPlayer] isPlaying])
 		{
 			// Create an alert
 			NSAlert* alert = [[[NSAlert alloc] init] autorelease];
@@ -898,7 +898,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if ([self localPlayer] != nil)
 	{
 		// Clear the old location in the players array
-		[players replaceObjectAtIndex:([localPlayer playerNumber] - 1)
+		[players replaceObjectAtIndex:([[self localPlayer] playerNumber] - 1)
 					 withObject:[NSNull null]];
 		
 		// Change the local player's number
@@ -1039,7 +1039,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 - (iTetPlayer*)remotePlayerNumber:(NSUInteger)n
 {	
 	// Shift index to account for the local player's number
-	if ([localPlayer playerNumber] > n)
+	if ([[self localPlayer] playerNumber] > n)
 		n--;
 		
 	// Return the player at that index, or nil
