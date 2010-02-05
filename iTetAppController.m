@@ -141,7 +141,7 @@
 	[dialog beginSheetModalForWindow:window
 				 modalDelegate:self
 				didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
-				   contextInfo:nil];
+				   contextInfo:NULL];
 }
 
 NSString* const StartGameFormat =	@"startgame 1 %d";
@@ -164,7 +164,7 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 		[dialog beginSheetModalForWindow:window
 					 modalDelegate:self
 					didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
-					   contextInfo:nil];
+					   contextInfo:NULL];
 	}
 	else
 	{
@@ -172,6 +172,22 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 		[networkController sendMessage:
 		 [NSString stringWithFormat:StartGameFormat, [[self localPlayer] playerNumber]]];
 	}
+}
+
+- (IBAction)forfeitGame:(id)sender
+{
+	// Create a confirmation dialog
+	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
+	[dialog setMessageText:@"Forfeit Game?"];
+	[dialog setInformativeText:@"Are you sure you want to forfeit the current game?"];
+	[dialog addButtonWithTitle:@"Forfeit"];
+	[dialog addButtonWithTitle:@"Continue Playing"];
+	
+	// Run the dialog as a window-modal sheet
+	[dialog beginSheetModalForWindow:window
+				 modalDelegate:self
+				didEndSelector:@selector(forfeitDialogDidEnd:returnCode:contextInfo:)
+				   contextInfo:NULL];
 }
 
 NSString* const PauseGameFormat =	@"pause 1 %d";
@@ -262,18 +278,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 									  repeats:NO];
 }
 
-- (void)stopGameAlertDidEnd:(NSAlert*)dialog
-		     returnCode:(NSInteger)returnCode
-		    contextInfo:(void*)contextInfo
-{
-	// If the user pressed "continue playing", do nothing
-	if (returnCode == NSAlertSecondButtonReturn)
-		return;
-	
-	// Send the server an "end game" message
-	[networkController sendMessage:[NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
-}
-
 - (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert
 						 returnCode:(NSInteger)returnCode
 						contextInfo:(void*)contextInfo
@@ -288,6 +292,30 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Disconnect from the server
 	[networkController disconnect];
+}
+
+- (void)stopGameAlertDidEnd:(NSAlert*)dialog
+		     returnCode:(NSInteger)returnCode
+		    contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Send the server an "end game" message
+	[networkController sendMessage:[NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
+}
+
+- (void)forfeitDialogDidEnd:(NSAlert*)dialog
+		     returnCode:(NSInteger)returnCode
+		    contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Forfeit the current game
+	[gameController playerLost];
 }
 
 #pragma mark -
@@ -344,6 +372,15 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (itemAction == @selector(startStopGame:))
 	{
 		if ([networkController connected] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
+			return YES;
+		
+		return NO;
+	}
+	
+	// "Forfeit" button/menu item
+	if (itemAction == @selector(forfeitGame:))
+	{
+		if (([gameController gameplayState] != gameNotPlaying) && [[self localPlayer] isPlaying])
 			return YES;
 		
 		return NO;

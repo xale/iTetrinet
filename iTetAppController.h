@@ -60,6 +60,7 @@
 
 - (IBAction)openCloseConnection:(id)sender;
 - (IBAction)startStopGame:(id)sender;
+- (IBAction)forfeitGame:(id)sender;
 - (IBAction)pauseResumeGame:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;

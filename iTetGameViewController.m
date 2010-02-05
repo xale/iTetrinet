@@ -32,6 +32,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 {
 	actionHistory = [[NSMutableArray alloc] init];
 	
+	gameplayState = gameNotPlaying;
+	
 	return self;
 }
 
