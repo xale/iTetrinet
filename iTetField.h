@@ -71,7 +71,7 @@ typedef enum
 // Add a partial update from the server to the field
 - (void)applyPartialUpdate:(NSString*)partialUpdate;
 
-// Adds the specified number of specials to the board, using the provided frequencies
+// Adds the specified number of specials to the field, using the provided frequencies
 // note: specialFrequencies must be exactly 100 characters in length
 - (void)addSpecials:(NSInteger)count
    usingFrequencies:(char*)specialFrequencies;
@@ -84,16 +84,22 @@ typedef enum
 // Clears the bottom line of the field, shifting others down; does not collect specials
 - (void)clearBottomLine;
 
-// Clears ten random cells on the board
+// Clears ten random cells on the field
 - (void)clearRandomCells;
 
-// Turns all special blocks on the board into normal cells
+// Pushes the contents down to clear the top six rows of a field that has just been swapped via the switchfield special
+- (void)shiftClearTopSixRows;
+
+// Shifts the contents of the field down by the specified number of rows
+- (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount;
+
+// Turns all special blocks on the field into normal cells
 - (void)removeAllSpecials;
 
 // Pulls all cells down, filling gaps
 - (void)pullCellsDown;
 
-// Randomly shifts all rows on the board 0-3 columns left or right
+// Randomly shifts all rows on the field 0-3 columns left or right
 - (void)randomShiftRows;
 
 // "Explodes" all block bomb specials on the field, scattering the cells around them

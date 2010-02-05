@@ -117,7 +117,7 @@ char partialUpdateCharToCell(char updateChar);
 
 - (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
 {	
-	memcpy(contents, fieldContents, sizeof(fieldContents));
+	memcpy(contents, fieldContents, (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(char)));
 	
 	return self;
 }
@@ -499,6 +499,54 @@ abort:; // Unable to add more specials; bail
 	// Clear ten random cells on the field
 	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
 		contents[(random() % ITET_FIELD_HEIGHT)][(random() % ITET_FIELD_WIDTH)] = 0;
+	
+	[self didChangeValueForKey:@"contents"];
+}
+
+#define ITET_NUM_CLEAR_ROWS	(6)
+
+- (void)shiftClearTopSixRows
+{
+	// Find the highest row among the top six with an occupied cell
+	NSInteger row, col, rowsToShift = 0;
+	for (row = (ITET_FIELD_HEIGHT - 1); row > ((ITET_FIELD_HEIGHT - 1) - ITET_NUM_CLEAR_ROWS); row--)
+	{
+		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			if (contents[row][col] > 0)
+			{
+				rowsToShift = row - ((ITET_FIELD_HEIGHT - 1) - ITET_NUM_CLEAR_ROWS);
+				goto cellfound;
+			}
+		}
+	}
+cellfound:
+	
+	// Shift the field down
+	[self shiftAllRowsDownByAmount:rowsToShift];
+}
+
+- (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount
+{
+	if (shiftAmount == 0)
+		return;
+	
+	[self willChangeValueForKey:@"contents"];
+	
+	// Iterate over rows on the field, bottom to top, and shift them down
+	NSInteger row;
+	for (row = shiftAmount; row < ITET_FIELD_HEIGHT; row++)
+	{
+		// Move the row down
+		memcpy(contents[row - shiftAmount], contents[row], sizeof(contents[row]));
+	}
+	
+	// Clear the rows that haven't been overwritten
+	for (row = (ITET_FIELD_HEIGHT - shiftAmount); row < ITET_FIELD_HEIGHT; row++)
+	{
+		// Clear the row
+		memset(contents[row], 0, sizeof(contents[row]));
+	}
 	
 	[self didChangeValueForKey:@"contents"];
 }

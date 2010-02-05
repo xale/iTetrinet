@@ -497,14 +497,15 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			break;
 			
 		case switchField:
-			// If the local player is the target, get the sender's field
+			// If the local player is the target, copy the sender's field
 			if (targetNum == localNum)
-				[LOCALPLAYER setField:[sender field]];
-			// If the local player is the sender, get the target's field
-			else if (senderNum == localNum)
-				[LOCALPLAYER setField:[target field]];
+				[LOCALPLAYER setField:[[sender field] copy]];
+			// If the local player is the sender, copy the target's field
+			else
+				[LOCALPLAYER setField:[[target field] copy]];
 			
-			// FIXME: safety check?
+			// Safety check: ensure the top six rows of the swapped field are clear
+			//[[LOCALPLAYER field] shiftClearTopSixRows];
 			
 			break;
 			
