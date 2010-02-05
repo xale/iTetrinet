@@ -32,13 +32,18 @@
 	if ([self block] == nil)
 		return;
 	
-	// Ask the block to draw itself to an NSImage of this view's size
-	NSImage* blockImage = [[self block] imageWithSize:[self bounds].size
-								  theme:[self theme]];
+	// Ask the block to draw itself to an NSImage
+	NSImage* blockImage = [[self block] previewImageWithTheme:[self theme]];
+	//NSImage* blockImage = [[self block] imageWithSize:[self bounds].size theme:[self theme]];
+	
+	// Center the image in the view
+	NSSize viewSize = [self bounds].size;
+	NSSize imageSize = [blockImage size];
+	NSPoint drawPoint = NSMakePoint(((viewSize.width - imageSize.width) / 2), ((viewSize.height - imageSize.height) / 2));
 	
 	// Draw the image
-	[blockImage drawAtPoint:rect.origin
-			   fromRect:rect
+	[blockImage drawAtPoint:drawPoint
+			   fromRect:NSZeroRect
 			  operation:NSCompositeSourceOver
 			   fraction:1.0];
 }

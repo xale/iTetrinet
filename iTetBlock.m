@@ -207,7 +207,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 - (char)cellAtRow:(NSInteger)row
 	     column:(NSInteger)col
 {
-	return blocks[type][orientation][(ITET_BLOCK_WIDTH - row) - 1][col];
+	return blocks[type][orientation][(ITET_BLOCK_WIDTH - 1) - row][col];
 }
 
 - (void)moveHorizontal:(iTetMoveDirection)direction

@@ -15,4 +15,6 @@
 - (NSImage*)imageWithSize:(NSSize)size
 			  theme:(iTetTheme*)theme;
 
+- (NSImage*)previewImageWithTheme:(iTetTheme *)theme;
+
 @end
