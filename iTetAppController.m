@@ -682,6 +682,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		}
 		else if (!pauseGame && ([gameController gameplayState] == gamePaused))
 		{
+			// Make sure we have the game tab open
+			[self switchToGameTab:self];
+			
 			// Resume the game
 			[gameController resumeGame];
 			
@@ -739,6 +742,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// All tokens beyond the first (the "newgame" string) are game rules 
 		NSArray* rules = [tokens subarrayWithRange:NSMakeRange(1, [tokens count] - 1)];
 		
+		// Switch to the game view tab, if not already there
+		[self switchToGameTab:self];
+		
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
 						     rules:[iTetGameRules gameRulesFromArray:rules
@@ -751,9 +757,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Change the "new game" menu item
 		[gameMenuItem setTitle:@"End Game..."];
 		[gameMenuItem setKeyEquivalent:@"e"];
-		
-		// Switch to the game view tab, if not already there
-		[self switchToGameTab:self];
 	}
 #pragma mark Special Used/Lines Received Message
 	else if ([messageType isEqualToString:SpecialUsedMessage])

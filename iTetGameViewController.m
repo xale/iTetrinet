@@ -124,6 +124,12 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	
 	// Clear the message field
 	[messageField setStringValue:@""];
+	
+	// If there is a game in progress, return first responder status to the field
+	if (([self gameplayState] == gamePlaying) && [LOCALPLAYER isPlaying])
+	{
+		[[localFieldView window] makeFirstResponder:localFieldView];
+	}
 }
 
 - (void)appendChatLine:(NSString*)line
@@ -193,6 +199,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	// Reset the local player's cleared lines
 	[LOCALPLAYER resetLinesCleared];
 	
+	// Make sure the field is the first responder
+	[[localFieldView window] makeFirstResponder:localFieldView];
+	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
 }
@@ -222,7 +231,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	// Resume the game
 	[self setGameplayState:gamePlaying];
 	
-	// If the local player is in the game, re-create the block timer
+	// If the local player is in the game, re-create the block timer, and give the field first responder status
 	if ([LOCALPLAYER isPlaying])
 	{
 		// Create a timer with a firing date calculated from the time recorded when the game was paused
@@ -241,6 +250,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		// Clear the last timer type
 		[lastTimerType release];
 		lastTimerType = nil;
+		
+		// Move first responder to the field
+		[[localFieldView window] makeFirstResponder:localFieldView];
 	}
 }
 
@@ -553,13 +565,22 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView
 {
-	// If the game is not in-play, or the local player has lost, ignore
-	if (([self gameplayState] != gamePlaying) || ![LOCALPLAYER isPlaying])
-		return;
-	
 	// Determine whether the pressed key is bound to a game action
 	NSMutableDictionary* keyConfig = [[iTetPreferencesController preferencesController] currentKeyConfiguration];
 	iTetGameAction action = [keyConfig actionForKey:key];
+	
+	// If the key is bound to 'game chat,' move first responder to the chat field
+	if (action == gameChat)
+	{
+		// Change first responder
+		[[messageField window] makeFirstResponder:messageField];
+		return;
+	}
+	
+	// If the game is not in-play, or the local player has lost, ignore any other actions
+	if (([self gameplayState] != gamePlaying) || ![LOCALPLAYER isPlaying])
+		return;
+	
 	iTetPlayer* targetPlayer = nil;
 	
 	// Perform the relevant action
@@ -639,10 +660,6 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			targetPlayer = [appController playerNumber:6];
 			break;
 			
-		case gameChat:
-			// FIXME: WRITEME: 'game chat' key
-			break;
-			
 		default:
 			// Unrecognized key
 			break;
@@ -654,6 +671,25 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
 			   toPlayer:targetPlayer];
 	}
+}
+
+#pragma mark NSControlTextEditingDelegate Methods
+
+- (BOOL)    control:(NSControl *)control
+	     textView:(NSTextView *)textView
+doCommandBySelector:(SEL)command
+{
+	// If the this is an 'escape' keypress in the message field, and we are in-game, clear the message field and return first responder status to the game field
+	if ([control isEqual:messageField] && (command == @selector(cancelOperation:)) && ([self gameplayState] == gamePlaying) && [LOCALPLAYER isPlaying])
+	{
+		// Clear the message field
+		[messageField setStringValue:@""];
+		
+		// Return first responder to the game field
+		[[localFieldView window] makeFirstResponder:localFieldView];
+	}
+	
+	return NO;
 }
 
 #pragma mark -
