@@ -11,26 +11,15 @@
 
 + (NSArray*)defaultServers
 {
-	// FIXME: debug implementation
 	return [NSArray arrayWithObjects:
-		  [iTetServerInfo serverInfoWithName:@"Tetrinet Test"
+		  [iTetServerInfo serverInfoWithName:@"Example TetriNET Server"
 						     address:@"www.example.com"
-						    nickname:@"Xale"
+						    nickname:NSUserName()
 							  team:@""
 						    protocol:tetrinetProtocol],
-		  [iTetServerInfo serverInfoWithName:@"nenoth"
-						     address:@"nenoth.ietfng.org"
-						    nickname:@"Xale_Testing"
-							  team:@""
-						    protocol:tetrifastProtocol],
-		  [iTetServerInfo serverInfoWithName:@"Local Test"
-						     address:@"5.147.159.117"
-						    nickname:@"Xale"
-							  team:@""
-						    protocol:tetrifastProtocol],
-		  [iTetServerInfo serverInfoWithName:@"Local Test (Alt. Nick)"
-						     address:@"5.147.159.117"
-						    nickname:@"Xale2"
+		  [iTetServerInfo serverInfoWithName:@"Example Tetrifast Server"
+						     address:@"www.example.com"
+						    nickname:NSUserName()
 							  team:@""
 						    protocol:tetrifastProtocol],
 		  nil];
