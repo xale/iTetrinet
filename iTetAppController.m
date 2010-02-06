@@ -13,6 +13,7 @@
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
+#import "NSMutableDictionary+KeyBindings.h"
 #import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
@@ -49,6 +50,7 @@
 
 - (void)awakeFromNib
 {
+	// Add a border to the bottom of the window (this can be done in IB, but only for 10.6+)
 	[window setAutorecalculatesContentBorderThickness:NO
 								forEdge:NSMinYEdge];
 	[window setContentBorderThickness:25
@@ -169,8 +171,7 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 	else
 	{
 		// Start the game
-		[networkController sendMessage:
-		 [NSString stringWithFormat:StartGameFormat, [[self localPlayer] playerNumber]]];
+		[networkController sendMessage:[NSString stringWithFormat:StartGameFormat, [[self localPlayer] playerNumber]]];
 	}
 }
 
@@ -267,8 +268,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[connectionProgressIndicator startAnimation:self];
 	
 	// Change the connection status label
-	[connectionStatusLabel setStringValue:
-	 [NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
+	[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
 	
 	// Start the connection timer
 	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:[[iTetPreferencesController preferencesController] connectionTimeout]
@@ -1124,6 +1124,5 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	return [iTetPreferencesController preferencesController];
 }
-
 
 @end

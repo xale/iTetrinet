@@ -692,6 +692,12 @@ doCommandBySelector:(SEL)command
 		[[localFieldView window] makeFirstResponder:localFieldView];
 	}
 	
+	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
+	if ([control isEqual:messageField] && ((command == @selector(insertTab:)) || (command == @selector(insertBacktab:))))
+	{
+		return YES;
+	}
+	
 	return NO;
 }
 
