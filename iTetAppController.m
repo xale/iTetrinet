@@ -580,7 +580,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Server Heartbeat Message
 	if ([messageType isEqualToString:@""])
 	{
-		// Ignore
+		// Send a keepalive message
+		[networkController sendMessage:@""];
 	}
 #pragma mark No Connecting (Error) Message
 	else if ([messageType isEqualToString:NoConnectingMessage])
