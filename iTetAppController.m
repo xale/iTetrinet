@@ -371,28 +371,19 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// "New Game" button/menu item
 	if (itemAction == @selector(startStopGame:))
 	{
-		if ([networkController connected] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
-			return YES;
-		
-		return NO;
+		return ([networkController connected] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber));
 	}
 	
 	// "Forfeit" button/menu item
 	if (itemAction == @selector(forfeitGame:))
 	{
-		if (([gameController gameplayState] != gameNotPlaying) && [[self localPlayer] isPlaying])
-			return YES;
-		
-		return NO;
+		return (([gameController gameplayState] != gameNotPlaying) && [[self localPlayer] isPlaying]);
 	}
 	
 	// "Pause" button/menu item
 	if (itemAction == @selector(pauseResumeGame:))
 	{
-		if (([gameController gameplayState] != gameNotPlaying) && ([[self localPlayer] playerNumber] == OperatorPlayerNumber))
-			return YES;
-		
-		return NO;
+		return (([gameController gameplayState] != gameNotPlaying) && ([[self localPlayer] playerNumber] == OperatorPlayerNumber));
 	}
 	
 	return YES;
