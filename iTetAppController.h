@@ -9,8 +9,9 @@
 
 @class iTetNetworkController;
 @class iTetPreferencesController;
-@class iTetChatViewController;
 @class iTetGameViewController;
+@class iTetChatViewController;
+@class iTetWinlistViewController;
 @class iTetPlayer;
 @class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
@@ -26,8 +27,9 @@
 	IBOutlet NSTabView* tabView;
 	
 	// View Controllers
-	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetGameViewController* gameController;
+	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetWinlistViewController* winlistController;
 	
 	// List view (and controller) for servers on connection sheet
 	IBOutlet NSScrollView* serverListView;
@@ -64,8 +66,9 @@
 - (IBAction)pauseResumeGame:(id)sender;
 - (IBAction)showPreferences:(id)sender;
 - (void)openPreferencesTabNumber:(NSInteger)tabNumber;
-- (IBAction)switchToChatTab:(id)sender;
 - (IBAction)switchToGameTab:(id)sender;
+- (IBAction)switchToChatTab:(id)sender;
+- (IBAction)switchToWinlistTab:(id)sender;
 
 - (void)connectionOpened;
 - (void)connectionClosed;

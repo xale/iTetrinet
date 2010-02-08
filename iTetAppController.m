@@ -8,8 +8,9 @@
 #import "iTetAppController.h"
 #import "iTetNetworkController.h"
 #import "iTetPreferencesController.h"
-#import "iTetChatViewController.h"
 #import "iTetGameViewController.h"
+#import "iTetChatViewController.h"
+#import "iTetWinlistViewController.h"
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
@@ -224,14 +225,19 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 	[prefsWindowController displayViewControllerAtIndex:tabNumber];
 }
 
+- (IBAction)switchToGameTab:(id)sender
+{
+	[tabView selectTabViewItemAtIndex:0];
+}
+
 - (IBAction)switchToChatTab:(id)sender
 {
 	[tabView selectTabViewItemAtIndex:1];
 }
 
-- (IBAction)switchToGameTab:(id)sender
+- (IBAction)switchToWinlistTab:(id)sender
 {
-	[tabView selectTabViewItemAtIndex:0];
+	[tabView selectTabViewItemAtIndex:2];
 }
 
 #pragma mark -
@@ -534,7 +540,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 #define NoConnectingMessage	@"noconnecting"
 #define WinlistMessage		@"winlist"
-#define PlayerNumMessage	((protocol == tetrinetProtocol)?@"playernum":@")#)(!@(*3")
+#define PlayerNumMessage	(([[networkController currentServer] protocol] == tetrinetProtocol)?@"playernum":@")#)(!@(*3")
 #define PlayerJoinedMessage	@"playerjoin"
 #define PlayerTeamMessage	@"team"
 #define FieldstringMessage	@"f"
@@ -544,7 +550,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #define PlayerLeftMessage	@"playerleave"
 #define PLineTextMessage	@"pline"
 #define PLineActionMessage	@"plineact"
-#define NewGameMessage		((protocol == tetrinetProtocol)?@"newgame":@"*******")
+#define NewGameMessage		(([[networkController currentServer] protocol] == tetrinetProtocol)?@"newgame":@"*******")
 #define SpecialUsedMessage	@"sb"
 #define GameChatMessage		@"gmsg"
 #define LevelUpdateMessage	@"lvl"
@@ -560,9 +566,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Get the first token of the message
 	NSString* messageType = [tokens objectAtIndex:0];
-	
-	// Check which protocol we are using
-	iTetProtocolType protocol = [[networkController currentServer] protocol];
 	
 	NSInteger playerNum;
 	NSString* message;
@@ -591,7 +594,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Winlist Message
 	else if ([messageType isEqualToString:WinlistMessage])
 	{
-		// FIXME: WRITEME: winlist
+		// Hand the remaining tokens to the winlist controller
+		[winlistController parseWinlist:[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))]];
 	}
 #pragma mark Player Number Message
 	else if ([messageType isEqualToString:PlayerNumMessage])
@@ -781,7 +785,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
 						     rules:[iTetGameRules gameRulesFromArray:rules
-											  withGameType:protocol]];
+											  withGameType:[[networkController currentServer] protocol]]];
 		
 		// Change the "new game" toolbar item
 		[gameButton setLabel:@"End Game"];
