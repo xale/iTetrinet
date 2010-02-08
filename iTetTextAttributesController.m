@@ -52,7 +52,7 @@ enum
 
 - (IBAction)changeTextColor:(id)sender
 {
-	NSText* editor = [partylineMessageField currentEditor];
+	NSTextView* editor = (NSTextView*)[partylineMessageField currentEditor];
 	
 	// Determine the text color to use
 	NSColor* textColor;
@@ -132,12 +132,20 @@ enum
 	{
 		// Change the text color of the selection
 		[editor setTextColor:textColor
-				   range:[editor selectedRange]];
+				   range:selection];
 	}
-	else if ([[editor string] length] == 0)
+	else
 	{
-		// Set the entire field's text color
-		[editor setTextColor:textColor];
+		// Set the color of the text being typed
+		// Get the current typing attributes
+		NSMutableDictionary* attrDict = [[editor typingAttributes] mutableCopy];
+		
+		// Change the text color
+		[attrDict setObject:textColor
+				 forKey:NSForegroundColorAttributeName];
+		[editor setTypingAttributes:attrDict];
+		
+		[attrDict release];
 	}
 }
 
