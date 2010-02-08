@@ -112,10 +112,8 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 
 - (IBAction)sendMessage:(id)sender
 {
-	// FIXME: formatting
-	NSString* message = [messageField stringValue];
-	
 	// Check that there is a message to send
+	NSString* message = [messageField stringValue];
 	if ([message length] == 0)
 		return;
 	
@@ -556,8 +554,6 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	// Clear the block timer
 	[blockTimer invalidate];
 	blockTimer = nil;
-	
-	//FIXME: WRITEME: more?
 	
 	// Send a message to the server
 	[self sendPlayerLostMessage];

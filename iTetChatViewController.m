@@ -40,24 +40,24 @@ NSString* const iTetPlineFormat =		@"pline %d %@";
 NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 
 - (IBAction)sendMessage:(id)sender
-{	
-	// FIXME: should use "attributedStringValue"
-	NSString* line = [messageField stringValue];
-	
+{
 	// Check if there is a message to send
-	if ([line length] == 0)
+	NSAttributedString* message = [messageField attributedStringValue];
+	if ([message length] == 0)
 		return;
+	
+	// Reformat the string using the 
 	
 	NSString* format;
 	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
 	
-	BOOL action = ([line length] > 3) && [[line substringToIndex:3] isEqualToString:@"/me"];
+	BOOL action = ([message length] > 3) && [[[message string] substringToIndex:3] isEqualToString:@"/me"];
 	
 	// Format the message as text or action
 	if (action)
 	{
 		format = iTetPlineActionFormat;
-		line = [line substringFromIndex:4];
+		message = [message attributedSubstringFromRange:NSMakeRange(4, [message length] - 4)];
 	}
 	else
 	{
@@ -65,13 +65,14 @@ NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 	}
 	
 	// Send the message
-	[[appController networkController] sendMessage:
-	 [NSString stringWithFormat:format, [localPlayer playerNumber], line]];
+	// FIXME: apply formatting
+	[[appController networkController] sendMessage:[NSString stringWithFormat:format, [localPlayer playerNumber], [message string]]];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
-	if (action || ([line characterAtIndex:0] != '/'))
+	if (action || ([[message string] characterAtIndex:0] != '/'))
 	{
-		[self appendChatLine:line
+		// FIXME: formatting
+		[self appendChatLine:[message string]
 			fromPlayerName:[localPlayer nickname]
 				  action:action];
 	}
