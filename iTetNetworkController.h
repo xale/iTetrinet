@@ -37,10 +37,15 @@ typedef enum
 - (void)initializeConnection;
 - (void)disconnect;
 
+- (void)sendMessage:(NSString*)message;
+- (void)sendAttributedMessage:(NSAttributedString*)message
+		  attributedRange:(NSRange)rangeWithAttributes;
+- (void)sendData:(NSMutableData*)data;
+
 - (void)attemptRead;
+- (void)processMessage:(NSData*)messageData;
 - (void)attemptWrite;
 - (void)handleError:(NSStream*)stream;
-- (void)sendMessage:(NSString*)message;
 
 @property (readonly) iTetServerInfo* currentServer;
 @property (readwrite, assign) BOOL connected;

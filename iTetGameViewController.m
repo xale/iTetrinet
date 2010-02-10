@@ -678,6 +678,10 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	     textView:(NSTextView *)textView
 doCommandBySelector:(SEL)command
 {
+	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
+	if ([control isEqual:messageField] && ((command == @selector(insertTab:)) || (command == @selector(insertBacktab:))))
+		return YES;
+	
 	// If the this is an 'escape' keypress in the message field, and we are in-game, clear the message field and return first responder status to the game field
 	if ([control isEqual:messageField] && (command == @selector(cancelOperation:)) && ([self gameplayState] == gamePlaying) && [LOCALPLAYER isPlaying])
 	{
@@ -686,12 +690,6 @@ doCommandBySelector:(SEL)command
 		
 		// Return first responder to the game field
 		[[localFieldView window] makeFirstResponder:localFieldView];
-	}
-	
-	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
-	if ([control isEqual:messageField] && ((command == @selector(insertTab:)) || (command == @selector(insertBacktab:))))
-	{
-		return YES;
 	}
 	
 	return NO;

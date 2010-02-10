@@ -421,7 +421,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Clear the chat views
 	[chatController clearChat];
-	[chatController appendChatLine:@"* Connection Opened *"];
+	[chatController appendStatusMessage:@"Connection Opened"];
 	[gameController clearChat];
 }
 
@@ -456,7 +456,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Change the menu item
 	[pauseMenuItem setTitle:@"Pause Game"];
 	
-	[chatController appendChatLine:@"* Connection Closed *"];
+	[chatController appendStatusMessage:@"Connection Closed"];
 }
 
 - (void)connectionError:(NSError*)error
@@ -612,8 +612,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 				     nickname:nick];
 		
 		// Add a message to the chat view
-		[chatController appendChatLine:
-		 [NSString stringWithFormat:@"* Player %@ has joined the channel *", nick]];
+		[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", nick]];
 	}
 #pragma mark Player Team Message
 	else if ([messageType isEqualToString:PlayerTeamMessage])
@@ -740,7 +739,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		playerNum = [[tokens objectAtIndex:1] integerValue];
 		
 		// Add a chat line
-		[chatController appendChatLine:[NSString stringWithFormat:@"* Player %@ has left the channel *", [self playerNameForNumber:playerNum]]];
+		[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [self playerNameForNumber:playerNum]]];
 		
 		// Remove the player from the game
 		[self removePlayerNumber:playerNum];
@@ -748,30 +747,30 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Partyline Text Message
 	else if ([messageType isEqualToString:PLineTextMessage])
 	{
-		// Get the player nickname
-		NSString* nick = [self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]];
-		
 		// Create the message from all but the first two tokens
 		message = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] componentsJoinedByString:@" "];
 		
 		// Hand the message off to the chat controller
-		[chatController appendChatLine:message
-				    fromPlayerName:nick
+		// FIXME: formatting
+		/*
+		 [chatController appendChatLine:message
+				    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
 						action:NO];
+		 */
 	}
 #pragma mark Partyline Action Message
 	else if ([messageType isEqualToString:PLineActionMessage])
 	{
-		// Get the player nickname
-		NSString* nick = [self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]];
-		
 		// Create the action message from all but the first two tokens
 		message = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] componentsJoinedByString:@" "];
 		
 		// Hand the action off to the chat controller
+		// FIXME: formatting
+		/*
 		[chatController appendChatLine:message
-				    fromPlayerName:nick
+				    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
 						action:YES];
+		 */
 	}
 #pragma mark New Game Message
 	else if ([messageType isEqualToString:NewGameMessage])

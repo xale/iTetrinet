@@ -36,8 +36,8 @@
 #pragma mark -
 #pragma mark Interface Actions
 
-NSString* const iTetPlineFormat =		@"pline %d %@";
-NSString* const iTetPlineActionFormat =	@"plineact %s %@";
+NSString* const iTetPlineFormat =		@"pline %d ";
+NSString* const iTetPlineActionFormat =	@"plineact %s ";
 
 - (IBAction)sendMessage:(id)sender
 {
@@ -65,14 +65,18 @@ NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 	}
 	
 	// Send the message
-	// FIXME: apply formatting
-	[[appController networkController] sendMessage:[NSString stringWithFormat:format, [localPlayer playerNumber], [message string]]];
+	NSMutableAttributedString* toSend = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, [localPlayer playerNumber]]] autorelease];
+	[toSend appendAttributedString:message];
+	NSRange attrRange;
+	attrRange.location = ([toSend length] - [message length]);
+	attrRange.length = ([toSend length] - attrRange.location);
+	[[appController networkController] sendAttributedMessage:toSend
+							     attributedRange:attrRange];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[message string] characterAtIndex:0] != '/'))
 	{
-		// FIXME: formatting
-		[self appendChatLine:[message string]
+		[self appendChatLine:message
 			fromPlayerName:[localPlayer nickname]
 				  action:action];
 	}
@@ -90,29 +94,66 @@ NSString* const iTetPlineActionFormat =	@"plineact %s %@";
 					withString:@""];
 }
 
-- (void)appendChatLine:(NSString*)line
+- (void)appendChatLine:(NSAttributedString*)line
 {
-	[chatView replaceCharactersInRange:NSMakeRange([[chatView textStorage] length], 0)
-					withString:[NSString stringWithFormat:@"%@%C",
-							line, NSLineSeparatorCharacter]];
+	// Add the line
+	[[chatView textStorage] appendAttributedString:line];
+	
+	// Add a line terminator
+	[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
+	
+	// Scroll the chat view to see the new line
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
 }
 
-- (void)appendChatLine:(NSString*)line
+- (void)appendChatLine:(NSAttributedString*)line
 	  fromPlayerName:(NSString*)playerName
 		    action:(BOOL)isAction
 {
-	// Determine which format to use
-	NSString* format;
+	NSMutableAttributedString* formattedMessage = [[[NSMutableAttributedString alloc] init] autorelease];
+	NSDictionary* boldAttribute = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Helvetica-Bold" size:12.0]
+										    forKey:NSFontAttributeName];
 	if (isAction)
-		format = @"* %@ %@";
+	{
+		// Append an asterisk in bold (to indicate an action)
+		NSAttributedString* asterisk = [[[NSAttributedString alloc] initWithString:@"*"
+												    attributes:boldAttribute] autorelease];
+		[formattedMessage appendAttributedString:asterisk];
+		
+		// Append the player's name
+		[[formattedMessage mutableString] appendFormat:@" %@ ", playerName];
+	}
 	else
-		format = @"%@: %@";
+	{
+		// Append the player's name and a colon, in bold
+		NSAttributedString* name = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", playerName]
+												attributes:boldAttribute] autorelease];
+		[formattedMessage appendAttributedString:name];
+	}
 	
-	// Append the formatted line to the chat text
-	[self appendChatLine:[NSString stringWithFormat:format, playerName, line]];
+	// Append the message contents
+	[formattedMessage appendAttributedString:line];
 	
-	// FIXME: string attributes
+	// Add the message to the chat view
+	[self appendChatLine:formattedMessage];
+}
+
+- (void)appendStatusMessage:(NSString*)message
+{
+	// Create a centered paragraph style
+	NSMutableParagraphStyle* statusMessageStyle = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+	[statusMessageStyle setAlignment:NSCenterTextAlignment];
+	
+	// Create a bold font
+	NSFont* font = [NSFont fontWithName:@"Helvetica-Bold" size:12.0];
+	
+	// Create an attributed string with the message and the above attributes
+	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, statusMessageStyle, NSParagraphStyleAttributeName, nil];
+	NSAttributedString* formattedMessage = [[[NSAttributedString alloc] initWithString:message
+													attributes:attrDict] autorelease];
+	
+	// Append the message to the chat view
+	[self appendChatLine:formattedMessage];
 }
 
 #pragma mark -

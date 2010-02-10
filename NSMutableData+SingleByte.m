@@ -17,4 +17,13 @@
 		     length:1];
 }
 
+- (void)insertByte:(uint8_t)byte
+	     atIndex:(NSUInteger)index
+{
+	uint8_t buf[1] = {byte};
+	[self replaceBytesInRange:NSMakeRange(index, 0)
+			    withBytes:buf
+				 length:1];
+}
+
 @end

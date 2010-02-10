@@ -24,10 +24,11 @@
 - (IBAction)sendMessage:(id)sender;
 
 - (void)clearChat;
-- (void)appendChatLine:(NSString*)line;
-- (void)appendChatLine:(NSString*)line
+- (void)appendChatLine:(NSAttributedString*)line;
+- (void)appendChatLine:(NSAttributedString*)line
 	  fromPlayerName:(NSString*)playerName
 		    action:(BOOL)isAction;
+- (void)appendStatusMessage:(NSString*)message;
 
 - (void)addChannel:(NSString*)channelData;
 

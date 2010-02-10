@@ -6,42 +6,7 @@
 //
 
 #import "iTetTextAttributesController.h"
-
-@implementation iTetTextAttributesController
-
-#pragma mark -
-#pragma mark Interface Validations
-
-- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
-{
-	// Font/color change actions are available if the message field has keyboard focus
-	if ([item action] == @selector(changeTextColor:))
-	{
-		return ([partylineMessageField currentEditor] != nil);
-	}
-	
-	return YES;
-}
-
-enum
-{
-	blackTextColor =		0,
-	whiteTextColor =		1,
-	grayTextColor =		2,
-	silverTextColor =		3,
-	redTextColor =		4,
-	yellowTextColor =		5,
-	limeTextColor =		6,
-	greenTextColor =		7,
-	oliveTextColor =		8,
-	tealTextColor =		9,
-	cyanTextColor =		10,
-	blueTextColor =		11,
-	darkBlueTextColor =	12,
-	purpleTextColor =		13,
-	maroonTextColor =		14,
-	magentaTextColor =	15
-};
+#import "NSColor+Comparisons.h"
 
 #define iTetSilverTextColor	[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
 #define iTetGreenTextColor	[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:0.0 alpha:1.0]
@@ -50,81 +15,126 @@ enum
 #define iTetDarkBlueTextColor	[NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.5 alpha:1.0]
 #define iTetMaroonTextColor	[NSColor colorWithCalibratedRed:0.5 green:0.0 blue:0.0 alpha:1.0]
 
+NSColor* iTetTextColorForCode(iTetTextColorCode code)
+{
+	switch (code)
+	{
+		case blackTextColor:
+			return [NSColor blackColor];
+			
+		case whiteTextColor:
+			return [NSColor whiteColor];
+			
+		case grayTextColor:
+			return [NSColor grayColor];
+			
+		case silverTextColor:
+			return iTetSilverTextColor;
+			
+		case redTextColor:
+			return [NSColor redColor];
+			
+		case yellowTextColor:
+			return [NSColor yellowColor];
+			
+		case limeTextColor:
+			return [NSColor greenColor];
+			
+		case greenTextColor:
+			return iTetGreenTextColor;
+			
+		case oliveTextColor:
+			return iTetOliveTextColor;
+			
+		case tealTextColor:
+			return iTetTealTextColor;
+			
+		case cyanTextColor:
+			return [NSColor cyanColor];
+			
+		case blueTextColor:
+			return [NSColor blueColor];
+			
+		case darkBlueTextColor:
+			return iTetDarkBlueTextColor;
+			
+		case purpleTextColor:
+			return [NSColor purpleColor];
+			
+		case maroonTextColor:
+			return iTetMaroonTextColor;
+			
+		case magentaTextColor:
+			return [NSColor magentaColor];
+	}
+	
+	return nil;
+}
+
+iTetTextColorCode iTetCodeForTextColor(NSColor* color)
+{
+	if ([color hasSameRGBValuesAsColor:[NSColor blackColor]])
+		return blackTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor whiteColor]])
+		return whiteTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor grayColor]])
+		return grayTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetSilverTextColor])
+		return silverTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor redColor]])
+		return redTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor yellowColor]])
+		return yellowTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor greenColor]])
+		return limeTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetGreenTextColor])
+		return greenTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetOliveTextColor])
+		return oliveTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetTealTextColor])
+		return tealTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor cyanColor]])
+		return cyanTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor blueColor]])
+		return blueTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetDarkBlueTextColor])
+		return darkBlueTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor purpleColor]])
+		return purpleTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetMaroonTextColor])
+		return maroonTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor magentaColor]])
+		return magentaTextColor;
+	
+	return noColor;
+}
+
+@implementation iTetTextAttributesController
+
+#pragma mark -
+#pragma mark Interface Actions
+
 - (IBAction)changeTextColor:(id)sender
 {
 	NSTextView* editor = (NSTextView*)[partylineMessageField currentEditor];
 	
 	// Determine the text color to use
-	NSColor* textColor;
-	switch ([sender tag])
-	{
-		case blackTextColor:
-			textColor = [NSColor blackColor];
-			break;
-			
-		case whiteTextColor:
-			textColor = [NSColor whiteColor];
-			break;
-			
-		case grayTextColor:
-			textColor = [NSColor grayColor];
-			break;
-			
-		case silverTextColor:
-			textColor = iTetSilverTextColor;
-			break;
-			
-		case redTextColor:
-			textColor = [NSColor redColor];
-			break;
-			
-		case yellowTextColor:
-			textColor = [NSColor yellowColor];
-			break;
-			
-		case limeTextColor:
-			textColor = [NSColor greenColor];
-			break;
-			
-		case greenTextColor:
-			textColor = iTetGreenTextColor;
-			break;
-			
-		case oliveTextColor:
-			textColor = iTetOliveTextColor;
-			break;
-			
-		case tealTextColor:
-			textColor = iTetTealTextColor;
-			break;
-			
-		case cyanTextColor:
-			textColor = [NSColor cyanColor];
-			break;
-			
-		case blueTextColor:
-			textColor = [NSColor blueColor];
-			break;
-			
-		case darkBlueTextColor:
-			textColor = iTetDarkBlueTextColor;
-			break;
-			
-		case purpleTextColor:
-			textColor = [NSColor purpleColor];
-			break;
-			
-		case maroonTextColor:
-			textColor = iTetMaroonTextColor;
-			break;
-			
-		case magentaTextColor:
-			textColor = [NSColor magentaColor];
-			break;
-			
-		default:
-			return;
-	}
+	NSColor* textColor = iTetTextColorForCode([sender tag]);
 	
 	// Determine if there is text selected
 	NSRange selection = [editor selectedRange];
@@ -147,6 +157,18 @@ enum
 		
 		[attrDict release];
 	}
+}
+
+#pragma mark -
+#pragma mark Interface Validations
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+	// Color change actions are available if the message field has keyboard focus
+	if ([item action] == @selector(changeTextColor:))
+		return ([partylineMessageField currentEditor] != nil);
+	
+	return YES;
 }
 
 @end
