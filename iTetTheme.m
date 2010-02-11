@@ -20,7 +20,7 @@
 											     ofType:@"cfg"]],
 		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
 											     ofType:@"cfg"]],
-		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"gTetrinetTheme"
+		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
 											     ofType:@"cfg"]],
 		  nil];
 }
