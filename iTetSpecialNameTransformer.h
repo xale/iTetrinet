@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString* const iTetSpecialNameTransformerName;
+
 @interface iTetSpecialNameTransformer : NSValueTransformer
 {
 

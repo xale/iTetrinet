@@ -8,6 +8,8 @@
 #import "iTetSpecialNameTransformer.h"
 #import "iTetSpecials.h"
 
+NSString* const iTetSpecialNameTransformerName = @"TetrinetSpecialNameTransformer";
+
 @implementation iTetSpecialNameTransformer
 
 + (Class)transformedValueClass

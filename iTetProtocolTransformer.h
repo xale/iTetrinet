@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString* const iTetProtocolTransformerName;
 
 @interface iTetProtocolTransformer : NSValueTransformer
 {

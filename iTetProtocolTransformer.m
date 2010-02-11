@@ -8,9 +8,7 @@
 #import "iTetProtocolTransformer.h"
 #import "iTetServerInfo.h"
 
-NSString* const tetrinetProtocolString = @"Tetrinet";
-NSString* const tetrifastProtocolString = @"Tetrifast";
-NSString* const unknownProtocolString = @"Unknown Protocol";
+NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 
 @implementation iTetProtocolTransformer
 
@@ -23,6 +21,10 @@ NSString* const unknownProtocolString = @"Unknown Protocol";
 {
 	return YES;
 }
+
+NSString* const tetrinetProtocolString = @"Tetrinet";
+NSString* const tetrifastProtocolString = @"Tetrifast";
+NSString* const unknownProtocolString = @"Unknown Protocol";
 
 - (id)transformedValue:(id)value
 {
