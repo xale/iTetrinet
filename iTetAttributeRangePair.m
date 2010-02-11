@@ -9,17 +9,21 @@
 
 @implementation iTetAttributeRangePair
 
-+ (id)pairWithAttribute:(NSDictionary*)attr
-    beginningAtLocation:(NSUInteger)location
++ (id)pairWithAttributeType:(uint8_t)attr
+			    value:(NSDictionary*)value
+	  beginningAtLocation:(NSUInteger)location
 {
-	return [[[self alloc] initWithAttribute:attr
-				  beginningAtLocation:location] autorelease];
+	return [[[self alloc] initWithAttributeType:attr
+							  value:value
+					beginningAtLocation:location] autorelease];
 }
 
-- (id)initWithAttribute:(NSDictionary*)attr
-    beginningAtLocation:(NSUInteger)location
+- (id)initWithAttributeType:(uint8_t)attr
+			    value:(NSDictionary*)value
+	  beginningAtLocation:(NSUInteger)location
 {
-	attribute = [attr retain];
+	attributeType = attr;
+	attributeValue = [value retain];
 	range.location = location;
 	
 	return self;
@@ -27,9 +31,24 @@
 
 - (void)dealloc
 {
-	[attribute release];
+	[attributeValue release];
 	
 	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Comparators
+
+- (BOOL)isEqual:(id)object
+{
+	if ([object isKindOfClass:[self class]])
+	{
+		iTetAttributeRangePair* otherPair = (iTetAttributeRangePair*)object;
+		
+		return ([self attributeType] == [otherPair attributeType]);
+	}
+	
+	return NO;
 }
 
 #pragma mark -
@@ -40,7 +59,8 @@
 	range.length = (closeLocation - range.location);
 }
 
-@synthesize attribute;
+@synthesize attributeType;
+@synthesize attributeValue;
 @synthesize range;
 
 @end

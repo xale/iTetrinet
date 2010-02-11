@@ -10,18 +10,22 @@
 
 @interface iTetAttributeRangePair : NSObject
 {
-	NSDictionary* attribute;
+	uint8_t attributeType;
+	NSDictionary* attributeValue;
 	NSRange range;
 }
 
-+ (id)pairWithAttribute:(NSDictionary*)attr
-    beginningAtLocation:(NSUInteger)location;
-- (id)initWithAttribute:(NSDictionary*)attr
-    beginningAtLocation:(NSUInteger)location;
++ (id)pairWithAttributeType:(uint8_t)attr
+			    value:(NSDictionary*)value
+	  beginningAtLocation:(NSUInteger)location;
+- (id)initWithAttributeType:(uint8_t)attr
+			    value:(NSDictionary*)value
+	  beginningAtLocation:(NSUInteger)location;
 
 - (void)closeRangeAtIndex:(NSUInteger)closeLocation;
 
-@property (readonly) NSDictionary* attribute;
+@property (readonly) uint8_t attributeType;
+@property (readonly) NSDictionary* attributeValue;
 @property (readonly) NSRange range;
 
 @end
