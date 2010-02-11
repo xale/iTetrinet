@@ -197,7 +197,6 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 	
 	// Scan the message for formatting information
 	const uint8_t* rawData = (uint8_t*)[messageData bytes];
-	NSUInteger formattingBytes = 0;
 	NSMutableArray* openAttributes = [NSMutableArray array];
 	for (NSUInteger index = 0; index < [messageData length]; index++)
 	{
@@ -249,9 +248,9 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 			NSArray* filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType == %d", byte]];
 			if ([filteredArray count] > 0)
 			{
-				// "Close" the range of this attribute
+				// "Close" the range of this attribute at the character before this one
 				iTetAttributeRangePair* attributeAndRange = [filteredArray objectAtIndex:0];
-				[attributeAndRange closeRangeAtIndex:(index - formattingBytes)];
+				[attributeAndRange setLastIndexInRange:(index - 1)];
 				
 				// Add this attribute to the string
 				[formattedString addAttributes:[attributeAndRange attributeValue]
@@ -265,12 +264,9 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 				// Add this attribute to the list of "open" attributes
 				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
 															value:attribute
-												    beginningAtLocation:(index - formattingBytes)]];
+												    beginningAtLocation:index]];
 			}
 		}
-		
-		// Increment the number of formatting characters we have passed over (used as offsets into the output string)
-		formattingBytes++;
 	}
 	
 	return formattedString;

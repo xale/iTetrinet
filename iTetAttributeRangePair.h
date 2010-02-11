@@ -22,7 +22,7 @@
 			    value:(NSDictionary*)value
 	  beginningAtLocation:(NSUInteger)location;
 
-- (void)closeRangeAtIndex:(NSUInteger)closeLocation;
+- (void)setLastIndexInRange:(NSUInteger)lastIndex;
 
 @property (readonly) uint8_t attributeType;
 @property (readonly) NSDictionary* attributeValue;

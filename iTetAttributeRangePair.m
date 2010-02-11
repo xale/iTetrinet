@@ -54,9 +54,9 @@
 #pragma mark -
 #pragma mark Accessors
 
-- (void)closeRangeAtIndex:(NSUInteger)closeLocation
+- (void)setLastIndexInRange:(NSUInteger)lastIndex
 {
-	range.length = (closeLocation - range.location);
+	range.length = (lastIndex - range.location) + 1;
 }
 
 @synthesize attributeType;
