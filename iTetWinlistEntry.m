@@ -9,18 +9,29 @@
 
 @implementation iTetWinlistEntry
 
-+ (id)entryWithName:(NSString*)entryName
-		  score:(NSInteger)entryScore
++ (id)playerEntryWithName:(NSString *)entryName
+			  score:(NSInteger)entryScore
 {
 	return [[[self alloc] initWithName:entryName
-					     score:entryScore] autorelease];
+					     score:entryScore
+					    isTeam:NO] autorelease];
+}
+
++ (id)teamEntryWithName:(NSString*)entryName
+			score:(NSInteger)entryScore
+{
+	return [[[self alloc] initWithName:entryName
+					     score:entryScore
+					    isTeam:YES] autorelease];
 }
 
 - (id)initWithName:(NSString*)entryName
 		 score:(NSInteger)entryScore
+		  isTeam:(BOOL)isTeam
 {
 	name = [entryName copy];
 	score = entryScore;
+	team = isTeam;
 	
 	return self;
 }
@@ -30,5 +41,6 @@
 
 @synthesize name;
 @synthesize score;
+@synthesize team;
 
 @end

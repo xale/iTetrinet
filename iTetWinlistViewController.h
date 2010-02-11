@@ -9,13 +9,11 @@
 
 @interface iTetWinlistViewController : NSObject
 {
-	NSArray* playersWinlist;
-	NSArray* teamsWinlist;
+	NSArray* winlist;
 }
 
 - (void)parseWinlist:(NSArray*)winlistTokens;
 
-@property (readwrite, retain) NSArray* playersWinlist;
-@property (readwrite, retain) NSArray* teamsWinlist;
+@property (readwrite, retain) NSArray* winlist;
 
 @end

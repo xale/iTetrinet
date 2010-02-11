@@ -11,14 +11,19 @@
 {
 	NSString* name;
 	NSInteger score;
+	BOOL team;
 }
 
-+ (id)entryWithName:(NSString*)entryName
-		  score:(NSInteger)entryScore;
++ (id)playerEntryWithName:(NSString*)entryName
+			  score:(NSInteger)entryScore;
++ (id)teamEntryWithName:(NSString*)entryName
+			score:(NSInteger)entryScore;
 - (id)initWithName:(NSString*)entryName
-		 score:(NSInteger)entryScore;
+		 score:(NSInteger)entryScore
+		isTeam:(BOOL)isTeam;
 
 @property (readonly) NSString* name;
 @property (readonly) NSInteger score;
+@property (readonly, getter=isTeam) BOOL team;
 
 @end

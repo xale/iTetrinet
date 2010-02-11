@@ -19,18 +19,25 @@
 #import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
+#import "iTetWinlistEntryTypeImageTransformer.h"
 
 @implementation iTetAppController
 
 + (void)initialize
 {
 	// Register value transformers
-	iTetProtocolTransformer* pt = [[[iTetProtocolTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:pt
-						  forName:@"TetrinetProtocolTransformer"];
-	pt = [[[iTetSpecialNameTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:pt
-						  forName:@"TetrinetSpecialNameTransformer"];
+	// Protocol enum to name
+	NSValueTransformer* transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+						  forName:iTetProtocolTransformerName];
+	// Special code/number to name
+	transformer = [[[iTetSpecialNameTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+						  forName:iTetSpecialNameTransformerName];
+	// Winlist entry type to image
+	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+						  forName:iTetWinlistEntryTypeImageTransformerName];
 	
 	// Seed random number generator
 	srandom(time(NULL));

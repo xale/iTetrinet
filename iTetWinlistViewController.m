@@ -15,8 +15,7 @@ static unichar const iTetTeamEntryCharacter = 't';
 
 - (void)parseWinlist:(NSArray*)winlistTokens
 {
-	NSMutableArray* playerEntries = [NSMutableArray array];
-	NSMutableArray* teamEntries = [NSMutableArray array];
+	NSMutableArray* winlistEntries = [NSMutableArray array];
 	
 	// Iterate through the list of players and teams
 	NSArray* entryComponents;
@@ -30,28 +29,28 @@ static unichar const iTetTeamEntryCharacter = 't';
 			continue;
 		}
 		
-		// Create the entry
-		iTetWinlistEntry* entry = [iTetWinlistEntry entryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
-										    score:[[entryComponents objectAtIndex:1] integerValue]];
-		
 		// Determine if this entry represents a player or a team
 		unichar firstChar = [entryToken characterAtIndex:0];
 		if (firstChar == iTetPlayerEntryCharacter)
-			[playerEntries addObject:entry];
+		{
+			[winlistEntries addObject:[iTetWinlistEntry playerEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
+												    score:[[entryComponents objectAtIndex:1] integerValue]]];
+		}
 		else if (firstChar == iTetTeamEntryCharacter)
-			[teamEntries addObject:entry];
+		{
+			[winlistEntries addObject:[iTetWinlistEntry teamEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
+												  score:[[entryComponents objectAtIndex:1] integerValue]]];
+		}
 		else
 			NSLog(@"WARNING: malformed winlist entry: %@", entryToken);
 	}
 	
-	[self setPlayersWinlist:[playerEntries copy]];
-	[self setTeamsWinlist:[teamEntries copy]];
+	[self setWinlist:winlistEntries];
 }
 
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize playersWinlist;
-@synthesize teamsWinlist;
+@synthesize winlist;
 
 @end
