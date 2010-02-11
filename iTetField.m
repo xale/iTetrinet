@@ -40,7 +40,7 @@ char partialUpdateCharToCell(char updateChar);
 	
 	// Iterate through the fieldstring
 	NSInteger row, col;
-	for (NSInteger i = 0; i < [fieldstring length]; i++)
+	for (NSUInteger i = 0; i < [fieldstring length]; i++)
 	{
 		// Get the cell value at this index
 		currentCell = field[i];
@@ -296,7 +296,7 @@ char partialUpdateCharToCell(char updateChar);
 	
 	char currentChar;
 	NSInteger row, col;
-	for (NSInteger i = 1; i < [partialUpdate length]; i++)
+	for (NSUInteger i = 1; i < [partialUpdate length]; i++)
 	{
 		currentChar = update[i];
 		
@@ -775,6 +775,8 @@ char cellToPartialUpdateChar(char cellType)
 			return '.';
 		case blockBomb:
 			return '/';
+		default:
+			break;
 	}
 	
 	// Non-special cells are indexed from ASCII 33 ('!')

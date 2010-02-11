@@ -72,6 +72,9 @@ NSString* iTetNameForAction(iTetGameAction action)
 			
 		case gameChat:
 			return iTetGameChatActionName;
+			
+		default:
+			break;
 	}
 	
 	return iTetNoActionName;

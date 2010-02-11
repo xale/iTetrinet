@@ -55,7 +55,7 @@
 - (void)displayViewControllerAtIndex:(iTetPreferencesTabNumber)index
 {
 	// Sanity check
-	NSParameterAssert((index >= 0) && (index < [viewControllers count]));
+	NSParameterAssert((index >= 0) && (((NSUInteger)index) < [viewControllers count]));
 	
 	// Check if we are already displaying the view
 	if (currentViewNumber == index)

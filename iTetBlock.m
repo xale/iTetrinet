@@ -292,6 +292,10 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 			// Still can't rotate, even after shifting
 			return;
 		}
+		
+		default:
+			// No obstructions; perform rotation
+			break;
 	}
 	
 	// If unobstructed, or if shifting was successful, change the orientation

@@ -40,6 +40,8 @@ char iTetSpecialNumberFromType(iTetSpecialType type)
 			return 8;
 		case blockBomb:
 			return 9;
+		default:
+			break;
 	}
 	
 	// Not a valid type
@@ -96,6 +98,8 @@ NSString* iTetNameForSpecialType(iTetSpecialType type)
 			return iTetQuakeFieldSpecialName;
 		case blockBomb:
 			return iTetBlockBombSpecialName;
+		default:
+			break;
 	}
 	
 	// No special (or invalid placeholder)
