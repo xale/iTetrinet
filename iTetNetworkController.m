@@ -8,7 +8,6 @@
 #import "iTetNetworkController.h"
 #import "iTetAppController.h"
 #import "iTetTextAttributesController.h"
-#import "iTetAttributeRangePair.h"
 #import "iTetServerInfo.h"
 #import "Queue.h"
 #import "NSMutableData+SingleByte.h"
@@ -97,9 +96,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			break;
 	}
 	
-	// FIXME: debug logging
-	//NSLog(@"DEBUG: initializing connection to server %@", address);
-	
 	// Split the server's IP address into integer components
 	NSArray* ipComponents = [address componentsSeparatedByString:@"."];
 	NSInteger ip[4];
@@ -177,36 +173,26 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	// Connection Opened
 	if (event & NSStreamEventOpenCompleted)
 	{
-		// FIXME: debug logging
-		//NSLog(@"DEBUG: OpenCompleted stream event");
 		[self setConnected:YES];
 	}
 	// Data to read
 	if (event & NSStreamEventHasBytesAvailable)
 	{
-		// FIXME: debug logging
-		//NSLog(@"DEBUG: HasBytesAvailable stream event");
 		[self attemptRead];
 	}
 	// Space to write
 	if (event & NSStreamEventHasSpaceAvailable)
 	{
-		// FIXME: debug logging
-		//NSLog(@"DEBUG: HasSpaceAvailable stream event");
 		[self attemptWrite];
 	}
 	// Error
 	if (event & NSStreamEventErrorOccurred)
 	{
-		// FIXME: debug logging
-		//NSLog(@"DEBUG: ErrorOccurred stream event");
 		[self handleError:stream];
 	}
 	// End-of-stream
 	if (event & NSStreamEventEndEncountered)
 	{
-		// FIXME: debug logging
-		//NSLog(@"DEBUG: EndEncountered stream event");
 		[self disconnect];
 	}
 }
@@ -232,9 +218,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	}
 	
 	buffer[bytesRead] = 0; // NULL terminator
-	
-	// FIXME: debug logging
-	// NSLog(@"DEBUG: data read: %s", buffer);
 	
 	// Loop through the data, looking for terminator characters
 	NSUInteger index, lastTerminator = 0;
