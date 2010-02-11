@@ -250,8 +250,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// Append a NULL terminator for the end of the string
 			[partialRead appendByte:0];
 			
-			// Process and relay the finished message to the delegate
-			[self processMessage:[[partialRead copy] autorelease]];
+			// Relay the message to the delegate
+			if ([delegate respondsToSelector:@selector(messageRecieved:)])
+				[delegate messageRecieved:[[partialRead copy] autorelease]];
 			
 			// Clear the partial read buffer
 			[partialRead setLength:0];
@@ -274,152 +275,15 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		[self attemptRead];
 }
 
-- (void)processMessage:(NSData *)messageData
-{
-	// Get the raw string from the message
-	NSString* message = [NSString stringWithCString:[messageData bytes]
-							   encoding:NSASCIIStringEncoding];
-	
-	// Scan the message for formatting information
-	/* FIXME: UNFINISHED
-	const uint8_t* rawData = (uint8_t*)[messageData bytes];
-	NSUInteger formattingBytes = 0;
-	uint8_t byte;
-	NSDictionary* attribute;
-	NSMutableArray* openAttributes = [NSMutableArray array];
-	for (NSUInteger index = 0; index < [messageData length]; index++)
-	{
-		// Check if this byte is a non-printing character
-		byte = rawData[index];
-		if (byte > boldText)
-			continue;
-		
-		switch (byte)
-		{
-			case boldText:
-				attribute = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Helvetica-Bold"
-														   size:12.0]
-										    forKey:NSFontAttributeName];
-				break;
-		}
-	} */
-	
-	// Relay the message to the delegate
-	if ([delegate respondsToSelector:@selector(messageRecieved:)])
-		[delegate messageRecieved:message];
-}
-
 - (void)sendMessage:(NSString*)message
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: enqueueing outgoing message: %@", message);
-	
-	// Create a mutable data object from the message
-	NSMutableData* data = [NSMutableData dataWithData:[message dataUsingEncoding:NSASCIIStringEncoding
-										  allowLossyConversion:YES]];
-	
 	// Send the message
-	[self sendData:data];
+	[self sendMessageData:[message dataUsingEncoding:NSASCIIStringEncoding
+					    allowLossyConversion:YES]];
 }
 
-- (void)sendAttributedMessage:(NSAttributedString*)message
-		  attributedRange:(NSRange)rangeWithAttributes
+- (void)sendMessageData:(NSData*)messageData
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: sending attributed message: %@", [message string]);
-	NSLog(@"                 attributed range: %@", NSStringFromRange(rangeWithAttributes));
-	
-	// Create the raw ASCII version of the message
-	NSMutableData* messageData = [NSMutableData dataWithData:[[message string] dataUsingEncoding:NSASCIIStringEncoding
-													allowLossyConversion:YES]];
-	NSUInteger bytesAdded = 0;
-	
-	// Search the messages for attributes
-	NSUInteger index = rangeWithAttributes.location;
-	NSDictionary* attributes;
-	NSRange attrRange;
-	NSMutableArray* openTags = [NSMutableArray array];
-	iTetTextColorCode color;
-	NSFontTraitMask fontTraits;
-	while (index < (rangeWithAttributes.location + rangeWithAttributes.length))
-	{
-		// Find the attributes and their extent at this point in the message
-		attributes = [message attributesAtIndex:index
-					longestEffectiveRange:&attrRange
-							  inRange:rangeWithAttributes];
-		
-		// Check for specific attributes that interest us
-		// Text color
-		color = iTetCodeForTextColor([attributes objectForKey:NSForegroundColorAttributeName]);
-		if (color != blackTextColor)
-		{
-			// Add color codes to the outgoing message data
-			// Open tag
-			[messageData insertByte:(uint8_t)color
-					   atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
-			
-			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:color]];
-		}
-		
-		// Underline
-		if ([[attributes objectForKey:NSUnderlineStyleAttributeName] intValue] != NSUnderlineStyleNone)
-		{
-			// Add underline code to message
-			// Open tag
-			[messageData insertByte:(uint8_t)underlineText
-					   atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
-			
-			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:underlineText]];
-		}
-		
-		fontTraits = [[NSFontManager sharedFontManager] traitsOfFont:[attributes objectForKey:NSFontAttributeName]];
-		
-		// Bold
-		if (fontTraits & NSBoldFontMask)
-		{
-			// Add bold code to message
-			// Open tag
-			[messageData insertByte:(uint8_t)boldText
-					   atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
-			
-			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:boldText]];
-		}
-		
-		// Italics
-		if (fontTraits & NSItalicFontMask)
-		{
-			// Add italics code to message
-			// Open tag
-			[messageData insertByte:(uint8_t)italicText
-					   atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
-			
-			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:italicText]];
-		}
-		
-		// Close all open tags (in reverse order) before moving to next attribute range
-		for (NSNumber* tag in [openTags reverseObjectEnumerator])
-		{
-			// Close the tag
-			[messageData insertByte:(uint8_t)[tag intValue]
-					   atIndex:(attrRange.location + attrRange.length + bytesAdded)];
-			bytesAdded++;
-		}
-		
-		// Clear the list of open tags
-		openTags = [NSMutableArray array];
-		
-		// Advance the index to the end of this attribute range
-		index = (attrRange.location + attrRange.length);
-	}
-	
 	// FIXME: debug logging
 	NSMutableString* debugString = [NSMutableString string];
 	char byte;
@@ -431,14 +295,11 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		else
 			[debugString appendFormat:@"<%02d>", byte];
 	}
-	NSLog(@"         message after formatting: %@", debugString);
+	NSLog(@"DEBUG: enqueueing outgoing message: %@", debugString);
 	
-	// Send the formatted data
-	[self sendData:messageData];
-}
-
-- (void)sendData:(NSMutableData*)data
-{
+	// Make the data mutable
+	NSMutableData* data = [NSMutableData dataWithData:messageData];
+	
 	// Append the "message terminator" byte
 	[data appendByte:((uint8_t)iTetNetworkTerminatorCharacter)];
 	
@@ -458,7 +319,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	NSMutableData* data = nil;
 	const uint8_t* dataRaw = NULL;
 	size_t dataSize = 0;
-	NSInteger bytesWritten = 0;
+	NSUInteger bytesWritten = 0;
 	
 	// Loop through data objects in the queue until we run out
 	// (or the stream stops accepting bytes; see if-statement below)

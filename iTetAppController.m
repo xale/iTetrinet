@@ -11,6 +11,7 @@
 #import "iTetGameViewController.h"
 #import "iTetChatViewController.h"
 #import "iTetWinlistViewController.h"
+#import "iTetTextAttributesController.h"
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
@@ -557,18 +558,21 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #define PlayerWonMessage	@"playerwon"
 #define EndGameMessage		@"endgame"
 
-- (void)messageRecieved:(NSString*)m
+- (void)messageRecieved:(NSData*)messageData
 {
-	NSLog(@"DEBUG: parsing message: %@", m);
+	// Naively convert the message to ASCII
+	NSString* message = [NSString stringWithCString:[messageData bytes]
+							   encoding:NSASCIIStringEncoding];
+	
+	NSLog(@"DEBUG: parsing message: %@", message);
 	
 	// Split the message into space-separated tokens
-	NSArray* tokens = [m componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSArray* tokens = [message componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	
 	// Get the first token of the message
 	NSString* messageType = [tokens objectAtIndex:0];
 	
 	NSInteger playerNum;
-	NSString* message;
 	
 	// Determine the nature of the message
 #pragma mark Server Heartbeat Message
@@ -747,30 +751,34 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Partyline Text Message
 	else if ([messageType isEqualToString:PLineTextMessage])
 	{
-		// Create the message from all but the first two tokens
-		message = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] componentsJoinedByString:@" "];
-		
-		// Hand the message off to the chat controller
-		// FIXME: formatting
-		/*
-		 [chatController appendChatLine:message
-				    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-						action:NO];
-		 */
+		// Check if the message has actual chat text
+		if ([tokens count] > 2)
+		{
+			// Trim the first two tokens off of the message
+			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
+			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
+			
+			// Format the chat text and hand off to the chat controller
+			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
+					    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
+							action:NO];
+		}
 	}
 #pragma mark Partyline Action Message
 	else if ([messageType isEqualToString:PLineActionMessage])
 	{
-		// Create the action message from all but the first two tokens
-		message = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] componentsJoinedByString:@" "];
-		
-		// Hand the action off to the chat controller
-		// FIXME: formatting
-		/*
-		[chatController appendChatLine:message
-				    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-						action:YES];
-		 */
+		// Check if the message has actual chat text
+		if ([tokens count] > 2)
+		{
+			// Trim the first two tokens off of the message
+			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
+			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
+			
+			// Format the chat text and hand off to the chat controller
+			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
+					    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
+							action:YES];
+		}
 	}
 #pragma mark New Game Message
 	else if ([messageType isEqualToString:NewGameMessage])
@@ -1068,7 +1076,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	return [self remotePlayerNumber:5];
 }
-- (iTetPlayer*)remotePlayerNumber:(NSUInteger)n
+- (iTetPlayer*)remotePlayerNumber:(NSInteger)n
 {	
 	// Shift index to account for the local player's number
 	if ([[self localPlayer] playerNumber] > n)
@@ -1105,10 +1113,12 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	return (iTetPlayer*)player;
 }
 
+NSString* const iTetServerPlayerNamePlaceholder = @"SERVER";
+
 - (NSString*)playerNameForNumber:(NSInteger)number
 {
 	if (number == 0)
-		return @"SERVER";
+		return iTetServerPlayerNamePlaceholder;
 	else
 		return [[self playerNumber:number] nickname];
 }

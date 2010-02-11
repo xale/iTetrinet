@@ -38,12 +38,9 @@ typedef enum
 - (void)disconnect;
 
 - (void)sendMessage:(NSString*)message;
-- (void)sendAttributedMessage:(NSAttributedString*)message
-		  attributedRange:(NSRange)rangeWithAttributes;
-- (void)sendData:(NSMutableData*)data;
+- (void)sendMessageData:(NSData*)messageData;
 
 - (void)attemptRead;
-- (void)processMessage:(NSData*)messageData;
 - (void)attemptWrite;
 - (void)handleError:(NSStream*)stream;
 

@@ -6,6 +6,7 @@
 //
 
 #import "iTetTextAttributesController.h"
+#import "NSMutableData+SingleByte.h"
 #import "NSColor+Comparisons.h"
 
 #define iTetSilverTextColor	[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
@@ -66,6 +67,9 @@ NSColor* iTetTextColorForCode(iTetTextColorCode code)
 			
 		case magentaTextColor:
 			return [NSColor magentaColor];
+			
+		default:
+			break;
 	}
 	
 	return nil;
@@ -169,6 +173,138 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 		return ([partylineMessageField currentEditor] != nil);
 	
 	return YES;
+}
+
+#pragma mark -
+#pragma mark Message Formatting
+
+- (NSAttributedString*)formattedMessageFromData:(NSData*)messageData
+{
+	// Scan the message for formatting information
+	/* FIXME: UNFINISHED
+	 const uint8_t* rawData = (uint8_t*)[messageData bytes];
+	 NSUInteger formattingBytes = 0;
+	 uint8_t byte;
+	 NSDictionary* attribute;
+	 NSMutableArray* openAttributes = [NSMutableArray array];
+	 for (NSUInteger index = 0; index < [messageData length]; index++)
+	 {
+	 // Check if this byte is a non-printing character
+	 byte = rawData[index];
+	 if (byte > boldText)
+	 continue;
+	 
+	 switch (byte)
+	 {
+	 case boldText:
+	 attribute = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Helvetica-Bold"
+	 size:12.0]
+	 forKey:NSFontAttributeName];
+	 break;
+	 }
+	 } */
+	
+	// FIXME: temporary
+	return [[[NSAttributedString alloc] initWithString:[NSString stringWithCString:[messageData bytes]
+												    encoding:NSASCIIStringEncoding]] autorelease];
+}
+
+- (NSData*)dataFromFormattedMessage:(NSAttributedString*)message
+		    withAttributedRange:(NSRange)rangeWithAttributes
+{
+	// Create the raw ASCII version of the message
+	NSMutableData* messageData = [NSMutableData dataWithData:[[message string] dataUsingEncoding:NSASCIIStringEncoding
+													allowLossyConversion:YES]];
+	NSUInteger bytesAdded = 0;
+	
+	// Search the messages for attributes
+	NSUInteger index = rangeWithAttributes.location;
+	NSDictionary* attributes;
+	NSRange attrRange;
+	NSMutableArray* openTags = [NSMutableArray array];
+	iTetTextColorCode color;
+	NSFontTraitMask fontTraits;
+	while (index < (rangeWithAttributes.location + rangeWithAttributes.length))
+	{
+		// Find the attributes and their extent at this point in the message
+		attributes = [message attributesAtIndex:index
+					longestEffectiveRange:&attrRange
+							  inRange:rangeWithAttributes];
+		
+		// Check for specific attributes that interest us
+		// Text color
+		color = iTetCodeForTextColor([attributes objectForKey:NSForegroundColorAttributeName]);
+		if (color != blackTextColor)
+		{
+			// Add color codes to the outgoing message data
+			// Open tag
+			[messageData insertByte:(uint8_t)color
+					    atIndex:(attrRange.location + bytesAdded)];
+			bytesAdded++;
+			
+			// Add to list of open tags
+			[openTags addObject:[NSNumber numberWithInt:color]];
+		}
+		
+		// Underline
+		if ([[attributes objectForKey:NSUnderlineStyleAttributeName] intValue] != NSUnderlineStyleNone)
+		{
+			// Add underline code to message
+			// Open tag
+			[messageData insertByte:(uint8_t)underlineText
+					    atIndex:(attrRange.location + bytesAdded)];
+			bytesAdded++;
+			
+			// Add to list of open tags
+			[openTags addObject:[NSNumber numberWithInt:underlineText]];
+		}
+		
+		fontTraits = [[NSFontManager sharedFontManager] traitsOfFont:[attributes objectForKey:NSFontAttributeName]];
+		
+		// Bold
+		if (fontTraits & NSBoldFontMask)
+		{
+			// Add bold code to message
+			// Open tag
+			[messageData insertByte:(uint8_t)boldText
+					    atIndex:(attrRange.location + bytesAdded)];
+			bytesAdded++;
+			
+			// Add to list of open tags
+			[openTags addObject:[NSNumber numberWithInt:boldText]];
+		}
+		
+		// Italics
+		if (fontTraits & NSItalicFontMask)
+		{
+			// Add italics code to message
+			// Open tag
+			[messageData insertByte:(uint8_t)italicText
+					    atIndex:(attrRange.location + bytesAdded)];
+			bytesAdded++;
+			
+			// Add to list of open tags
+			[openTags addObject:[NSNumber numberWithInt:italicText]];
+		}
+		
+		// Close all open tags (in reverse order) before moving to next attribute range
+		for (NSNumber* tag in [openTags reverseObjectEnumerator])
+		{
+			// Close the tag
+			[messageData insertByte:(uint8_t)[tag intValue]
+					    atIndex:(attrRange.location + attrRange.length + bytesAdded)];
+			bytesAdded++;
+		}
+		
+		// Clear the list of open tags
+		openTags = [NSMutableArray array];
+		
+		// Advance the index to the end of this attribute range
+		index = (attrRange.location + attrRange.length);
+	}
+	
+	// Return the formatted data
+	return [NSData dataWithData:messageData];
 }
 
 @end

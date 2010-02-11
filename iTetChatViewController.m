@@ -7,6 +7,7 @@
 
 #import "iTetChatViewController.h"
 #import "iTetAppController.h"
+#import "iTetTextAttributesController.h"
 #import "iTetNetworkController.h"
 #import "iTetChannelInfo.h"
 #import "iTetPlayer.h"
@@ -37,7 +38,7 @@
 #pragma mark Interface Actions
 
 NSString* const iTetPlineFormat =		@"pline %d ";
-NSString* const iTetPlineActionFormat =	@"plineact %s ";
+NSString* const iTetPlineActionFormat =	@"plineact %d ";
 
 - (IBAction)sendMessage:(id)sender
 {
@@ -64,14 +65,18 @@ NSString* const iTetPlineActionFormat =	@"plineact %s ";
 		format = iTetPlineFormat;
 	}
 	
-	// Send the message
+	// Concatenate the formatting with the message contents
 	NSMutableAttributedString* toSend = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, [localPlayer playerNumber]]] autorelease];
 	[toSend appendAttributedString:message];
+	
+	// Note the range of the concatenated string that has attributes
 	NSRange attrRange;
 	attrRange.location = ([toSend length] - [message length]);
 	attrRange.length = ([toSend length] - attrRange.location);
-	[[appController networkController] sendAttributedMessage:toSend
-							     attributedRange:attrRange];
+	
+	// Send the message
+	[[appController networkController] sendMessageData:[textAttributesController dataFromFormattedMessage:toSend
+														    withAttributedRange:attrRange]];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[message string] characterAtIndex:0] != '/'))
@@ -111,17 +116,21 @@ NSString* const iTetPlineActionFormat =	@"plineact %s ";
 		    action:(BOOL)isAction
 {
 	NSMutableAttributedString* formattedMessage = [[[NSMutableAttributedString alloc] init] autorelease];
-	NSDictionary* boldAttribute = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Helvetica-Bold" size:12.0]
+	
+	// Create a bold version of the chat view's font
+	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[chatView font]
+										toHaveTrait:NSBoldFontMask];
+	NSDictionary* boldAttribute = [NSDictionary dictionaryWithObject:boldFont
 										    forKey:NSFontAttributeName];
 	if (isAction)
 	{
-		// Append an asterisk in bold (to indicate an action)
-		NSAttributedString* asterisk = [[[NSAttributedString alloc] initWithString:@"*"
+		// Append a dot in bold (to indicate an action)
+		NSAttributedString* asterisk = [[[NSAttributedString alloc] initWithString:@"•"
 												    attributes:boldAttribute] autorelease];
 		[formattedMessage appendAttributedString:asterisk];
 		
-		// Append the player's name
-		[[formattedMessage mutableString] appendFormat:@" %@ ", playerName];
+		// Append the player's name (and a space)
+		[[formattedMessage mutableString] appendFormat:@"%@ ", playerName];
 	}
 	else
 	{

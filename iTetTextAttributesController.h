@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class iTetAppController;
+
 typedef enum
 {
 	noColor =			0,
@@ -41,8 +43,13 @@ typedef enum
 @interface iTetTextAttributesController : NSObject <NSUserInterfaceValidations>
 {
 	IBOutlet NSTextField* partylineMessageField;
+	IBOutlet NSTextView* partylineChatView;
 }
 
 - (IBAction)changeTextColor:(id)sender;
+
+- (NSAttributedString*)formattedMessageFromData:(NSData*)messageData;
+- (NSData*)dataFromFormattedMessage:(NSAttributedString*)message
+		    withAttributedRange:(NSRange)rangeWithAttributes;
 
 @end

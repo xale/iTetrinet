@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="451"/>
 			<integer value="1078"/>
+			<integer value="455"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1896,7 +1896,7 @@
 								<object class="NSTabViewItem" id="886642519">
 									<string key="NSIdentifier">chat</string>
 									<object class="NSView" key="NSView" id="88341571">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2519,6 +2519,7 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Chat</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2527,7 +2528,7 @@
 								<object class="NSTabViewItem" id="644695880">
 									<string key="NSIdentifier">winlist</string>
 									<object class="NSView" key="NSView" id="625816372">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2871,20 +2872,19 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Winlist</string>
 									<reference key="NSColor" ref="751214572"/>
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="644695880"/>
+							<reference key="NSSelectedTabViewItem" ref="886642519"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="625816372"/>
+								<reference ref="88341571"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -4981,6 +4981,30 @@
 						</object>
 					</object>
 					<int key="connectionID">1210</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">textAttributesController</string>
+						<reference key="source" ref="742664187"/>
+						<reference key="destination" ref="462083609"/>
+					</object>
+					<int key="connectionID">1211</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">partylineChatView</string>
+						<reference key="source" ref="462083609"/>
+						<reference key="destination" ref="941267877"/>
+					</object>
+					<int key="connectionID">1213</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">textAttributesController</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="462083609"/>
+					</object>
+					<int key="connectionID">1214</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7376,7 +7400,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1210</int>
+			<int key="maxID">1214</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7426,6 +7450,7 @@
 							<string>serverListController</string>
 							<string>serverListView</string>
 							<string>tabView</string>
+							<string>textAttributesController</string>
 							<string>window</string>
 							<string>winlistController</string>
 						</object>
@@ -7444,6 +7469,7 @@
 							<string>NSArrayController</string>
 							<string>NSScrollView</string>
 							<string>NSTabView</string>
+							<string>iTetTextAttributesController</string>
 							<string>NSWindow</string>
 							<string>iTetWinlistViewController</string>
 						</object>
@@ -7467,12 +7493,14 @@
 							<string>appController</string>
 							<string>chatView</string>
 							<string>messageField</string>
+							<string>textAttributesController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>iTetAppController</string>
 							<string>NSTextView</string>
 							<string>NSTextField</string>
+							<string>iTetTextAttributesController</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7577,8 +7605,17 @@
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">partylineMessageField</string>
-						<string key="NS.object.0">NSTextField</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>partylineChatView</string>
+							<string>partylineMessageField</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTextView</string>
+							<string>NSTextField</string>
+						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>

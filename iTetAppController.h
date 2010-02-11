@@ -12,6 +12,7 @@
 @class iTetGameViewController;
 @class iTetChatViewController;
 @class iTetWinlistViewController;
+@class iTetTextAttributesController;
 @class iTetPlayer;
 @class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
@@ -30,6 +31,9 @@
 	IBOutlet iTetGameViewController* gameController;
 	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetWinlistViewController* winlistController;
+	
+	// Miscellaneous Controllers
+	IBOutlet iTetTextAttributesController* textAttributesController;
 	
 	// List view (and controller) for servers on connection sheet
 	IBOutlet NSScrollView* serverListView;
@@ -73,7 +77,7 @@
 - (void)connectionOpened;
 - (void)connectionClosed;
 - (void)connectionError:(NSError*)error;
-- (void)messageRecieved:(NSString*)message;
+- (void)messageRecieved:(NSData*)message;
 
 - (void)setLocalPlayerNumber:(NSInteger)number;
 - (void)addPlayerWithNumber:(NSInteger)number
@@ -90,7 +94,7 @@
 @property (readonly) iTetPlayer* remotePlayer3;
 @property (readonly) iTetPlayer* remotePlayer4;
 @property (readonly) iTetPlayer* remotePlayer5;
-- (iTetPlayer*)remotePlayerNumber:(NSUInteger)n;
+- (iTetPlayer*)remotePlayerNumber:(NSInteger)n;
 
 @property (readonly) iTetNetworkController* networkController;
 @property (readonly) iTetPreferencesController* preferencesController;
