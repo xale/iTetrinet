@@ -77,7 +77,7 @@
 - (void)connectionOpened;
 - (void)connectionClosed;
 - (void)connectionError:(NSError*)error;
-- (void)messageRecieved:(NSData*)message;
+- (void)messageReceived:(NSData*)message;
 
 - (void)setLocalPlayerNumber:(NSInteger)number;
 - (void)addPlayerWithNumber:(NSInteger)number

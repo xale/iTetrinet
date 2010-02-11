@@ -558,13 +558,24 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #define PlayerWonMessage	@"playerwon"
 #define EndGameMessage		@"endgame"
 
-- (void)messageRecieved:(NSData*)messageData
+- (void)messageReceived:(NSData*)messageData
 {
+	// FIXME: debug logging
+	NSMutableString* debugString = [NSMutableString string];
+	char byte;
+	for (NSUInteger i = 0; i < ([messageData length] - 1); i++)
+	{
+		byte = ((char*)[messageData bytes])[i];
+		if (byte > 31)
+			[debugString appendFormat:@"%c", byte];
+		else
+			[debugString appendFormat:@"<\\%02d>", byte];
+	}
+	NSLog(@"DEBUG:   received incoming message: %@", debugString);
+	
 	// Naively convert the message to ASCII
 	NSString* message = [NSString stringWithCString:[messageData bytes]
 							   encoding:NSASCIIStringEncoding];
-	
-	NSLog(@"DEBUG: parsing message: %@", message);
 	
 	// Split the message into space-separated tokens
 	NSArray* tokens = [message componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -1050,8 +1061,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 
 - (NSArray*)playerList
 {
-	return [players filteredArrayUsingPredicate:
-		  [NSPredicate predicateWithFormat:@"SELF != %@", [NSNull null]]];
+	return [players filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", [NSNull null]]];
 }
 
 @synthesize localPlayer;

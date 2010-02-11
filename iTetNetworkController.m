@@ -234,8 +234,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			[partialRead appendByte:0];
 			
 			// Relay the message to the delegate
-			if ([delegate respondsToSelector:@selector(messageRecieved:)])
-				[delegate messageRecieved:[[partialRead copy] autorelease]];
+			if ([delegate respondsToSelector:@selector(messageReceived:)])
+				[delegate messageReceived:[[partialRead copy] autorelease]];
 			
 			// Clear the partial read buffer
 			[partialRead setLength:0];
