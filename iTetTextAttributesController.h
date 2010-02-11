@@ -35,10 +35,12 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color);
 
 typedef enum
 {
-	italicText =	11,
-	underlineText =	21,
-	boldText =		31
+	italicText =	22,
+	underlineText =	31,
+	boldText =		2
 } iTetTextAttributeCode;
+
+#define ITET_HIGHEST_ATTR_CODE	31
 
 @interface iTetTextAttributesController : NSObject <NSUserInterfaceValidations>
 {

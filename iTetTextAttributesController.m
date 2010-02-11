@@ -7,6 +7,7 @@
 
 #import "iTetTextAttributesController.h"
 #import "NSMutableData+SingleByte.h"
+#import "iTetAttributeRangePair.h"
 #import "NSColor+Comparisons.h"
 
 #define iTetSilverTextColor	[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
@@ -180,33 +181,99 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 
 - (NSAttributedString*)formattedMessageFromData:(NSData*)messageData
 {
-	// Scan the message for formatting information
-	/* FIXME: UNFINISHED
-	 const uint8_t* rawData = (uint8_t*)[messageData bytes];
-	 NSUInteger formattingBytes = 0;
-	 uint8_t byte;
-	 NSDictionary* attribute;
-	 NSMutableArray* openAttributes = [NSMutableArray array];
-	 for (NSUInteger index = 0; index < [messageData length]; index++)
-	 {
-	 // Check if this byte is a non-printing character
-	 byte = rawData[index];
-	 if (byte > boldText)
-	 continue;
-	 
-	 switch (byte)
-	 {
-	 case boldText:
-	 attribute = [NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Helvetica-Bold"
-	 size:12.0]
-	 forKey:NSFontAttributeName];
-	 break;
-	 }
-	 } */
+	// Create a mutable attributed string to apply attributes to
+	NSString* baseString = [NSString stringWithCString:[messageData bytes]
+								encoding:NSASCIIStringEncoding];
+	NSMutableAttributedString* formattedString = [[[NSMutableAttributedString alloc] initWithString:baseString] autorelease];
 	
-	// FIXME: temporary
-	return [[[NSAttributedString alloc] initWithString:[NSString stringWithCString:[messageData bytes]
-												    encoding:NSASCIIStringEncoding]] autorelease];
+	// Create bold and italic versions of the default chat view font
+	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
+										toHaveTrait:NSBoldFontMask];
+	NSFont* italicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
+										  toHaveTrait:NSItalicFontMask];
+	// FIXME: not implemented; needs a special case
+	NSFont* boldItalicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
+											toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
+	
+	// Scan the message for formatting information
+	const uint8_t* rawData = (uint8_t*)[messageData bytes];
+	NSUInteger formattingBytes = 0;
+	NSMutableArray* openAttributes = [NSMutableArray array];
+	for (NSUInteger index = 0; index < [messageData length]; index++)
+	{
+		// Check if this byte is a non-printing character
+		uint8_t byte = rawData[index];
+		if (byte > ITET_HIGHEST_ATTR_CODE)
+			continue;
+		
+		// Determine if this character maps to a text attribute
+		// FIXME: this should be done _after_ we determine if the tag is already open
+		NSDictionary* attribute = nil;
+		switch (byte)
+		{
+			case boldText:
+				// Bold
+				attribute = [NSDictionary dictionaryWithObject:boldFont
+										    forKey:NSFontAttributeName];
+				break;
+				
+			case italicText:
+				// Italic
+				attribute = [NSDictionary dictionaryWithObject:italicFont
+										    forKey:NSFontAttributeName];
+				break;
+				
+			case underlineText:
+				// Underline
+				attribute = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(NSUnderlineStyleSingle | NSUnderlinePatternSolid)]
+										    forKey:NSUnderlineStyleAttributeName];
+				break;
+				
+			default:
+			{
+				// Colored text
+				NSColor* textColor = iTetTextColorForCode((iTetTextColorCode)byte);
+				if (textColor != nil)
+				{
+					attribute = [NSDictionary dictionaryWithObject:textColor
+											    forKey:NSForegroundColorAttributeName];
+				}
+				break;
+			}
+		}
+		
+		// If the character does map to an attribute, apply that attribute to a range of the string
+		if (attribute != nil)
+		{
+			// Check whether there is already an "open" attribute of this type (i.e., this is a "closing" tag)
+			NSArray* filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType == %d", byte]];
+			if ([filteredArray count] > 0)
+			{
+				// "Close" the range of this attribute
+				iTetAttributeRangePair* attributeAndRange = [filteredArray objectAtIndex:0];
+				[attributeAndRange closeRangeAtIndex:(index - formattingBytes)];
+				
+				// Add this attribute to the string
+				[formattedString addAttributes:[attributeAndRange attributeValue]
+								 range:[attributeAndRange range]];
+				
+				// Remove from the list of open attributes
+				[openAttributes removeObject:attributeAndRange];
+			}
+			else
+			{
+				// Add this attribute to the list of "open" attributes
+				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
+															value:attribute
+												    beginningAtLocation:(index - formattingBytes)]];
+			}
+		}
+		
+		// Increment the number of formatting characters we have passed over (used as offsets into the output string)
+		formattingBytes++;
+	}
+	
+	return formattedString;
 }
 
 - (NSData*)dataFromFormattedMessage:(NSAttributedString*)message

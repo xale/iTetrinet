@@ -4992,19 +4992,19 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">partylineChatView</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="941267877"/>
-					</object>
-					<int key="connectionID">1213</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">textAttributesController</string>
 						<reference key="source" ref="814200211"/>
 						<reference key="destination" ref="462083609"/>
 					</object>
 					<int key="connectionID">1214</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">partylineChatView</string>
+						<reference key="source" ref="462083609"/>
+						<reference key="destination" ref="941267877"/>
+					</object>
+					<int key="connectionID">1215</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7400,7 +7400,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1214</int>
+			<int key="maxID">1215</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
