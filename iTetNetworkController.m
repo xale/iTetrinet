@@ -103,9 +103,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	for (i = 0; i < 4; i++)
 		ip[i] = [[ipComponents objectAtIndex:i] integerValue];
 	
-	// Create the hash of the IP address
-	NSString* ipHash = [NSString stringWithFormat:@"%d",
-				  (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
+	// Create the "hash" of the IP address
+	NSString* ipHash = [NSString stringWithFormat:@"%d", (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
 	
 	// Start with a random salt, and use it to create the initialization request
 	NSInteger x = random() % 255;
@@ -263,6 +262,18 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	// Send the message
 	[self sendMessageData:[message dataUsingEncoding:NSASCIIStringEncoding
 					    allowLossyConversion:YES]];
+}
+
+NSString* const iTetClientInfoFormat = @"clientinfo %@ %@";
+
+- (void)sendClientInfo
+{
+	// Retrieve the application name and version
+	NSString* appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+	NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+	
+	// Send the client info to the server
+	[self sendMessage:[NSString stringWithFormat:iTetClientInfoFormat, appName, version]];
 }
 
 - (void)sendMessageData:(NSData*)messageData

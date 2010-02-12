@@ -338,6 +338,7 @@
 				6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */,
 				6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */,
 				6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */,
+				6AB76D51101D141700734661 /* Preferences Window Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -449,13 +450,12 @@
 				6A4A3749101BB32500F27DE9 /* View Controllers */,
 				6A96B57D10098F49003D353E /* iTetAppController.h */,
 				6A96B57E10098F49003D353E /* iTetAppController.m */,
-				6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */,
-				6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */,
 				6A96B5F8100992F1003D353E /* iTetNetworkController.h */,
 				6A96B5F9100992F1003D353E /* iTetNetworkController.m */,
 				6A2922AC100BE5CF0008A3C3 /* iTetPreferencesController.h */,
 				6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */,
-				6AB76D51101D141700734661 /* Preferences Window Controllers */,
+				6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */,
+				6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

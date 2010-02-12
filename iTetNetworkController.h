@@ -38,6 +38,7 @@ typedef enum
 - (void)disconnect;
 
 - (void)sendMessage:(NSString*)message;
+- (void)sendClientInfo;
 - (void)sendMessageData:(NSData*)messageData;
 
 - (void)attemptRead;

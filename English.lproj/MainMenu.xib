@@ -2562,10 +2562,10 @@
 																</object>
 																<object class="NSMutableArray" key="NSTableColumns">
 																	<bool key="EncodedWithXMLCoder">YES</bool>
-																	<object class="NSTableColumn" id="1037119898">
-																		<double key="NSWidth">32.11083984375</double>
+																	<object class="NSTableColumn" id="938395049">
+																		<double key="NSWidth">32</double>
 																		<double key="NSMinWidth">32.11083984375</double>
-																		<double key="NSMaxWidth">40</double>
+																		<double key="NSMaxWidth">32</double>
 																		<object class="NSTableHeaderCell" key="NSHeaderCell">
 																			<int key="NSCellFlags">75628096</int>
 																			<int key="NSCellFlags2">2048</int>
@@ -2574,7 +2574,7 @@
 																			<reference key="NSBackgroundColor" ref="154241808"/>
 																			<reference key="NSTextColor" ref="699788123"/>
 																		</object>
-																		<object class="NSImageCell" key="NSDataCell" id="752581562">
+																		<object class="NSImageCell" key="NSDataCell" id="932668463">
 																			<int key="NSCellFlags">67239424</int>
 																			<int key="NSCellFlags2">0</int>
 																			<reference key="NSSupport" ref="760012784"/>
@@ -4776,10 +4776,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.isTeam</string>
-						<reference key="source" ref="1037119898"/>
+						<reference key="source" ref="938395049"/>
 						<reference key="destination" ref="678131185"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1037119898"/>
+							<reference key="NSSource" ref="938395049"/>
 							<reference key="NSDestination" ref="678131185"/>
 							<string key="NSLabel">value: arrangedObjects.isTeam</string>
 							<string key="NSBinding">value</string>
@@ -6405,7 +6405,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="965808270"/>
 							<reference ref="857047760"/>
-							<reference ref="1037119898"/>
+							<reference ref="938395049"/>
 						</object>
 						<reference key="parent" ref="228816705"/>
 					</object>
@@ -6456,17 +6456,17 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">1219</int>
-						<reference key="object" ref="1037119898"/>
+						<reference key="object" ref="938395049"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="752581562"/>
+							<reference ref="932668463"/>
 						</object>
 						<reference key="parent" ref="28818444"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">1221</int>
-						<reference key="object" ref="752581562"/>
-						<reference key="parent" ref="1037119898"/>
+						<reference key="object" ref="932668463"/>
+						<reference key="parent" ref="938395049"/>
 					</object>
 				</object>
 			</object>

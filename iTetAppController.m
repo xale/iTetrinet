@@ -884,8 +884,17 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Level Update Message
 	else if ([messageType isEqualToString:LevelUpdateMessage])
 	{
-		// Update the specified player's level
-		[[self playerNumber:[[tokens objectAtIndex:1] integerValue]] setLevel:[[tokens objectAtIndex:2] integerValue]];
+		// Check if this is a request for the client info ("lvl 0 0")
+		if (([[tokens objectAtIndex:1] integerValue] == 0) && ([[tokens objectAtIndex:2] integerValue] == 0))
+		{
+			// Send the client info string
+			[networkController sendClientInfo];
+		}
+		else
+		{
+			// Otherwise, update the specified player's level
+			[[self playerNumber:[[tokens objectAtIndex:1] integerValue]] setLevel:[[tokens objectAtIndex:2] integerValue]];    
+		}
 	}
 #pragma mark Player Won Message
 	else if ([messageType isEqualToString:PlayerWonMessage])
