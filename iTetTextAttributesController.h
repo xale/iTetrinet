@@ -37,7 +37,8 @@ typedef enum
 {
 	italicText =	22,
 	underlineText =	31,
-	boldText =		2
+	boldText =		2,
+	boldItalicText =	30 // Not part of the spec, just for our use; never sent over the line
 } iTetTextAttributeCode;
 
 #define ITET_HIGHEST_ATTR_CODE	31

@@ -179,6 +179,9 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 #pragma mark -
 #pragma mark Message Formatting
 
+NSString* const iTetSameAttributePredicateFormat =		@"attributeType == %d";
+NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) OR (attributeType == %d)";
+
 - (NSAttributedString*)formattedMessageFromData:(NSData*)messageData
 {
 	// Create a mutable attributed string to apply attributes to
@@ -188,10 +191,9 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 	
 	// Create bold and italic versions of the default chat view font
 	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
-										toHaveTrait:NSBoldFontMask];
+										toHaveTrait:(NSBoldFontMask | NSUnitalicFontMask)];
 	NSFont* italicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
-										  toHaveTrait:NSItalicFontMask];
-	// FIXME: not implemented; needs a special case
+										  toHaveTrait:(NSItalicFontMask | NSUnboldFontMask)];
 	NSFont* boldItalicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
 											toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
 	
@@ -206,12 +208,55 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 			continue;
 		
 		// Check if a matching attribute tag is already open
-		NSArray* filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType == %d", byte]];
+		NSArray* filteredArray;
+		NSDictionary* attribute = nil;
+		if (byte == boldText)
+		{
+			// Search for "bold" or "bold and italic" tags
+			filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:iTetMultipleAttributesPredicateFormat, boldText, boldItalicText]];
+		}
+		else if (byte == italicText)
+		{
+			// Search for "italic" or "bold and italic" tags
+			filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:iTetMultipleAttributesPredicateFormat, italicText, boldItalicText]];
+		}
+		else
+		{
+			// Search for the same tag
+			filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:iTetSameAttributePredicateFormat, byte]];
+		}
+		
+		// If a matching tag was found, close the tag and apply the attribute
 		if ([filteredArray count] > 0)
 		{
 			// "Close" the range of this attribute at the character before this one
 			iTetAttributeRangePair* attributeAndRange = [filteredArray objectAtIndex:0];
 			[attributeAndRange setLastIndexInRange:(index - 1)];
+			
+			// Check if this a "bold and italic" tag
+			if ([attributeAndRange attributeType] == boldItalicText)
+			{
+				// Create and open a tag for the remaining attribute
+				if (byte == boldText)
+				{
+					// Bold is now closed; create an italic attribute
+					attribute = [NSDictionary dictionaryWithObject:italicFont
+											    forKey:NSFontAttributeName];
+					byte = italicText;
+				}
+				else
+				{
+					// Italic is now closed; create a bold attribute
+					attribute = [NSDictionary dictionaryWithObject:boldFont
+											    forKey:NSFontAttributeName];
+					byte = boldText;
+				}
+				
+				// Add the the new tag
+				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
+															value:attribute
+												    beginningAtLocation:index]];
+			}
 			
 			// Add this attribute to the string
 			[formattedString addAttributes:[attributeAndRange attributeValue]
@@ -223,20 +268,71 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 		else
 		{
 			// Otherwise, determine if this character maps to a text attribute
-			NSDictionary* attribute = nil;
 			switch (byte)
 			{
 				case boldText:
+				{
 					// Bold
-					attribute = [NSDictionary dictionaryWithObject:boldFont
-											    forKey:NSFontAttributeName];
+					// Check if there is an open italic tag
+					NSArray* italicTags = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:iTetSameAttributePredicateFormat, italicText]];
+					if ([italicTags count] > 0)
+					{
+						// Close the italics tag
+						iTetAttributeRangePair* italicRange = [italicTags objectAtIndex:0];
+						[italicRange setLastIndexInRange:(index - 1)];
+						
+						// Apply italics to the region between the italics and bold tags
+						[formattedString addAttributes:[italicRange attributeValue]
+										 range:[italicRange range]];
+						
+						// Remove italics from the open tags
+						[openAttributes removeObject:italicRange];
+						
+						// Create a new attribute with a bold and italic font
+						attribute = [NSDictionary dictionaryWithObject:boldItalicFont
+												     forKey:NSFontAttributeName];
+						byte = boldItalicText;
+					}
+					else
+					{
+						// If there are no open italic tags, just create a new bold attribute
+						attribute = [NSDictionary dictionaryWithObject:boldFont
+												    forKey:NSFontAttributeName];
+					}
 					break;
+				}
 					
 				case italicText:
+				{
 					// Italic
-					attribute = [NSDictionary dictionaryWithObject:italicFont
-											    forKey:NSFontAttributeName];
+					// Check if there is an open bold tag
+					NSArray* boldTags = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:iTetSameAttributePredicateFormat, boldText]];
+					if ([boldTags count] > 0)
+					{
+						// Close the bold tag
+						iTetAttributeRangePair* boldRange = [boldTags objectAtIndex:0];
+						[boldRange setLastIndexInRange:(index - 1)];
+						
+						// Apply bold to the range between the bold and italic tags
+						[formattedString addAttributes:[boldRange attributeValue]
+										 range:[boldRange range]];
+						
+						// Remove bold from the open tags
+						[openAttributes removeObject:boldRange];
+						
+						// Create a new attribute with a bold and italic font
+						attribute = [NSDictionary dictionaryWithObject:boldItalicFont
+												    forKey:NSFontAttributeName];
+						byte = boldItalicText;
+					}
+					else
+					{
+						// If there are no open bold tags, just create a new italic attribute
+						attribute = [NSDictionary dictionaryWithObject:italicFont
+												    forKey:NSFontAttributeName];
+					}
 					break;
+				}
 					
 				case underlineText:
 					// Underline
