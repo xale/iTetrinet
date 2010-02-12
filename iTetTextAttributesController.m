@@ -205,63 +205,61 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 		if (byte > ITET_HIGHEST_ATTR_CODE)
 			continue;
 		
-		// Determine if this character maps to a text attribute
-		// FIXME: this should be done _after_ we determine if the tag is already open
-		NSDictionary* attribute = nil;
-		switch (byte)
+		// Check if a matching attribute tag is already open
+		NSArray* filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType == %d", byte]];
+		if ([filteredArray count] > 0)
 		{
-			case boldText:
-				// Bold
-				attribute = [NSDictionary dictionaryWithObject:boldFont
-										    forKey:NSFontAttributeName];
-				break;
-				
-			case italicText:
-				// Italic
-				attribute = [NSDictionary dictionaryWithObject:italicFont
-										    forKey:NSFontAttributeName];
-				break;
-				
-			case underlineText:
-				// Underline
-				attribute = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(NSUnderlineStyleSingle | NSUnderlinePatternSolid)]
-										    forKey:NSUnderlineStyleAttributeName];
-				break;
-				
-			default:
-			{
-				// Colored text
-				NSColor* textColor = iTetTextColorForCode((iTetTextColorCode)byte);
-				if (textColor != nil)
-				{
-					attribute = [NSDictionary dictionaryWithObject:textColor
-											    forKey:NSForegroundColorAttributeName];
-				}
-				break;
-			}
+			// "Close" the range of this attribute at the character before this one
+			iTetAttributeRangePair* attributeAndRange = [filteredArray objectAtIndex:0];
+			[attributeAndRange setLastIndexInRange:(index - 1)];
+			
+			// Add this attribute to the string
+			[formattedString addAttributes:[attributeAndRange attributeValue]
+							 range:[attributeAndRange range]];
+			
+			// Remove from the list of open attributes
+			[openAttributes removeObject:attributeAndRange];
 		}
-		
-		// If the character does map to an attribute, apply that attribute to a range of the string
-		if (attribute != nil)
+		else
 		{
-			// Check whether there is already an "open" attribute of this type (i.e., this is a "closing" tag)
-			NSArray* filteredArray = [openAttributes filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"attributeType == %d", byte]];
-			if ([filteredArray count] > 0)
+			// Otherwise, determine if this character maps to a text attribute
+			NSDictionary* attribute = nil;
+			switch (byte)
 			{
-				// "Close" the range of this attribute at the character before this one
-				iTetAttributeRangePair* attributeAndRange = [filteredArray objectAtIndex:0];
-				[attributeAndRange setLastIndexInRange:(index - 1)];
-				
-				// Add this attribute to the string
-				[formattedString addAttributes:[attributeAndRange attributeValue]
-								 range:[attributeAndRange range]];
-				
-				// Remove from the list of open attributes
-				[openAttributes removeObject:attributeAndRange];
+				case boldText:
+					// Bold
+					attribute = [NSDictionary dictionaryWithObject:boldFont
+											    forKey:NSFontAttributeName];
+					break;
+					
+				case italicText:
+					// Italic
+					attribute = [NSDictionary dictionaryWithObject:italicFont
+											    forKey:NSFontAttributeName];
+					break;
+					
+				case underlineText:
+					// Underline
+					attribute = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(NSUnderlineStyleSingle | NSUnderlinePatternSolid)]
+											    forKey:NSUnderlineStyleAttributeName];
+					break;
+					
+				default:
+				{
+					// Colored text
+					NSColor* textColor = iTetTextColorForCode((iTetTextColorCode)byte);
+					if (textColor != nil)
+					{
+						attribute = [NSDictionary dictionaryWithObject:textColor
+												    forKey:NSForegroundColorAttributeName];
+					}
+					break;
+				}
 			}
-			else
+			
+			// If this is a valid attribute, add it to the list of open attributes
+			if (attribute != nil)
 			{
-				// Add this attribute to the list of "open" attributes
 				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
 															value:attribute
 												    beginningAtLocation:index]];
