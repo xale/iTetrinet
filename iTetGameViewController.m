@@ -545,11 +545,17 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 
 - (void)playerLost
 {
-	// Set the local player's status to "not playing"
-	[LOCALPLAYER setPlaying:NO];
-	
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
+	
+	// Give the player a randomly-filled field
+	[LOCALPLAYER setField:[iTetField fieldWithRandomContents]];
+	
+	// Clear the player's specials queue
+	[LOCALPLAYER setSpecialsQueue:[NSMutableArray array]];
+	
+	// Set the local player's status to "not playing"
+	[LOCALPLAYER setPlaying:NO];
 	
 	// Clear the block timer
 	[blockTimer invalidate];
@@ -557,6 +563,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	
 	// Send a message to the server
 	[self sendPlayerLostMessage];
+	[self sendFieldstring];
 }
 
 #pragma mark iTetLocalFieldView Event Delegate Methods
