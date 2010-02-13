@@ -1012,6 +1012,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Check that the slot is not already occupied
 	if ([self playerNumber:number] != nil)
 	{
+		// (some servers echo our own player-join event back to us; ignore this and don't add a new player)
+		if (number == [localPlayer playerNumber])
+			return;
+		
 		NSLog(@"WARNING: new player assigned to occupied player slot");
 		playerCount--;
 	}
