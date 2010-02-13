@@ -697,12 +697,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		for (iTetPlayer* player in [self playerList])
 		{
 			if (![player isKindOfClass:[iTetLocalPlayer class]])
-			{
 				[player setPlaying:YES];
-				
-				// Give the player a clear field (server will send updated fields)
-				[player setField:[iTetField field]];
-			}
 		}
 		
 		// Set the game view controller's state as "playing"
