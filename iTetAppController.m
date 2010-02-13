@@ -992,13 +992,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		playerCount++;
 		
 		// Send the player's team name to the server
-		if (![[[self localPlayer] teamName] isEqualToString:@""])
-		{
-			NSString* teamMessage = [NSString stringWithFormat:@"team %d %@",
-							 [[self localPlayer] playerNumber],
-							 [[self localPlayer] teamName]];
-			[networkController sendMessage:teamMessage];
-		}
+		NSString* teamMessage = [NSString stringWithFormat:@"team %d %@",
+						 [[self localPlayer] playerNumber],
+						 [[self localPlayer] teamName]];
+		[networkController sendMessage:teamMessage];
 	}
 	
 	[self didChangeValueForKey:@"playerList"];
