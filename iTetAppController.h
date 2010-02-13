@@ -85,6 +85,7 @@
 - (void)removePlayerNumber:(NSInteger)number;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)number;
+- (iTetPlayer*)operatorPlayer;
 - (NSString*)playerNameForNumber:(NSInteger)number;
 
 @property (readonly) NSArray* playerList;

@@ -375,17 +375,18 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark -
 #pragma mark Interface Validations
 
-#define OperatorPlayerNumber	1
-
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
 {
 	// Determine which item we are looking at based on its action
 	SEL itemAction = [item action];
 	
+	// Get the current operator player
+	iTetPlayer* op = [self operatorPlayer];
+	
 	// "New Game" button/menu item
 	if (itemAction == @selector(startStopGame:))
 	{
-		return ([networkController connected] && ([[self localPlayer] playerNumber] == OperatorPlayerNumber));
+		return ([networkController connected] && [op isEqual:[self localPlayer]]);
 	}
 	
 	// "Forfeit" button/menu item
@@ -397,7 +398,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// "Pause" button/menu item
 	if (itemAction == @selector(pauseResumeGame:))
 	{
-		return (([gameController gameplayState] != gameNotPlaying) && ([[self localPlayer] playerNumber] == OperatorPlayerNumber));
+		return (([gameController gameplayState] != gameNotPlaying) && [op isEqual:[self localPlayer]]);
 	}
 	
 	return YES;
@@ -1133,6 +1134,16 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		return nil;
 	
 	return (iTetPlayer*)player;
+}
+
+- (iTetPlayer*)operatorPlayer
+{
+	// Return the player with the lowest player number (first player in the array)
+	for (id player in players)
+		if (player != [NSNull null])
+			return (iTetPlayer*)player;
+	
+	return nil;
 }
 
 NSString* const iTetServerPlayerNamePlaceholder = @"SERVER";
