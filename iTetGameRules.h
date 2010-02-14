@@ -20,7 +20,7 @@
 	NSUInteger specialCapacity;
 	char blockFrequencies[100];
 	char specialFrequencies[100];
-	BOOL averageLevels;
+	BOOL showAverageLevel;
 	BOOL classicRules;
 }
 
@@ -39,7 +39,7 @@
 @property (readonly) NSUInteger specialCapacity;
 @property (readonly) char* blockFrequencies;
 @property (readonly) char* specialFrequencies;
-@property (readonly) BOOL averageLevels;
+@property (readonly) BOOL showAverageLevel;
 @property (readonly) BOOL classicRules;
 
 @end

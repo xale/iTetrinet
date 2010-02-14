@@ -62,7 +62,7 @@
 	}
 	
 	// Level number averages across all players
-	averageLevels = [[rules objectAtIndex:9] boolValue];
+	showAverageLevel = [[rules objectAtIndex:9] boolValue];
 	
 	// Play with classic rules (multiple-line completions send lines to other players)
 	classicRules = [[rules objectAtIndex:10] boolValue];
@@ -92,7 +92,7 @@
 	return specialFrequencies;
 }
 
-@synthesize averageLevels;
+@synthesize showAverageLevel;
 @synthesize classicRules;
 
 @end
