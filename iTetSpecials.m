@@ -7,16 +7,16 @@
 
 #include "iTetSpecials.h"
 
-NSString* const iTetAddLineSpecialName = @"Add Line";
-NSString* const iTetClearLineSpecialName = @"Clear Line";
-NSString* const iTetNukeFieldSpecialName = @"Nuke Field";
-NSString* const iTetRandomClearSpecialName = @"Random Clear";
-NSString* const iTetSwitchFieldSpecialName = @"Switch Field";
-NSString* const iTetClearSpecialsSpecialName = @"Clear Specials";
-NSString* const iTetGravitySpecialName = @"Gravity";
-NSString* const iTetQuakeFieldSpecialName = @"Quake Field";
-NSString* const iTetBlockBombSpecialName = @"Block Bomb";
-NSString* const iTetInvalidOrNoneSpecialName = @"No Special";
+NSString* const iTetAddLineSpecialName =		@"Add Line";
+NSString* const iTetClearLineSpecialName =	@"Clear Line";
+NSString* const iTetNukeFieldSpecialName =	@"Nuke Field";
+NSString* const iTetRandomClearSpecialName =	@"Random Clear";
+NSString* const iTetSwitchFieldSpecialName =	@"Switch Field";
+NSString* const iTetClearSpecialsSpecialName =	@"Clear Specials";
+NSString* const iTetGravitySpecialName =		@"Gravity";
+NSString* const iTetQuakeFieldSpecialName =	@"Quake Field";
+NSString* const iTetBlockBombSpecialName =	@"Block Bomb";
+NSString* const iTetInvalidOrNoneSpecialName =	@"No Special";
 
 char iTetSpecialNumberFromType(iTetSpecialType type)
 {
@@ -104,4 +104,29 @@ NSString* iTetNameForSpecialType(iTetSpecialType type)
 	
 	// No special (or invalid placeholder)
 	return iTetInvalidOrNoneSpecialName;
+}
+
+BOOL iTetSpecialIsPositive(iTetSpecialType type)
+{
+	switch (type)
+	{
+		case addLine:
+		case randomClear:
+		case clearSpecials:
+		case quakeField:
+		case blockBomb:
+			return NO;
+			
+		case clearLine:
+		case nukeField:
+		case switchField:
+		case gravity:
+			return YES;
+			
+		default:
+			break;
+	}
+	
+	NSLog(@"WARNING: iTetSpecialIsPositive() called on invalid special type");
+	return NO;
 }

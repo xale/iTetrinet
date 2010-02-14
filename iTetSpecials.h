@@ -36,3 +36,4 @@ extern NSString* const iTetInvalidOrNoneSpecialName;
 char iTetSpecialNumberFromType(iTetSpecialType type);
 iTetSpecialType iTetSpecialTypeFromNumber(char number);
 NSString* iTetNameForSpecialType(iTetSpecialType type);
+BOOL iTetSpecialIsPositive(iTetSpecialType type);
