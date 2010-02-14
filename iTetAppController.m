@@ -437,6 +437,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 - (void)connectionClosed
 {
 	[self removeAllPlayers];
+	[gameController setCurrentGameRules:nil];
 	
 	// Change the connection status label
 	[connectionStatusLabel setStringValue:@"Disconnected"];
@@ -1077,6 +1078,24 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	return [players filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", [NSNull null]]];
 }
 
+- (NSNumber*)averagePlayerLevel
+{
+	NSInteger total = 0, count = 0;
+	for (iTetPlayer* player in [self playerList])
+	{
+		if ([player isPlaying])
+		{	
+			total += [player level];
+			count++;
+		}
+	}
+	
+	if (count > 0)
+		return [NSNumber numberWithInteger:(total / count)];
+	
+	return nil;
+}
+
 @synthesize localPlayer;
 
 -(iTetPlayer*)remotePlayer1
@@ -1106,11 +1125,11 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		n--;
 		
 	// Return the player at that index, or nil
-	id object = [players objectAtIndex:n];
-	if (object == [NSNull null])
+	id player = [players objectAtIndex:n];
+	if (player == [NSNull null])
 			return nil;
 		
-	return (iTetPlayer*)object;
+	return (iTetPlayer*)player;
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key
@@ -1120,6 +1139,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if ([key rangeOfString:@"remotePlayer"].location != NSNotFound)
 	{
 		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"playerList", @"localPlayer", nil]];
+	}
+	else if ([key isEqualToString:@"averagePlayerLevel"])
+	{
+		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"localPlayer.level", @"remotePlayer1.level", @"remotePlayer2.level", @"remotePlayer3.level", @"remotePlayer4.level", @"remotePlayer5.level", @"localPlayer.isPlaying", @"remotePlayer1.isPlaying", @"remotePlayer2.isPlaying", @"remotePlayer3.isPlaying", @"remotePlayer4.isPlaying", @"remotePlayer5.isPlaying", nil]];
 	}
 	
 	return keys;
@@ -1140,8 +1163,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 {
 	// Return the player with the lowest player number (first player in the array)
 	for (id player in players)
+	{
 		if (player != [NSNull null])
 			return (iTetPlayer*)player;
+	}
 	
 	return nil;
 }

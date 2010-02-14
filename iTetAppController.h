@@ -89,6 +89,7 @@
 - (NSString*)playerNameForNumber:(NSInteger)number;
 
 @property (readonly) NSArray* playerList;
+@property (readonly) NSNumber* averagePlayerLevel;
 @property (readwrite, retain) iTetLocalPlayer* localPlayer;
 @property (readonly) iTetPlayer* remotePlayer1;
 @property (readonly) iTetPlayer* remotePlayer2;
