@@ -64,6 +64,20 @@
 }
 
 #pragma mark -
+#pragma mark Comparators
+
+- (BOOL)isEqual:(id)object
+{
+	if ([object isKindOfClass:[self class]])
+	{
+		iTetPlayer* otherPlayer = (iTetPlayer*)object;
+		return ([self playerNumber] == [otherPlayer playerNumber]);
+	}
+	
+	return NO;
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize nickname;
