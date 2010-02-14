@@ -103,7 +103,7 @@ typedef enum
 	     onPlayer:(iTetPlayer*)target;
 - (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender;
-- (void)recordAction:(NSString*)description;
+- (void)recordAction:(NSAttributedString*)description;
 - (void)clearActions;
 
 - (NSTimer*)nextBlockTimer;

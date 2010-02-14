@@ -765,6 +765,10 @@ NSString* const iTetSpecialEventDescriptionFormat =	@"%@ used on %@ by %@";
 NSString* const iTetNilSenderNamePlaceholder =		@"Server";
 NSString* const iTetNilTargetNamePlaceholder =		@"All";
 
+#define iTetBadSpecialForegroundColor		[NSColor redColor]
+#define iTetGoodSpecialForegroundColor		[NSColor greenColor]
+#define iTetEventBackgroundColorFraction		(0.2)
+
 - (void)specialUsed:(iTetSpecialType)special
 	     byPlayer:(iTetPlayer*)sender
 	     onPlayer:(iTetPlayer*)target
@@ -775,7 +779,9 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 		fromSender:sender];
 	
 	// Add a description of the event to the list of actions
-	// FIXME: needs colors/formatting
+	// Get the name of the special
+	NSString* specialName = iTetNameForSpecialType(special);
+	
 	// Determine the name of the sender ("Server", if the sender is not a specific player)
 	NSString* senderName;
 	if (sender == nil)
@@ -791,21 +797,53 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 		targetName = [target nickname];
 	
 	// Create the description string
-	NSString* desc;
-	desc = [NSString stringWithFormat:iTetSpecialEventDescriptionFormat, iTetNameForSpecialType(special), targetName, senderName];
+	NSMutableAttributedString* desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]] autorelease];
+	
+	// Add formatting
+	// Color (and bold) the special name
+	NSRange range = [[desc string] rangeOfString:specialName];
+	NSColor* color;
+	if (iTetSpecialIsPositive(special))
+		color = iTetGoodSpecialForegroundColor;
+	else
+		color = iTetBadSpecialForegroundColor;
+	[desc applyFontTraits:NSBoldFontMask
+			    range:range];
+	[desc addAttributes:[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName]
+			  range:range];
+	
+	// Bold the player names
+	[desc applyFontTraits:NSBoldFontMask
+			    range:[[desc string] rangeOfString:targetName]];
+	[desc applyFontTraits:NSBoldFontMask
+			    range:[[desc string] rangeOfString:senderName]];
+	
+	// If the local player was the affected, add a background color
+	if ((target == nil) || [target isEqual:LOCALPLAYER])
+	{
+		[desc addAttributes:[NSDictionary dictionaryWithObject:[color blendedColorWithFraction:(1.0 - iTetEventBackgroundColorFraction)
+															 ofColor:[NSColor whiteColor]]
+															  forKey:NSBackgroundColorAttributeName]
+				  range:NSMakeRange(0, [desc length])];
+	}
 	
 	// Record the event
 	[self recordAction:desc];
 }
 
-NSString* const iTetLineAddedEventDescriptionFormat = @"1 Line Added to All by %@";
-NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All by %@";
+NSString* const iTetLinesAddedEventDescriptionFormat =	@"%@ added to %@ by %@";
+NSString* const iTetOneLineAddedFormat =				@"1 Line";
+NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
+NSString* const iTetLineAddTargetAllDescription =		@"All";
+
+#define iTetLinesAddedForegroundColor	[NSColor blueColor]
 
 - (void)linesAdded:(NSInteger)numLines
 	    byPlayer:(iTetPlayer*)sender
 {
 	// If the local player is playing, and is not the sender, add the lines
-	if (((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber])) && [LOCALPLAYER isPlaying])
+	BOOL localPlayerAffected = (((sender == nil) || ![sender isEqual:LOCALPLAYER]) && [LOCALPLAYER isPlaying]);
+	if (localPlayerAffected)
 	{
 		// Add lines, and check for field overflow
 		if ([[LOCALPLAYER field] addLines:numLines style:classicStyle])
@@ -816,7 +854,16 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	}
 	
 	// Create a description
-	// FIXME: needs colors/formatting
+	// Describe the number of lines added
+	NSString* linesDesc;
+	if (numLines > 1)
+		linesDesc = [NSString stringWithFormat:iTetMultipleLinesAddedFormat, numLines];
+	else
+		linesDesc = iTetOneLineAddedFormat;
+	
+	// Get the target name (done this way for localization and formatting reasons)
+	NSString* targetName = iTetLineAddTargetAllDescription;
+	
 	// Determine the name of the sender
 	NSString* senderName;
 	if (sender == nil)
@@ -824,18 +871,39 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 	else
 		senderName = [sender nickname];
 	
-	// Choose a discription based on how many lines were added
-	NSString* desc;
-	if (numLines > 1)
-		desc = [NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, numLines, senderName];
-	else
-		desc = [NSString stringWithFormat:iTetLineAddedEventDescriptionFormat, senderName];
+	// Create the description string
+	NSMutableAttributedString* desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]] autorelease];
+	
+	// Add formatting
+	// Color and bold the number of lines added
+	NSRange range = [[desc string] rangeOfString:linesDesc];
+	NSColor* color = iTetLinesAddedForegroundColor;
+	[desc applyFontTraits:NSBoldFontMask
+			    range:range];
+	[desc addAttributes:[NSDictionary dictionaryWithObject:color
+									forKey:NSForegroundColorAttributeName]
+			  range:range];
+	
+	// Bold the target and sender names
+	[desc applyFontTraits:NSBoldFontMask
+			    range:[[desc string] rangeOfString:targetName]];
+	[desc applyFontTraits:NSBoldFontMask
+			    range:[[desc string] rangeOfString:senderName]];
+	
+	// If the local player was affected, add a background color
+	if (localPlayerAffected)
+	{
+		[desc addAttributes:[NSDictionary dictionaryWithObject:[color blendedColorWithFraction:(1.0 - iTetEventBackgroundColorFraction)
+															 ofColor:[NSColor whiteColor]]
+										forKey:NSBackgroundColorAttributeName]
+				  range:NSMakeRange(0, [desc length])];
+	}
 	
 	// Record the event
 	[self recordAction:desc];
 }
 
-- (void)recordAction:(NSString*)description
+- (void)recordAction:(NSAttributedString*)description
 {
 	// Add the action to the list
 	[actionHistory addObject:description];
@@ -852,18 +920,49 @@ NSString* const iTetLinesAddedEventDescriptionFormat = @"%d Lines Added to All b
 }
 
 #pragma mark -
-#pragma mark NSTableView Data Source Methods
+#pragma mark NSTableView Data Source / Delegate Methods
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView*)tableView
 {
-	return [actionHistory count];
+	if ([tableView isEqual:actionListView])
+		return [actionHistory count];
+	
+	return 0;
 }
 
 - (id)tableView:(NSTableView*)tableView
 objectValueForTableColumn:(NSTableColumn*)column
 		row:(NSInteger)row
 {
-	return [actionHistory objectAtIndex:row];
+	if ([tableView isEqual:actionListView])
+		return [actionHistory objectAtIndex:row];
+	
+	return nil;
+}
+
+- (void)tableView:(NSTableView*)tableView
+  willDisplayCell:(id)cell
+   forTableColumn:(NSTableColumn*)tableColumn
+		  row:(NSInteger)rowIndex
+{
+	if ([tableView isEqual:actionListView])
+	{
+		// Check if the cell has a background color to draw
+		NSColor* bgColor = [[actionHistory objectAtIndex:rowIndex] attribute:NSBackgroundColorAttributeName
+												 atIndex:0
+											effectiveRange:NULL];
+		if (bgColor != nil)
+		{
+			// Tell the cell to draw its background in the color
+			[cell setBackgroundColor:bgColor];
+			[cell setDrawsBackground:YES];
+		}
+		else
+		{
+			// Tell the cell not to draw its background
+			[cell setDrawsBackground:NO];
+		}
+	}
 }
 
 #pragma mark -
