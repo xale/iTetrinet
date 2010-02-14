@@ -140,9 +140,14 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 
 - (void)appendChatLine:(NSString*)line
 {
-	[chatView replaceCharactersInRange:NSMakeRange([[chatView textStorage] length], 0)
-					withString:[NSString stringWithFormat:@"%@%C",
-							line, NSLineSeparatorCharacter]];
+	// If the chat view is not empty, add a line separator
+	if ([[chatView textStorage] length] > 0)
+		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSLineSeparatorCharacter];
+	
+	// Add the line
+	[[[chatView textStorage] mutableString] appendString:line];
+	
+	// Scroll down
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
 }
 

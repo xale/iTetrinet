@@ -101,11 +101,12 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 
 - (void)appendChatLine:(NSAttributedString*)line
 {
+	// If the chat view is not empty, add a line separator
+	if ([[chatView textStorage] length] > 0)
+		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
+	
 	// Add the line
 	[[chatView textStorage] appendAttributedString:line];
-	
-	// Add a line terminator
-	[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
 	
 	// Scroll the chat view to see the new line
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
