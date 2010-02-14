@@ -275,9 +275,6 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
-	
-	// Remove the current game rules
-	[self setCurrentGameRules:nil];
 }
 
 #pragma mark -
