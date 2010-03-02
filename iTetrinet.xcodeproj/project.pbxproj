@@ -524,10 +524,18 @@
 		6ACA39A6113D88890026924D /* Messages */ = {
 			isa = PBXGroup;
 			children = (
+				6ACA39AF113D8C480026924D /* Superclass */,
+			);
+			name = Messages;
+			sourceTree = "<group>";
+		};
+		6ACA39AF113D8C480026924D /* Superclass */ = {
+			isa = PBXGroup;
+			children = (
 				6ACA39AC113D88A60026924D /* iTetMessage.h */,
 				6ACA39AD113D88A60026924D /* iTetMessage.m */,
 			);
-			name = Messages;
+			name = Superclass;
 			sourceTree = "<group>";
 		};
 		6AFBE88910AC634C008336EC /* Key Bindings */ = {
