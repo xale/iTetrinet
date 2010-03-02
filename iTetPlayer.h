@@ -20,16 +20,16 @@
 }
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(NSInteger)number
-		    teamName:(NSString*)team;
+				  number:(NSInteger)number
+				teamName:(NSString*)team;
 - (id)initWithNickname:(NSString*)nick
-		    number:(NSInteger)number
-		  teamName:(NSString*)team;
+				number:(NSInteger)number
+			  teamName:(NSString*)team;
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(NSInteger)number;
+				  number:(NSInteger)number;
 - (id)initWithNickname:(NSString*)nick
-		    number:(NSInteger)number;
+				number:(NSInteger)number;
 
 + (id)playerWithNumber:(NSInteger)number;
 - (id)initWithNumber:(NSInteger)number;

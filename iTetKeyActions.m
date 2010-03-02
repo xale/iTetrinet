@@ -7,22 +7,22 @@
 
 #import "iTetKeyActions.h"
 
-NSString* const iTetMovePieceLeftActionName =			@"Move Piece Left";
-NSString* const iTetMovePieceRightActionName =			@"Move Piece Right";
+NSString* const iTetMovePieceLeftActionName =				@"Move Piece Left";
+NSString* const iTetMovePieceRightActionName =				@"Move Piece Right";
 NSString* const iTetRotatePieceCounterclockwiseActionName =	@"Rotate Piece Counterclockwise";
 NSString* const iTetRotatePieceClockwiseActionName =		@"Rotate Piece Clockwise";
-NSString* const iTetMovePieceDownActionName =			@"Move Piece Down";
-NSString* const iTetDropPieceActionName =				@"Drop Piece";
-NSString* const iTetDiscardSpecialActionName =			@"Discard Special";
-NSString* const iTetSelfSpecialActionName =			@"Use Special on Self";
-NSString* const iTetSpecialPlayer1ActionName =			@"Use Special on Player Number 1";
-NSString* const iTetSpecialPlayer2ActionName =			@"Use Special on Player Number 2";
-NSString* const iTetSpecialPlayer3ActionName =			@"Use Special on Player Number 3";
-NSString* const iTetSpecialPlayer4ActionName =			@"Use Special on Player Number 4";
-NSString* const iTetSpecialPlayer5ActionName =			@"Use Special on Player Number 5";
-NSString* const iTetSpecialPlayer6ActionName =			@"Use Special on Player Number 6";
-NSString* const iTetGameChatActionName =				@"Game Chat";
-NSString* const iTetNoActionName =					@"No Action";
+NSString* const iTetMovePieceDownActionName =				@"Move Piece Down";
+NSString* const iTetDropPieceActionName =					@"Drop Piece";
+NSString* const iTetDiscardSpecialActionName =				@"Discard Special";
+NSString* const iTetSelfSpecialActionName =					@"Use Special on Self";
+NSString* const iTetSpecialPlayer1ActionName =				@"Use Special on Player Number 1";
+NSString* const iTetSpecialPlayer2ActionName =				@"Use Special on Player Number 2";
+NSString* const iTetSpecialPlayer3ActionName =				@"Use Special on Player Number 3";
+NSString* const iTetSpecialPlayer4ActionName =				@"Use Special on Player Number 4";
+NSString* const iTetSpecialPlayer5ActionName =				@"Use Special on Player Number 5";
+NSString* const iTetSpecialPlayer6ActionName =				@"Use Special on Player Number 6";
+NSString* const iTetGameChatActionName =					@"Game Chat";
+NSString* const iTetNoActionName =							@"No Action";
 
 NSString* iTetNameForAction(iTetGameAction action)
 {

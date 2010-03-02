@@ -16,11 +16,11 @@
 }
 
 + (id)pairWithAttributeType:(uint8_t)attr
-			    value:(NSDictionary*)value
-	  beginningAtLocation:(NSUInteger)location;
+					  value:(NSDictionary*)value
+		beginningAtLocation:(NSUInteger)location;
 - (id)initWithAttributeType:(uint8_t)attr
-			    value:(NSDictionary*)value
-	  beginningAtLocation:(NSUInteger)location;
+					  value:(NSDictionary*)value
+		beginningAtLocation:(NSUInteger)location;
 
 - (void)setLastIndexInRange:(NSUInteger)lastIndex;
 

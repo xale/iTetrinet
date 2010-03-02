@@ -52,9 +52,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Connect input and output streams to the host
 	[NSStream getStreamsToHost:currentConnection
-				    port:iTetNetworkPort
-			   inputStream:&readStream
-			  outputStream:&writeStream];
+						  port:iTetNetworkPort
+				   inputStream:&readStream
+				  outputStream:&writeStream];
 	
 	// Retain and configure the new streams
 	[readStream retain];
@@ -62,9 +62,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[readStream setDelegate:self];
 	[writeStream setDelegate:self];
 	[readStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
-				    forMode:NSDefaultRunLoopMode];
+						  forMode:NSDefaultRunLoopMode];
 	[writeStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
-				     forMode:NSDefaultRunLoopMode];
+						   forMode:NSDefaultRunLoopMode];
 	
 	// Open the streams
 	[readStream open];
@@ -141,9 +141,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[readStream close];
 	[writeStream close];
 	[readStream removeFromRunLoop:[NSRunLoop currentRunLoop]
-				    forMode:NSDefaultRunLoopMode];
+						  forMode:NSDefaultRunLoopMode];
 	[writeStream removeFromRunLoop:[NSRunLoop currentRunLoop]
-				     forMode:NSDefaultRunLoopMode];
+						   forMode:NSDefaultRunLoopMode];
 	[readStream release];
 	[writeStream release];
 	readStream = nil;
@@ -207,7 +207,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	uint8_t buffer[iTetNetworkBufferSize + 1];
 	NSUInteger bytesRead = 0;
 	bytesRead = [readStream read:buffer
-				 maxLength:iTetNetworkBufferSize];
+					   maxLength:iTetNetworkBufferSize];
 	
 	// Check that data was read
 	if (bytesRead <= 0)
@@ -227,7 +227,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// Append the subdata up to the terminator to the last partial buffer
 			// (probably empty, but may contain leftover data from the last read)
 			[partialRead appendBytes:(buffer + lastTerminator)
-						length:(index - lastTerminator)];
+							  length:(index - lastTerminator)];
 			
 			// Append a NULL terminator for the end of the string
 			[partialRead appendByte:0];
@@ -249,7 +249,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	if (buffer[bytesRead - 1] != (uint8_t)iTetNetworkTerminatorCharacter)
 	{
 		[partialRead appendBytes:(buffer + lastTerminator)
-					length:(bytesRead - lastTerminator)];
+						  length:(bytesRead - lastTerminator)];
 	}
 	
 	// If this read didn't get all the bytes from the stream, read again
@@ -261,7 +261,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 {
 	// Send the message
 	[self sendMessageData:[message dataUsingEncoding:NSASCIIStringEncoding
-					    allowLossyConversion:YES]];
+								allowLossyConversion:YES]];
 }
 
 NSString* const iTetClientInfoFormat = @"clientinfo %@ %@";
@@ -327,15 +327,15 @@ NSString* const iTetClientInfoFormat = @"clientinfo %@ %@";
 		
 		// Attempt to write the bytes to the stream
 		bytesWritten = [writeStream write:dataRaw
-						maxLength:dataSize];
+								maxLength:dataSize];
 		
 		// Check that the whole data object was written
 		if (bytesWritten < dataSize)
 		{
 			// Replace the data in the queue with the unwritten portion
 			[data replaceBytesInRange:NSMakeRange(0, [data length])
-					    withBytes:(dataRaw + bytesWritten)
-						 length:(dataSize - bytesWritten)];
+							withBytes:(dataRaw + bytesWritten)
+							   length:(dataSize - bytesWritten)];
 			
 			// Stop attempting to send data
 			break;

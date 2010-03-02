@@ -10,7 +10,7 @@
 @interface NSImage (KeyImageCache)
 
 + (void)setImage:(NSImage*)image
-	forKeyName:(NSString*)keyName;
+	  forKeyName:(NSString*)keyName;
 + (NSImage*)imageForKeyName:(NSString*)keyName;
 
 @end

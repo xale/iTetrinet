@@ -25,7 +25,7 @@
 #pragma mark Accessors
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
-		    byWindowController:(iTetPreferencesWindowController*)sender;
+				byWindowController:(iTetPreferencesWindowController*)sender;
 {
 	// Subclasses can override for graceful-termination behavior
 	return YES;

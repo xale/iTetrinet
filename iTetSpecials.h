@@ -10,15 +10,15 @@
 #define ITET_NUM_SPECIAL_TYPES 9
 typedef enum
 {
-	addLine = 'a',
-	clearLine = 'c',
-	nukeField = 'n',
-	randomClear = 'r',
-	switchField = 's',
-	clearSpecials = 'b',
-	gravity = 'g',
-	quakeField = 'q',
-	blockBomb = 'o',
+	addLine =		'a',
+	clearLine =		'c',
+	nukeField =		'n',
+	randomClear =	'r',
+	switchField =	's',
+	clearSpecials =	'b',
+	gravity =		'g',
+	quakeField =	'q',
+	blockBomb =		'o',
 	invalidSpecial = 0
 } iTetSpecialType;
 

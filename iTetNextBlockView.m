@@ -43,9 +43,9 @@
 	
 	// Draw the image
 	[blockImage drawAtPoint:drawPoint
-			   fromRect:NSZeroRect
-			  operation:NSCompositeSourceOver
-			   fraction:1.0];
+				   fromRect:NSZeroRect
+				  operation:NSCompositeSourceOver
+				   fraction:1.0];
 }
 
 #pragma mark -

@@ -147,7 +147,7 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 	{
 		// Change the text color of the selection
 		[editor setTextColor:textColor
-				   range:selection];
+					   range:selection];
 	}
 	else
 	{
@@ -157,7 +157,7 @@ iTetTextColorCode iTetCodeForTextColor(NSColor* color)
 		
 		// Change the text color
 		[attrDict setObject:textColor
-				 forKey:NSForegroundColorAttributeName];
+					 forKey:NSForegroundColorAttributeName];
 		[editor setTypingAttributes:attrDict];
 		
 		[attrDict release];
@@ -186,16 +186,16 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 {
 	// Create a mutable attributed string to apply attributes to
 	NSString* baseString = [NSString stringWithCString:[messageData bytes]
-								encoding:NSASCIIStringEncoding];
+											  encoding:NSASCIIStringEncoding];
 	NSMutableAttributedString* formattedString = [[[NSMutableAttributedString alloc] initWithString:baseString] autorelease];
 	
 	// Create bold and italic versions of the default chat view font
 	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
-										toHaveTrait:(NSBoldFontMask | NSUnitalicFontMask)];
+														  toHaveTrait:(NSBoldFontMask | NSUnitalicFontMask)];
 	NSFont* italicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
-										  toHaveTrait:(NSItalicFontMask | NSUnboldFontMask)];
+															toHaveTrait:(NSItalicFontMask | NSUnboldFontMask)];
 	NSFont* boldItalicFont = [[NSFontManager sharedFontManager] convertFont:[partylineChatView font]
-											toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
+																toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
 	
 	// Scan the message for formatting information
 	const uint8_t* rawData = (uint8_t*)[messageData bytes];
@@ -241,26 +241,26 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 				{
 					// Bold is now closed; create an italic attribute
 					attribute = [NSDictionary dictionaryWithObject:italicFont
-											    forKey:NSFontAttributeName];
+															forKey:NSFontAttributeName];
 					byte = italicText;
 				}
 				else
 				{
 					// Italic is now closed; create a bold attribute
 					attribute = [NSDictionary dictionaryWithObject:boldFont
-											    forKey:NSFontAttributeName];
+															forKey:NSFontAttributeName];
 					byte = boldText;
 				}
 				
 				// Add the the new tag
 				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
-															value:attribute
-												    beginningAtLocation:index]];
+																				  value:attribute
+																	beginningAtLocation:index]];
 			}
 			
 			// Add this attribute to the string
 			[formattedString addAttributes:[attributeAndRange attributeValue]
-							 range:[attributeAndRange range]];
+									 range:[attributeAndRange range]];
 			
 			// Remove from the list of open attributes
 			[openAttributes removeObject:attributeAndRange];
@@ -283,21 +283,21 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 						
 						// Apply italics to the region between the italics and bold tags
 						[formattedString addAttributes:[italicRange attributeValue]
-										 range:[italicRange range]];
+												 range:[italicRange range]];
 						
 						// Remove italics from the open tags
 						[openAttributes removeObject:italicRange];
 						
 						// Create a new attribute with a bold and italic font
 						attribute = [NSDictionary dictionaryWithObject:boldItalicFont
-												     forKey:NSFontAttributeName];
+																forKey:NSFontAttributeName];
 						byte = boldItalicText;
 					}
 					else
 					{
 						// If there are no open italic tags, just create a new bold attribute
 						attribute = [NSDictionary dictionaryWithObject:boldFont
-												    forKey:NSFontAttributeName];
+																forKey:NSFontAttributeName];
 					}
 					break;
 				}
@@ -315,21 +315,21 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 						
 						// Apply bold to the range between the bold and italic tags
 						[formattedString addAttributes:[boldRange attributeValue]
-										 range:[boldRange range]];
+												 range:[boldRange range]];
 						
 						// Remove bold from the open tags
 						[openAttributes removeObject:boldRange];
 						
 						// Create a new attribute with a bold and italic font
 						attribute = [NSDictionary dictionaryWithObject:boldItalicFont
-												    forKey:NSFontAttributeName];
+																forKey:NSFontAttributeName];
 						byte = boldItalicText;
 					}
 					else
 					{
 						// If there are no open bold tags, just create a new italic attribute
 						attribute = [NSDictionary dictionaryWithObject:italicFont
-												    forKey:NSFontAttributeName];
+																forKey:NSFontAttributeName];
 					}
 					break;
 				}
@@ -337,7 +337,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 				case underlineText:
 					// Underline
 					attribute = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(NSUnderlineStyleSingle | NSUnderlinePatternSolid)]
-											    forKey:NSUnderlineStyleAttributeName];
+															forKey:NSUnderlineStyleAttributeName];
 					break;
 					
 				default:
@@ -347,7 +347,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 					if (textColor != nil)
 					{
 						attribute = [NSDictionary dictionaryWithObject:textColor
-												    forKey:NSForegroundColorAttributeName];
+																forKey:NSForegroundColorAttributeName];
 					}
 					break;
 				}
@@ -357,8 +357,8 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			if (attribute != nil)
 			{
 				[openAttributes addObject:[iTetAttributeRangePair pairWithAttributeType:byte
-															value:attribute
-												    beginningAtLocation:index]];
+																				  value:attribute
+																	beginningAtLocation:index]];
 			}
 		}
 	}
@@ -367,11 +367,11 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 }
 
 - (NSData*)dataFromFormattedMessage:(NSAttributedString*)message
-		    withAttributedRange:(NSRange)rangeWithAttributes
+				withAttributedRange:(NSRange)rangeWithAttributes
 {
 	// Create the raw ASCII version of the message
 	NSMutableData* messageData = [NSMutableData dataWithData:[[message string] dataUsingEncoding:NSASCIIStringEncoding
-													allowLossyConversion:YES]];
+																			allowLossyConversion:YES]];
 	NSUInteger bytesAdded = 0;
 	
 	// Search the messages for attributes
@@ -385,8 +385,8 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 	{
 		// Find the attributes and their extent at this point in the message
 		attributes = [message attributesAtIndex:index
-					longestEffectiveRange:&attrRange
-							  inRange:rangeWithAttributes];
+						  longestEffectiveRange:&attrRange
+										inRange:rangeWithAttributes];
 		
 		// Check for specific attributes that interest us
 		// Text color
@@ -396,7 +396,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			// Add color codes to the outgoing message data
 			// Open tag
 			[messageData insertByte:(uint8_t)color
-					    atIndex:(attrRange.location + bytesAdded)];
+							atIndex:(attrRange.location + bytesAdded)];
 			bytesAdded++;
 			
 			// Add to list of open tags
@@ -409,7 +409,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			// Add underline code to message
 			// Open tag
 			[messageData insertByte:(uint8_t)underlineText
-					    atIndex:(attrRange.location + bytesAdded)];
+							atIndex:(attrRange.location + bytesAdded)];
 			bytesAdded++;
 			
 			// Add to list of open tags
@@ -424,7 +424,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			// Add bold code to message
 			// Open tag
 			[messageData insertByte:(uint8_t)boldText
-					    atIndex:(attrRange.location + bytesAdded)];
+							atIndex:(attrRange.location + bytesAdded)];
 			bytesAdded++;
 			
 			// Add to list of open tags
@@ -437,7 +437,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			// Add italics code to message
 			// Open tag
 			[messageData insertByte:(uint8_t)italicText
-					    atIndex:(attrRange.location + bytesAdded)];
+							atIndex:(attrRange.location + bytesAdded)];
 			bytesAdded++;
 			
 			// Add to list of open tags
@@ -449,7 +449,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 		{
 			// Close the tag
 			[messageData insertByte:(uint8_t)[tag intValue]
-					    atIndex:(attrRange.location + attrRange.length + bytesAdded)];
+							atIndex:(attrRange.location + attrRange.length + bytesAdded)];
 			bytesAdded++;
 		}
 		

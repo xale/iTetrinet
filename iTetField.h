@@ -57,7 +57,7 @@ typedef enum
 
 // Checks whether the specified cell is valid (i.e., on the field) and empty
 - (iTetObstructionState)cellObstructedAtRow:(int)row
-						 column:(int)col;
+									 column:(int)col;
 
 // Add the cells of the specified block to the field's contents
 - (void)solidifyBlock:(iTetBlock*)block;
@@ -79,7 +79,7 @@ typedef enum
 // Adds lines of garbage to the bottom of the field, pushing other lines up
 // Returns YES if the field overflows (player loses)
 - (BOOL)addLines:(NSInteger)count
-	     style:(iTetLineAddStyle)style;
+		   style:(iTetLineAddStyle)style;
 
 // Clears the bottom line of the field, shifting others down; does not collect specials
 - (void)clearBottomLine;
@@ -107,12 +107,12 @@ typedef enum
 
 // Shifts the specified row horizontally by the specified number of columns in the specified direction
 - (void)shiftRow:(NSInteger)row
-	  byAmount:(NSInteger)shiftAmount
+		byAmount:(NSInteger)shiftAmount
      inDirection:(BOOL)shiftLeft;
 
 // Returns the contents of the specified cell of the field
 - (char)cellAtRow:(NSInteger)row
-	     column:(NSInteger)column;
+		   column:(NSInteger)column;
 
 // The current fieldstring that describes the state of the field
 - (NSString*)fieldstring;

@@ -29,15 +29,15 @@
 	// Protocol enum to name
 	NSValueTransformer* transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
-						  forName:iTetProtocolTransformerName];
+									forName:iTetProtocolTransformerName];
 	// Special code/number to name
 	transformer = [[[iTetSpecialNameTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
-						  forName:iTetSpecialNameTransformerName];
+									forName:iTetSpecialNameTransformerName];
 	// Winlist entry type to image
 	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
-						  forName:iTetWinlistEntryTypeImageTransformerName];
+									forName:iTetWinlistEntryTypeImageTransformerName];
 	
 	// Seed random number generator
 	srandom(time(NULL));
@@ -61,9 +61,9 @@
 {
 	// Add a border to the bottom of the window (this can be done in IB, but only for 10.6+)
 	[window setAutorecalculatesContentBorderThickness:NO
-								forEdge:NSMinYEdge];
+											  forEdge:NSMinYEdge];
 	[window setContentBorderThickness:25
-					  forEdge:NSMinYEdge];
+							  forEdge:NSMinYEdge];
 }
 
 - (void)dealloc
@@ -95,9 +95,9 @@
 			
 			// Run the alert as a sheet
 			[alert beginSheetModalForWindow:window
-						modalDelegate:self
-					     didEndSelector:@selector(disconnectWithGameInProgressAlertDidEnd:returnCode:contextInfo:)
-						  contextInfo:NULL];
+							  modalDelegate:self
+							 didEndSelector:@selector(disconnectWithGameInProgressAlertDidEnd:returnCode:contextInfo:)
+								contextInfo:NULL];
 			
 			return;
 		}
@@ -150,9 +150,9 @@
 	
 	// Run the dialog as a sheet
 	[dialog beginSheetModalForWindow:window
-				 modalDelegate:self
-				didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
-				   contextInfo:NULL];
+					   modalDelegate:self
+					  didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
+						 contextInfo:NULL];
 }
 
 NSString* const StartGameFormat =	@"startgame 1 %d";
@@ -173,9 +173,9 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 		
 		// Run the dialog as a window-modal sheet
 		[dialog beginSheetModalForWindow:window
-					 modalDelegate:self
-					didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
-					   contextInfo:NULL];
+						   modalDelegate:self
+						  didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
+							 contextInfo:NULL];
 	}
 	else
 	{
@@ -195,9 +195,9 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 	
 	// Run the dialog as a window-modal sheet
 	[dialog beginSheetModalForWindow:window
-				 modalDelegate:self
-				didEndSelector:@selector(forfeitDialogDidEnd:returnCode:contextInfo:)
-				   contextInfo:NULL];
+					   modalDelegate:self
+					  didEndSelector:@selector(forfeitDialogDidEnd:returnCode:contextInfo:)
+						 contextInfo:NULL];
 }
 
 NSString* const PauseGameFormat =	@"pause 1 %d";
@@ -254,8 +254,8 @@ NSString* const ResumeGameFormat =	@"pause 0 %d";
 NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to server %@...";
 
 - (void)connectAlertDidEnd:(NSAlert*)dialog
-		    returnCode:(NSInteger)returnCode
-		   contextInfo:(void*)contextInfo
+				returnCode:(NSInteger)returnCode
+			   contextInfo:(void*)contextInfo
 {
 	// If the user cancelled, do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
@@ -286,15 +286,15 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Start the connection timer
 	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:[[iTetPreferencesController preferencesController] connectionTimeout]
-									   target:self
-									 selector:@selector(connectionTimedOut:)
-									 userInfo:nil
-									  repeats:NO];
+													   target:self
+													 selector:@selector(connectionTimedOut:)
+													 userInfo:nil
+													  repeats:NO];
 }
 
 - (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert
-						 returnCode:(NSInteger)returnCode
-						contextInfo:(void*)contextInfo
+									 returnCode:(NSInteger)returnCode
+									contextInfo:(void*)contextInfo
 {
 	// If the user pressed "continue playing", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
@@ -309,8 +309,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 }
 
 - (void)stopGameAlertDidEnd:(NSAlert*)dialog
-		     returnCode:(NSInteger)returnCode
-		    contextInfo:(void*)contextInfo
+				 returnCode:(NSInteger)returnCode
+				contextInfo:(void*)contextInfo
 {
 	// If the user pressed "continue playing", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
@@ -321,8 +321,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 }
 
 - (void)forfeitDialogDidEnd:(NSAlert*)dialog
-		     returnCode:(NSInteger)returnCode
-		    contextInfo:(void*)contextInfo
+				 returnCode:(NSInteger)returnCode
+				contextInfo:(void*)contextInfo
 {
 	// If the user pressed "continue playing", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
@@ -352,20 +352,20 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Display an alert
 	NSAlert* alert = [NSAlert alertWithMessageText:@"Unable to Connect"
-						   defaultButton:@"Okay"
-						 alternateButton:nil
-						     otherButton:nil
-				   informativeTextWithFormat:@"Check server address and try again."];
+									 defaultButton:@"Okay"
+								   alternateButton:nil
+									   otherButton:nil
+						 informativeTextWithFormat:@"Check server address and try again."];
 	
 	[alert beginSheetModalForWindow:window
-				modalDelegate:self
-			     didEndSelector:@selector(timedOutAlertEnded:returnCode:contextInfo:)
-				  contextInfo:NULL];
+					  modalDelegate:self
+					 didEndSelector:@selector(timedOutAlertEnded:returnCode:contextInfo:)
+						contextInfo:NULL];
 }
 
 - (void)timedOutAlertEnded:(NSAlert*)alert
-		    returnCode:(NSInteger)returnCode
-		   contextInfo:(void*)contextInfo
+				returnCode:(NSInteger)returnCode
+			   contextInfo:(void*)contextInfo
 {
 	// Reset the connection button
 	[connectionButton setLabel:@"Connect"];
@@ -534,14 +534,14 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Run the error as a sheet
 	[alert beginSheetModalForWindow:window
-				modalDelegate:self
-			     didEndSelector:@selector(connectionErrorAlertEnded:returnCode:contextInfo:)
-				  contextInfo:NULL];
+					  modalDelegate:self
+					 didEndSelector:@selector(connectionErrorAlertEnded:returnCode:contextInfo:)
+						contextInfo:NULL];
 }
 
 - (void)connectionErrorAlertEnded:(NSAlert*)alert
-			     returnCode:(NSInteger)returnCode
-			    contextInfo:(void*)contextInfo
+					   returnCode:(NSInteger)returnCode
+					  contextInfo:(void*)contextInfo
 {
 	// Reset the connection button
 	[connectionButton setLabel:@"Connect"];
@@ -584,7 +584,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Naively convert the message to ASCII
 	NSString* message = [NSString stringWithCString:[messageData bytes]
-							   encoding:NSASCIIStringEncoding];
+										   encoding:NSASCIIStringEncoding];
 	
 	// Split the message into space-separated tokens
 	NSArray* tokens = [message componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
@@ -607,10 +607,10 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Create an error
 		message = [[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))] componentsJoinedByString:@" "];
 		NSDictionary* info = [NSDictionary dictionaryWithObject:message
-										 forKey:@"errorMessage"];
+														 forKey:@"errorMessage"];
 		NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
-								 code:iTetNoConnectingError
-							   userInfo:info];
+											 code:iTetNoConnectingError
+										 userInfo:info];
 		
 		// Pass the error to our own error-handling method
 		[self connectionError:error];
@@ -633,7 +633,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		// Add a new player with specified name and number
 		NSString* nick = [tokens objectAtIndex:2];
 		[self addPlayerWithNumber:[[tokens objectAtIndex:1] integerValue]
-				     nickname:nick];
+						 nickname:nick];
 		
 		// Add a message to the chat view
 		[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", nick]];
@@ -775,8 +775,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			
 			// Format the chat text and hand off to the chat controller
 			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
-					    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-							action:NO];
+							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
+									action:NO];
 		}
 	}
 #pragma mark Partyline Action Message
@@ -791,8 +791,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			
 			// Format the chat text and hand off to the chat controller
 			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
-					    fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-							action:YES];
+							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
+									action:YES];
 		}
 	}
 #pragma mark New Game Message
@@ -806,8 +806,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		
 		// Tell the gameController to start the game
 		[gameController newGameWithPlayers:[self playerList]
-						     rules:[iTetGameRules gameRulesFromArray:rules
-											  withGameType:[[networkController currentServer] protocol]]];
+									 rules:[iTetGameRules gameRulesFromArray:rules
+																withGameType:[[networkController currentServer] protocol]]];
 		
 		// Change the "new game" toolbar item
 		[gameButton setLabel:@"End Game"];
@@ -843,15 +843,15 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			
 			// Pass to game controller
 			[gameController linesAdded:numLines
-						byPlayer:sender];
+							  byPlayer:sender];
 		}
 		// Normal special
 		else
 		{	
 			// Pass to game controller
 			[gameController specialUsed:(iTetSpecialType)[special cStringUsingEncoding:NSASCIIStringEncoding][0]
-						 byPlayer:sender
-						 onPlayer:target];
+							   byPlayer:sender
+							   onPlayer:target];
 		}
 	}
 #pragma mark Game Chat Message
@@ -868,7 +868,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 				
 				// Add the message to the game chat view
 				[gameController appendChatLine:message
-						    fromPlayerName:[player nickname]];
+								fromPlayerName:[player nickname]];
 				
 				return;
 			}
@@ -927,7 +927,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		// Unknown message type
 		NSLog(@"WARNING: Unrecognized message recieved: %@",
-			[tokens componentsJoinedByString:@" "]);
+			  [tokens componentsJoinedByString:@" "]);
 	}
 }
 
@@ -963,14 +963,14 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		// Clear the old location in the players array
 		[players replaceObjectAtIndex:([[self localPlayer] playerNumber] - 1)
-					 withObject:[NSNull null]];
+						   withObject:[NSNull null]];
 		
 		// Change the local player's number
 		[[self localPlayer] setPlayerNumber:number];
 		
 		// Move to the new location in the players array
 		[players replaceObjectAtIndex:(number - 1)
-					 withObject:[self localPlayer]];
+						   withObject:[self localPlayer]];
 		
 		// No need to notify game controller; field assignment will not change
 	}
@@ -978,20 +978,20 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	{
 		// Create the local player
 		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:[[networkController currentServer] nickname]
-										  number:number
-										teamName:[[networkController currentServer] playerTeam]]];
+														  number:number
+														teamName:[[networkController currentServer] playerTeam]]];
 		
 		// Place the player in the players array
 		[players replaceObjectAtIndex:(number - 1)
-					 withObject:[self localPlayer]];
+						   withObject:[self localPlayer]];
 		
 		// Update player count
 		playerCount++;
 		
 		// Send the player's team name to the server
 		NSString* teamMessage = [NSString stringWithFormat:@"team %d %@",
-						 [[self localPlayer] playerNumber],
-						 [[self localPlayer] teamName]];
+								 [[self localPlayer] playerNumber],
+								 [[self localPlayer] teamName]];
 		[networkController sendMessage:teamMessage];
 	}
 	
@@ -999,7 +999,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 }
 
 - (void)addPlayerWithNumber:(NSInteger)number
-			 nickname:(NSString*)nick
+				   nickname:(NSString*)nick
 {
 	// Sanity check
 	iTetCheckPlayerNumber(number);
@@ -1019,8 +1019,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Create the new player
 	[players replaceObjectAtIndex:(number - 1)
-				 withObject:[iTetPlayer playerWithNickname:nick
-										number:number]];
+					   withObject:[iTetPlayer playerWithNickname:nick
+														  number:number]];
 	
 	// Update player count
 	playerCount++;
@@ -1042,7 +1042,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Remove the player
 	[players replaceObjectAtIndex:(number - 1)
-				 withObject:[NSNull null]];
+					   withObject:[NSNull null]];
 	
 	// Update player count
 	playerCount--;
@@ -1061,7 +1061,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	for (NSInteger i = 0; i < ITET_MAX_PLAYERS; i++)
 	{
 		[players replaceObjectAtIndex:i
-					 withObject:[NSNull null]];
+						   withObject:[NSNull null]];
 	}
 	
 	// Reset the player count
@@ -1123,12 +1123,12 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// Shift index to account for the local player's number
 	if ([[self localPlayer] playerNumber] > n)
 		n--;
-		
+	
 	// Return the player at that index, or nil
 	id player = [players objectAtIndex:n];
 	if (player == [NSNull null])
-			return nil;
-		
+		return nil;
+	
 	return (iTetPlayer*)player;
 }
 

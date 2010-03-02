@@ -10,17 +10,17 @@
 
 #define iTetLeftArrowKeyCode	(123)
 #define iTetRightArrowKeyCode	(124)
-#define iTetZKeyCode		(6)
-#define iTetXKeyCode		(7)
+#define iTetZKeyCode			(6)
+#define iTetXKeyCode			(7)
 #define iTetDownArrowKeyCode	(125)
-#define iTetSpacebarKeyCode	(49)
-#define iTetDKeyCode		(2)
-#define iTetSKeyCode		(1)
-#define iTetTKeyCode		(17)
-#define iTetLKeyCode		(37)
+#define iTetSpacebarKeyCode		(49)
+#define iTetDKeyCode			(2)
+#define iTetSKeyCode			(1)
+#define iTetTKeyCode			(17)
+#define iTetLKeyCode			(37)
 #define iTetApostropheKeyCode	(39)
-#define iTetOKeyCode		(31)
-#define iTetPKeyCode		(35)
+#define iTetOKeyCode			(31)
+#define iTetPKeyCode			(35)
 #define iTetSemicolonKeyCode	(41)
 
 @implementation NSMutableDictionary (KeyBindings)
@@ -33,64 +33,64 @@
 	NSMutableDictionary* keyDict = [NSMutableDictionary keyConfigurationDictionary];
 	[keyDict setConfigurationName:@"Arrow Keys"];
 	[keyDict setAction:movePieceLeft
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLeftArrowKeyCode
-									     name:iTetLeftArrowKeyPlaceholderString]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLeftArrowKeyCode
+														 name:iTetLeftArrowKeyPlaceholderString]];
 	[keyDict setAction:movePieceRight
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetRightArrowKeyCode
-									     name:iTetRightArrowKeyPlaceholderString]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetRightArrowKeyCode
+														 name:iTetRightArrowKeyPlaceholderString]];
 	[keyDict setAction:rotatePieceCounterclockwise
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetZKeyCode
-									     name:@"z"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetZKeyCode
+														 name:@"z"]];
 	[keyDict setAction:rotatePieceClockwise
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetXKeyCode
-									     name:@"x"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetXKeyCode
+														 name:@"x"]];
 	[keyDict setAction:movePieceDown
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDownArrowKeyCode
-									     name:iTetDownArrowKeyPlaceholderString]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDownArrowKeyCode
+														 name:iTetDownArrowKeyPlaceholderString]];
 	[keyDict setAction:dropPiece
-			  forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSpacebarKeyCode
-										 name:iTetSpacebarPlaceholderString]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSpacebarKeyCode
+														 name:iTetSpacebarPlaceholderString]];
 	[keyDict setAction:discardSpecial
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDKeyCode
-									     name:@"d"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDKeyCode
+														 name:@"d"]];
 	[keyDict setAction:selfSpecial
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSKeyCode
-									     name:@"s"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSKeyCode
+														 name:@"s"]];
 	[keyDict setAction:gameChat
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetTKeyCode
-									     name:@"t"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetTKeyCode
+														 name:@"t"]];
 	[configs addObject:keyDict];
 	
 	// "MacBook Keyboard" Configuration
 	keyDict = [NSMutableDictionary keyConfigurationDictionary];
 	[keyDict setConfigurationName:@"MacBook Keyboard"];
 	[keyDict setAction:movePieceLeft
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLKeyCode
-									     name:@"l"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLKeyCode
+														 name:@"l"]];
 	[keyDict setAction:movePieceRight
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetApostropheKeyCode
-									     name:@"'"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetApostropheKeyCode
+														 name:@"'"]];
 	[keyDict setAction:rotatePieceCounterclockwise
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetOKeyCode
-									     name:@"o"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetOKeyCode
+														 name:@"o"]];
 	[keyDict setAction:rotatePieceClockwise
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetPKeyCode
-									     name:@"p"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetPKeyCode
+														 name:@"p"]];
 	[keyDict setAction:movePieceDown
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSemicolonKeyCode
-									     name:@";"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSemicolonKeyCode
+														 name:@";"]];
 	[keyDict setAction:dropPiece
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSpacebarKeyCode
-									     name:iTetSpacebarPlaceholderString]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSpacebarKeyCode
+														 name:iTetSpacebarPlaceholderString]];
 	[keyDict setAction:discardSpecial
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDKeyCode
-									     name:@"d"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetDKeyCode
+														 name:@"d"]];
 	[keyDict setAction:selfSpecial
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSKeyCode
-									     name:@"s"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetSKeyCode
+														 name:@"s"]];
 	[keyDict setAction:gameChat
-			forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetTKeyCode
-									     name:@"t"]];
+				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetTKeyCode
+														 name:@"t"]];
 	[configs addObject:keyDict];
 	
 	return configs;
@@ -118,28 +118,28 @@
 	// Create a dictionary with the special-targeting keys
 	NSMutableDictionary* targetKeys = [NSMutableDictionary dictionary];
 	[targetKeys setAction:specialPlayer1
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet1KeyCode
-										  name:@"1"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet1KeyCode
+															name:@"1"]];
 	[targetKeys setAction:specialPlayer2
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet2KeyCode
-										  name:@"2"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet2KeyCode
+															name:@"2"]];
 	[targetKeys setAction:specialPlayer3
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet3KeyCode
-										  name:@"3"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet3KeyCode
+															name:@"3"]];
 	[targetKeys setAction:specialPlayer4
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet4KeyCode
-										  name:@"4"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet4KeyCode
+															name:@"4"]];
 	[targetKeys setAction:specialPlayer5
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet5KeyCode
-										  name:@"5"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet5KeyCode
+															name:@"5"]];
 	[targetKeys setAction:specialPlayer6
-			   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet6KeyCode
-										  name:@"6"]];
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet6KeyCode
+															name:@"6"]];
 	return targetKeys;
 }
 
 - (void)setAction:(iTetGameAction)action
-	     forKey:(iTetKeyNamePair*)key
+		   forKey:(iTetKeyNamePair*)key
 {
 	// Remove the previous keybinding
 	iTetKeyNamePair* oldKey = [self keyForAction:action];
@@ -147,7 +147,7 @@
 		[self removeObjectForKey:oldKey];
 	
 	[self setObject:[NSNumber numberWithInt:action]
-		   forKey:key];
+			 forKey:key];
 }
 
 - (iTetGameAction)actionForKey:(iTetKeyNamePair*)key
@@ -169,7 +169,7 @@
 	
 	return nil;
 }
-				     
+
 NSString* const iTetKeyConfigurationNameKey = @"name";
 
 - (NSString*)configurationName
@@ -180,7 +180,7 @@ NSString* const iTetKeyConfigurationNameKey = @"name";
 - (void)setConfigurationName:(NSString*)newName
 {
 	[self setObject:newName
-		   forKey:iTetKeyConfigurationNameKey];
+			 forKey:iTetKeyConfigurationNameKey];
 }
 
 @end

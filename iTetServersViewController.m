@@ -26,9 +26,9 @@
 - (NSArray*)valuesForProtocolPopUpCell
 {
 	return [NSArray arrayWithObjects:
-		  @"Tetrinet",
-		  @"Tetrifast",
-		  nil];
+			@"Tetrinet",
+			@"Tetrifast",
+			nil];
 }
 
 @end

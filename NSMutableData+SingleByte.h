@@ -13,6 +13,6 @@
 - (void)appendByte:(uint8_t)byte;
 
 - (void)insertByte:(uint8_t)byte
-	     atIndex:(NSUInteger)index;
+		   atIndex:(NSUInteger)index;
 
 @end

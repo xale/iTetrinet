@@ -32,7 +32,7 @@
 	
 	// Push the existing context onto the context stack
 	[graphicsContext saveGraphicsState];
-		
+	
 	// Get the background image from the theme
 	NSImage* background = [[self theme] background];
 	NSSize bgSize = [background size];
@@ -42,16 +42,16 @@
 	// Create an affine transform from the background's size to the view's size
 	NSAffineTransform* scaleTransform = [NSAffineTransform transform];
 	[scaleTransform scaleXBy:(viewSize.width / bgSize.width)
-				   yBy:(viewSize.height / bgSize.height)];
+						 yBy:(viewSize.height / bgSize.height)];
 	
 	// Concatenate the transform to the graphics context
 	[scaleTransform concat];
 	
 	// Draw the background
 	[background drawAtPoint:NSZeroPoint
-			   fromRect:NSZeroRect
-			  operation:NSCompositeCopy
-			   fraction:1.0];
+				   fromRect:NSZeroRect
+				  operation:NSCompositeCopy
+				   fraction:1.0];
 	
 	// If we have no field contents to draw, we are finished
 	if ([self field] == nil)
@@ -71,7 +71,7 @@
 		{
 			// Get the cell type
 			cell = [[self field] cellAtRow:row
-							column:col];
+									column:col];
 			
 			// If there is nothing to draw, skip to next iteration of loop
 			if (cell == 0)
@@ -86,9 +86,9 @@
 			
 			// Draw the cell
 			[cellImage drawAtPoint:drawPoint
-					  fromRect:NSZeroRect
-					 operation:NSCompositeSourceOver
-					  fraction:1.0];
+						  fromRect:NSZeroRect
+						 operation:NSCompositeSourceOver
+						  fraction:1.0];
 		}
 	}
 	
@@ -100,9 +100,9 @@
 #pragma mark Key-Value Observing
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
-			    ofObject:(id)object
-				change:(NSDictionary *)change
-			     context:(void *)context
+					  ofObject:(id)object
+						change:(NSDictionary *)change
+					   context:(void *)context
 {
 	if ([object isKindOfClass:[iTetField class]])
 	{
@@ -111,9 +111,9 @@
 	}
 	
 	[super observeValueForKeyPath:keyPath
-				   ofObject:object
-				     change:change
-				    context:context];
+						 ofObject:object
+						   change:change
+						  context:context];
 }
 
 #pragma mark -

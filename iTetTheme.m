@@ -15,14 +15,14 @@
 + (NSArray*)defaultThemeList
 {
 	return [NSArray arrayWithObjects:
-		  [self defaultTheme],
-		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
-											     ofType:@"cfg"]],
-		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
-											     ofType:@"cfg"]],
-		  [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
-											     ofType:@"cfg"]],
-		  nil];
+			[self defaultTheme],
+			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
+																	 ofType:@"cfg"]],
+			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
+																	 ofType:@"cfg"]],
+			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
+																	 ofType:@"cfg"]],
+			nil];
 }
 
 + (id)defaultTheme
@@ -57,7 +57,7 @@
 {	
 	// Read the theme data from the default theme file
 	return [self initWithThemeFile:[[[NSBundle mainBundle] pathForResource:@"theme"
-											    ofType:@"cfg"] retain]];
+																	ofType:@"cfg"] retain]];
 }
 
 - (void)dealloc
@@ -84,8 +84,8 @@
 {
 	// Attempt to read the contents of the file
 	NSString* themeFile = [NSString stringWithContentsOfFile:themeFilePath
-								  usedEncoding:nil
-									   error:NULL];
+												usedEncoding:nil
+													   error:NULL];
 	
 	// Check that the file was read successfully
 	if (themeFile == nil)
@@ -93,14 +93,14 @@
 	
 	// Search for the name of the theme's image
 	NSRange dataRange = [self rangeOfSection:@"blocks="
-					     inThemeFile:themeFile];
+								 inThemeFile:themeFile];
 	if (dataRange.location == NSNotFound)
 		return NO;
 	
 	// Create the image path
 	NSString* imageName = [themeFile substringWithRange:dataRange];
 	imageFilePath = [[themeFilePath stringByDeletingLastPathComponent]
-			     stringByAppendingPathComponent:imageName];
+					 stringByAppendingPathComponent:imageName];
 	
 	// Check that the image path is valid
 	if (![[NSFileManager defaultManager] fileExistsAtPath:imageFilePath])
@@ -111,7 +111,7 @@
 	// Search for the other data in the theme file
 	// Cell size
 	dataRange = [self rangeOfSection:@"blocksize="
-				   inThemeFile:themeFile];
+						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 	{
 		CGFloat cell = [[themeFile substringWithRange:dataRange] floatValue];
@@ -124,7 +124,7 @@
 	
 	// Name
 	dataRange = [self rangeOfSection:@"name="
-				   inThemeFile:themeFile];
+						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		name = [[themeFile substringWithRange:dataRange] retain];
 	else
@@ -132,7 +132,7 @@
 	
 	// Author
 	dataRange = [self rangeOfSection:@"author="
-				   inThemeFile:themeFile];
+						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		author = [[themeFile substringWithRange:dataRange] retain];
 	else
@@ -140,7 +140,7 @@
 	
 	// Description
 	dataRange = [self rangeOfSection:@"description="
-				   inThemeFile:themeFile];
+						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		description = [[themeFile substringWithRange:dataRange] retain];
 	else
@@ -150,12 +150,12 @@
 }
 
 - (NSRange)rangeOfSection:(NSString*)sectionName
-		  inThemeFile:(NSString*)themeFile
+			  inThemeFile:(NSString*)themeFile
 {
 	// Locate the section heading
 	NSRange searchResult;
 	searchResult = [themeFile rangeOfString:sectionName
-						  options:NSCaseInsensitiveSearch];
+									options:NSCaseInsensitiveSearch];
 	
 	// If not found, return "not found"
 	if (searchResult.location == NSNotFound)
@@ -166,8 +166,8 @@
 	dataRange.location = searchResult.location + searchResult.length;
 	dataRange.length = [themeFile length] - dataRange.location;
 	searchResult = [themeFile rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
-								options:0
-								  range:dataRange];
+											  options:0
+												range:dataRange];
 	
 	// If a newline was found, the section ends there; otherwise, the section
 	// is assumed to end at the end of the file
@@ -188,7 +188,7 @@
 	
 	// Create an image for the background
 	NSSize fieldSize = NSMakeSize((cellSize.width * ITET_FIELD_WIDTH),
-						(cellSize.height * ITET_FIELD_HEIGHT));
+								  (cellSize.height * ITET_FIELD_HEIGHT));
 	background = [[NSImage alloc] initWithSize:fieldSize];
 	
 	// Draw the background portion of the sheet to the background
@@ -197,14 +197,14 @@
 	fieldRect.size = fieldSize;
 	[background lockFocus];
 	[sheet drawInRect:fieldRect
-		   fromRect:fieldRect
-		  operation:NSCompositeCopy
-		   fraction:1.0];
+			 fromRect:fieldRect
+			operation:NSCompositeCopy
+			 fraction:1.0];
 	[background unlockFocus];
 	
 	// Create a mutable array to add the cell images to
 	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:
-					 (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
+							 (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
 	
 	// Clip each cell and special image out of the sheet
 	NSRect cellRect;
@@ -222,9 +222,9 @@
 		// Draw the relevant section of the sheet to the image
 		[cellImage lockFocus];
 		[sheet drawInRect:NSMakeRect(0, 0, cellSize.width, cellSize.height)
-			   fromRect:cellRect
-			  operation:NSCompositeCopy
-			   fraction:1.0];
+				 fromRect:cellRect
+				operation:NSCompositeCopy
+				 fraction:1.0];
 		[cellImage unlockFocus];
 		
 		// Add the image to the array of cell images
@@ -234,10 +234,10 @@
 	// Fill the cell and special arrays with the images clipped from the sheet
 	[cellImages release];
 	cellImages = [[NSArray alloc] initWithArray:
-			  [cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+				  [cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
 	[specialImages release];
 	specialImages = [[NSArray alloc] initWithArray:
-			     [cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+					 [cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
 #define PREVIEW_HEIGHT (225)
@@ -272,9 +272,9 @@
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
 		
 		[[cellImages objectAtIndex:cellNum] drawInRect:targetRect
-								  fromRect:NSZeroRect
-								 operation:NSCompositeCopy
-								  fraction:1.0];
+											  fromRect:NSZeroRect
+											 operation:NSCompositeCopy
+											  fraction:1.0];
 	}
 	
 	// Draw the specials
@@ -284,18 +284,18 @@
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
 		
 		[[specialImages objectAtIndex:cellNum] drawInRect:targetRect
-								     fromRect:NSZeroRect
-								    operation:NSCompositeCopy
-								     fraction:1.0];
+												 fromRect:NSZeroRect
+												operation:NSCompositeCopy
+												 fraction:1.0];
 	}
 	
 	// Draw the background (scaled to fit)
 	targetRect.size = bgSize;
 	targetRect.origin = NSMakePoint((ITET_DEF_CELL_WIDTH * 2), 0);
 	[background drawInRect:targetRect
-			  fromRect:NSZeroRect
-			 operation:NSCompositeCopy
-			  fraction:1.0];
+				  fromRect:NSZeroRect
+				 operation:NSCompositeCopy
+				  fraction:1.0];
 	
 	[preview unlockFocus];
 }
@@ -309,7 +309,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 {
 	// Encode theme file path
 	[encoder encodeObject:[self themeFilePath]
-			   forKey:iTetThemeFilePathKey];
+				   forKey:iTetThemeFilePathKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder

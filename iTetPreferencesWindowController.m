@@ -20,11 +20,11 @@
 	
 	// Create the view controllers
 	viewControllers = [[NSArray alloc] initWithObjects:
-				 [iTetGeneralPrefsViewController viewController],
-				 [iTetThemesViewController viewController],
-				 [iTetServersViewController viewController],
-				 [iTetKeyboardViewController viewController],
-				 nil];
+					   [iTetGeneralPrefsViewController viewController],
+					   [iTetThemesViewController viewController],
+					   [iTetServersViewController viewController],
+					   [iTetKeyboardViewController viewController],
+					   nil];
 	
 	currentViewNumber = noPreferencesTab;
 	
@@ -72,7 +72,7 @@
 		
 		// Ask the current view controller if it is okay to swap
 		if (![controller viewShouldBeSwappedForView:newController
-						 byWindowController:self])
+								 byWindowController:self])
 			return;
 	}
 	
@@ -104,8 +104,8 @@
 	
 	// Resize the window
 	[[self window] setFrame:windowFrame
-			    display:YES
-			    animate:YES];
+					display:YES
+					animate:YES];
 	
 	// Swap the view into the box
 	[viewBox setContentView:view];
@@ -138,8 +138,8 @@
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
 {
 	return [NSArray arrayWithObjects: [general itemIdentifier],
-		  [themes itemIdentifier], [servers itemIdentifier],
-		  [keyboard itemIdentifier], nil];
+			[themes itemIdentifier], [servers itemIdentifier],
+			[keyboard itemIdentifier], nil];
 }
 
 @end

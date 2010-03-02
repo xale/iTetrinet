@@ -12,37 +12,37 @@
 + (NSArray*)defaultServers
 {
 	return [NSArray arrayWithObjects:
-		  [iTetServerInfo serverInfoWithName:@"Example TetriNET Server"
-						     address:@"www.example.com"
-						    nickname:NSUserName()
-							  team:@""
-						    protocol:tetrinetProtocol],
-		  [iTetServerInfo serverInfoWithName:@"Example Tetrifast Server"
-						     address:@"www.example.com"
-						    nickname:NSUserName()
-							  team:@""
-						    protocol:tetrifastProtocol],
-		  nil];
+			[iTetServerInfo serverInfoWithName:@"Example TetriNET Server"
+									   address:@"www.example.com"
+									  nickname:NSUserName()
+										  team:@""
+									  protocol:tetrinetProtocol],
+			[iTetServerInfo serverInfoWithName:@"Example Tetrifast Server"
+									   address:@"www.example.com"
+									  nickname:NSUserName()
+										  team:@""
+									  protocol:tetrifastProtocol],
+			nil];
 }
 
 + (id)serverInfoWithName:(NSString*)name
-		     address:(NSString*)addr
-		    nickname:(NSString*)nick
-			  team:(NSString*)team
-		    protocol:(iTetProtocolType)p
+				 address:(NSString*)addr
+				nickname:(NSString*)nick
+					team:(NSString*)team
+				protocol:(iTetProtocolType)p
 {
 	return [[[self alloc] initWithName:name
-					   address:addr
-					  nickname:nick
-						team:team
-					  protocol:p] autorelease];
+							   address:addr
+							  nickname:nick
+								  team:team
+							  protocol:p] autorelease];
 }
 
 - (id)initWithName:(NSString*)name
-	     address:(NSString*)addr
-	    nickname:(NSString*)nick
-		  team:(NSString*)team
-	    protocol:(iTetProtocolType)p
+		   address:(NSString*)addr
+		  nickname:(NSString*)nick
+			  team:(NSString*)team
+		  protocol:(iTetProtocolType)p
 {
 	serverName = [name copy];
 	address = [addr copy];
@@ -56,10 +56,10 @@
 - (id)init
 {	
 	return [self initWithName:@"Unnamed Server"
-				address:@"www.example.com"
-			     nickname:NSUserName()
-				   team:@""
-			     protocol:tetrinetProtocol];
+					  address:@"www.example.com"
+					 nickname:NSUserName()
+						 team:@""
+					 protocol:tetrinetProtocol];
 }
 
 - (void)dealloc
@@ -84,15 +84,15 @@ NSString* const iTetServerInfoProtocolKey =	@"protocol";
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
 	[encoder encodeObject:[self serverName]
-			   forKey:iTetServerInfoServerNameKey];
+				   forKey:iTetServerInfoServerNameKey];
 	[encoder encodeObject:[self address]
-			   forKey:iTetServerInfoAddressKey];
+				   forKey:iTetServerInfoAddressKey];
 	[encoder encodeObject:[self nickname]
-			   forKey:iTetServerInfoNicknameKey];
+				   forKey:iTetServerInfoNicknameKey];
 	[encoder encodeObject:[self playerTeam]
-			   forKey:iTetServerInfoPlayerTeamKey];
+				   forKey:iTetServerInfoPlayerTeamKey];
 	[encoder encodeInt:[self protocol]
-			forKey:iTetServerInfoProtocolKey];
+				forKey:iTetServerInfoProtocolKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder
@@ -118,8 +118,8 @@ NSString* const iTetServerInfoProtocolKey =	@"protocol";
 - (NSString*)description
 {
 	return [NSString stringWithFormat:
-		  @"iTetServerInfo; serverName: %@; address: %@; nickname: %@; playerTeam: %@",
-		  serverName, address, nickname, playerTeam];
+			@"iTetServerInfo; serverName: %@; address: %@; nickname: %@; playerTeam: %@",
+			serverName, address, nickname, playerTeam];
 }
 
 @end

@@ -23,7 +23,7 @@
 	if ([selection count] != 1)
 		return nil;
 	
-	 // Otherwise, return the selected theme
+	// Otherwise, return the selected theme
 	return [selection objectAtIndex:0];
 }
 

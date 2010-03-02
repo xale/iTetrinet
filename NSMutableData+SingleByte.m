@@ -14,16 +14,16 @@
 {
 	uint8_t buf[1] = {byte};
 	[self appendBytes:buf
-		     length:1];
+			   length:1];
 }
 
 - (void)insertByte:(uint8_t)byte
-	     atIndex:(NSUInteger)index
+		   atIndex:(NSUInteger)index
 {
 	uint8_t buf[1] = {byte};
 	[self replaceBytesInRange:NSMakeRange(index, 0)
-			    withBytes:buf
-				 length:1];
+					withBytes:buf
+					   length:1];
 }
 
 @end

@@ -10,12 +10,12 @@
 #import "iTetTheme.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
-NSString* const iTetThemeListPrefKey =		@"themeList";
+NSString* const iTetThemeListPrefKey =			@"themeList";
 NSString* const iTetCurrentThemePrefKey =		@"currentTheme";
-NSString* const iTetServerListPrefKey =		@"serverList";
-NSString* const iTetKeyConfigsPrefKey =		@"keyConfigs";
+NSString* const iTetServerListPrefKey =			@"serverList";
+NSString* const iTetKeyConfigsPrefKey =			@"keyConfigs";
 NSString* const iTetCurrentKeyConfigNumberKey =	@"currentKeyConfigNum";
-NSString* const iTetConnectionTimeoutKey =	@"connectionTimeout";
+NSString* const iTetConnectionTimeoutKey =		@"connectionTimeout";
 
 NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange";
 
@@ -29,17 +29,17 @@ static iTetPreferencesController* preferencesController = nil;
 	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
 	
 	[defaults setObject:[NSNumber numberWithDouble:5.0]
-			 forKey:iTetConnectionTimeoutKey];
+				 forKey:iTetConnectionTimeoutKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemeList]]
-			 forKey:iTetThemeListPrefKey];
+				 forKey:iTetThemeListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultTheme]]
-			 forKey:iTetCurrentThemePrefKey];
+				 forKey:iTetCurrentThemePrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
-			 forKey:iTetServerListPrefKey];
+				 forKey:iTetServerListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary defaultKeyConfigurations]]
-			 forKey:iTetKeyConfigsPrefKey];
+				 forKey:iTetKeyConfigsPrefKey];
 	[defaults setObject:[NSNumber numberWithInt:0]
-			 forKey:iTetCurrentKeyConfigNumberKey];
+				 forKey:iTetCurrentKeyConfigNumberKey];
 	
 	// Register the defaults
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -56,7 +56,7 @@ static iTetPreferencesController* preferencesController = nil;
 	// Load the list of themes from user defaults
 	prefsData = [defaults objectForKey:iTetThemeListPrefKey];
 	themeList = [[NSMutableArray alloc] initWithArray:
-			 [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+				 [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Load the current theme
 	prefsData = [defaults objectForKey:iTetCurrentThemePrefKey];
@@ -67,13 +67,13 @@ static iTetPreferencesController* preferencesController = nil;
 	{
 		currentTheme = [[iTetTheme defaultTheme] retain];
 		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:currentTheme]
-				 forKey:iTetCurrentThemePrefKey];
+					 forKey:iTetCurrentThemePrefKey];
 	}
 	
 	// Load the list of bookmarked servers
 	prefsData = [defaults objectForKey:iTetServerListPrefKey];
 	serverList = [[NSMutableArray alloc] initWithArray:
-			  [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+				  [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Start observing all the servers in the serverList
 	[self startObservingServersInArray:serverList];
@@ -81,11 +81,11 @@ static iTetPreferencesController* preferencesController = nil;
 	// Load the list of keyboard configurations
 	prefsData = [defaults objectForKey:iTetKeyConfigsPrefKey];
 	keyConfigurations = [[NSMutableArray alloc] initWithArray:
-				   [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+						 [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Load the current configuration number
 	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey]
-						   unsignedIntegerValue];
+									 unsignedIntegerValue];
 	
 	return self;
 }
@@ -163,25 +163,25 @@ static iTetPreferencesController* preferencesController = nil;
 	if ([object isKindOfClass:[iTetServerInfo class]])
 	{
 		[object addObserver:self
-			   forKeyPath:@"serverName"
-				options:0
-				context:NULL];
+				 forKeyPath:@"serverName"
+					options:0
+					context:NULL];
 		[object addObserver:self
-			   forKeyPath:@"address"
-				options:0
-				context:NULL];
+				 forKeyPath:@"address"
+					options:0
+					context:NULL];
 		[object addObserver:self
-			   forKeyPath:@"nickname"
-				options:0
-				context:NULL];
+				 forKeyPath:@"nickname"
+					options:0
+					context:NULL];
 		[object addObserver:self
-			   forKeyPath:@"playerTeam"
-				options:0
-				context:NULL];
+				 forKeyPath:@"playerTeam"
+					options:0
+					context:NULL];
 		[object addObserver:self
-			   forKeyPath:@"protocol"
-				options:0
-				context:NULL];
+				 forKeyPath:@"protocol"
+					options:0
+					context:NULL];
 	}
 }
 
@@ -190,15 +190,15 @@ static iTetPreferencesController* preferencesController = nil;
 	if ([object isKindOfClass:[iTetServerInfo class]])
 	{
 		[object removeObserver:self
-				forKeyPath:@"serverName"];
+					forKeyPath:@"serverName"];
 		[object removeObserver:self
-				forKeyPath:@"address"];
+					forKeyPath:@"address"];
 		[object removeObserver:self
-				forKeyPath:@"nickname"];
+					forKeyPath:@"nickname"];
 		[object removeObserver:self
-				forKeyPath:@"playerTeam"];
+					forKeyPath:@"playerTeam"];
 		[object removeObserver:self
-				forKeyPath:@"protocol"];
+					forKeyPath:@"protocol"];
 	}
 }
 
@@ -208,29 +208,29 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	[array addObserver:self
 	toObjectsAtIndexes:allIndexes
-		  forKeyPath:@"serverName"
-		     options:0
-		     context:NULL];
+			forKeyPath:@"serverName"
+			   options:0
+			   context:NULL];
 	[array addObserver:self
 	toObjectsAtIndexes:allIndexes
-		  forKeyPath:@"address"
-		     options:0
-		     context:NULL];
+			forKeyPath:@"address"
+			   options:0
+			   context:NULL];
 	[array addObserver:self
 	toObjectsAtIndexes:allIndexes
-		  forKeyPath:@"nickname"
-		     options:0
-		     context:NULL];
+			forKeyPath:@"nickname"
+			   options:0
+			   context:NULL];
 	[array addObserver:self
 	toObjectsAtIndexes:allIndexes
-		  forKeyPath:@"playerTeam"
-		     options:0
-		     context:NULL];
+			forKeyPath:@"playerTeam"
+			   options:0
+			   context:NULL];
 	[array addObserver:self
 	toObjectsAtIndexes:allIndexes
-		  forKeyPath:@"protocol"
-		     options:0
-		     context:NULL];
+			forKeyPath:@"protocol"
+			   options:0
+			   context:NULL];
 }
 
 - (void)stopObservingServersInArray:(NSArray*)array
@@ -239,25 +239,25 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	[array removeObserver:self
 	 fromObjectsAtIndexes:allIndexes
-		     forKeyPath:@"serverName"];
+			   forKeyPath:@"serverName"];
 	[array removeObserver:self
 	 fromObjectsAtIndexes:allIndexes
-		     forKeyPath:@"address"];
+			   forKeyPath:@"address"];
 	[array removeObserver:self
 	 fromObjectsAtIndexes:allIndexes
-		     forKeyPath:@"nickame"];
+			   forKeyPath:@"nickame"];
 	[array removeObserver:self
 	 fromObjectsAtIndexes:allIndexes
-		     forKeyPath:@"playerTeam"];
+			   forKeyPath:@"playerTeam"];
 	[array removeObserver:self
 	 fromObjectsAtIndexes:allIndexes
-		     forKeyPath:@"protocol"];
+			   forKeyPath:@"protocol"];
 }
 
 - (void)observeValueForKeyPath:(NSString*)path
-			    ofObject:(id)object
-				change:(NSDictionary*)change
-			     context:(void*)context
+					  ofObject:(id)object
+						change:(NSDictionary*)change
+					   context:(void*)context
 {
 	if ([object isKindOfClass:[iTetServerInfo class]])
 	{
@@ -265,7 +265,7 @@ static iTetPreferencesController* preferencesController = nil;
 		// Write the change to NSUserDefaults
 		// FIXME: there should be a faster way than re-archiving the entire array
 		[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:serverList]
-									forKey:iTetServerListPrefKey];
+												  forKey:iTetServerListPrefKey];
 	}
 }
 
@@ -281,7 +281,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Update the value in user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:timeout]
-								forKey:iTetConnectionTimeoutKey];
+											  forKey:iTetConnectionTimeoutKey];
 }
 @synthesize connectionTimeout;
 
@@ -302,12 +302,12 @@ static iTetPreferencesController* preferencesController = nil;
 {
 	// Insert (and begin observing) the new server info
 	[serverList insertObject:object
-			     atIndex:index];
+					 atIndex:index];
 	[self startObservingObject:object];
 	
 	// Update the list in user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:serverList]
-								forKey:iTetServerListPrefKey];
+											  forKey:iTetServerListPrefKey];
 }
 
 - (void)removeObjectFromServerListAtIndex:(NSUInteger)index
@@ -318,7 +318,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Update the list in user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:serverList]
-								forKey:iTetServerListPrefKey];
+											  forKey:iTetServerListPrefKey];
 }
 
 - (void)setServerList:(NSMutableArray*)servers
@@ -340,7 +340,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the new list to user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:serverList]
-								forKey:iTetServerListPrefKey];
+											  forKey:iTetServerListPrefKey];
 }
 @synthesize serverList;
 
@@ -355,7 +355,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the new list to User Defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
-								forKey:iTetThemeListPrefKey];
+											  forKey:iTetThemeListPrefKey];
 }
 @synthesize themeList;
 
@@ -369,11 +369,11 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the new theme (serialized) to User Defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:theme]
-								forKey:iTetCurrentThemePrefKey];
+											  forKey:iTetCurrentThemePrefKey];
 	
 	// Post a notification informing views of the new theme
 	[[NSNotificationCenter defaultCenter] postNotificationName:iTetCurrentThemeDidChangeNotification
-									    object:self];
+														object:self];
 }
 @synthesize currentTheme;
 
@@ -384,7 +384,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the list to user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:keyConfigurations]
-								forKey:iTetKeyConfigsPrefKey];
+											  forKey:iTetKeyConfigsPrefKey];
 }
 - (void)removeKeyConfigurationAtIndex:(NSUInteger)index
 {
@@ -393,18 +393,18 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the list to user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:keyConfigurations]
-								forKey:iTetKeyConfigsPrefKey];
+											  forKey:iTetKeyConfigsPrefKey];
 }
 - (void)replaceKeyConfigurationAtIndex:(NSUInteger)index
-			withKeyConfiguration:(NSMutableDictionary*)config
+				  withKeyConfiguration:(NSMutableDictionary*)config
 {
 	// Replace the configuration
 	[keyConfigurations replaceObjectAtIndex:index
-					     withObject:config];
+								 withObject:config];
 	
 	// Write the list to user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:keyConfigurations]
-								forKey:iTetKeyConfigsPrefKey];
+											  forKey:iTetKeyConfigsPrefKey];
 }
 @synthesize keyConfigurations;
 
@@ -415,7 +415,7 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Write the change to user defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithUnsignedInteger:num]
-								forKey:iTetCurrentKeyConfigNumberKey];
+											  forKey:iTetCurrentKeyConfigNumberKey];
 }
 @synthesize currentKeyConfigurationNumber;
 

@@ -33,7 +33,7 @@
 - (id)initWithThemeFile:(NSString*)path;
 - (BOOL)parseThemeFile;
 - (NSRange)rangeOfSection:(NSString*)sectionName
-		  inThemeFile:(NSString*)themeFileContents;
+			  inThemeFile:(NSString*)themeFileContents;
 - (void)loadImages;
 - (void)createPreview;
 

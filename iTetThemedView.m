@@ -20,9 +20,9 @@
 	
 	// Register as an observer for changes to the theme
 	[[NSNotificationCenter defaultCenter] addObserver:self
-							     selector:@selector(currentThemeChanged:)
-								   name:iTetCurrentThemeDidChangeNotification
-								 object:nil];
+											 selector:@selector(currentThemeChanged:)
+												 name:iTetCurrentThemeDidChangeNotification
+											   object:nil];
 	
 	return self;
 }

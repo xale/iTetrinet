@@ -49,19 +49,19 @@ typedef enum
 
 // Create blocks with specific types, orientations and positions
 + (id)blockWithType:(iTetBlockType)blockType
-	  orientation:(NSInteger)blockOrientation
-	  rowPosition:(NSInteger)row
+		orientation:(NSInteger)blockOrientation
+		rowPosition:(NSInteger)row
      columnPosition:(NSInteger)column;
 - (id)initWithType:(iTetBlockType)blockType
-	 orientation:(NSInteger)blockOrientation
-	 rowPosition:(NSInteger)row
+	   orientation:(NSInteger)blockOrientation
+	   rowPosition:(NSInteger)row
     columnPosition:(NSInteger)column;
 
 // Create blocks with specific types and orientations
 + (id)blockWithType:(iTetBlockType)blockType
-	  orientation:(NSInteger)blockOrientation;
+		orientation:(NSInteger)blockOrientation;
 - (id)initWithType:(iTetBlockType)blockType
-	 orientation:(NSInteger)blockOrientation;
+	   orientation:(NSInteger)blockOrientation;
 
 // Create random blocks using the frequency information from the game rules
 // note: blockFrequencies must be exactly 100 characters in length
@@ -70,18 +70,18 @@ typedef enum
 
 // Returns the contents of this block at the specified cell
 - (char)cellAtRow:(NSInteger)row
-	     column:(NSInteger)col;
+		   column:(NSInteger)col;
 
 // The block's position
 - (void)moveHorizontal:(iTetMoveDirection)direction
-		   onField:(iTetField*)field;
+			   onField:(iTetField*)field;
 - (BOOL)moveDownOnField:(iTetField*)field;
 @property (readwrite, assign) NSInteger rowPos;
 @property (readwrite, assign) NSInteger colPos;
 
 // The block's present orientation (rotation)
 - (void)rotate:(iTetRotationDirection)direction
-	 onField:(iTetField*)field;
+	   onField:(iTetField*)field;
 @property (readwrite, assign) NSInteger orientation;
 
 // Returns the number of possible orientations for this block

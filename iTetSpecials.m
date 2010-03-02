@@ -8,14 +8,14 @@
 #include "iTetSpecials.h"
 
 NSString* const iTetAddLineSpecialName =		@"Add Line";
-NSString* const iTetClearLineSpecialName =	@"Clear Line";
-NSString* const iTetNukeFieldSpecialName =	@"Nuke Field";
+NSString* const iTetClearLineSpecialName =		@"Clear Line";
+NSString* const iTetNukeFieldSpecialName =		@"Nuke Field";
 NSString* const iTetRandomClearSpecialName =	@"Random Clear";
 NSString* const iTetSwitchFieldSpecialName =	@"Switch Field";
 NSString* const iTetClearSpecialsSpecialName =	@"Clear Specials";
 NSString* const iTetGravitySpecialName =		@"Gravity";
-NSString* const iTetQuakeFieldSpecialName =	@"Quake Field";
-NSString* const iTetBlockBombSpecialName =	@"Block Bomb";
+NSString* const iTetQuakeFieldSpecialName =		@"Quake Field";
+NSString* const iTetBlockBombSpecialName =		@"Block Bomb";
 NSString* const iTetInvalidOrNoneSpecialName =	@"No Special";
 
 char iTetSpecialNumberFromType(iTetSpecialType type)

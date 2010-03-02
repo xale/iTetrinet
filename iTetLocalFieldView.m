@@ -38,20 +38,20 @@
 	
 	// Determine the size at which the block should be drawn
 	NSSize cellSize = NSMakeSize(([self bounds].size.width / ITET_FIELD_WIDTH),
-					     ([self bounds].size.height / ITET_FIELD_HEIGHT));
+								 ([self bounds].size.height / ITET_FIELD_HEIGHT));
 	NSSize blockSize = NSMakeSize((4 * cellSize.width), (4 * cellSize.height));
 	
 	// Draw the block to an image of that size
 	NSImage* blockImage = [[self block] imageWithSize:blockSize
-								  theme:[self theme]];
+												theme:[self theme]];
 	
 	// Draw the image at the block's position
 	NSPoint drawPoint = NSMakePoint(([[self block] colPos] * cellSize.width),
-						  ([[self block] rowPos] * cellSize.height));
+									([[self block] rowPos] * cellSize.height));
 	[blockImage drawAtPoint:drawPoint
-			   fromRect:NSZeroRect
-			  operation:NSCompositeSourceOver
-			   fraction:1.0];
+				   fromRect:NSZeroRect
+				  operation:NSCompositeSourceOver
+				   fraction:1.0];
 }
 
 #pragma mark -
@@ -74,7 +74,7 @@
 	{
 		// Inform the delegate
 		[eventDelegate keyPressed:key
-			   onLocalFieldView:self];
+				 onLocalFieldView:self];
 	}
 }
 
@@ -82,9 +82,9 @@
 #pragma mark Key-Value Observing
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
-			    ofObject:(id)object
-				change:(NSDictionary *)change
-			     context:(void *)context
+					  ofObject:(id)object
+						change:(NSDictionary *)change
+					   context:(void *)context
 {
 	if ([object isKindOfClass:[iTetBlock class]])
 	{
@@ -93,9 +93,9 @@
 	}
 	
 	[super observeValueForKeyPath:keyPath
-				   ofObject:object
-				     change:change
-				    context:context];
+						 ofObject:object
+						   change:change
+						  context:context];
 }
 
 #pragma mark -
