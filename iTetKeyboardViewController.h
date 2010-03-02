@@ -41,8 +41,8 @@
 - (IBAction)deleteConfiguration:(id)sender;
 
 - (void)insertConfiguration:(NSMutableDictionary*)config
-	   inPopUpMenuAtIndex:(NSUInteger)index
-			tagNumber:(NSUInteger)tag;
+		 inPopUpMenuAtIndex:(NSUInteger)index
+				  tagNumber:(NSUInteger)tag;
 - (void)displayConfigurationNumber:(NSUInteger)configNum;
 - (void)clearUnsavedConfiguration;
 

@@ -19,7 +19,7 @@ extern NSString* const iTetKeyConfigurationNameKey;
 + (NSMutableDictionary*)specialTargetsDictionary;
 
 - (void)setAction:(iTetGameAction)action
-	     forKey:(iTetKeyNamePair*)key;
+		   forKey:(iTetKeyNamePair*)key;
 - (iTetGameAction)actionForKey:(iTetKeyNamePair*)key;
 - (iTetKeyNamePair*)keyForAction:(iTetGameAction)action;
 

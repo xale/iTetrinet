@@ -38,17 +38,17 @@
 	
 	// Run the panel
 	[openSheet beginSheetForDirectory:nil
-					     file:nil
-					    types:[NSArray arrayWithObject:@"cfg"]
-				 modalForWindow:[[self view] window]
-				  modalDelegate:self
-				 didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
-				    contextInfo:NULL];
+								 file:nil
+								types:[NSArray arrayWithObject:@"cfg"]
+					   modalForWindow:[[self view] window]
+						modalDelegate:self
+					   didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
+						  contextInfo:NULL];
 }
 
 - (void)openSheetDidEnd:(NSOpenPanel*)openSheet
-		 returnCode:(NSInteger)returnCode
-		contextInfo:(void*)contextInfo
+			 returnCode:(NSInteger)returnCode
+			contextInfo:(void*)contextInfo
 {
 	if (returnCode != NSOKButton)
 		return;
@@ -66,8 +66,8 @@
 		// Configure with the error message
 		[alert setMessageText:@"Could not load theme"];
 		[alert setInformativeText:[NSString stringWithFormat:
-		  @"Unable to load a theme from the file %@. Check that the file is a valid theme file, and that the image specified by \'Blocks=\' in the theme file is in the same directory as the file.",
-		  themeFile]];
+								   @"Unable to load a theme from the file %@. Check that the file is a valid theme file, and that the image specified by \'Blocks=\' in the theme file is in the same directory as the file.",
+								   themeFile]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
@@ -75,9 +75,9 @@
 		
 		// Run the alert
 		[alert beginSheetModalForWindow:[[self view] window]
-					     modalDelegate:self
-					    didEndSelector:@selector(themeErrorAlertEnded:returnCode:contextInfo:)
-						 contextInfo:NULL];
+						  modalDelegate:self
+						 didEndSelector:@selector(themeErrorAlertEnded:returnCode:contextInfo:)
+							contextInfo:NULL];
 		return;
 	}
 	
@@ -90,8 +90,8 @@
 		// Configure with the error message
 		[alert setMessageText:@"Duplicate theme"];
 		[alert setInformativeText:[NSString stringWithFormat:
-							  @"The theme \'%@\' appears to be a duplicate of the default iTetrinet theme. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after \'Name=\'.)",
-							  [newTheme name]]];
+								   @"The theme \'%@\' appears to be a duplicate of the default iTetrinet theme. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after \'Name=\'.)",
+								   [newTheme name]]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
@@ -99,9 +99,9 @@
 		
 		// Run the alert
 		[alert beginSheetModalForWindow:[[self view] window]
-					     modalDelegate:self
-					    didEndSelector:@selector(themeErrorAlertEnded:returnCode:contextInfo:)
-						 contextInfo:NULL];
+						  modalDelegate:self
+						 didEndSelector:@selector(themeErrorAlertEnded:returnCode:contextInfo:)
+							contextInfo:NULL];
 		return;
 	}
 	
@@ -115,8 +115,8 @@
 		// Configure with the error message
 		[alert setMessageText:@"Duplicate theme"];
 		[alert setInformativeText:[NSString stringWithFormat:
-						   @"A theme named \'%@\' is already installed. Would you like the replace the existing theme with the new one?",
-						   [newTheme name]]];
+								   @"A theme named \'%@\' is already installed. Would you like the replace the existing theme with the new one?",
+								   [newTheme name]]];
 		[alert addButtonWithTitle:@"Replace"];
 		[alert addButtonWithTitle:@"Cancel"];
 		
@@ -125,9 +125,9 @@
 		
 		// Run the alert
 		[alert beginSheetModalForWindow:[[self view] window]
-					modalDelegate:self
-				     didEndSelector:@selector(duplicateThemeAlertEnded:returnCode:theme:)
-					  contextInfo:[newTheme retain]];
+						  modalDelegate:self
+						 didEndSelector:@selector(duplicateThemeAlertEnded:returnCode:theme:)
+							contextInfo:[newTheme retain]];
 		return;
 	}
 	
@@ -147,15 +147,15 @@
 #pragma mark Error Sheet Callbacks
 
 - (void)themeErrorAlertEnded:(NSAlert*)alert
-			returnCode:(NSInteger)returnCode
-		     contextInfo:(void*)contextInfo
+				  returnCode:(NSInteger)returnCode
+				 contextInfo:(void*)contextInfo
 {
 	// Does nothing
 }
 
 - (void)duplicateThemeAlertEnded:(NSAlert*)alert
-			    returnCode:(NSInteger)returnCode
-				   theme:(iTetTheme*)newTheme
+					  returnCode:(NSInteger)returnCode
+						   theme:(iTetTheme*)newTheme
 {
 	// Balance the retain used to hold onto the theme
 	[newTheme autorelease];

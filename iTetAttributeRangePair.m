@@ -10,17 +10,17 @@
 @implementation iTetAttributeRangePair
 
 + (id)pairWithAttributeType:(uint8_t)attr
-			    value:(NSDictionary*)value
-	  beginningAtLocation:(NSUInteger)location
+					  value:(NSDictionary*)value
+		beginningAtLocation:(NSUInteger)location
 {
 	return [[[self alloc] initWithAttributeType:attr
-							  value:value
-					beginningAtLocation:location] autorelease];
+										  value:value
+							beginningAtLocation:location] autorelease];
 }
 
 - (id)initWithAttributeType:(uint8_t)attr
-			    value:(NSDictionary*)value
-	  beginningAtLocation:(NSUInteger)location
+					  value:(NSDictionary*)value
+		beginningAtLocation:(NSUInteger)location
 {
 	attributeType = attr;
 	attributeValue = [value retain];

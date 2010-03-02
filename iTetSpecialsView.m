@@ -77,9 +77,9 @@
 			
 			// Draw the special
 			[specialImage drawAtPoint:drawPoint
-					     fromRect:NSZeroRect
-					    operation:NSCompositeSourceOver
-					     fraction:1.0];
+							 fromRect:NSZeroRect
+							operation:NSCompositeSourceOver
+							 fraction:1.0];
 			
 			// Move the drawing point to the next position
 			drawPoint.x += [[self theme] cellSize].width;
@@ -96,7 +96,7 @@
 	// Draw a red box around the first (active) special
 	CGFloat boxEdgeLength = [self bounds].size.height - (LINE_WIDTH / 2) - 1;
 	NSRect boxRect = NSMakeRect((LINE_WIDTH / 2), (LINE_WIDTH / 2),
-					    boxEdgeLength, boxEdgeLength);
+								boxEdgeLength, boxEdgeLength);
 	[[NSColor redColor] setStroke];
 	[NSBezierPath setDefaultLineWidth:LINE_WIDTH];
 	[NSBezierPath strokeRect:boxRect];

@@ -15,10 +15,10 @@
 }
 
 + (id)keyNamePairForKeyCode:(NSInteger)code
-			     name:(NSString*)name
+					   name:(NSString*)name
 {
 	return [[[self alloc] initWithKeyCode:code
-						   name:name] autorelease];
+									 name:name] autorelease];
 }
 
 - (id)initWithKeyEvent:(NSEvent*)event
@@ -40,7 +40,7 @@
 }
 
 - (id)initWithKeyCode:(NSInteger)code
-		     name:(NSString*)name
+				 name:(NSString*)name
 {
 	keyCode = code;
 	keyName = [name copy];
@@ -74,7 +74,7 @@ NSString* const iTetDeleteKeyPlaceholderString =	@"  delete  ";
 	{
 		case EscapeKeyCode:
 			return iTetEscapeKeyPlaceholderString;
-		// FIXME: others?
+			// FIXME: others?
 	}
 	
 	// Get the characters representing the event
@@ -156,7 +156,7 @@ NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
 - (id)copyWithZone:(NSZone*)zone
 {
 	return [[[self class] allocWithZone:zone] initWithKeyCode:[self keyCode]
-									     name:[self keyName]];
+														 name:[self keyName]];
 	
 }
 
@@ -174,9 +174,9 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
 	[encoder encodeInteger:[self keyCode]
-			forKey:iTetKeyNamePairCodeKey];
+					forKey:iTetKeyNamePairCodeKey];
 	[encoder encodeObject:[self keyName]
-			   forKey:iTetKeyNamePairNameKey];
+				   forKey:iTetKeyNamePairNameKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder

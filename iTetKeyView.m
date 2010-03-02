@@ -44,19 +44,19 @@
 	
 	// Draw the image
 	[currentKeyImage drawAtPoint:drawPoint
-				  fromRect:NSZeroRect
-				 operation:NSCompositeSourceOver
-				  fraction:1.0];
+						fromRect:NSZeroRect
+					   operation:NSCompositeSourceOver
+						fraction:1.0];
 }
 
 NSString* const iTetKeyFontName =	@"Helvetica";
-#define KEY_LINE_COLOR		[NSColor grayColor]
-#define KEY_FILL_COLOR		[NSColor whiteColor]
-#define KEY_FONT_SIZE		(22.0)
+#define KEY_LINE_COLOR			[NSColor grayColor]
+#define KEY_FILL_COLOR			[NSColor whiteColor]
+#define KEY_FONT_SIZE			(22.0)
 #define KEY_NAME_MARGIN_SIZE	(10)
-#define KEY_BORDER_WIDTH	(2)
-#define KEY_CORNER_RADIUS	(5)
-		
+#define KEY_BORDER_WIDTH		(2)
+#define KEY_CORNER_RADIUS		(5)
+
 - (NSImage*)keyImageWithString:(NSString*)keyName
 {	
 	// Check if an image for this key exists in cache
@@ -67,13 +67,13 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	// If no image in cache, generate one
 	// Begin by creating an attributed string
 	NSFont* drawFont = [NSFont fontWithName:iTetKeyFontName
-						     size:KEY_FONT_SIZE];
+									   size:KEY_FONT_SIZE];
 	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
-					  drawFont, NSFontAttributeName,
-					  KEY_LINE_COLOR, NSForegroundColorAttributeName,
-					  nil];
+							  drawFont, NSFontAttributeName,
+							  KEY_LINE_COLOR, NSForegroundColorAttributeName,
+							  nil];
 	NSAttributedString* drawString = [[[NSAttributedString alloc] initWithString:keyName
-												attributes:attrDict] autorelease];
+																	  attributes:attrDict] autorelease];
 	
 	// Determine the size of the string to draw
 	NSSize stringSize = [drawString size];
@@ -83,8 +83,8 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// Create the rect in which we will draw the key
 	NSRect imageRect = NSMakeRect(0, 0,
-						stringSize.width + (KEY_NAME_MARGIN_SIZE * 2),
-						viewSize.height);
+								  stringSize.width + (KEY_NAME_MARGIN_SIZE * 2),
+								  viewSize.height);
 	
 	// If the rect is taller than it is wide, make it square
 	if (imageRect.size.height > imageRect.size.width)
@@ -103,8 +103,8 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// Create a bezier path for the border of the key
 	NSBezierPath* keyBorder = [NSBezierPath bezierPathWithRoundedRect:keyBorderRect
-										    xRadius:KEY_CORNER_RADIUS
-										    yRadius:KEY_CORNER_RADIUS];
+															  xRadius:KEY_CORNER_RADIUS
+															  yRadius:KEY_CORNER_RADIUS];
 	[keyBorder setLineWidth:KEY_BORDER_WIDTH];
 	
 	// Fill the path
@@ -117,7 +117,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// Determine the point to draw the key name
 	NSPoint stringDrawPoint = NSMakePoint(((imageRect.size.width - stringSize.width)/2),
-							  ((imageRect.size.height - stringSize.height)/2));
+										  ((imageRect.size.height - stringSize.height)/2));
 	
 	// Draw the key name
 	[drawString drawAtPoint:stringDrawPoint];
@@ -127,7 +127,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	
 	// Store the image in cache, for later access
 	[NSImage setImage:image
-		 forKeyName:keyName];
+		   forKeyName:keyName];
 	
 	return image;
 }

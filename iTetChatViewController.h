@@ -28,8 +28,8 @@
 - (void)clearChat;
 - (void)appendChatLine:(NSAttributedString*)line;
 - (void)appendChatLine:(NSAttributedString*)line
-	  fromPlayerName:(NSString*)playerName
-		    action:(BOOL)isAction;
+		fromPlayerName:(NSString*)playerName
+				action:(BOOL)isAction;
 - (void)appendStatusMessage:(NSString*)message;
 
 - (void)addChannel:(NSString*)channelData;

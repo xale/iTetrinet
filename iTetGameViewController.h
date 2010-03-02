@@ -68,12 +68,12 @@ typedef enum
 
 - (IBAction)sendMessage:(id)sender;
 - (void)appendChatLine:(NSString*)line
-	  fromPlayerName:(NSString*)playerName;
+		fromPlayerName:(NSString*)playerName;
 - (void)appendChatLine:(NSString*)line;
 - (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
-			   rules:(iTetGameRules*)rules;
+					 rules:(iTetGameRules*)rules;
 - (void)pauseGame;
 - (void)resumeGame;
 - (void)endGame;
@@ -83,8 +83,8 @@ typedef enum
 - (BOOL)checkForLinesCleared;
 - (void)moveNextBlockToField;
 - (void)useSpecial:(iTetSpecialType)special
-	    onTarget:(iTetPlayer*)target
-	  fromSender:(iTetPlayer*)sender;
+		  onTarget:(iTetPlayer*)target
+		fromSender:(iTetPlayer*)sender;
 - (void)playerLost;
 
 - (void)keyPressed:(iTetKeyNamePair*)key
@@ -94,15 +94,15 @@ typedef enum
 - (void)sendPartialFieldstring;
 - (void)sendCurrentLevel;
 - (void)sendSpecial:(iTetSpecialType)special
-	     toPlayer:(iTetPlayer*)target;
+		   toPlayer:(iTetPlayer*)target;
 - (void)sendLines:(NSInteger)lines;
 - (void)sendPlayerLostMessage;
 
 - (void)specialUsed:(iTetSpecialType)special
-	     byPlayer:(iTetPlayer*)sender
-	     onPlayer:(iTetPlayer*)target;
+		   byPlayer:(iTetPlayer*)sender
+		   onPlayer:(iTetPlayer*)target;
 - (void)linesAdded:(NSInteger)numLines
-	    byPlayer:(iTetPlayer*)sender;
+		  byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSAttributedString*)description;
 - (void)clearActions;
 

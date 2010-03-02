@@ -11,7 +11,7 @@
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
 // (conveniently, the row function is its own inverse)
-#define ITET_CONVERT_ROW(coord)	(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3')
+#define ITET_CONVERT_ROW(coord)		(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3')
 #define ITET_PARTIAL_TO_COL(coord)	((coord) - '3')
 #define ITET_COL_TO_PARTIAL(coord)	((coord) + '3')
 // ...and the cell contents are mapped to different characters
@@ -147,17 +147,17 @@ char partialUpdateCharToCell(char updateChar);
 			if (cell)
 			{
 				switch ([self cellObstructedAtRow:([block rowPos] + row)
-								   column:([block colPos] + col)])
+										   column:([block colPos] + col)])
 				{
-					// If obstructed vertically, return immediately
+						// If obstructed vertically, return immediately
 					case obstructVert:
 						return obstructVert;
 						
-					// If obstructed horizontally, make a note, but keep checking
+						// If obstructed horizontally, make a note, but keep checking
 					case obstructHoriz:
 						side = obstructHoriz;
 						
-					// If unobstructed, keep checking
+						// If unobstructed, keep checking
 					default:
 						break;
 				}
@@ -170,7 +170,7 @@ char partialUpdateCharToCell(char updateChar);
 }
 
 - (iTetObstructionState)cellObstructedAtRow:(int)row
-					   column:(int)col
+									 column:(int)col
 {
 	// Check if obstructed by sides of field
 	if ((col < 0) || (col >= ITET_FIELD_WIDTH))
@@ -216,7 +216,7 @@ char partialUpdateCharToCell(char updateChar);
 					[update appendFormat:@"%c", cellToPartialUpdateChar(cell)];
 					lastCell = cell;
 				}
-					
+				
 				// Add the changed cell's coordinates to the update string
 				rowCoord = ITET_CONVERT_ROW([block rowPos] + row);
 				colCoord = ITET_COL_TO_PARTIAL([block colPos] + col);
@@ -414,14 +414,14 @@ char partialUpdateCharToCell(char updateChar);
 	nextspecial:; // Next iteration of special-adding loop
 	}
 abort:; // Unable to add more specials; bail
-
+	
 	[self didChangeValueForKey:@"contents"];
 }
 
 #pragma mark Specials
 
 - (BOOL)addLines:(NSInteger)linesToAdd
-	     style:(iTetLineAddStyle)style
+		   style:(iTetLineAddStyle)style
 {
 	[self willChangeValueForKey:@"contents"];
 	
@@ -621,13 +621,13 @@ cellfound:
 			continue; // No shift
 		
 		[self shiftRow:row
-			byAmount:shiftAmount
+			  byAmount:shiftAmount
 		   inDirection:(random() % 2)];
 	}
 }
 
 - (void)shiftRow:(NSInteger)row
-	  byAmount:(NSInteger)shiftAmount
+		byAmount:(NSInteger)shiftAmount
      inDirection:(BOOL)shiftLeft
 {
 	NSInteger col;
@@ -721,7 +721,7 @@ cellfound:
 #pragma mark Accessors
 
 - (char)cellAtRow:(NSInteger)row
-	     column:(NSInteger)col
+		   column:(NSInteger)col
 {
 	return contents[row][col];
 }

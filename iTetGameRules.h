@@ -25,9 +25,9 @@
 }
 
 + (id)gameRulesFromArray:(NSArray*)rules
-		withGameType:(iTetProtocolType)protocol;
+			withGameType:(iTetProtocolType)protocol;
 - (id)initWithRulesFromArray:(NSArray*)rules
-		    withGameType:(iTetProtocolType)protocol;
+				withGameType:(iTetProtocolType)protocol;
 
 @property (readonly) iTetProtocolType gameType;
 @property (readonly) NSUInteger startingLevel;

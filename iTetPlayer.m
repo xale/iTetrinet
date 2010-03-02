@@ -10,16 +10,16 @@
 @implementation iTetPlayer
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(NSInteger)number
-		    teamName:(NSString*)team
+				  number:(NSInteger)number
+				teamName:(NSString*)team
 {
 	return [[[self alloc] initWithNickname:nick
-						  number:number
-						teamName:team] autorelease];
+									number:number
+								  teamName:team] autorelease];
 }
 - (id)initWithNickname:(NSString*)nick
-		    number:(NSInteger)number
-		  teamName:(NSString*)team
+				number:(NSInteger)number
+			  teamName:(NSString*)team
 {
 	nickname = [nick copy];
 	playerNumber = number;
@@ -31,17 +31,17 @@
 }
 
 + (id)playerWithNickname:(NSString*)nick
-			number:(NSInteger)number
+				  number:(NSInteger)number
 {
 	return [[[self alloc] initWithNickname:nick
-						  number:number] autorelease];
+									number:number] autorelease];
 }
 - (id)initWithNickname:(NSString*)nick
-		    number:(NSInteger)number
+				number:(NSInteger)number
 {
 	return [self initWithNickname:nick
-				     number:number
-				   teamName:@""];
+						   number:number
+						 teamName:@""];
 }
 
 + (id)playerWithNumber:(NSInteger)number
@@ -51,7 +51,7 @@
 - (id)initWithNumber:(NSInteger)number
 {
 	return [self initWithNickname:@"Unnamed Player"
-				     number:number];
+						   number:number];
 }
 
 - (void)dealloc

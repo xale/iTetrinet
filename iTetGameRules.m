@@ -11,14 +11,14 @@
 @implementation iTetGameRules
 
 + (id)gameRulesFromArray:(NSArray*)rules
-		withGameType:(iTetProtocolType)protocol
+			withGameType:(iTetProtocolType)protocol
 {
 	return [[[self alloc] initWithRulesFromArray:rules
-						  withGameType:protocol] autorelease];
+									withGameType:protocol] autorelease];
 }
 
 - (id)initWithRulesFromArray:(NSArray*)rules
-		    withGameType:(iTetProtocolType)protocol
+				withGameType:(iTetProtocolType)protocol
 {
 	// Set the game type
 	gameType = protocol;

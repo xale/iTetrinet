@@ -76,14 +76,14 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	
 	// Send the message
 	[[appController networkController] sendMessageData:[textAttributesController dataFromFormattedMessage:toSend
-														    withAttributedRange:attrRange]];
+																					  withAttributedRange:attrRange]];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[message string] characterAtIndex:0] != '/'))
 	{
 		[self appendChatLine:message
-			fromPlayerName:[localPlayer nickname]
-				  action:action];
+			  fromPlayerName:[localPlayer nickname]
+					  action:action];
 	}
 	
 	// Clear the text field
@@ -96,7 +96,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 - (void)clearChat
 {
 	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
-					withString:@""];
+							withString:@""];
 }
 
 - (void)appendChatLine:(NSAttributedString*)line
@@ -113,21 +113,21 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 }
 
 - (void)appendChatLine:(NSAttributedString*)line
-	  fromPlayerName:(NSString*)playerName
-		    action:(BOOL)isAction
+		fromPlayerName:(NSString*)playerName
+				action:(BOOL)isAction
 {
 	NSMutableAttributedString* formattedMessage = [[[NSMutableAttributedString alloc] init] autorelease];
 	
 	// Create a bold version of the chat view's font
 	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[chatView font]
-										toHaveTrait:NSBoldFontMask];
+														  toHaveTrait:NSBoldFontMask];
 	NSDictionary* boldAttribute = [NSDictionary dictionaryWithObject:boldFont
-										    forKey:NSFontAttributeName];
+															  forKey:NSFontAttributeName];
 	if (isAction)
 	{
 		// Append a dot in bold (to indicate an action)
 		NSAttributedString* asterisk = [[[NSAttributedString alloc] initWithString:@"•"
-												    attributes:boldAttribute] autorelease];
+																		attributes:boldAttribute] autorelease];
 		[formattedMessage appendAttributedString:asterisk];
 		
 		// Append the player's name (and a space)
@@ -137,7 +137,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	{
 		// Append the player's name and a colon, in bold
 		NSAttributedString* name = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", playerName]
-												attributes:boldAttribute] autorelease];
+																	attributes:boldAttribute] autorelease];
 		[formattedMessage appendAttributedString:name];
 	}
 	
@@ -160,7 +160,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	// Create an attributed string with the message and the above attributes
 	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, statusMessageStyle, NSParagraphStyleAttributeName, nil];
 	NSAttributedString* formattedMessage = [[[NSAttributedString alloc] initWithString:message
-													attributes:attrDict] autorelease];
+																			attributes:attrDict] autorelease];
 	
 	// Append the message to the chat view
 	[self appendChatLine:formattedMessage];
@@ -170,19 +170,19 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 #pragma mark Channels
 
 /*- (void)requestChannelList
-{
-	// If there is already a pending channel request, ignore this one
-	if (pendingChannelRequest)
-		return;
-	
-	// Create a channel request message
-	NSString* request = [NSString stringWithFormat:@"pline %d /list",
-				   [iTetPlayersController localPlayerNumber]];
-	
-	// Send the request
-	[iTetNetworkController sendMessage:request];
-	pendingChannelRequest = YES;
-}*/
+ {
+ // If there is already a pending channel request, ignore this one
+ if (pendingChannelRequest)
+ return;
+ 
+ // Create a channel request message
+ NSString* request = [NSString stringWithFormat:@"pline %d /list",
+ [iTetPlayersController localPlayerNumber]];
+ 
+ // Send the request
+ [iTetNetworkController sendMessage:request];
+ pendingChannelRequest = YES;
+ }*/
 
 - (void)addChannel:(NSString*)channelData
 {

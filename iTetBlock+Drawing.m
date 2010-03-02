@@ -11,7 +11,7 @@
 @implementation iTetBlock (Drawing)
 
 - (NSImage*)imageWithSize:(NSSize)size
-			  theme:(iTetTheme*)theme
+					theme:(iTetTheme*)theme
 {
 	// Create an NSImage to draw to
 	NSSize cellSize = [theme cellSize];
@@ -33,9 +33,9 @@
 			{
 				cellImage = [theme imageForCellType:cellType];
 				[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
-						  fromRect:NSZeroRect
-						 operation:NSCompositeSourceOver
-						  fraction:1.0];
+							  fromRect:NSZeroRect
+							 operation:NSCompositeSourceOver
+							  fraction:1.0];
 			}
 		}
 	}
@@ -93,7 +93,7 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	// Create an image of the block using a default size
 	NSSize cellSize = [theme cellSize];
 	NSImage* blockImage = [self imageWithSize:NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH), (cellSize.height * ITET_BLOCK_HEIGHT))
-							theme:theme];
+										theme:theme];
 	
 	// Determine the area of the image to crop
 	NSRect blockRect;
@@ -139,9 +139,9 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	
 	// Draw the relevant portion of the default image into the final image
 	[blockImage drawInRect:NSMakeRect(0, 0, blockRect.size.width, blockRect.size.height)
-			  fromRect:blockRect
-			 operation:NSCompositeSourceOver
-			  fraction:1.0];
+				  fromRect:blockRect
+				 operation:NSCompositeSourceOver
+				  fraction:1.0];
 	
 	// Finished drawing
 	[previewImage unlockFocus];

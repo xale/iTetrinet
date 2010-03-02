@@ -24,15 +24,15 @@ typedef enum
 
 + (NSArray*)defaultServers;
 + (id)serverInfoWithName:(NSString*)name
-		     address:(NSString*)addr
-		    nickname:(NSString*)nick
-			  team:(NSString*)team
-		    protocol:(iTetProtocolType)p;
+				 address:(NSString*)addr
+				nickname:(NSString*)nick
+					team:(NSString*)team
+				protocol:(iTetProtocolType)p;
 - (id)initWithName:(NSString*)name
-	     address:(NSString*)addr
-	    nickname:(NSString*)nick
-		  team:(NSString*)team
-	    protocol:(iTetProtocolType)p;
+		   address:(NSString*)addr
+		  nickname:(NSString*)nick
+			  team:(NSString*)team
+		  protocol:(iTetProtocolType)p;
 
 @property (readwrite, copy) NSString* serverName;
 @property (readwrite, copy) NSString* address;

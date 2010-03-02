@@ -46,15 +46,15 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Add the key views to an array for easy enumeration
 	keyViews = [[NSArray alloc] initWithObjects:
-			moveLeftKeyView,
-			moveRightKeyView,
-			rotateCounterclockwiseKeyView,
-			rotateClockwiseKeyView,
-			moveDownKeyView,
-			dropKeyView,
-			discardSpecialKeyView,
-			selfSpecialKeyView,
-			gameChatKeyView, nil];
+				moveLeftKeyView,
+				moveRightKeyView,
+				rotateCounterclockwiseKeyView,
+				rotateClockwiseKeyView,
+				moveDownKeyView,
+				dropKeyView,
+				discardSpecialKeyView,
+				selfSpecialKeyView,
+				gameChatKeyView, nil];
 	
 	// Register for notifications when a key view changes highlight state
 	for (iTetKeyView* keyView in keyViews)
@@ -66,8 +66,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	for (NSUInteger i = 0; i < numConfigs; i++)
 	{
 		[self insertConfiguration:[configurations objectAtIndex:i]
-			 inPopUpMenuAtIndex:i
-				    tagNumber:i];
+			   inPopUpMenuAtIndex:i
+						tagNumber:i];
 	}
 	
 	// Add a separator menu item to the pop-up menu
@@ -75,16 +75,16 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Add the "save configuration" menu item
 	NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:@"Save Configuration..."
-									  action:@selector(saveConfiguration:)
-								 keyEquivalent:@""];
+													  action:@selector(saveConfiguration:)
+											   keyEquivalent:@""];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
 	
 	// Add the "delete configuration" menu item
 	menuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Configuration"
-							  action:@selector(deleteConfiguration:)
-						 keyEquivalent:@""];
+										  action:@selector(deleteConfiguration:)
+								   keyEquivalent:@""];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
@@ -130,13 +130,13 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:sender
-										     forKey:iTetOriginalSenderInfoKey];
+															 forKey:iTetOriginalSenderInfoKey];
 		
 		// Run the alert as a sheet
 		[alert beginSheetModalForWindow:[[self view] window]
-					modalDelegate:self
-				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
-					  contextInfo:[infoDict retain]];
+						  modalDelegate:self
+						 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+							contextInfo:[infoDict retain]];
 		
 		return;
 	}
@@ -152,7 +152,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	   modalForWindow:[[self view] window]
 	    modalDelegate:self
 	   didEndSelector:@selector(saveSheetDidEnd:returnCode:contextInfo:)
-		contextInfo:NULL];
+		  contextInfo:NULL];
 }
 
 - (IBAction)closeSaveSheet:(id)sender
@@ -175,16 +175,16 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Run the alert as a sheet
 	[alert beginSheetModalForWindow:[[self view] window]
-				modalDelegate:self
-			     didEndSelector:@selector(deleteConfigAlertDidEnd:returnCode:contextInfo:)
-				  contextInfo:NULL];
+					  modalDelegate:self
+					 didEndSelector:@selector(deleteConfigAlertDidEnd:returnCode:contextInfo:)
+						contextInfo:NULL];
 }
 
 #pragma mark -
 #pragma mark View Swapping/Closing
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
-		    byWindowController:(iTetPreferencesWindowController*)sender
+				byWindowController:(iTetPreferencesWindowController*)sender
 {
 	if (unsavedConfiguration)
 	{
@@ -198,14 +198,14 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-						  sender, iTetOriginalSenderInfoKey,
-						  newController, iTetNewControllerInfoKey, nil];
+								  sender, iTetOriginalSenderInfoKey,
+								  newController, iTetNewControllerInfoKey, nil];
 		
 		// Run the alert as a sheet
 		[alert beginSheetModalForWindow:[[self view] window]
-					modalDelegate:self
-				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
-					  contextInfo:infoDict];
+						  modalDelegate:self
+						 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+							contextInfo:infoDict];
 		
 		return NO;
 	}
@@ -227,13 +227,13 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:window
-										     forKey:iTetWindowToCloseInfoKey];
+															 forKey:iTetWindowToCloseInfoKey];
 		
 		// Run the alert as a sheet
 		[alert beginSheetModalForWindow:[[self view] window]
-					modalDelegate:self
-				     didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
-					  contextInfo:[infoDict retain]];
+						  modalDelegate:self
+						 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+							contextInfo:[infoDict retain]];
 		
 		return NO;
 	}
@@ -258,8 +258,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 #pragma mark Modal Dialog Callbacks
 
 - (void)unsavedConfigAlertDidEnd:(NSAlert*)alert
-			    returnCode:(NSInteger)returnCode
-			   contextInfo:(NSDictionary*)infoDict
+					  returnCode:(NSInteger)returnCode
+					 contextInfo:(NSDictionary*)infoDict
 {	
 	// We're done with the sheet; ask it to order out
 	[[alert window] orderOut:self];
@@ -314,8 +314,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 }
 
 - (void)saveSheetDidEnd:(NSWindow*)sheet
-		 returnCode:(NSInteger)returnCode
-		contextInfo:(void*)context
+			 returnCode:(NSInteger)returnCode
+			contextInfo:(void*)context
 {
 	// If the user pressed "cancel", do nothing
 	if (returnCode == 0)
@@ -354,9 +354,9 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 			
 			// Run the new alert
 			[alert beginSheetModalForWindow:[[self view] window]
-						modalDelegate:self
-					     didEndSelector:@selector(duplicateConfigAlertEnded:returnCode:indexToReplace:)
-						  contextInfo:[[NSNumber numberWithUnsignedInteger:i] retain]];
+							  modalDelegate:self
+							 didEndSelector:@selector(duplicateConfigAlertEnded:returnCode:indexToReplace:)
+								contextInfo:[[NSNumber numberWithUnsignedInteger:i] retain]];
 			return;
 		}
 	}
@@ -378,8 +378,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Add the new configuration name to the pop-up menu
 	[self insertConfiguration:newConfig
-		 inPopUpMenuAtIndex:i
-			    tagNumber:i];
+		   inPopUpMenuAtIndex:i
+					tagNumber:i];
 	
 	// Select the configuration
 	[self displayConfigurationNumber:i];
@@ -389,8 +389,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 }
 
 - (void)duplicateConfigAlertEnded:(NSAlert*)alert
-			     returnCode:(NSInteger)returnCode
-			 indexToReplace:(NSNumber*)index
+					   returnCode:(NSInteger)returnCode
+				   indexToReplace:(NSNumber*)index
 {
 	// Balance retain
 	[index autorelease];
@@ -420,7 +420,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// Replace the configuration
 	[PREFS replaceKeyConfigurationAtIndex:i
-			     withKeyConfiguration:newConfig];
+					 withKeyConfiguration:newConfig];
 	
 	// Do not add the configuration name to the pop-up button, should already be present
 	
@@ -429,8 +429,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 }
 
 - (void)deleteConfigAlertDidEnd:(NSAlert*)alert
-			   returnCode:(NSInteger)returnCode
-			  contextInfo:(void*)context
+					 returnCode:(NSInteger)returnCode
+					contextInfo:(void*)context
 {
 	NSUInteger configNum = [PREFS currentKeyConfigurationNumber];
 	NSMenu* menu = [configurationPopUpButton menu];
@@ -458,19 +458,19 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 #pragma mark Configurations
 
 - (void)insertConfiguration:(NSMutableDictionary*)config
-	   inPopUpMenuAtIndex:(NSUInteger)index
-			tagNumber:(NSUInteger)tag
+		 inPopUpMenuAtIndex:(NSUInteger)index
+				  tagNumber:(NSUInteger)tag
 {
 	// Create a menu item
 	NSMenuItem* item = [[[NSMenuItem alloc] initWithTitle:[config configurationName]
-								     action:@selector(changeConfiguration:)
-							    keyEquivalent:@""] autorelease];
+												   action:@selector(changeConfiguration:)
+											keyEquivalent:@""] autorelease];
 	[item setTarget:self];
 	[item setTag:tag];
 	
 	// Add it to the menu
 	[[configurationPopUpButton menu] insertItem:item
-							atIndex:index];
+										atIndex:index];
 }
 
 - (void)displayConfigurationNumber:(NSUInteger)configNum
@@ -504,21 +504,21 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (void)startObservingKeyView:(iTetKeyView*)keyView
 {
 	[keyView addObserver:self
-		    forKeyPath:@"highlighted"
-			 options:NSKeyValueObservingOptionNew
-			 context:NULL];
+			  forKeyPath:@"highlighted"
+				 options:NSKeyValueObservingOptionNew
+				 context:NULL];
 }
 
 - (void)stopObservingKeyView:(iTetKeyView*)keyView
 {
 	[keyView removeObserver:self
-			 forKeyPath:@"highlighted"];
+				 forKeyPath:@"highlighted"];
 }
 
 - (void)observeValueForKeyPath:(NSString*)keyPath
-			    ofObject:(id)object
-				change:(NSDictionary*)changeDict
-			     context:(void*)context
+					  ofObject:(id)object
+						change:(NSDictionary*)changeDict
+					   context:(void*)context
 {
 	// If this isn't a key view, we don't care (and we shouldn't be getting
 	// this notification...)
@@ -609,8 +609,8 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 		// Add the configuration to the pop-up menu
 		NSUInteger newConfigNum = [[PREFS keyConfigurations] count];
 		[self insertConfiguration:unsavedConfiguration
-			 inPopUpMenuAtIndex:newConfigNum
-				    tagNumber:newConfigNum];
+			   inPopUpMenuAtIndex:newConfigNum
+						tagNumber:newConfigNum];
 		
 		// Select the item in the menu
 		[configurationPopUpButton selectItemAtIndex:newConfigNum];
@@ -618,7 +618,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	
 	// Change the key in the unsaved configuration
 	[unsavedConfiguration setAction:[keyView associatedAction]
-					 forKey:key];
+							 forKey:key];
 	
 	// Clear the text field
 	[keyDescriptionField setStringValue:@""];

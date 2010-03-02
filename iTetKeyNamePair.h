@@ -15,8 +15,8 @@ extern NSString* const iTetEnterKeyPlaceholderString;
 extern NSString* const iTetDeleteKeyPlaceholderString;
 
 #define iTetLeftArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2190]
-#define iTetRightArrowKeyPlaceholderString	[NSString stringWithFormat:@"%C", 0x2192]
-#define iTetUpArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2191]
+#define iTetRightArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2192]
+#define iTetUpArrowKeyPlaceholderString			[NSString stringWithFormat:@"%C", 0x2191]
 #define iTetDownArrowKeyPlaceholderString		[NSString stringWithFormat:@"%C", 0x2193]
 
 extern NSString* const iTetUnknownModifierPlaceholderString;
@@ -35,11 +35,11 @@ extern NSString* const iTetAltOptionKeyPlaceholderString;
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
 + (id)keyNamePairForKeyCode:(NSInteger)code
-			     name:(NSString*)name;
+					   name:(NSString*)name;
 
 - (id)initWithKeyEvent:(NSEvent*)event;
 - (id)initWithKeyCode:(NSInteger)code
-		     name:(NSString*)name;
+				 name:(NSString*)name;
 
 - (NSString*)keyNameForEvent:(NSEvent*)event;
 - (NSString*)modifierNameForEvent:(NSEvent*)event;

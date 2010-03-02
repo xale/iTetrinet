@@ -22,15 +22,15 @@ NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 	return YES;
 }
 
-NSString* const tetrinetProtocolString = @"Tetrinet";
-NSString* const tetrifastProtocolString = @"Tetrifast";
-NSString* const unknownProtocolString = @"Unknown Protocol";
+NSString* const tetrinetProtocolName =	@"Tetrinet";
+NSString* const tetrifastProtocolName =	@"Tetrifast";
+NSString* const unknownProtocolName =	@"Unknown Protocol";
 
 - (id)transformedValue:(id)value
 {
 	// Check that the value to transform is an NSNumber or subclass thereof
 	if (![value isKindOfClass:[NSNumber class]])
-		return unknownProtocolString;
+		return unknownProtocolName;
 	
 	// Get the integer value; cast to the enum type iTetProtocolType
 	iTetProtocolType protocol = (iTetProtocolType)[value intValue];
@@ -39,13 +39,13 @@ NSString* const unknownProtocolString = @"Unknown Protocol";
 	switch (protocol)
 	{
 		case tetrinetProtocol:
-			return tetrinetProtocolString;
+			return tetrinetProtocolName;
 		case tetrifastProtocol:
-			return tetrifastProtocolString;
+			return tetrifastProtocolName;
 	}
 	
 	// Unknown protocol (unlikely to happen)
-	return unknownProtocolString;
+	return unknownProtocolName;
 }
 
 - (id)reverseTransformedValue:(id)value
@@ -55,9 +55,9 @@ NSString* const unknownProtocolString = @"Unknown Protocol";
 		return [NSNumber numberWithInt:0];
 	
 	// Determine which protocol the string corresponds to
-	if ([value isEqualToString:tetrinetProtocolString])
+	if ([value isEqualToString:tetrinetProtocolName])
 		return [NSNumber numberWithInt:(int)tetrinetProtocol];
-	if ([value isEqualToString:tetrifastProtocolString])
+	if ([value isEqualToString:tetrifastProtocolName])
 		return [NSNumber numberWithInt:(int)tetrifastProtocol];
 	
 	// Unkown protocol (unlikely to happen)

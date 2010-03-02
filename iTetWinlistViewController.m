@@ -34,12 +34,12 @@ static unichar const iTetTeamEntryCharacter = 't';
 		if (firstChar == iTetPlayerEntryCharacter)
 		{
 			[winlistEntries addObject:[iTetWinlistEntry playerEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
-												    score:[[entryComponents objectAtIndex:1] integerValue]]];
+																	  score:[[entryComponents objectAtIndex:1] integerValue]]];
 		}
 		else if (firstChar == iTetTeamEntryCharacter)
 		{
 			[winlistEntries addObject:[iTetWinlistEntry teamEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
-												  score:[[entryComponents objectAtIndex:1] integerValue]]];
+																	score:[[entryComponents objectAtIndex:1] integerValue]]];
 		}
 		else
 			NSLog(@"WARNING: malformed winlist entry: %@", entryToken);

@@ -54,7 +54,7 @@
 	
 	// Add the special to the queue at the random index
 	[[self specialsQueue] insertObject:special
-					   atIndex:index];
+							   atIndex:index];
 	
 	[self didChangeValueForKey:@"specialsQueue"];
 }

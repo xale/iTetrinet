@@ -18,7 +18,7 @@
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
-#define LOCALPLAYER			[appController localPlayer]
+#define LOCALPLAYER				[appController localPlayer]
 #define NETCONTROLLER			[appController networkController]
 
 NSString* const iTetNextBlockTimerType = @"nextBlock";
@@ -42,52 +42,52 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Bind the game views to the app controller
 	// Local field view (field and falling block)
 	[localFieldView bind:@"field"
-			toObject:appController
-		   withKeyPath:@"localPlayer.field"
-			 options:nil];
+				toObject:appController
+			 withKeyPath:@"localPlayer.field"
+				 options:nil];
 	[localFieldView bind:@"block"
-			toObject:appController
-		   withKeyPath:@"localPlayer.currentBlock"
-			 options:nil];
-
+				toObject:appController
+			 withKeyPath:@"localPlayer.currentBlock"
+				 options:nil];
+	
 	// Next block view
 	[nextBlockView bind:@"block"
-		     toObject:appController
-		  withKeyPath:@"localPlayer.nextBlock"
-			options:nil];
+			   toObject:appController
+			withKeyPath:@"localPlayer.nextBlock"
+				options:nil];
 	
 	// Specials queue view
 	[specialsView bind:@"specials"
-		    toObject:appController
-		 withKeyPath:@"localPlayer.specialsQueue"
-		     options:nil];
+			  toObject:appController
+		   withKeyPath:@"localPlayer.specialsQueue"
+			   options:nil];
 	[specialsView bind:@"capacity"
-		    toObject:self
-		 withKeyPath:@"currentGameRules.specialCapacity"
-		     options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
-								     forKey:NSNullPlaceholderBindingOption]];
+			  toObject:self
+		   withKeyPath:@"currentGameRules.specialCapacity"
+			   options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
+												   forKey:NSNullPlaceholderBindingOption]];
 	
 	// Remote field views
 	[remoteFieldView1 bind:@"field"
-			  toObject:appController
-		     withKeyPath:@"remotePlayer1.field"
-			   options:nil];
+				  toObject:appController
+			   withKeyPath:@"remotePlayer1.field"
+				   options:nil];
 	[remoteFieldView2 bind:@"field"
-			  toObject:appController
-		     withKeyPath:@"remotePlayer2.field"
-			   options:nil];
+				  toObject:appController
+			   withKeyPath:@"remotePlayer2.field"
+				   options:nil];
 	[remoteFieldView3 bind:@"field"
-			  toObject:appController
-		     withKeyPath:@"remotePlayer3.field"
-			   options:nil];
+				  toObject:appController
+			   withKeyPath:@"remotePlayer3.field"
+				   options:nil];
 	[remoteFieldView4 bind:@"field"
-			  toObject:appController
-		     withKeyPath:@"remotePlayer4.field"
-			   options:nil];
+				  toObject:appController
+			   withKeyPath:@"remotePlayer4.field"
+				   options:nil];
 	[remoteFieldView5 bind:@"field"
-			  toObject:appController
-		     withKeyPath:@"remotePlayer5.field"
-			   options:nil];
+				  toObject:appController
+			   withKeyPath:@"remotePlayer5.field"
+				   options:nil];
 	
 	// Clear the chat text
 	[self clearChat];
@@ -133,7 +133,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 }
 
 - (void)appendChatLine:(NSString*)line
-	  fromPlayerName:(NSString*)playerName
+		fromPlayerName:(NSString*)playerName
 {
 	[self appendChatLine:[NSString stringWithFormat:@"%@: %@", playerName, line]];
 }
@@ -154,14 +154,14 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 - (void)clearChat
 {
 	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
-					withString:@""];
+							withString:@""];
 }
 
 #pragma mark -
 #pragma mark Controlling Game State
 
 - (void)newGameWithPlayers:(NSArray*)players
-			   rules:(iTetGameRules*)rules
+					 rules:(iTetGameRules*)rules
 {
 	// Clear the list of actions from the last game
 	[self clearActions];
@@ -242,15 +242,15 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		// Create a timer with a firing date calculated from the time recorded when the game was paused
 		BOOL timerRepeats = [lastTimerType isEqualToString:iTetBlockFallTimerType];
 		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
-								   interval:blockFallDelayForLevel([LOCALPLAYER level])
-								     target:self
-								   selector:@selector(timerFired:)
-								   userInfo:lastTimerType
-								    repeats:timerRepeats] autorelease];
+											   interval:blockFallDelayForLevel([LOCALPLAYER level])
+												 target:self
+											   selector:@selector(timerFired:)
+											   userInfo:lastTimerType
+												repeats:timerRepeats] autorelease];
 		
 		// Add the timer to the current run loop
 		[[NSRunLoop currentRunLoop] addTimer:blockTimer
-						     forMode:NSDefaultRunLoopMode];
+									 forMode:NSDefaultRunLoopMode];
 		
 		// Clear the last timer type
 		[lastTimerType release];
@@ -376,19 +376,19 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			NSInteger linesToSend = 0;
 			switch (numLines)
 			{
-				// For two lines cleared, send one line
+					// For two lines cleared, send one line
 				case 2:
 					linesToSend = 1;
 					break;
-				// For three lines cleared, send two lines
+					// For three lines cleared, send two lines
 				case 3:
 					linesToSend = 2;
 					break;
-				// For four lines cleared, send four lines
+					// For four lines cleared, send four lines
 				case 4:
 					linesToSend = 4;
 					break;
-				// For one line, send nothing
+					// For one line, send nothing
 				default:
 					break;
 			}
@@ -417,7 +417,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		{
 			// Add specials
 			[[LOCALPLAYER field] addSpecials:[[self currentGameRules] specialsAdded]
-					    usingFrequencies:[[self currentGameRules] specialFrequencies]];
+							usingFrequencies:[[self currentGameRules] specialFrequencies]];
 			
 			// Decrement the lines cleared since last specials added
 			[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
@@ -460,9 +460,9 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 }
 
 - (void)useSpecial:(iTetSpecialType)special
-	    onTarget:(iTetPlayer*)target
-	  fromSender:(iTetPlayer*)sender
-		   
+		  onTarget:(iTetPlayer*)target
+		fromSender:(iTetPlayer*)sender
+
 {
 	// Get the affected player numbers
 	NSInteger localNum, targetNum, senderNum;
@@ -532,7 +532,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		case blockBomb:
 			// "Explode" block bomb blocks
 			[[LOCALPLAYER field] explodeBlockBombs];
-				
+			
 			// Block bombs may (very rarely) complete lines; see note at "gravity"
 			[[LOCALPLAYER field] clearLines];
 			break;
@@ -596,22 +596,22 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	{
 		case movePieceLeft:
 			[[LOCALPLAYER currentBlock] moveHorizontal:moveLeft
-								     onField:[LOCALPLAYER field]];
+											   onField:[LOCALPLAYER field]];
 			break;
 			
 		case movePieceRight:
 			[[LOCALPLAYER currentBlock] moveHorizontal:moveRight
-								     onField:[LOCALPLAYER field]];
+											   onField:[LOCALPLAYER field]];
 			break;
 			
 		case rotatePieceCounterclockwise:
 			[[LOCALPLAYER currentBlock] rotate:rotateCounterclockwise
-							   onField:[LOCALPLAYER field]];
+									   onField:[LOCALPLAYER field]];
 			break;
 			
 		case rotatePieceClockwise:
 			[[LOCALPLAYER currentBlock] rotate:rotateClockwise
-							   onField:[LOCALPLAYER field]];
+									   onField:[LOCALPLAYER field]];
 			break;
 			
 		case movePieceDown:
@@ -648,7 +648,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 			targetPlayer = LOCALPLAYER;
 			break;
 			
-		// Attempt to send special to the player in the specified slot
+			// Attempt to send special to the player in the specified slot
 		case specialPlayer1:
 			targetPlayer = [appController playerNumber:1];
 			break;
@@ -677,14 +677,14 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 	if ((targetPlayer != nil) && [targetPlayer isPlaying] && ([[LOCALPLAYER specialsQueue] count] > 0))
 	{
 		[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
-			   toPlayer:targetPlayer];
+				 toPlayer:targetPlayer];
 	}
 }
 
 #pragma mark NSControlTextEditingDelegate Methods
 
 - (BOOL)    control:(NSControl *)control
-	     textView:(NSTextView *)textView
+		   textView:(NSTextView *)textView
 doCommandBySelector:(SEL)command
 {
 	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
@@ -732,15 +732,15 @@ NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
 - (void)sendSpecial:(iTetSpecialType)special
-	     toPlayer:(iTetPlayer*)target
+		   toPlayer:(iTetPlayer*)target
 {	
 	// Send a message to the server
 	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
 	
 	// Perform and record the action
 	[self specialUsed:special
-		   byPlayer:LOCALPLAYER
-		   onPlayer:target];
+			 byPlayer:LOCALPLAYER
+			 onPlayer:target];
 }
 
 NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
@@ -752,7 +752,7 @@ NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
 	
 	// Perform and record the action
 	[self linesAdded:lines
-		  byPlayer:LOCALPLAYER];
+			byPlayer:LOCALPLAYER];
 }
 
 NSString* const iTetPlayerLostMessageFormat = @"playerlost %d";
@@ -775,13 +775,13 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 #define iTetEventBackgroundColorFraction		(0.2)
 
 - (void)specialUsed:(iTetSpecialType)special
-	     byPlayer:(iTetPlayer*)sender
-	     onPlayer:(iTetPlayer*)target
+		   byPlayer:(iTetPlayer*)sender
+		   onPlayer:(iTetPlayer*)target
 {
 	// Perform the action, if applicable to the local player
 	[self useSpecial:special
-		  onTarget:target
-		fromSender:sender];
+			onTarget:target
+		  fromSender:sender];
 	
 	// Add a description of the event to the list of actions
 	// Get the name of the special
@@ -793,7 +793,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 		senderName = iTetNilSenderNamePlaceholder;
 	else
 		senderName = [sender nickname];
-	    
+	
 	// Determine the name of the target ("All", if the target is not a specific player)
 	NSString* targetName;
 	if (target == nil)
@@ -813,23 +813,23 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	else
 		color = iTetBadSpecialForegroundColor;
 	[desc applyFontTraits:NSBoldFontMask
-			    range:range];
+					range:range];
 	[desc addAttributes:[NSDictionary dictionaryWithObject:color forKey:NSForegroundColorAttributeName]
-			  range:range];
+				  range:range];
 	
 	// Bold the player names
 	[desc applyFontTraits:NSBoldFontMask
-			    range:[[desc string] rangeOfString:targetName]];
+					range:[[desc string] rangeOfString:targetName]];
 	[desc applyFontTraits:NSBoldFontMask
-			    range:[[desc string] rangeOfString:senderName]];
+					range:[[desc string] rangeOfString:senderName]];
 	
 	// If the local player was the affected, add a background color
 	if ((target == nil) || [target isEqual:LOCALPLAYER])
 	{
 		[desc addAttributes:[NSDictionary dictionaryWithObject:[color blendedColorWithFraction:(1.0 - iTetEventBackgroundColorFraction)
-															 ofColor:[NSColor whiteColor]]
-															  forKey:NSBackgroundColorAttributeName]
-				  range:NSMakeRange(0, [desc length])];
+																					   ofColor:[NSColor whiteColor]]
+														forKey:NSBackgroundColorAttributeName]
+					  range:NSMakeRange(0, [desc length])];
 	}
 	
 	// Record the event
@@ -844,7 +844,7 @@ NSString* const iTetLineAddTargetAllDescription =		@"All";
 #define iTetLinesAddedForegroundColor	[NSColor blueColor]
 
 - (void)linesAdded:(NSInteger)numLines
-	    byPlayer:(iTetPlayer*)sender
+		  byPlayer:(iTetPlayer*)sender
 {
 	// If the local player is playing, and is not the sender, add the lines
 	BOOL localPlayerAffected = (((sender == nil) || ![sender isEqual:LOCALPLAYER]) && [LOCALPLAYER isPlaying]);
@@ -884,24 +884,24 @@ NSString* const iTetLineAddTargetAllDescription =		@"All";
 	NSRange range = [[desc string] rangeOfString:linesDesc];
 	NSColor* color = iTetLinesAddedForegroundColor;
 	[desc applyFontTraits:NSBoldFontMask
-			    range:range];
+					range:range];
 	[desc addAttributes:[NSDictionary dictionaryWithObject:color
-									forKey:NSForegroundColorAttributeName]
-			  range:range];
+													forKey:NSForegroundColorAttributeName]
+				  range:range];
 	
 	// Bold the target and sender names
 	[desc applyFontTraits:NSBoldFontMask
-			    range:[[desc string] rangeOfString:targetName]];
+					range:[[desc string] rangeOfString:targetName]];
 	[desc applyFontTraits:NSBoldFontMask
-			    range:[[desc string] rangeOfString:senderName]];
+					range:[[desc string] rangeOfString:senderName]];
 	
 	// If the local player was affected, add a background color
 	if (localPlayerAffected)
 	{
 		[desc addAttributes:[NSDictionary dictionaryWithObject:[color blendedColorWithFraction:(1.0 - iTetEventBackgroundColorFraction)
-															 ofColor:[NSColor whiteColor]]
-										forKey:NSBackgroundColorAttributeName]
-				  range:NSMakeRange(0, [desc length])];
+																					   ofColor:[NSColor whiteColor]]
+														forKey:NSBackgroundColorAttributeName]
+					  range:NSMakeRange(0, [desc length])];
 	}
 	
 	// Record the event
@@ -937,7 +937,7 @@ NSString* const iTetLineAddTargetAllDescription =		@"All";
 
 - (id)tableView:(NSTableView*)tableView
 objectValueForTableColumn:(NSTableColumn*)column
-		row:(NSInteger)row
+			row:(NSInteger)row
 {
 	if ([tableView isEqual:actionListView])
 		return [actionHistory objectAtIndex:row];
@@ -948,14 +948,14 @@ objectValueForTableColumn:(NSTableColumn*)column
 - (void)tableView:(NSTableView*)tableView
   willDisplayCell:(id)cell
    forTableColumn:(NSTableColumn*)tableColumn
-		  row:(NSInteger)rowIndex
+			  row:(NSInteger)rowIndex
 {
 	if ([tableView isEqual:actionListView])
 	{
 		// Check if the cell has a background color to draw
 		NSColor* bgColor = [[actionHistory objectAtIndex:rowIndex] attribute:NSBackgroundColorAttributeName
-												 atIndex:0
-											effectiveRange:NULL];
+																	 atIndex:0
+															  effectiveRange:NULL];
 		if (bgColor != nil)
 		{
 			// Tell the cell to draw its background in the color
@@ -979,20 +979,20 @@ objectValueForTableColumn:(NSTableColumn*)column
 {	
 	// Start the timer to spawn the next block
 	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
-							    target:self
-							  selector:@selector(timerFired:)
-							  userInfo:iTetNextBlockTimerType
-							   repeats:NO];
+											target:self
+										  selector:@selector(timerFired:)
+										  userInfo:iTetNextBlockTimerType
+										   repeats:NO];
 }
 
 - (NSTimer*)fallTimer
 {	
 	// Start the timer to move the block down
 	return [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
-							    target:self
-							  selector:@selector(timerFired:)
-							  userInfo:iTetBlockFallTimerType
-							   repeats:YES];
+											target:self
+										  selector:@selector(timerFired:)
+										  userInfo:iTetBlockFallTimerType
+										   repeats:YES];
 }
 
 - (void)timerFired:(NSTimer*)timer
