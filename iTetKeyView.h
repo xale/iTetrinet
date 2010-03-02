@@ -30,3 +30,12 @@
 @property (readwrite, assign) BOOL highlighted;
 
 @end
+
+@interface NSObject (iTetKeyViewDelegate)
+
+- (BOOL)		keyView:(iTetKeyView*)keyView
+shouldSetRepresentedKey:(iTetKeyNamePair*)key;
+- (void)	 keyView:(iTetKeyView*)keyView
+didSetRepresentedKey:(iTetKeyNamePair*)key;
+
+@end

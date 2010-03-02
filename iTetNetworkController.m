@@ -6,8 +6,6 @@
 //
 
 #import "iTetNetworkController.h"
-#import "iTetAppController.h"
-#import "iTetTextAttributesController.h"
 #import "iTetServerInfo.h"
 #import "Queue.h"
 #import "NSMutableData+SingleByte.h"

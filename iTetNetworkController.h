@@ -16,6 +16,15 @@ typedef enum
 	iTetNoConnectingError = 1
 } iTetNetworkError;
 
+@interface NSObject (iTetNetworkControllerDelegate)
+
+- (void)connectionOpened;
+- (void)connectionClosed;
+- (void)connectionError:(NSError*)error;
+- (void)messageReceived:(NSData*)messageData;
+
+@end
+
 @interface iTetNetworkController : NSObject
 {
 	id delegate;

@@ -20,8 +20,16 @@
 	IBOutlet id eventDelegate;
 }
 
-- (void)keyPressed:(iTetKeyNamePair*)key;
+- (void)keyEvent:(NSEvent*)keyEvent;
 
 @property (readwrite, retain) iTetBlock* block;
 
 @end
+
+@interface NSObject (iTetLocalFieldViewEventDelegate)
+
+- (void)keyPressed:(iTetKeyNamePair*)key
+  onLocalFieldView:(iTetLocalFieldView*)fieldView;
+
+@end
+
