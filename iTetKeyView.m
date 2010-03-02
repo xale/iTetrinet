@@ -7,7 +7,6 @@
 
 #import "iTetKeyView.h"
 #import "iTetKeyNamePair.h"
-#import "iTetKeyboardViewController.h" // Quiets warnings on delegate methods
 #import "NSImage+KeyImageCache.h"
 
 @implementation iTetKeyView
