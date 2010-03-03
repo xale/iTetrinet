@@ -9,11 +9,23 @@
 
 @implementation iTetMessage
 
++ (id)messageFromData:(NSData*)messageData
+{
+	// FIXME: WRITEME
+	
+	return nil;
+}
+
 - (id)init
 {
 	[self doesNotRecognizeSelector:_cmd];
 	[self release];
 	return nil;
 }
+
+#pragma mark -
+#pragma mark Accessors
+
+@synthesize messageType;
 
 @end

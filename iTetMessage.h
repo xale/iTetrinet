@@ -7,10 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define NUM_MESSAGE_TYPES	
+#define ITET_NUM_MESSAGE_TYPES	23
 
 typedef enum
 {
+	loginMessage,
+	clientInfoMessage,
 	playerNumberMessage,
 	playerJoinMessage,
 	playerLeaveMessage,
@@ -19,6 +21,7 @@ typedef enum
 	plineChatMessage,
 	plineActionMessage,
 	gameChatMessage,
+	startStopGameMessage,
 	newGameMessage,
 	inGameMessage,
 	fieldstringMessage,
@@ -27,7 +30,7 @@ typedef enum
 	classicAddMessage,
 	playerLostMessage,
 	playerWonMessage,
-	pauseGameMessage,
+	pauseResumeGameMessage,
 	endGameMessage,
 	noConnectingMessage,
 	heartbeatMessage
@@ -38,12 +41,20 @@ typedef enum
 	iTetMessageType messageType;
 }
 
-+ (id)messageFromData:(NSData*)data; 
-
-- (id)messageFromData:(NSData*)data;
-
-- (NSData*)rawMessageData;
++ (iTetMessage*)messageFromData:(NSData*)data;
 
 @property (readonly) iTetMessageType messageType;
+
+@end
+
+@protocol iTetIncomingMessage
+
+- (id)initWithMessageData:(NSData*)data;
+
+@end
+
+@protocol iTetOutgoingMessage
+
+- (NSData*)rawMessageData;
 
 @end
