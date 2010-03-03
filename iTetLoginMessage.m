@@ -22,7 +22,7 @@
 			  nickname:(NSString*)playerNickname
 			   address:(NSString*)ipv4ServerAddress
 {
-	protocol = [gameProtocol retain];
+	protocol = gameProtocol;
 	nickname = [playerNickname retain];
 	address = [ipv4ServerAddress retain];
 	
