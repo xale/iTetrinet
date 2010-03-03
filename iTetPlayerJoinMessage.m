@@ -6,6 +6,7 @@
 //
 
 #import "iTetPlayerJoinMessage.h"
+#import "NSString+ASCIIData.h"
 
 @implementation iTetPlayerJoinMessage
 
@@ -24,8 +25,7 @@
 	messageType = playerJoinMessage;
 	
 	// Convert the message data to a string
-	NSString* rawMessage = [[[NSString alloc] initWithData:messageData
-												  encoding:NSASCIIStringEncoding] autorelease];
+	NSString* rawMessage = [NSString stringWithASCIIData:messageData];
 	
 	// Split into space-delimited tokens
 	NSArray* messageTokens = [rawMessage componentsSeparatedByString:@" "];

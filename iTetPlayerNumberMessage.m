@@ -6,6 +6,7 @@
 //
 
 #import "iTetPlayerNumberMessage.h"
+#import "NSString+ASCIIData.h"
 
 @implementation iTetPlayerNumberMessage
 
@@ -17,8 +18,7 @@
 	messageType = playerNumberMessage;
 	
 	// Convert the message data to a string
-	NSString* rawMessage = [[[NSString alloc] initWithData:messageData
-												  encoding:NSASCIIStringEncoding] autorelease];
+	NSString* rawMessage = [NSString stringWithASCIIData:messageData];
 	
 	// Read the player number as an integer
 	playerNumber = [rawMessage integerValue];
