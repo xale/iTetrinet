@@ -6,8 +6,9 @@
 //
 
 #import "iTetTextAttributesController.h"
-#import "NSMutableData+SingleByte.h"
 #import "iTetAttributeRangePair.h"
+#import "NSMutableData+SingleByte.h"
+#import "NSString+ASCIIData.h"
 #import "NSColor+Comparisons.h"
 
 #define iTetSilverTextColor	[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
@@ -185,8 +186,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 - (NSAttributedString*)formattedMessageFromData:(NSData*)messageData
 {
 	// Create a mutable attributed string to apply attributes to
-	NSString* baseString = [NSString stringWithCString:[messageData bytes]
-											  encoding:NSASCIIStringEncoding];
+	NSString* baseString = [NSString stringWithASCIIData:messageData];
 	NSMutableAttributedString* formattedString = [[[NSMutableAttributedString alloc] initWithString:baseString] autorelease];
 	
 	// Create bold and italic versions of the default chat view font

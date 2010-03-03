@@ -16,6 +16,7 @@
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
 #import "NSMutableDictionary+KeyBindings.h"
+#import "NSString+ASCIIData.h"
 #import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
@@ -583,8 +584,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	NSLog(@"DEBUG:   received incoming message: %@", debugString);
 	
 	// Naively convert the message to ASCII
-	NSString* message = [NSString stringWithCString:[messageData bytes]
-										   encoding:NSASCIIStringEncoding];
+	NSString* message = [NSString stringWithASCIIData:messageData];
 	
 	// Split the message into space-separated tokens
 	NSArray* tokens = [message componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];

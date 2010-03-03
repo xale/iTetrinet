@@ -68,6 +68,7 @@
 		6AEFEEC011207BE6006A89CA /* iTetWinlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */; };
 		6AEFEEC711207D51006A89CA /* iTetWinlistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */; };
 		6AF511D6104860DB00D0B020 /* iTetLocalFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF511D5104860DB00D0B020 /* iTetLocalFieldView.m */; };
+		6AFA9136113F16F400300F33 /* NSString+ASCIIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */; };
 		6AFBE88C10AC6373008336EC /* iTetKeyNamePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFBE88B10AC6373008336EC /* iTetKeyNamePair.m */; };
 		6AFCE0F5108771310090F3DF /* iTetSpecials.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F4108771310090F3DF /* iTetSpecials.m */; };
 		6AFCE0F9108772B10090F3DF /* iTetSpecialNameTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F8108772B10090F3DF /* iTetSpecialNameTransformer.m */; };
@@ -187,6 +188,8 @@
 		6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistEntry.m; sourceTree = "<group>"; };
 		6AF511D4104860DB00D0B020 /* iTetLocalFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetLocalFieldView.h; sourceTree = "<group>"; };
 		6AF511D5104860DB00D0B020 /* iTetLocalFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetLocalFieldView.m; sourceTree = "<group>"; };
+		6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASCIIData.h"; sourceTree = "<group>"; };
+		6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASCIIData.m"; sourceTree = "<group>"; };
 		6AFBE88A10AC6373008336EC /* iTetKeyNamePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyNamePair.h; sourceTree = "<group>"; };
 		6AFBE88B10AC6373008336EC /* iTetKeyNamePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyNamePair.m; sourceTree = "<group>"; };
 		6AFCE0F4108771310090F3DF /* iTetSpecials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecials.m; sourceTree = "<group>"; };
@@ -540,6 +543,8 @@
 				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
 				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
 				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
+				6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */,
+				6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */,
 				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
 				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
 			);
@@ -667,6 +672,7 @@
 				6A6957EA1121214C00B01FB6 /* NSColor+Comparisons.m in Sources */,
 				6AFD368F1122598000BE4CAB /* iTetAttributeRangePair.m in Sources */,
 				6A0B2EA71124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m in Sources */,
+				6AFA9136113F16F400300F33 /* NSString+ASCIIData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
