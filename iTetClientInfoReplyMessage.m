@@ -1,28 +1,34 @@
 //
-//  iTetClientInfoMessage.m
+//  iTetClientInfoReplyMessage.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 3/3/10.
 //
 
-#import "iTetClientInfoMessage.h"
+#import "iTetClientInfoReplyMessage.h"
 
-@implementation iTetClientInfoMessage
+@implementation iTetClientInfoReplyMessage
+
++ (id)clientInfoReplyMessage
+{
+	return [[[self alloc] init] autorelease];
+}
 
 - (id)init
 {
-	// Needs to be overridden, despite the fact that init does nothing, because the superclass is abstract, and its init implementation calls doesNotRespondToSelector:
+	messageType = clientInfoReplyMessage;
+	
 	return self;
 }
 
 #pragma mark -
 #pragma mark iTetOutgoingMessage Protocol Methods
 
-NSString* const iTetClientInfoMessageFormat	=	@"clientinfo %@ %@";
+NSString* const iTetClientInfoReplyMessageFormat	=	@"clientinfo %@ %@";
 
 - (NSData*)rawMessageData
 {
-	NSString* rawMessage = [NSString stringWithFormat:iTetClientInfoMessageFormat, [self clientName], [self clientVersion]];
+	NSString* rawMessage = [NSString stringWithFormat:iTetClientInfoReplyMessageFormat, [self clientName], [self clientVersion]];
 	
 	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
 					allowLossyConversion:YES];

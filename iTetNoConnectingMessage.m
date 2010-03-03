@@ -12,10 +12,12 @@
 #pragma mark -
 #pragma mark iTetIncomingMessage Protocol Initializer
 
-- (id)initWithMessageData:(NSData*)data
+- (id)initWithMessageData:(NSData*)messageData
 {
+	messageType = noConnectingMessage;
+	
 	// Convert the data to a string
-	reason = [[NSString alloc] initWithData:data
+	reason = [[NSString alloc] initWithData:messageData
 								   encoding:NSASCIIStringEncoding];
 	
 	return self;

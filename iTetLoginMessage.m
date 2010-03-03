@@ -22,6 +22,8 @@
 			  nickname:(NSString*)playerNickname
 			   address:(NSString*)ipv4ServerAddress
 {
+	messageType = loginMessage;
+	
 	protocol = gameProtocol;
 	nickname = [playerNickname retain];
 	address = [ipv4ServerAddress retain];

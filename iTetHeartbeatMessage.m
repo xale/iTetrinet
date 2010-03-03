@@ -12,9 +12,12 @@
 #pragma mark -
 #pragma mark iTetIncomingMessage Protocol Initializer
 
-- (id)initWithMessageData:(NSData*)data
+- (id)initWithMessageData:(NSData*)messageData
 {
-	// No actual data
+	messageType = heartbeatMessage;
+	
+	// No data fields
+	
 	return self;
 }
 
