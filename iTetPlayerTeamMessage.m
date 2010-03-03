@@ -52,7 +52,7 @@
 	playerNumber = [[messageTokens objectAtIndex:0] integerValue];
 	
 	// Treat the second token as the player's team name
-	teamName = [[messageTokens objectAtIndex:1] copy];
+	teamName = [[messageTokens objectAtIndex:1] retain];
 	
 	return self;
 }
@@ -64,7 +64,7 @@ NSString* const iTetPlayerTeamMessageFormat =	@"team %d %@";
 
 - (NSData*)rawMessageData
 {
-	NSString* rawMessage = [NSString stringWithFormat:iTetPlayerTeamMessageFormat, playerNumber, teamName];
+	NSString* rawMessage = [NSString stringWithFormat:iTetPlayerTeamMessageFormat, [self playerNumber], [self teamName]];
 	
 	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
 					allowLossyConversion:YES];
