@@ -58,7 +58,7 @@ NSString* const TetrifastProtocolConnectionFormat =	@"tetrifaster %@ 1.13";
 			rawMessage = [NSString stringWithFormat:TetrifastProtocolConnectionFormat, [self nickname]];
 			break;
 		default:
-			NSLog(@"Warning: attempt to construct raw LoginMessage using invalid protocol");
+			NSLog(@"WARNING: attempt to construct raw LoginMessage using invalid protocol");
 			return nil;
 	}
 	
