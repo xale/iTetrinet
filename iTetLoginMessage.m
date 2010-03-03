@@ -25,8 +25,8 @@
 	messageType = loginMessage;
 	
 	protocol = gameProtocol;
-	nickname = [playerNickname retain];
-	address = [ipv4ServerAddress retain];
+	nickname = [playerNickname copy];
+	address = [ipv4ServerAddress copy];
 	
 	return self;
 }

@@ -34,7 +34,7 @@
 	playerNumber = [[messageTokens objectAtIndex:0] integerValue];
 	
 	// Treat the second token as the player nickname
-	nickname = [[messageTokens objectAtIndex:1] retain];
+	nickname = [[messageTokens objectAtIndex:1] copy];
 	
 	return self;
 }
