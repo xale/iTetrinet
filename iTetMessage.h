@@ -12,6 +12,7 @@
 typedef enum
 {
 	loginMessage,
+	clientInfoRequestMessage,
 	clientInfoMessage,
 	playerNumberMessage,
 	playerJoinMessage,
@@ -49,12 +50,14 @@ typedef enum
 
 @protocol iTetIncomingMessage
 
+// Constructs a message from the raw data off-the-wire, minus the message token and the first space
 - (id)initWithMessageData:(NSData*)data;
 
 @end
 
 @protocol iTetOutgoingMessage
 
+// Converts the message into raw data suitable for sending over-the-wire
 - (NSData*)rawMessageData;
 
 @end
