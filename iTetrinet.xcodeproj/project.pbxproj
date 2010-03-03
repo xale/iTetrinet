@@ -559,17 +559,6 @@
 			name = "Connection Handling";
 			sourceTree = "<group>";
 		};
-		6AC96DBC113F05B400D915B5 /* Utility Categories */ = {
-			isa = PBXGroup;
-			children = (
-				6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */,
-				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
-				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
-				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
-			);
-			name = "Utility Categories";
-			sourceTree = "<group>";
-		};
 		6AC96E07113F103800D915B5 /* Player Status */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,7 +608,10 @@
 				6A3ACC5210B7C7CC00459D97 /* Key Image Caching */,
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
 				6A96B57B10098EF9003D353E /* Queue Data Structure */,
-				6AC96DBC113F05B400D915B5 /* Utility Categories */,
+				6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */,
+				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
+				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
+				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
 				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
 				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
 			);
