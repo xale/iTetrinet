@@ -9,6 +9,13 @@
 
 @implementation iTetNoConnectingMessage
 
+- (void)dealloc
+{
+	[reason release];
+	
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark iTetIncomingMessage Protocol Initializer
 

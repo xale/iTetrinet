@@ -31,6 +31,14 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[nickname release];
+	[address release];
+	
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark iTetOutgoingMessage Protocol Methods
 
