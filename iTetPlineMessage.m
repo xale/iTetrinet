@@ -1,31 +1,35 @@
 //
-//  iTetPlineChatMessage.m
+//  iTetPlineMessage.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 3/3/10.
 //
 
-#import "iTetPlineChatMessage.h"
+#import "iTetPlineMessage.h"
 #import "NSString+ASCIIData.h"
 #import "NSData+Searching.h"
 #import "iTetTextAttributes.h"
 
-@implementation iTetPlineChatMessage
+@implementation iTetPlineMessage
 
-+ (id)plineChatMessageWithContents:(NSAttributedString*)contentsOfMessage
-				  fromPlayerNumber:(NSInteger)playerNumber
++ (id)plineMessageWithContents:(NSAttributedString*)contentsOfMessage
+			  fromPlayerNumber:(NSInteger)playerNumber
+				 actionMessage:(BOOL)isAction
 {
 	return [[[self alloc] initWithContents:contentsOfMessage
-						  fromPlayerNumber:playerNumber] autorelease];
+						  fromPlayerNumber:playerNumber
+							 actionMessage:isAction] autorelease];
 }
 
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber
+		 actionMessage:(BOOL)isAction
 {
-	messageType = plineChatMessage;
+	messageType = plineMessage;
 	
 	senderNumber = playerNumber;
 	messageContents = [contentsOfMessage copy];
+	action = isAction;
 	
 	return self;
 }
@@ -42,7 +46,7 @@
 
 - (id)initWithMessageData:(NSData*)messageData
 {
-	messageType = plineChatMessage;
+	messageType = plineMessage;
 	
 	// Find the first space in the message data
 	NSUInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
@@ -60,11 +64,16 @@
 #pragma mark iTetOutgoingMessage Protocol Methods
 
 NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
+NSString* const iTetPlineActionMessageFormat =	@"plineact %d ";
 
 - (NSData*)rawMessageData
 {
 	// Create the message format
-	NSString* initialFormat = [NSString stringWithFormat:iTetPlineChatMessageFormat, [self senderNumber]];
+	NSString* initialFormat;
+	if ([self isAction])
+		initialFormat = [NSString stringWithFormat:iTetPlineActionMessageFormat, [self senderNumber]];
+	else
+		initialFormat = [NSString stringWithFormat:iTetPlineChatMessageFormat, [self senderNumber]];
 	
 	// Create a mutable attributed string with the existing format at the base
 	NSMutableAttributedString* fullMessage = [[[NSMutableAttributedString alloc] initWithString:initialFormat] autorelease];
@@ -87,5 +96,6 @@ NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
 
 @synthesize senderNumber;
 @synthesize messageContents;
+@synthesize action;
 
 @end
