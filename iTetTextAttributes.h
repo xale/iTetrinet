@@ -45,8 +45,20 @@ typedef union
 	iTetTextFontAttribute fontAttribute;
 } iTetTextAttributeCode;
 
+@interface iTetTextAttributes : NSObject
+
 // Returns the NSColor represented by the specified color code
-NSColor* iTetTextColorForAttribute(iTetTextColorAttribute attribute);
++ (NSColor*)textColorForAttribute:(iTetTextColorAttribute)attribute;
 
 // Returns the color code representing the specified NSColor
-iTetTextColorAttribute iTetAttributeForTextColor(NSColor* color);
++ (iTetTextColorAttribute)attributeForTextColor:(NSColor*)color;
+
+// Creates an attributed string from message data read off-the-wire
++ (NSAttributedString*)formattedMessageFromData:(NSData*)messageData;
+
+// Creates data suitable for sending over-the-wire from an attributed string with the specified formatted range
++ (NSData*)dataFromFormattedMessage:(NSAttributedString*)message
+				withAttributedRange:(NSRange)rangeWithAttributes;
+
+@end
+

@@ -10,7 +10,7 @@
 @implementation iTetAttributeRangePair
 
 + (id)pairWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location
 {
 	return [[[self alloc] initWithAttributeType:attr
@@ -19,7 +19,7 @@
 }
 
 - (id)initWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location
 {
 	attributeType.code = attr;

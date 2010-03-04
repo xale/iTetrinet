@@ -11,21 +11,21 @@
 @interface iTetAttributeRangePair : NSObject
 {
 	iTetTextAttributeCode attributeType;
-	NSDictionary* attributeValue;
+	id attributeValue;
 	NSRange range;
 }
 
 + (id)pairWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location;
 - (id)initWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location;
 
 - (void)setLastIndexInRange:(NSUInteger)lastIndex;
 
 @property (readonly) iTetTextAttributeCode attributeType;
-@property (readonly) NSDictionary* attributeValue;
+@property (readonly) id attributeValue;
 @property (readonly) NSRange range;
 
 @end

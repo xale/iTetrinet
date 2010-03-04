@@ -7,8 +7,8 @@
 
 #import "iTetChatViewController.h"
 #import "iTetAppController.h"
-#import "iTetTextAttributesController.h"
 #import "iTetNetworkController.h"
+#import "iTetTextAttributes.h"
 #import "iTetChannelInfo.h"
 #import "iTetPlayer.h"
 
@@ -75,8 +75,8 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	attrRange.length = ([toSend length] - attrRange.location);
 	
 	// Send the message
-	[[appController networkController] sendMessageData:[textAttributesController dataFromFormattedMessage:toSend
-																					  withAttributedRange:attrRange]];
+	[[appController networkController] sendMessageData:[iTetTextAttributes dataFromFormattedMessage:toSend
+																				withAttributedRange:attrRange]];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[message string] characterAtIndex:0] != '/'))
@@ -130,7 +130,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 																		attributes:boldAttribute] autorelease];
 		[formattedMessage appendAttributedString:asterisk];
 		
-		// Append the player's name (and a space)
+		// Append the player's name in bold (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", playerName];
 	}
 	else

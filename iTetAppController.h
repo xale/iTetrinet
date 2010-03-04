@@ -12,7 +12,6 @@
 @class iTetGameViewController;
 @class iTetChatViewController;
 @class iTetWinlistViewController;
-@class iTetTextAttributesController;
 @class iTetPlayer;
 @class iTetLocalPlayer;
 @class iTetPreferencesWindowController;
@@ -31,9 +30,6 @@
 	IBOutlet iTetGameViewController* gameController;
 	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetWinlistViewController* winlistController;
-	
-	// Miscellaneous Controllers
-	IBOutlet iTetTextAttributesController* textAttributesController;
 	
 	// List view (and controller) for servers on connection sheet
 	IBOutlet NSScrollView* serverListView;
