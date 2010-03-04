@@ -636,10 +636,10 @@
 		6AEBBF5D113F2F81003C997B /* Text Attributes */ = {
 			isa = PBXGroup;
 			children = (
-				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
-				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
 				6AEBBF63113F3029003C997B /* iTetTextAttributes.h */,
 				6AEBBF64113F3029003C997B /* iTetTextAttributes.m */,
+				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
+				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
 			);
 			name = "Text Attributes";
 			sourceTree = "<group>";
