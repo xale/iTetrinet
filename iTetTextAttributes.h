@@ -38,13 +38,6 @@ typedef enum
 
 #define ITET_HIGHEST_ATTR_CODE	31
 
-typedef union
-{
-	uint8_t code;
-	iTetTextColorAttribute colorAttribute;
-	iTetTextFontAttribute fontAttribute;
-} iTetTextAttributeCode;
-
 @interface iTetTextAttributes : NSObject
 
 // Returns the NSColor represented by the specified color code

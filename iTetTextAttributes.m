@@ -191,7 +191,7 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 			[attributeAndRange setLastIndexInRange:(index - 1)];
 			
 			// Check if this a "bold and italic" tag
-			if ([attributeAndRange attributeType].fontAttribute == boldItalicText)
+			if ([attributeAndRange attributeType] == boldItalicText)
 			{
 				// Create and open a tag for the remaining attribute
 				if (byte == boldText)
@@ -275,8 +275,8 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 						[boldRange setLastIndexInRange:(index - 1)];
 						
 						// Apply bold to the range between the bold and italic tags
-						[formattedString addAttributes:[boldRange attributeValue]
-												 range:[boldRange range]];
+						[formattedString applyFontTraits:[[boldRange attributeValue] intValue]
+												   range:[boldRange range]];
 						
 						// Remove bold from the open tags
 						[openAttributes removeObject:boldRange];
