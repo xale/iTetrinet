@@ -69,6 +69,7 @@
 		6ACA39AE113D88A60026924D /* iTetMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACA39AD113D88A60026924D /* iTetMessage.m */; };
 		6ACC223F107D0CE7006768C0 /* iTetGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */; };
 		6AD81AD911401E4500522D05 /* iTetPlineMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD81AD811401E4500522D05 /* iTetPlineMessage.m */; };
+		6AD81ADE114021DF00522D05 /* iTetGameChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD81ADD114021DF00522D05 /* iTetGameChatMessage.m */; };
 		6ADDDB3B111A86C9004EEE61 /* iTetBlocks_Mono.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */; };
 		6ADDDB3C111A86C9004EEE61 /* theme_mono.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */; };
 		6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */; };
@@ -207,6 +208,8 @@
 		6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameViewController.m; sourceTree = "<group>"; };
 		6AD81AD711401E4500522D05 /* iTetPlineMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlineMessage.h; sourceTree = "<group>"; };
 		6AD81AD811401E4500522D05 /* iTetPlineMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlineMessage.m; sourceTree = "<group>"; };
+		6AD81ADC114021DF00522D05 /* iTetGameChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGameChatMessage.h; sourceTree = "<group>"; };
+		6AD81ADD114021DF00522D05 /* iTetGameChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameChatMessage.m; sourceTree = "<group>"; };
 		6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_Mono.png; sourceTree = "<group>"; };
 		6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_mono.cfg; sourceTree = "<group>"; };
 		6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyView.h; sourceTree = "<group>"; };
@@ -649,6 +652,8 @@
 			children = (
 				6AD81AD711401E4500522D05 /* iTetPlineMessage.h */,
 				6AD81AD811401E4500522D05 /* iTetPlineMessage.m */,
+				6AD81ADC114021DF00522D05 /* iTetGameChatMessage.h */,
+				6AD81ADD114021DF00522D05 /* iTetGameChatMessage.m */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -813,6 +818,7 @@
 				6AEBBF65113F3029003C997B /* iTetTextAttributes.m in Sources */,
 				6A387E33113F4D0C0074A5F6 /* NSData+Searching.m in Sources */,
 				6AD81AD911401E4500522D05 /* iTetPlineMessage.m in Sources */,
+				6AD81ADE114021DF00522D05 /* iTetGameChatMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

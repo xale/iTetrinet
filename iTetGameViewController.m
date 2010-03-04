@@ -108,7 +108,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark Chat Actions
 
 // Game messages are sent GTetrinet-style: nickname wrapped in angle-brackets
-NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
+NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
 
 - (IBAction)sendMessage:(id)sender
 {
@@ -118,7 +118,7 @@ NSString* const iTetGameChatMessageFormat = @"gmsg <%@> %@";
 		return;
 	
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetGameChatMessageFormat, [LOCALPLAYER nickname], message]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetGameMessageFormat, [LOCALPLAYER nickname], message]];
 	
 	// Do not add the message to our chat view; the server will echo it back to us
 	
