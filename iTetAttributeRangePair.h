@@ -6,11 +6,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
+#import "iTetTextAttributes.h"
 
 @interface iTetAttributeRangePair : NSObject
 {
-	uint8_t attributeType;
+	iTetTextAttributeCode attributeType;
 	NSDictionary* attributeValue;
 	NSRange range;
 }
@@ -24,7 +24,7 @@
 
 - (void)setLastIndexInRange:(NSUInteger)lastIndex;
 
-@property (readonly) uint8_t attributeType;
+@property (readonly) iTetTextAttributeCode attributeType;
 @property (readonly) NSDictionary* attributeValue;
 @property (readonly) NSRange range;
 
