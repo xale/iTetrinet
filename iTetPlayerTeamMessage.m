@@ -10,8 +10,8 @@
 
 @implementation iTetPlayerTeamMessage
 
-+ (id)playerTeamMessageWithPlayerNumber:(NSInteger)number
-							   teamName:(NSString*)nameOfTeam
++ (id)messageWithPlayerNumber:(NSInteger)number
+					 teamName:(NSString*)nameOfTeam
 {
 	return [[[self alloc] initWithPlayerNumber:number
 									  teamName:nameOfTeam] autorelease];

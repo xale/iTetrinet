@@ -15,9 +15,9 @@
 	BOOL action;
 }
 
-+ (id)plineMessageWithContents:(NSAttributedString*)contentsOfMessage
-			  fromPlayerNumber:(NSInteger)playerNumber
-				 actionMessage:(BOOL)isAction;
++ (id)messageWithContents:(NSAttributedString*)contentsOfMessage
+		 fromPlayerNumber:(NSInteger)playerNumber
+			actionMessage:(BOOL)isAction;
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber
 		 actionMessage:(BOOL)isAction;

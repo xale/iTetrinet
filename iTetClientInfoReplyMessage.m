@@ -9,7 +9,7 @@
 
 @implementation iTetClientInfoReplyMessage
 
-+ (id)clientInfoReplyMessage
++ (id)message
 {
 	return [[[self alloc] init] autorelease];
 }

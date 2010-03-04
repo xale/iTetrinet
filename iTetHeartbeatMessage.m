@@ -9,14 +9,24 @@
 
 @implementation iTetHeartbeatMessage
 
++ (id)message
+{
+	return [[[self alloc] init] autorelease];
+}
+
+- (id)init
+{
+	messageType = heartbeatMessage;
+	
+	return self;
+}
+
 #pragma mark -
 #pragma mark iTetIncomingMessage Protocol Initializer
 
 - (id)initWithMessageData:(NSData*)messageData
 {
 	messageType = heartbeatMessage;
-	
-	// No data fields
 	
 	return self;
 }

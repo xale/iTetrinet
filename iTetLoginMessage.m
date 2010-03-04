@@ -9,9 +9,9 @@
 
 @implementation iTetLoginMessage
 
-+ (id)loginMessageWithProtocol:(iTetProtocolType)gameProtocol
-					  nickname:(NSString*)playerNickname
-					   address:(NSString*)ipv4ServerAddress
++ (id)messageWithProtocol:(iTetProtocolType)gameProtocol
+				 nickname:(NSString*)playerNickname
+				  address:(NSString*)ipv4ServerAddress
 {
 	return [[[self alloc] initWithProtocol:gameProtocol
 								  nickname:playerNickname

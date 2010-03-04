@@ -10,7 +10,7 @@
 
 @interface iTetClientInfoReplyMessage : iTetMessage <iTetOutgoingMessage>
 
-+ (id)clientInfoReplyMessage;
++ (id)message;
 
 @property (readonly) NSString* clientName;
 @property (readonly) NSString* clientVersion;

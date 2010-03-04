@@ -10,4 +10,6 @@
 
 @interface iTetHeartbeatMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 
++ (id)message;
+
 @end

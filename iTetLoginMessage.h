@@ -15,9 +15,9 @@
 	NSString* address;
 }
 
-+ (id)loginMessageWithProtocol:(iTetProtocolType)gameProtocol
-					  nickname:(NSString*)playerNickname
-					   address:(NSString*)ipv4ServerAddress;
++ (id)messageWithProtocol:(iTetProtocolType)gameProtocol
+				 nickname:(NSString*)playerNickname
+				  address:(NSString*)ipv4ServerAddress;
 - (id)initWithProtocol:(iTetProtocolType)gameProtocol
 			  nickname:(NSString*)playerNickname
 			   address:(NSString*)ipv4ServerAddress;

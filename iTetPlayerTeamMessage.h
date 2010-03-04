@@ -14,8 +14,8 @@
 	NSString* teamName;
 }
 
-+ (id)playerTeamMessageWithPlayerNumber:(NSInteger)number
-							   teamName:(NSString*)nameOfTeam;
++ (id)messageWithPlayerNumber:(NSInteger)number
+					 teamName:(NSString*)nameOfTeam;
 - (id)initWithPlayerNumber:(NSInteger)number
 				  teamName:(NSString*)nameOfTeam;
 

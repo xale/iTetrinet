@@ -12,9 +12,9 @@
 
 @implementation iTetPlineMessage
 
-+ (id)plineMessageWithContents:(NSAttributedString*)contentsOfMessage
-			  fromPlayerNumber:(NSInteger)playerNumber
-				 actionMessage:(BOOL)isAction
++ (id)messageWithContents:(NSAttributedString*)contentsOfMessage
+		 fromPlayerNumber:(NSInteger)playerNumber
+			actionMessage:(BOOL)isAction
 {
 	return [[[self alloc] initWithContents:contentsOfMessage
 						  fromPlayerNumber:playerNumber
