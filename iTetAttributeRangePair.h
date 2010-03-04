@@ -10,7 +10,7 @@
 
 @interface iTetAttributeRangePair : NSObject
 {
-	iTetTextAttributeCode attributeType;
+	uint8_t attributeType;
 	id attributeValue;
 	NSRange range;
 }
@@ -24,7 +24,7 @@
 
 - (void)setLastIndexInRange:(NSUInteger)lastIndex;
 
-@property (readonly) iTetTextAttributeCode attributeType;
+@property (readonly) uint8_t attributeType;
 @property (readonly) id attributeValue;
 @property (readonly) NSRange range;
 

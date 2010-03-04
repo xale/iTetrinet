@@ -10,6 +10,5 @@
 @interface NSString (ASCIIData)
 
 + (id)stringWithASCIIData:(NSData*)asciiData;
-- (id)initWithASCIIData:(NSData*)asciiData;
 
 @end

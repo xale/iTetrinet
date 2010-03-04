@@ -22,7 +22,7 @@
 					  value:(id)value
 		beginningAtLocation:(NSUInteger)location
 {
-	attributeType.code = attr;
+	attributeType = attr;
 	attributeValue = [value retain];
 	range.location = location;
 	
@@ -45,7 +45,7 @@
 	{
 		iTetAttributeRangePair* otherPair = (iTetAttributeRangePair*)object;
 		
-		return ([self attributeType].code == [otherPair attributeType].code);
+		return ([self attributeType] == [otherPair attributeType]);
 	}
 	
 	return NO;

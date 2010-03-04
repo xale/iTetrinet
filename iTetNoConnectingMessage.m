@@ -25,7 +25,7 @@
 	messageType = noConnectingMessage;
 	
 	// Convert the data to a string
-	reason = [[NSString alloc] initWithASCIIData:messageData];
+	reason = [[NSString stringWithASCIIData:messageData] retain];
 	
 	return self;
 }
