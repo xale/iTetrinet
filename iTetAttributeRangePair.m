@@ -10,7 +10,7 @@
 @implementation iTetAttributeRangePair
 
 + (id)pairWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location
 {
 	return [[[self alloc] initWithAttributeType:attr
@@ -19,10 +19,10 @@
 }
 
 - (id)initWithAttributeType:(uint8_t)attr
-					  value:(NSDictionary*)value
+					  value:(id)value
 		beginningAtLocation:(NSUInteger)location
 {
-	attributeType = attr;
+	attributeType.code = attr;
 	attributeValue = [value retain];
 	range.location = location;
 	
@@ -45,7 +45,7 @@
 	{
 		iTetAttributeRangePair* otherPair = (iTetAttributeRangePair*)object;
 		
-		return ([self attributeType] == [otherPair attributeType]);
+		return ([self attributeType].code == [otherPair attributeType].code);
 	}
 	
 	return NO;

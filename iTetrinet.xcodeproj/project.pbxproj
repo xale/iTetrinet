@@ -19,6 +19,7 @@
 		6A29233D100BED350008A3C3 /* iTetNextBlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29233C100BED350008A3C3 /* iTetNextBlockView.m */; };
 		6A2923CF100BFB7A0008A3C3 /* iTetThemedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */; };
 		6A29DC8410BB44040054D353 /* iTetPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29DC8310BB44040054D353 /* iTetPreferencesViewController.m */; };
+		6A387E92113F633D0074A5F6 /* iTetTextAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A387E91113F633D0074A5F6 /* iTetTextAttributes.m */; };
 		6A39FB0F111FB346000373E2 /* iTetTextAttributesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */; };
 		6A3ACC4810B7C49500459D97 /* NSImage+KeyImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC4710B7C49500459D97 /* NSImage+KeyImageCache.m */; };
 		6A3ACC5510B7C85A00459D97 /* IPSCacheDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC5410B7C85A00459D97 /* IPSCacheDictionary.m */; };
@@ -105,6 +106,8 @@
 		6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemedView.m; sourceTree = "<group>"; };
 		6A29DC8210BB44040054D353 /* iTetPreferencesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPreferencesViewController.h; sourceTree = "<group>"; };
 		6A29DC8310BB44040054D353 /* iTetPreferencesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPreferencesViewController.m; sourceTree = "<group>"; };
+		6A387E90113F633D0074A5F6 /* iTetTextAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTextAttributes.h; sourceTree = "<group>"; };
+		6A387E91113F633D0074A5F6 /* iTetTextAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTextAttributes.m; sourceTree = "<group>"; };
 		6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTextAttributesController.h; sourceTree = "<group>"; };
 		6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTextAttributesController.m; sourceTree = "<group>"; };
 		6A3ACC4610B7C49500459D97 /* NSImage+KeyImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+KeyImageCache.h"; sourceTree = "<group>"; };
@@ -308,6 +311,30 @@
 			name = Superclass;
 			sourceTree = "<group>";
 		};
+		6A387E86113F63040074A5F6 /* Utility Categories */ = {
+			isa = PBXGroup;
+			children = (
+				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
+				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
+				6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */,
+				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
+				6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */,
+				6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */,
+			);
+			name = "Utility Categories";
+			sourceTree = "<group>";
+		};
+		6A387E87113F63110074A5F6 /* Text Attributes */ = {
+			isa = PBXGroup;
+			children = (
+				6A387E90113F633D0074A5F6 /* iTetTextAttributes.h */,
+				6A387E91113F633D0074A5F6 /* iTetTextAttributes.m */,
+				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
+				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
+			);
+			name = "Text Attributes";
+			sourceTree = "<group>";
+		};
 		6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */ = {
 			isa = PBXGroup;
 			children = (
@@ -397,6 +424,7 @@
 				6A4D91541112695B0052BC28 /* Players */,
 				6A96B57910098EAC003D353E /* Game Objects */,
 				6AFBE88910AC634C008336EC /* Key Bindings */,
+				6A387E87113F63110074A5F6 /* Text Attributes */,
 				6A96B55E10098E88003D353E /* iTetChannelInfo.h */,
 				6A96B55F10098E88003D353E /* iTetChannelInfo.m */,
 				6A96B56210098E88003D353E /* iTetServerInfo.h */,
@@ -539,14 +567,7 @@
 				6A3ACC5210B7C7CC00459D97 /* Key Image Caching */,
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
 				6A96B57B10098EF9003D353E /* Queue Data Structure */,
-				6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */,
-				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
-				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
-				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
-				6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */,
-				6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */,
-				6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */,
-				6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */,
+				6A387E86113F63040074A5F6 /* Utility Categories */,
 			);
 			name = Miscellaneous;
 			sourceTree = "<group>";
@@ -673,6 +694,7 @@
 				6AFD368F1122598000BE4CAB /* iTetAttributeRangePair.m in Sources */,
 				6A0B2EA71124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m in Sources */,
 				6AFA9136113F16F400300F33 /* NSString+ASCIIData.m in Sources */,
+				6A387E92113F633D0074A5F6 /* iTetTextAttributes.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

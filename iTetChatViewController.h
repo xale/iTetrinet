@@ -8,12 +8,10 @@
 #import <Cocoa/Cocoa.h>
 
 @class iTetAppController;
-@class iTetTextAttributesController;
 
 @interface iTetChatViewController : NSObject
 {
 	IBOutlet iTetAppController* appController;
-	IBOutlet iTetTextAttributesController* textAttributesController;
 	
 	// Chat views
 	IBOutlet NSTextView* chatView;

@@ -7,8 +7,8 @@
 
 #import "iTetChatViewController.h"
 #import "iTetAppController.h"
-#import "iTetTextAttributesController.h"
 #import "iTetNetworkController.h"
+#import "iTetTextAttributes.h"
 #import "iTetChannelInfo.h"
 #import "iTetPlayer.h"
 
@@ -47,14 +47,11 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	if ([message length] == 0)
 		return;
 	
-	// Reformat the string using the 
-	
-	NSString* format;
-	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
-	
+	// Check if the string is an action
 	BOOL action = ([message length] > 3) && [[[message string] substringToIndex:3] isEqualToString:@"/me"];
 	
 	// Format the message as text or action
+	NSString* format;
 	if (action)
 	{
 		format = iTetPlineActionFormat;
@@ -66,6 +63,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	}
 	
 	// Concatenate the formatting with the message contents
+	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
 	NSMutableAttributedString* toSend = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, [localPlayer playerNumber]]] autorelease];
 	[toSend appendAttributedString:message];
 	
@@ -75,8 +73,8 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	attrRange.length = ([toSend length] - attrRange.location);
 	
 	// Send the message
-	[[appController networkController] sendMessageData:[textAttributesController dataFromFormattedMessage:toSend
-																					  withAttributedRange:attrRange]];
+	[[appController networkController] sendMessageData:[iTetTextAttributes dataFromFormattedMessage:toSend
+																				withAttributedRange:attrRange]];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[message string] characterAtIndex:0] != '/'))
@@ -130,7 +128,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 																		attributes:boldAttribute] autorelease];
 		[formattedMessage appendAttributedString:asterisk];
 		
-		// Append the player's name (and a space)
+		// Append the player's name in bold (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", playerName];
 	}
 	else

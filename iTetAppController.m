@@ -11,13 +11,13 @@
 #import "iTetGameViewController.h"
 #import "iTetChatViewController.h"
 #import "iTetWinlistViewController.h"
-#import "iTetTextAttributesController.h"
+#import "iTetPreferencesWindowController.h"
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
+#import "iTetTextAttributes.h"
 #import "NSMutableDictionary+KeyBindings.h"
 #import "NSString+ASCIIData.h"
-#import "iTetPreferencesWindowController.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
@@ -780,7 +780,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
 			
 			// Format the chat text and hand off to the chat controller
-			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
+			[chatController appendChatLine:[iTetTextAttributes formattedMessageFromData:chatData]
 							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
 									action:NO];
 		}
@@ -796,7 +796,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
 			
 			// Format the chat text and hand off to the chat controller
-			[chatController appendChatLine:[textAttributesController formattedMessageFromData:chatData]
+			[chatController appendChatLine:[iTetTextAttributes formattedMessageFromData:chatData]
 							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
 									action:YES];
 		}
