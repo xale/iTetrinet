@@ -7,7 +7,6 @@
 
 #import "NSMutableData+SingleByte.h"
 
-
 @implementation NSMutableData (SingleByte)
 
 - (void)appendByte:(uint8_t)byte

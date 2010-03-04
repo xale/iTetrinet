@@ -7,7 +7,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-
 @interface NSMutableData (SingleByte)
 
 - (void)appendByte:(uint8_t)byte;
