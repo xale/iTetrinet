@@ -22,7 +22,7 @@
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber
 {
-	messageType = playerTeamMessage;
+	messageType = plineChatMessage;
 	
 	senderNumber = playerNumber;
 	messageContents = [contentsOfMessage copy];
@@ -42,17 +42,10 @@
 
 - (id)initWithMessageData:(NSData*)messageData
 {
-	messageType = playerTeamMessage;
+	messageType = plineChatMessage;
 	
-	// Find the space in the message data
+	// Find the first space in the message data
 	NSUInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
-	
-	// Check that a space was found
-	if (firstSpace == NSNotFound)
-	{
-		NSLog(@"WARNING: attempt to create pline chat message from invalid data");
-		return nil;
-	}
 	
 	// Split the data at the space, convert the first token to a string, and parse it as the sender player's number
 	senderNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
