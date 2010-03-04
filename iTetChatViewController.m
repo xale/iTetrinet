@@ -47,14 +47,11 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	if ([message length] == 0)
 		return;
 	
-	// Reformat the string using the 
-	
-	NSString* format;
-	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
-	
+	// Check if the string is an action
 	BOOL action = ([message length] > 3) && [[[message string] substringToIndex:3] isEqualToString:@"/me"];
 	
 	// Format the message as text or action
+	NSString* format;
 	if (action)
 	{
 		format = iTetPlineActionFormat;
@@ -66,6 +63,7 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
 	}
 	
 	// Concatenate the formatting with the message contents
+	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
 	NSMutableAttributedString* toSend = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, [localPlayer playerNumber]]] autorelease];
 	[toSend appendAttributedString:message];
 	
