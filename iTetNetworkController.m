@@ -156,6 +156,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	// Empty the write queue
 	[writeQueue removeAllObjects];
 	
+	// Clear any partially-read data
+	[partialRead setLength:0];
+	
 	// Change connection state
 	[self setConnected:NO];
 }
