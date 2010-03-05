@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetServerInfo.h"
+#import "iTetSpecials.h"
 
 @interface iTetGameRules : NSObject
 {
@@ -18,8 +19,8 @@
 	NSUInteger linesPerSpecial;
 	NSUInteger specialsAdded;
 	NSUInteger specialCapacity;
-	char blockFrequencies[100];
-	char specialFrequencies[100];
+	uint8_t blockFrequencies[100];
+	iTetSpecialType specialFrequencies[100];
 	BOOL showAverageLevel;
 	BOOL classicRules;
 }
@@ -37,8 +38,8 @@
 @property (readonly) NSUInteger linesPerSpecial;
 @property (readonly) NSUInteger specialsAdded;
 @property (readonly) NSUInteger specialCapacity;
-@property (readonly) char* blockFrequencies;
-@property (readonly) char* specialFrequencies;
+@property (readonly) uint8_t* blockFrequencies;
+@property (readonly) iTetSpecialType* specialFrequencies;
 @property (readonly) BOOL showAverageLevel;
 @property (readonly) BOOL classicRules;
 

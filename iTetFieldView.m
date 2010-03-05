@@ -62,7 +62,7 @@
 	}
 	
 	// Draw the field contents
-	char cell;
+	uint8_t cell;
 	NSImage* cellImage;
 	NSPoint drawPoint = NSZeroPoint;
 	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)

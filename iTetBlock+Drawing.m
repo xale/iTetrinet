@@ -22,7 +22,7 @@
 	
 	// For each occupied cell of the block, draw the fill for that region
 	NSInteger row, col;
-	char cellType;
+	uint8_t cellType;
 	NSImage* cellImage;
 	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{

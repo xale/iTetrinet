@@ -8,7 +8,7 @@
 #import "iTetBlock.h"
 #import "iTetField.h"
 
-typedef char BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
+typedef uint8_t BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
 
 static BLOCK bI[2] = {
 	{
@@ -188,12 +188,12 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 											columnPosition:colPos];
 }
 
-+ (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies
++ (id)randomBlockUsingBlockFrequencies:(uint8_t*)blockFrequencies
 {
 	return [[[self alloc] initWithRandomTypeAndOrientationUsingFrequencies:blockFrequencies] autorelease];
 }
 
-- (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(uint8_t*)blockFrequencies
 {	
 	type = (iTetBlockType)(blockFrequencies[random() % 100] - 1);
 	orientation = (random() % orientationCount[type]);
@@ -204,8 +204,8 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 #pragma mark -
 #pragma mark Accessors
 
-- (char)cellAtRow:(NSInteger)row
-		   column:(NSInteger)col
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)col
 {
 	return blocks[type][orientation][(ITET_BLOCK_WIDTH - 1) - row][col];
 }
