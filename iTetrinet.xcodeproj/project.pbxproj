@@ -30,6 +30,8 @@
 		6A739808106AB12600F51BF5 /* iTetGameRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A739807106AB12600F51BF5 /* iTetGameRules.m */; };
 		6A772C4C1020014200AAA2B8 /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A772C4B1020014200AAA2B8 /* iTetThemesArrayController.m */; };
 		6A7997E8114074D8005C3093 /* iTetNewGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */; };
+		6A7997F91140C9A7005C3093 /* iTetInGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */; };
+		6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */; };
 		6A96B56D10098E88003D353E /* iTetBlock+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55710098E88003D353E /* iTetBlock+Drawing.m */; };
 		6A96B56E10098E88003D353E /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55910098E88003D353E /* iTetBlock.m */; };
 		6A96B56F10098E88003D353E /* iTetField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55B10098E88003D353E /* iTetField.m */; };
@@ -143,6 +145,10 @@
 		6A772C4B1020014200AAA2B8 /* iTetThemesArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesArrayController.m; sourceTree = "<group>"; };
 		6A7997E6114074D8005C3093 /* iTetNewGameMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNewGameMessage.h; sourceTree = "<group>"; };
 		6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNewGameMessage.m; sourceTree = "<group>"; };
+		6A7997F71140C9A7005C3093 /* iTetInGameMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetInGameMessage.h; sourceTree = "<group>"; };
+		6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetInGameMessage.m; sourceTree = "<group>"; };
+		6A7997FE1140CB38005C3093 /* iTetFieldstringMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetFieldstringMessage.h; sourceTree = "<group>"; };
+		6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetFieldstringMessage.m; sourceTree = "<group>"; };
 		6A96B55610098E88003D353E /* iTetBlock+Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetBlock+Drawing.h"; sourceTree = "<group>"; };
 		6A96B55710098E88003D353E /* iTetBlock+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetBlock+Drawing.m"; sourceTree = "<group>"; };
 		6A96B55810098E88003D353E /* iTetBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlock.h; sourceTree = "<group>"; };
@@ -635,6 +641,10 @@
 				6AD81AED11402E4600522D05 /* iTetStartStopGameMessage.m */,
 				6A7997E6114074D8005C3093 /* iTetNewGameMessage.h */,
 				6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */,
+				6A7997F71140C9A7005C3093 /* iTetInGameMessage.h */,
+				6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */,
+				6A7997FE1140CB38005C3093 /* iTetFieldstringMessage.h */,
+				6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */,
 			);
 			name = Gameplay;
 			sourceTree = "<group>";
@@ -839,6 +849,8 @@
 				6AD81ADE114021DF00522D05 /* iTetGameChatMessage.m in Sources */,
 				6AD81AEE11402E4600522D05 /* iTetStartStopGameMessage.m in Sources */,
 				6A7997E8114074D8005C3093 /* iTetNewGameMessage.m in Sources */,
+				6A7997F91140C9A7005C3093 /* iTetInGameMessage.m in Sources */,
+				6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

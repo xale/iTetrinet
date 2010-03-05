@@ -707,18 +707,18 @@ doCommandBySelector:(SEL)command
 #pragma mark -
 #pragma mark Client-to-Server Events
 
-NSString* const iTetFieldstringMessageFormat = @"f %d %@";
+NSString* const iTetFieldMessageFormat = @"f %d %@";
 
 - (void)sendFieldstring
 {	
 	// Send the string for the local player's field to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldstringMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
 }
 
 NSString* const iTetLevelMessageFormat = @"lvl %d %d";
