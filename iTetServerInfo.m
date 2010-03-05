@@ -76,10 +76,10 @@
 #pragma mark NSCoding Protocol
 
 NSString* const iTetServerInfoServerNameKey =	@"serverName";
-NSString* const iTetServerInfoAddressKey =	@"address";
-NSString* const iTetServerInfoNicknameKey =	@"nickname";
+NSString* const iTetServerInfoAddressKey =		@"address";
+NSString* const iTetServerInfoNicknameKey =		@"nickname";
 NSString* const iTetServerInfoPlayerTeamKey =	@"playerTeam";
-NSString* const iTetServerInfoProtocolKey =	@"protocol";
+NSString* const iTetServerInfoProtocolKey =		@"protocol";
 
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
