@@ -43,7 +43,12 @@ NSString* const iTetGameChatMessageWithSenderFormat =	@"<%@> %@";
 }
 
 #pragma mark -
-#pragma mark iTetIncomingMessage Protocol Initializer
+#pragma mark iTetIncomingMessage Protocol Initializers
+
++ (id)messageWithMessageData:(NSData*)messageData
+{
+	return [[[self alloc] initWithMessageData:messageData] autorelease];
+}
 
 - (id)initWithMessageData:(NSData*)messageData
 {

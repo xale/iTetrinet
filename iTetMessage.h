@@ -50,6 +50,7 @@ typedef enum
 @protocol iTetIncomingMessage
 
 // Constructs a message from the raw data off-the-wire, minus the message token and the first space
++ (id)messageWithMessageData:(NSData*)messageData;
 - (id)initWithMessageData:(NSData*)messageData;
 
 @end
