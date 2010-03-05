@@ -549,6 +549,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
 }
 
+#define HeartbeatMessage	@""
 #define NoConnectingMessage	@"noconnecting"
 #define WinlistMessage		@"winlist"
 #define PlayerNumMessage	(([[networkController currentServer] protocol] == tetrinetProtocol)?@"playernum":@")#)(!@(*3")
@@ -573,7 +574,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	// FIXME: debug logging
 	NSMutableString* debugString = [NSMutableString string];
 	char byte;
-	for (NSUInteger i = 0; i < ([messageData length] - 1); i++)
+	for (NSUInteger i = 0; i < [messageData length]; i++)
 	{
 		byte = ((char*)[messageData bytes])[i];
 		if (byte > 31)
@@ -591,12 +592,11 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	
 	// Get the first token of the message
 	NSString* messageType = [tokens objectAtIndex:0];
-	
 	NSInteger playerNum;
 	
 	// Determine the nature of the message
 #pragma mark Server Heartbeat Message
-	if ([messageType isEqualToString:@""])
+	if ([messageType isEqualToString:HeartbeatMessage])
 	{
 		// Send a keepalive message
 		[networkController sendMessage:@""];

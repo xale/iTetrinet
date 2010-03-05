@@ -735,7 +735,7 @@ NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 		   toPlayer:(iTetPlayer*)target
 {	
 	// Send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (char)special, [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (uint8_t)special, [LOCALPLAYER playerNumber]]];
 	
 	// Perform and record the action
 	[self specialUsed:special

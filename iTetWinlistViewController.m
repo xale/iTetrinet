@@ -10,8 +10,8 @@
 
 @implementation iTetWinlistViewController
 
-static unichar const iTetPlayerEntryCharacter = 'p';
-static unichar const iTetTeamEntryCharacter = 't';
+static const unichar iTetPlayerEntryCharacter = 'p';
+static const unichar iTetTeamEntryCharacter = 't';
 
 - (void)parseWinlist:(NSArray*)winlistTokens
 {

@@ -64,13 +64,13 @@ typedef enum
 	   orientation:(NSInteger)blockOrientation;
 
 // Create random blocks using the frequency information from the game rules
-// note: blockFrequencies must be exactly 100 characters in length
-+ (id)randomBlockUsingBlockFrequencies:(char*)blockFrequencies;
-- (id)initWithRandomTypeAndOrientationUsingFrequencies:(char*)blockFrequencies;
+// blockFrequencies must be of length 100
++ (id)randomBlockUsingBlockFrequencies:(uint8_t*)blockFrequencies;
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(uint8_t*)blockFrequencies;
 
 // Returns the contents of this block at the specified cell
-- (char)cellAtRow:(NSInteger)row
-		   column:(NSInteger)col;
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)col;
 
 // The block's position
 - (void)moveHorizontal:(iTetMoveDirection)direction

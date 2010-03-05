@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetSpecials.h"
 
 #define ITET_FIELD_WIDTH	12
 #define ITET_FIELD_HEIGHT	22
@@ -28,7 +29,7 @@ typedef enum
 @interface iTetField: NSObject <NSCopying>
 {
 	// Contents of the field, indexed row/column, bottom-to-top, left-to-right
-	char contents[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
+	uint8_t contents[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
 	
 	// The delta created by the last block added to the field
 	NSString* lastPartialUpdate;
@@ -50,7 +51,7 @@ typedef enum
 - (id)initWithRandomContents;
 
 // Copy initializer
-- (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents;
+- (id)initWithContents:(uint8_t[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents;
 
 // Checks whether a block is in a valid position on the field
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block;
@@ -72,9 +73,9 @@ typedef enum
 - (void)applyPartialUpdate:(NSString*)partialUpdate;
 
 // Adds the specified number of specials to the field, using the provided frequencies
-// note: specialFrequencies must be exactly 100 characters in length
+// specialFrequencies must be of length 100
 - (void)addSpecials:(NSInteger)count
-   usingFrequencies:(char*)specialFrequencies;
+   usingFrequencies:(iTetSpecialType*)specialFrequencies;
 
 // Adds lines of garbage to the bottom of the field, pushing other lines up
 // Returns YES if the field overflows (player loses)
@@ -111,8 +112,8 @@ typedef enum
      inDirection:(BOOL)shiftLeft;
 
 // Returns the contents of the specified cell of the field
-- (char)cellAtRow:(NSInteger)row
-		   column:(NSInteger)column;
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)column;
 
 // The current fieldstring that describes the state of the field
 - (NSString*)fieldstring;

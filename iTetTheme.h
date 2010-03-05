@@ -46,7 +46,7 @@
 
 @property (readonly) NSImage* background;
 @property (readonly) NSSize cellSize;
-- (NSImage*)imageForCellType:(char)cellType;
+- (NSImage*)imageForCellType:(uint8_t)cellType;
 
 @property (readonly) NSImage* preview;
 

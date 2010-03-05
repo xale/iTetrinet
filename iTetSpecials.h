@@ -33,7 +33,7 @@ extern NSString* const iTetQuakeFieldSpecialName;
 extern NSString* const iTetBlockBombSpecialName;
 extern NSString* const iTetInvalidOrNoneSpecialName;
 
-char iTetSpecialNumberFromType(iTetSpecialType type);
-iTetSpecialType iTetSpecialTypeFromNumber(char number);
+uint8_t iTetSpecialNumberFromType(iTetSpecialType type);
+iTetSpecialType iTetSpecialTypeFromNumber(uint8_t number);
 NSString* iTetNameForSpecialType(iTetSpecialType type);
 BOOL iTetSpecialIsPositive(iTetSpecialType type);

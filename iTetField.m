@@ -7,7 +7,6 @@
 
 #import "iTetField.h"
 #import "iTetBlock.h"
-#import "iTetSpecials.h"
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
 // (conveniently, the row function is its own inverse)
@@ -15,8 +14,8 @@
 #define ITET_PARTIAL_TO_COL(coord)	((coord) - '3')
 #define ITET_COL_TO_PARTIAL(coord)	((coord) + '3')
 // ...and the cell contents are mapped to different characters
-char cellToPartialUpdateChar(char cellType);
-char partialUpdateCharToCell(char updateChar);
+char cellToPartialUpdateChar(uint8_t cellType);
+uint8_t partialUpdateCharToCell(char updateChar);
 
 @implementation iTetField
 
@@ -36,18 +35,22 @@ char partialUpdateCharToCell(char updateChar);
 {
 	// Convert the field string to a standard ASCII C string
 	const char* field = [fieldstring cStringUsingEncoding:NSASCIIStringEncoding];
-	char currentCell;
+	char currentChar;
+	uint8_t currentCell;
 	
 	// Iterate through the fieldstring
 	NSInteger row, col;
 	for (NSUInteger i = 0; i < [fieldstring length]; i++)
 	{
 		// Get the cell value at this index
-		currentCell = field[i];
+		currentChar = field[i];
 		
-		// If the current cell is a numeric value, convert
-		if (isdigit(currentCell))
-			currentCell -= '0';
+		// If the current cell is a numeric value, convert to its integer value
+		if (isdigit(currentChar))
+			currentCell = currentChar - '0';
+		// Otherwise, just cast
+		else
+			currentCell = (uint8_t)currentChar;
 		
 		// Find the coordinates this index corresponds to
 		row = (ITET_FIELD_HEIGHT - 1) - (i / ITET_FIELD_WIDTH);
@@ -115,9 +118,9 @@ char partialUpdateCharToCell(char updateChar);
 	return [[[self class] allocWithZone:zone] initWithContents:contents];
 }
 
-- (id)initWithContents:(char[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
+- (id)initWithContents:(uint8_t[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
 {	
-	memcpy(contents, fieldContents, (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(char)));
+	memcpy(contents, fieldContents, (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(uint8_t)));
 	
 	return self;
 }
@@ -135,7 +138,7 @@ char partialUpdateCharToCell(char updateChar);
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block
 {
 	NSInteger row, col;
-	char cell;
+	uint8_t cell;
 	iTetObstructionState side = obstructNone;
 	
 	// For each cell in the block, check if it is obstructed on the field
@@ -193,8 +196,8 @@ char partialUpdateCharToCell(char updateChar);
 - (void)solidifyBlock:(iTetBlock*)block
 {
 	NSInteger row, col;
-	char cell, lastCell = 0;
-	char rowCoord, colCoord;
+	uint8_t cell, lastCell = 0;
+	NSInteger rowCoord, colCoord;
 	
 	NSMutableString* update = [NSMutableString string];
 	
@@ -256,12 +259,12 @@ char partialUpdateCharToCell(char updateChar);
 			// ...and scan for specials
 			if (specials != nil)
 			{
-				char cell;
+				uint8_t cell;
 				for (col = 0; col < ITET_FIELD_WIDTH; col++)
 				{
 					cell = contents[row][col];
 					if (cell > ITET_NUM_CELL_COLORS)
-						[specials addObject:[NSNumber numberWithChar:cell]];
+						[specials addObject:[NSNumber numberWithUnsignedChar:cell]];
 				}
 			}
 		}
@@ -292,9 +295,9 @@ char partialUpdateCharToCell(char updateChar);
 	
 	// Get the first type of cell we are adding
 	const char* update = [partialUpdate cStringUsingEncoding:NSASCIIStringEncoding];
-	char cellType = partialUpdateCharToCell(update[0]);
+	char currentChar = update[0];
+	uint8_t cellType = partialUpdateCharToCell(currentChar);
 	
-	char currentChar;
 	NSInteger row, col;
 	for (NSUInteger i = 1; i < [partialUpdate length]; i++)
 	{
@@ -326,13 +329,13 @@ char partialUpdateCharToCell(char updateChar);
 }
 
 - (void)addSpecials:(NSInteger)count
-   usingFrequencies:(char*)specialFrequencies
+   usingFrequencies:(iTetSpecialType*)specialFrequencies
 {
 	[self willChangeValueForKey:@"contents"];
 	
 	// Count the number of non-special filled cells on the board
 	NSInteger row, col, numNonSpecialCells = 0;
-	char cell;
+	uint8_t cell;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_FIELD_WIDTH; col++)
@@ -666,7 +669,7 @@ cellfound:
 	
 	// Scan the board for block bomb specials
 	NSInteger row, col;
-	char cell;
+	uint8_t cell;
 	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
 		for (col = 0; col < ITET_FIELD_WIDTH; col++)
@@ -698,7 +701,7 @@ cellfound:
 							contents[row + rowOffset][col + colOffset] = 0;
 						
 						// Collect the cells, to be scattered around the field
-						[scatteredCells addObject:[NSNumber numberWithChar:cell]];
+						[scatteredCells addObject:[NSNumber numberWithUnsignedChar:cell]];
 					}
 				}
 			}
@@ -711,7 +714,7 @@ cellfound:
 	{
 		row = random() % (ITET_FIELD_HEIGHT - 6);
 		col = random() % ITET_FIELD_WIDTH;
-		contents[row][col] = [cell charValue];
+		contents[row][col] = [cell unsignedCharValue];
 	}
 	
 	[self didChangeValueForKey:@"contents"];
@@ -720,8 +723,8 @@ cellfound:
 #pragma mark -
 #pragma mark Accessors
 
-- (char)cellAtRow:(NSInteger)row
-		   column:(NSInteger)col
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)col
 {
 	return contents[row][col];
 }
@@ -730,7 +733,7 @@ cellfound:
 {
 	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT)];
 	
-	char cell;
+	uint8_t cell;
 	// Iterate over the whole field (TOP TO BOTTOM)
 	for (NSInteger row = (ITET_FIELD_HEIGHT - 1); row >= 0; row--)
 	{
@@ -752,63 +755,27 @@ cellfound:
 	return [NSString stringWithString:field];
 }
 
-char cellToPartialUpdateChar(char cellType)
+char cellToPartialUpdateChar(uint8_t cellType)
 {
-	// Special cells map to a sequential set of ASCII characters, which sadly means we can't just do an add or subtract
-	switch ((iTetSpecialType)cellType)
-	{
-		case addLine:
-			return '\'';
-		case clearLine:
-			return '(';
-		case nukeField:
-			return ')';
-		case randomClear:
-			return '*';
-		case switchField:
-			return '+';
-		case clearSpecials:
-			return ',';
-		case gravity:
-			return '-';
-		case quakeField:
-			return '.';
-		case blockBomb:
-			return '/';
-		default:
-			break;
-	}
+	// Check if this cell is a special
+	uint8_t cellAsSpecial = iTetSpecialNumberFromType((iTetSpecialType)cellType);
 	
-	// Non-special cells are indexed from ASCII 33 ('!')
+	// If it is, index from ASCII 38 ('&')
+	if (cellAsSpecial != invalidSpecial)
+		return (cellAsSpecial + 38);
+	
+	// Normal cells are indexed from ASCII 33 ('!')
 	return (cellType + 33);
 }
 
-char partialUpdateCharToCell(char updateChar)
+uint8_t partialUpdateCharToCell(char updateChar)
 {
-	// Switch to see if the update character maps to a special type
-	switch (updateChar)
-	{
-		case '\'':
-			return (char)addLine;
-		case '(':
-			return (char)clearLine;
-		case ')':
-			return (char)nukeField;
-		case '*':
-			return (char)randomClear;
-		case '+':
-			return (char)switchField;
-		case ',':
-			return (char)clearSpecials;
-		case '-':
-			return (char)gravity;
-		case '.':
-			return (char)quakeField;
-		case '/':
-			return (char)blockBomb;
-	}
+	// Check to see if the update character maps to a special type
+	uint8_t cellAsSpecial = iTetSpecialTypeFromNumber(updateChar - 38);
+	if (cellAsSpecial != invalidSpecial)
+		return cellAsSpecial;
 	
-	// Otherwise, just reverse-index from ASCII 33
+	// Otherwise, reverse-index from ASCII 33 to get the normal cell type
 	return (updateChar - 33);
 }
 

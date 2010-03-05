@@ -18,7 +18,7 @@ NSString* const iTetQuakeFieldSpecialName =		@"Quake Field";
 NSString* const iTetBlockBombSpecialName =		@"Block Bomb";
 NSString* const iTetInvalidOrNoneSpecialName =	@"No Special";
 
-char iTetSpecialNumberFromType(iTetSpecialType type)
+uint8_t iTetSpecialNumberFromType(iTetSpecialType type)
 {
 	switch (type)
 	{
@@ -48,7 +48,7 @@ char iTetSpecialNumberFromType(iTetSpecialType type)
 	return 0;
 }
 
-iTetSpecialType iTetSpecialTypeFromNumber(char number)
+iTetSpecialType iTetSpecialTypeFromNumber(uint8_t number)
 {
 	switch (number)
 	{

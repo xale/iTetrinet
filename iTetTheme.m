@@ -210,7 +210,7 @@
 	NSRect cellRect;
 	cellRect.size = cellSize;
 	cellRect.origin.y = ([sheet size].height - cellSize.height);
-	char cellNum;
+	NSInteger cellNum;
 	NSImage* cellImage;
 	for (cellNum = 0; cellNum < (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES); cellNum++)
 	{
@@ -266,7 +266,7 @@
 	NSRect targetRect;
 	targetRect.size = NSMakeSize(ITET_DEF_CELL_WIDTH, ITET_DEF_CELL_HEIGHT);
 	targetRect.origin.x = 0;
-	char cellNum;
+	NSInteger cellNum;
 	for (cellNum = 0; cellNum < ITET_NUM_CELL_COLORS; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
@@ -351,7 +351,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 @synthesize background;
 @synthesize cellSize;
-- (NSImage*)imageForCellType:(char)cellType
+- (NSImage*)imageForCellType:(uint8_t)cellType
 {
 	// Check if the requested cell is a normal cell or a special
 	// If the cell is a normal cell, return one of the normal cell images
@@ -361,8 +361,8 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	}
 	
 	// If the cell is a special, return the image for that special type
-	char num = iTetSpecialNumberFromType((iTetSpecialType)cellType);
-	if (num)
+	uint8_t num = iTetSpecialNumberFromType((iTetSpecialType)cellType);
+	if (num > 0)
 		return [specialImages objectAtIndex:(num - 1)];
 	
 	// Invalid cell type

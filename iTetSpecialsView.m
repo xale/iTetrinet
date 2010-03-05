@@ -73,7 +73,7 @@
 		for (NSNumber* special in [specials reverseObjectEnumerator])
 		{
 			// Get the special's image
-			specialImage = [[self theme] imageForCellType:[special charValue]];
+			specialImage = [[self theme] imageForCellType:[special unsignedCharValue]];
 			
 			// Draw the special
 			[specialImage drawAtPoint:drawPoint
