@@ -773,7 +773,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	else if ([messageType isEqualToString:PLineTextMessage])
 	{
 		// Check if the message has actual chat text
-		if ([tokens count] > 2)
+		if (([tokens count] > 2) && ([[tokens objectAtIndex:2] length] > 0))
 		{
 			// Trim the first two tokens off of the message
 			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
@@ -788,8 +788,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 #pragma mark Partyline Action Message
 	else if ([messageType isEqualToString:PLineActionMessage])
 	{
-		// Check if the message has actual chat text
-		if ([tokens count] > 2)
+		// Check if the message has actual action text
+		if (([tokens count] > 2) && ([[tokens objectAtIndex:2] length] > 0))
 		{
 			// Trim the first two tokens off of the message
 			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
