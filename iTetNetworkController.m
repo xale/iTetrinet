@@ -202,7 +202,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 - (void)attemptRead
 {	
 	// Read data from the stream into a buffer
-	uint8_t buffer[iTetNetworkBufferSize + 1];
+	uint8_t buffer[iTetNetworkBufferSize];
 	NSUInteger bytesRead = 0;
 	bytesRead = [readStream read:buffer
 					   maxLength:iTetNetworkBufferSize];
@@ -214,8 +214,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		return;
 	}
 	
-	buffer[bytesRead] = 0; // NULL terminator
-	
 	// Loop through the data, looking for terminator characters
 	NSUInteger index, lastTerminator = 0;
 	for (index = 0; index < bytesRead; index++)
@@ -226,9 +224,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// (probably empty, but may contain leftover data from the last read)
 			[partialRead appendBytes:(buffer + lastTerminator)
 							  length:(index - lastTerminator)];
-			
-			// Append a NULL terminator for the end of the string
-			[partialRead appendByte:0];
 			
 			// Relay the message to the delegate
 			if ([delegate respondsToSelector:@selector(messageReceived:)])

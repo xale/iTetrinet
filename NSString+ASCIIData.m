@@ -11,8 +11,9 @@
 
 + (id)stringWithASCIIData:(NSData*)asciiData
 {
-	return [[[self alloc] initWithData:asciiData
-							  encoding:NSASCIIStringEncoding] autorelease];
+	return [[[self alloc] initWithBytes:[asciiData bytes]
+								 length:[asciiData length]
+							   encoding:NSASCIIStringEncoding] autorelease];
 }
 
 @end
