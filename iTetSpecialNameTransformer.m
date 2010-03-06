@@ -32,7 +32,7 @@ NSString* const iTetSpecialNameTransformerName = @"TetrinetSpecialNameTransforme
 	iTetSpecialType type = (iTetSpecialType)[value intValue];
 	
 	// Return the appropriate string representation
-	return iTetNameForSpecialType(type);
+	return [iTetSpecials nameForSpecialType:type];
 }
 
 @end

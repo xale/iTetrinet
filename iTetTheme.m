@@ -361,7 +361,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	}
 	
 	// If the cell is a special, return the image for that special type
-	uint8_t num = iTetSpecialNumberFromType((iTetSpecialType)cellType);
+	uint8_t num = [iTetSpecials numberForSpecialType:(iTetSpecialType)cellType];
 	if (num > 0)
 		return [specialImages objectAtIndex:(num - 1)];
 	
@@ -369,7 +369,6 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	NSLog(@"Warning: Image requested for invalid cell type: %d", cellType);
 	return nil;
 }
-
 
 @synthesize preview;
 

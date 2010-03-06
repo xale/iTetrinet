@@ -19,6 +19,11 @@ typedef enum
 	gravity =		'g',
 	quakeField =	'q',
 	blockBomb =		'o',
+	
+	classicStyle1 =	'1',
+	classicStyle2 =	'2',
+	classicStyle4 =	'4',
+	
 	invalidSpecial = 0
 } iTetSpecialType;
 
@@ -33,7 +38,16 @@ extern NSString* const iTetQuakeFieldSpecialName;
 extern NSString* const iTetBlockBombSpecialName;
 extern NSString* const iTetInvalidOrNoneSpecialName;
 
-uint8_t iTetSpecialNumberFromType(iTetSpecialType type);
-iTetSpecialType iTetSpecialTypeFromNumber(uint8_t number);
-NSString* iTetNameForSpecialType(iTetSpecialType type);
-BOOL iTetSpecialIsPositive(iTetSpecialType type);
+@interface iTetSpecials : NSObject
+
++ (iTetSpecialType)specialTypeForNumber:(uint8_t)number;
++ (uint8_t)numberForSpecialType:(iTetSpecialType)type;
+
++ (iTetSpecialType)specialTypeFromMessageName:(NSString*)name;
++ (NSString*)messageNameForSpecialType:(iTetSpecialType)type;
+
++ (NSString*)nameForSpecialType:(iTetSpecialType)type;
+
++ (BOOL)specialIsPositive:(iTetSpecialType)type;
+
+@end

@@ -758,7 +758,7 @@ cellfound:
 char cellToPartialUpdateChar(uint8_t cellType)
 {
 	// Check if this cell is a special
-	uint8_t cellAsSpecial = iTetSpecialNumberFromType((iTetSpecialType)cellType);
+	uint8_t cellAsSpecial = [iTetSpecials numberForSpecialType:(iTetSpecialType)cellType];
 	
 	// If it is, index from ASCII 38 ('&')
 	if (cellAsSpecial != invalidSpecial)
@@ -771,7 +771,7 @@ char cellToPartialUpdateChar(uint8_t cellType)
 uint8_t partialUpdateCharToCell(char updateChar)
 {
 	// Check to see if the update character maps to a special type
-	uint8_t cellAsSpecial = iTetSpecialTypeFromNumber(updateChar - 38);
+	uint8_t cellAsSpecial = [iTetSpecials specialTypeForNumber:(updateChar - 38)];
 	if (cellAsSpecial != invalidSpecial)
 		return cellAsSpecial;
 	
