@@ -7,6 +7,8 @@
 
 #import "iTetSpecialMessage.h"
 #import "iTetPlayer.h"
+#import "iTetSpecials.h"
+#import "NSString+ASCIIData.h"
 
 @implementation iTetSpecialMessage
 
@@ -44,7 +46,17 @@
 {
 	messageType = specialMessage;
 	
-	// FIXME: WRITEME
+	// Convert the message data to a string, and split on spaces
+	NSArray* tokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
+	
+	// Parse the first token as the target's player number
+	targetNumber = [[tokens objectAtIndex:0] integerValue];
+	
+	// Convert the second token to a special type
+	specialType = [iTetSpecials specialTypeFromMessageName:[tokens objectAtIndex:1]];
+	
+	// Parse the third token as the sender's player number
+	senderNumber = [[tokens objectAtIndex:3] integerValue];
 	
 	return self;
 }
@@ -56,8 +68,13 @@ NSString* const iTetSpecialMessageFormat =	@"sb %d %@ %d";
 
 - (NSData*)rawMessageData
 {
-	// FIXME: WRITEME
-	return nil;
+	// Get the message version of the special type
+	NSString* specialName = [iTetSpecials messageNameForSpecialType:[self specialType]];
+	
+	NSString* rawMessage = [NSString stringWithFormat:iTetSpecialMessageFormat, [self targetNumber], specialName, [self senderNumber]];
+	
+	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
+					allowLossyConversion:YES];
 }
 
 #pragma mark -

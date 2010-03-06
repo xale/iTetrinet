@@ -628,9 +628,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 		[self setLocalPlayerNumber:[[tokens objectAtIndex:1] integerValue]];
 		
 		// Send the player's team name to the server
-		NSString* teamMessage = [NSString stringWithFormat:@"team %d %@",
-								 [[self localPlayer] playerNumber],
-								 [[self localPlayer] teamName]];
+		NSString* teamMessage = [NSString stringWithFormat:@"team %d %@", [[self localPlayer] playerNumber], [[self localPlayer] teamName]];
 		[networkController sendMessage:teamMessage];
 	}
 #pragma mark Player Joined Message
