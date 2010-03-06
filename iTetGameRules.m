@@ -58,7 +58,7 @@
 	freq = [rules objectAtIndex:8];
 	for (currentChar.location = 0; currentChar.location < 100; currentChar.location++)
 	{
-		specialFrequencies[currentChar.location] = iTetSpecialTypeFromNumber([[freq substringWithRange:currentChar] intValue]);
+		specialFrequencies[currentChar.location] = [iTetSpecials specialTypeForNumber:[[freq substringWithRange:currentChar] intValue]];
 	}
 	
 	// Level number averages across all players

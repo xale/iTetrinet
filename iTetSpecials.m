@@ -18,7 +18,16 @@ NSString* const iTetQuakeFieldSpecialName =		@"Quake Field";
 NSString* const iTetBlockBombSpecialName =		@"Block Bomb";
 NSString* const iTetInvalidOrNoneSpecialName =	@"No Special";
 
-uint8_t iTetSpecialNumberFromType(iTetSpecialType type)
+@implementation iTetSpecials
+
+- (id)init
+{
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
+}
+
++ (uint8_t)numberForSpecialType:(iTetSpecialType)type
 {
 	switch (type)
 	{
@@ -48,7 +57,7 @@ uint8_t iTetSpecialNumberFromType(iTetSpecialType type)
 	return 0;
 }
 
-iTetSpecialType iTetSpecialTypeFromNumber(uint8_t number)
++ (iTetSpecialType)specialTypeForNumber:(uint8_t)number
 {
 	switch (number)
 	{
@@ -76,7 +85,46 @@ iTetSpecialType iTetSpecialTypeFromNumber(uint8_t number)
 	return invalidSpecial;
 }
 
-NSString* iTetNameForSpecialType(iTetSpecialType type)
+NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
+
++ (iTetSpecialType)specialTypeFromMessageName:(NSString*)name
+{
+	// Check if this is a classic-style add
+	if ([name rangeOfString:iTetClassicStyleAddSpecialPrefix].location == 0)
+		return (iTetSpecialType)[name characterAtIndex:2];
+	
+	return (iTetSpecialType)[name characterAtIndex:0];
+}
+
++ (NSString*)messageNameForSpecialType:(iTetSpecialType)type
+{
+	switch (type)
+	{
+		case classicStyle1:
+		case classicStyle2:
+		case classicStyle4:
+			return [NSString stringWithFormat:@"%@%c", iTetClassicStyleAddSpecialPrefix, (uint8_t)type];
+			
+		case addLine:
+		case clearLine:
+		case nukeField:
+		case randomClear:
+		case switchField:
+		case clearSpecials:
+		case gravity:
+		case quakeField:
+		case blockBomb:
+			return [NSString stringWithFormat:@"%c", type];
+			
+		default:
+			break;
+	}
+	
+	NSLog(@"WARNING: invalid special type in messageNameForSpecialType: %c (%d)", type, type);
+	return nil;
+}
+
++ (NSString*)nameForSpecialType:(iTetSpecialType)type
 {
 	switch (type)
 	{
@@ -106,7 +154,7 @@ NSString* iTetNameForSpecialType(iTetSpecialType type)
 	return iTetInvalidOrNoneSpecialName;
 }
 
-BOOL iTetSpecialIsPositive(iTetSpecialType type)
++ (BOOL)specialIsPositive:(iTetSpecialType)type
 {
 	switch (type)
 	{
@@ -130,3 +178,5 @@ BOOL iTetSpecialIsPositive(iTetSpecialType type)
 	NSLog(@"WARNING: iTetSpecialIsPositive() called on invalid special type");
 	return NO;
 }
+
+@end

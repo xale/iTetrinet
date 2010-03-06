@@ -772,7 +772,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 
 #define iTetBadSpecialForegroundColor		[NSColor redColor]
 #define iTetGoodSpecialForegroundColor		[NSColor greenColor]
-#define iTetEventBackgroundColorFraction		(0.2)
+#define iTetEventBackgroundColorFraction	(0.2)
 
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
@@ -785,7 +785,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	
 	// Add a description of the event to the list of actions
 	// Get the name of the special
-	NSString* specialName = iTetNameForSpecialType(special);
+	NSString* specialName = [iTetSpecials nameForSpecialType:special];
 	
 	// Determine the name of the sender ("Server", if the sender is not a specific player)
 	NSString* senderName;
@@ -808,7 +808,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	// Color (and bold) the special name
 	NSRange range = [[desc string] rangeOfString:specialName];
 	NSColor* color;
-	if (iTetSpecialIsPositive(special))
+	if ([iTetSpecials specialIsPositive:special])
 		color = iTetGoodSpecialForegroundColor;
 	else
 		color = iTetBadSpecialForegroundColor;
