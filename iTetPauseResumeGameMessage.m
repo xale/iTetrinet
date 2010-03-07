@@ -10,13 +10,13 @@
 
 @implementation iTetPauseResumeGameMessage
 
-+ (id)pauseGameMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)pauseMessageWithSenderNumber:(NSInteger)playerNumber
 {
 	return [[[self alloc] initWithSenderNumber:playerNumber
 									 pauseGame:YES] autorelease];
 }
 
-+ (id)resumeGameMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)resumeMessageWithSenderNumber:(NSInteger)playerNumber
 {
 	return [[[self alloc] initWithSenderNumber:playerNumber
 									 pauseGame:NO] autorelease];

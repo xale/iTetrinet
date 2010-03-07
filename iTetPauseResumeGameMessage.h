@@ -13,8 +13,8 @@
 	NSInteger senderNumber;
 }
 
-+ (id)pauseGameMessageWithSenderNumber:(NSInteger)playerNumber;
-+ (id)resumeGameMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)pauseMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)resumeMessageWithSenderNumber:(NSInteger)playerNumber;
 - (id)initWithSenderNumber:(NSInteger)playerNumber
 				 pauseGame:(BOOL)pause;
 

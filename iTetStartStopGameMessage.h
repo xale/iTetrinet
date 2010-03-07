@@ -13,8 +13,8 @@
 	NSInteger senderNumber;
 }
 
-+ (id)startGameMessageWithSenderNumber:(NSInteger)playerNumber;
-+ (id)stopGameMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)startMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)stopMessageWithSenderNumber:(NSInteger)playerNumber;
 - (id)initWithSenderNumber:(NSInteger)playerNumber
 				 startGame:(BOOL)start;
 
