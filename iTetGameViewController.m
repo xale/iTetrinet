@@ -755,12 +755,12 @@ NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
 			byPlayer:LOCALPLAYER];
 }
 
-NSString* const iTetPlayerLostMessageFormat = @"playerlost %d";
+NSString* const iTetLoseMessageFormat = @"playerlost %d";
 
 - (void)sendPlayerLostMessage
 {
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetPlayerLostMessageFormat, [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetLoseMessageFormat, [LOCALPLAYER playerNumber]]];
 }
 
 #pragma mark -
