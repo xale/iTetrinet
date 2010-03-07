@@ -89,6 +89,7 @@
 		6AEFEEC011207BE6006A89CA /* iTetWinlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */; };
 		6AEFEEC711207D51006A89CA /* iTetWinlistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */; };
 		6AF511D6104860DB00D0B020 /* iTetLocalFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF511D5104860DB00D0B020 /* iTetLocalFieldView.m */; };
+		6AF8A8FD114414DC0096D55F /* iTetPauseResumeGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF8A8FC114414DC0096D55F /* iTetPauseResumeGameMessage.m */; };
 		6AFA9136113F16F400300F33 /* NSString+ASCIIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */; };
 		6AFBE88C10AC6373008336EC /* iTetKeyNamePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFBE88B10AC6373008336EC /* iTetKeyNamePair.m */; };
 		6AFCE0F5108771310090F3DF /* iTetSpecials.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F4108771310090F3DF /* iTetSpecials.m */; };
@@ -251,6 +252,8 @@
 		6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistEntry.m; sourceTree = "<group>"; };
 		6AF511D4104860DB00D0B020 /* iTetLocalFieldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetLocalFieldView.h; sourceTree = "<group>"; };
 		6AF511D5104860DB00D0B020 /* iTetLocalFieldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetLocalFieldView.m; sourceTree = "<group>"; };
+		6AF8A8FB114414DC0096D55F /* iTetPauseResumeGameMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPauseResumeGameMessage.h; sourceTree = "<group>"; };
+		6AF8A8FC114414DC0096D55F /* iTetPauseResumeGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPauseResumeGameMessage.m; sourceTree = "<group>"; };
 		6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ASCIIData.h"; sourceTree = "<group>"; };
 		6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ASCIIData.m"; sourceTree = "<group>"; };
 		6AFBE88A10AC6373008336EC /* iTetKeyNamePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyNamePair.h; sourceTree = "<group>"; };
@@ -626,6 +629,7 @@
 				6AC96DB6113EEFBF00D915B5 /* Connection Handling */,
 				6AC96E07113F103800D915B5 /* Player Status */,
 				6AEBBF7A113F357C003C997B /* Chat */,
+				6AF8A8FA114414A80096D55F /* Game State */,
 				6AD81AEB11402DEA00522D05 /* Gameplay */,
 			);
 			name = Messages;
@@ -643,12 +647,6 @@
 		6AD81AEB11402DEA00522D05 /* Gameplay */ = {
 			isa = PBXGroup;
 			children = (
-				6AD81AEC11402E4600522D05 /* iTetStartStopGameMessage.h */,
-				6AD81AED11402E4600522D05 /* iTetStartStopGameMessage.m */,
-				6A7997E6114074D8005C3093 /* iTetNewGameMessage.h */,
-				6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */,
-				6A7997F71140C9A7005C3093 /* iTetInGameMessage.h */,
-				6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */,
 				6A7997FE1140CB38005C3093 /* iTetFieldstringMessage.h */,
 				6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */,
 				6A02B4401141456200FB22CE /* iTetLevelUpdateMessage.h */,
@@ -694,6 +692,21 @@
 				6AD81ADD114021DF00522D05 /* iTetGameChatMessage.m */,
 			);
 			name = Chat;
+			sourceTree = "<group>";
+		};
+		6AF8A8FA114414A80096D55F /* Game State */ = {
+			isa = PBXGroup;
+			children = (
+				6AD81AEC11402E4600522D05 /* iTetStartStopGameMessage.h */,
+				6AD81AED11402E4600522D05 /* iTetStartStopGameMessage.m */,
+				6A7997E6114074D8005C3093 /* iTetNewGameMessage.h */,
+				6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */,
+				6A7997F71140C9A7005C3093 /* iTetInGameMessage.h */,
+				6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */,
+				6AF8A8FB114414DC0096D55F /* iTetPauseResumeGameMessage.h */,
+				6AF8A8FC114414DC0096D55F /* iTetPauseResumeGameMessage.m */,
+			);
+			name = "Game State";
 			sourceTree = "<group>";
 		};
 		6AFBE88910AC634C008336EC /* Key Bindings */ = {
@@ -863,6 +876,7 @@
 				6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */,
 				6A02B4421141456200FB22CE /* iTetLevelUpdateMessage.m in Sources */,
 				6A02B47211414B2D00FB22CE /* iTetSpecialMessage.m in Sources */,
+				6AF8A8FD114414DC0096D55F /* iTetPauseResumeGameMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
