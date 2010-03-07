@@ -6,19 +6,20 @@
 //
 
 #import "iTetPauseResumeGameMessage.h"
+#import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 
 @implementation iTetPauseResumeGameMessage
 
-+ (id)pauseMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)pauseMessageFromSender:(iTetPlayer*)sender
 {
-	return [[[self alloc] initWithSenderNumber:playerNumber
+	return [[[self alloc] initWithSenderNumber:[sender playerNumber]
 									 pauseGame:YES] autorelease];
 }
 
-+ (id)resumeMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)resumeMessageFromSender:(iTetPlayer*)sender
 {
-	return [[[self alloc] initWithSenderNumber:playerNumber
+	return [[[self alloc] initWithSenderNumber:[sender playerNumber]
 									 pauseGame:NO] autorelease];
 }
 

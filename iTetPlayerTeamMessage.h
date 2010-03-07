@@ -7,14 +7,15 @@
 
 #import "iTetMessage.h"
 
+@class iTetPlayer;
+
 @interface iTetPlayerTeamMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 {
 	NSInteger playerNumber;
 	NSString* teamName;
 }
 
-+ (id)messageWithPlayerNumber:(NSInteger)number
-					 teamName:(NSString*)nameOfTeam;
++ (id)messageForPlayer:(iTetPlayer*)player;
 - (id)initWithPlayerNumber:(NSInteger)number
 				  teamName:(NSString*)nameOfTeam;
 

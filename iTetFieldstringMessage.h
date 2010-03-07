@@ -16,8 +16,8 @@
 	BOOL partial;
 }
 
-+ (id)messageWithFieldForPlayer:(iTetPlayer*)player;
-+ (id)messageWithPartialUpdateForPlayer:(iTetPlayer*)player;
++ (id)fieldMessageForPlayer:(iTetPlayer*)player;
++ (id)partialUpdateMessageForPlayer:(iTetPlayer*)player;
 - (id)initWithContents:(NSString*)fieldstringContents
 		  playerNumber:(NSInteger)playerNum
 		 partialUpdate:(BOOL)isPartial;

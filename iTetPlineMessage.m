@@ -6,6 +6,7 @@
 //
 
 #import "iTetPlineMessage.h"
+#import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 #import "NSData+Searching.h"
 #import "iTetTextAttributes.h"
@@ -13,11 +14,11 @@
 @implementation iTetPlineMessage
 
 + (id)messageWithContents:(NSAttributedString*)contentsOfMessage
-		 fromPlayerNumber:(NSInteger)playerNumber
+			   fromPlayer:(iTetPlayer*)player
 			actionMessage:(BOOL)isAction
 {
 	return [[[self alloc] initWithContents:contentsOfMessage
-						  fromPlayerNumber:playerNumber
+						  fromPlayerNumber:[player playerNumber]
 							 actionMessage:isAction] autorelease];
 }
 

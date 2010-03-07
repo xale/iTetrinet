@@ -14,9 +14,9 @@
 NSString* const iTetGameChatMessageWithSenderFormat =	@"<%@> %@";
 
 + (id)messageWithContents:(NSString*)contents
-				   sender:(NSString*)senderNickname
+				   sender:(iTetPlayer*)sender
 {
-	NSString* fullContents = [NSString stringWithFormat:iTetGameChatMessageWithSenderFormat, senderNickname, contents];
+	NSString* fullContents = [NSString stringWithFormat:iTetGameChatMessageWithSenderFormat, [sender nickname], contents];
 	
 	return [[[self alloc] initWithContents:fullContents] autorelease];
 }

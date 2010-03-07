@@ -7,14 +7,16 @@
 
 #import "iTetMessage.h"
 
+@class iTetPlayer;
+
 @interface iTetPauseResumeGameMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 {
 	BOOL pauseGame;
 	NSInteger senderNumber;
 }
 
-+ (id)pauseMessageWithSenderNumber:(NSInteger)playerNumber;
-+ (id)resumeMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)pauseMessageFromSender:(iTetPlayer*)sender;
++ (id)resumeMessageFromSender:(iTetPlayer*)sender;
 - (id)initWithSenderNumber:(NSInteger)playerNumber
 				 pauseGame:(BOOL)pause;
 

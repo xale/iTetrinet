@@ -7,13 +7,15 @@
 
 #import "iTetMessage.h"
 
+@class iTetPlayer;
+
 @interface iTetGameChatMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 {
 	NSString* messageContents;
 }
 
 + (id)messageWithContents:(NSString*)contents
-				   sender:(NSString*)senderNickname;
+				   sender:(iTetPlayer*)sender;
 + (id)messageWithContents:(NSString*)contents;
 - (id)initWithContents:(NSString*)contents;
 

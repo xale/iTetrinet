@@ -13,14 +13,14 @@
 
 @implementation iTetFieldstringMessage
 
-+ (id)messageWithFieldForPlayer:(iTetPlayer*)player
++ (id)fieldMessageForPlayer:(iTetPlayer*)player
 {
 	return [[[self alloc] initWithContents:[[player field] fieldstring]
 							  playerNumber:[player playerNumber]
 							 partialUpdate:NO] autorelease];
 }
 
-+ (id)messageWithPartialUpdateForPlayer:(iTetPlayer*)player
++ (id)partialUpdateMessageForPlayer:(iTetPlayer*)player
 {
 	return [[[self alloc] initWithContents:[[player field] lastPartialUpdate]
 							  playerNumber:[player playerNumber]

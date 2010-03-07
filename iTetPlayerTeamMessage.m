@@ -6,15 +6,15 @@
 //
 
 #import "iTetPlayerTeamMessage.h"
+#import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 
 @implementation iTetPlayerTeamMessage
 
-+ (id)messageWithPlayerNumber:(NSInteger)number
-					 teamName:(NSString*)nameOfTeam
++ (id)messageForPlayer:(iTetPlayer*)player
 {
-	return [[[self alloc] initWithPlayerNumber:number
-									  teamName:nameOfTeam] autorelease];
+	return [[[self alloc] initWithPlayerNumber:[player playerNumber]
+									  teamName:[player team]] autorelease];
 }
 
 - (id)initWithPlayerNumber:(NSInteger)number

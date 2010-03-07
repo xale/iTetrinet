@@ -7,14 +7,16 @@
 
 #import "iTetMessage.h"
 
+@class iTetPlayer;
+
 @interface iTetStartStopGameMessage : iTetMessage <iTetOutgoingMessage>
 {
 	BOOL startGame;
 	NSInteger senderNumber;
 }
 
-+ (id)startMessageWithSenderNumber:(NSInteger)playerNumber;
-+ (id)stopMessageWithSenderNumber:(NSInteger)playerNumber;
++ (id)startMessageFromSender:(iTetPlayer*)sender;
++ (id)stopMessageFromSender:(iTetPlayer*)sender;
 - (id)initWithSenderNumber:(NSInteger)playerNumber
 				 startGame:(BOOL)start;
 

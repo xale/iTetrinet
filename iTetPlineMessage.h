@@ -7,6 +7,8 @@
 
 #import "iTetMessage.h"
 
+@class iTetPlayer;
+
 @interface iTetPlineMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 {
 	NSInteger senderNumber;
@@ -15,7 +17,7 @@
 }
 
 + (id)messageWithContents:(NSAttributedString*)contentsOfMessage
-		 fromPlayerNumber:(NSInteger)playerNumber
+			   fromPlayer:(iTetPlayer*)player
 			actionMessage:(BOOL)isAction;
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber

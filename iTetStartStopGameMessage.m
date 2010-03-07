@@ -6,18 +6,19 @@
 //
 
 #import "iTetStartStopGameMessage.h"
+#import "iTetPlayer.h"
 
 @implementation iTetStartStopGameMessage
 
-+ (id)startMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)startMessageFromSender:(iTetPlayer*)sender
 {
-	return [[[self alloc] initWithSenderNumber:playerNumber
+	return [[[self alloc] initWithSenderNumber:[sender playerNumber]
 									 startGame:YES] autorelease];
 }
 
-+ (id)stopMessageWithSenderNumber:(NSInteger)playerNumber
++ (id)stopMessageFromSender:(iTetPlayer*)sender
 {
-	return [[[self alloc] initWithSenderNumber:playerNumber
+	return [[[self alloc] initWithSenderNumber:[sender playerNumber]
 									 startGame:NO] autorelease];
 }
 
