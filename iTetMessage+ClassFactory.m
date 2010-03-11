@@ -6,34 +6,27 @@
 //
 
 #import "iTetMessage+ClassFactory.h"
-
+#import "iTetIncomingMessages.h"
 #import "NSData+Searching.h"
 #import "NSString+ASCIIData.h"
-
-#import "iTetNoConnectingMessage.h"
-#import "iTetClientInfoRequestMessage.h"
-#import "iTetHeartbeatMessage.h"
-#import "iTetPlayerNumberMessage.h"
-#import "iTetPlayerJoinMessage.h"
-#import "iTetPlayerLeaveMessage.h"
-#import "iTetPlayerTeamMessage.h"
-#import "iTetWinlistMessage.h"
-#import "iTetPlineActionMessage.h"
-#import "iTetGameChatMessage.h"
-#import "iTetNewGameMessage.h"
-#import "iTetInGameMessage.h"
-#import "iTetPauseResumeGameMessage.h"
-#import "iTetEndGameMessage.h"
-#import "iTetFieldstringMessage.h"
-#import "iTetLevelUpdateMessage.h"
-#import "iTetSpecialMessage.h"
-#import "iTetPlayerLostMessage.h"
-#import "iTetPlayerWonMessage.h"
 
 @implementation iTetMessage (ClassFactory)
 
 + (iTetMessage<iTetIncomingMessage>*)messageFromData:(NSData*)messageData
 {
+	// FIXME: debug logging
+	NSMutableString* debugString = [NSMutableString string];
+	char byte;
+	for (NSUInteger i = 0; i < [messageData length]; i++)
+	{
+		byte = ((char*)[messageData bytes])[i];
+		if (byte > 31)
+			[debugString appendFormat:@"%c", byte];
+		else
+			[debugString appendFormat:@"<\\%02d>", byte];
+	}
+	NSLog(@"DEBUG:   received incoming message: %@", debugString);
+	
 	// Convert the first space-delimited word of the message to a string, and treat the rest as the contents
 	NSString* messageDesignation;
 	NSData* messageContents;
@@ -66,8 +59,6 @@
 	{
 		case noConnectingMessage:
 			return [iTetNoConnectingMessage messageFromData:messageContents];
-		case clientInfoRequestMessage:
-			return [iTetClientInfoRequestMessage messageFromData:messageContents];
 			
 		case playerNumberMessage:
 			return [iTetPlayerNumberMessage messageFromData:messageContents];
@@ -99,7 +90,15 @@
 		case fieldstringMessage:
 			return [iTetFieldstringMessage messageFromData:messageContents];
 		case levelUpdateMessage:
-			return [iTetLevelUpdateMessage messageFromData:messageContents];
+		{
+			iTetLevelUpdateMessage* message = [iTetLevelUpdateMessage messageFromData:messageContents];
+			
+			// Special case: "lvl 0 0" is a client info request
+			if (([message playerNumber] == 0) && ([message level] == 0))
+				return [iTetClientInfoRequestMessage messageFromData:messageContents];
+			
+			return message;
+		}
 		case specialMessage:
 			return [iTetSpecialMessage messageFromData:messageContents];
 		case playerLostMessage:

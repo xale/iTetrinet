@@ -9,7 +9,6 @@
 
 NSDictionary* iTetMessageDesignations = nil;
 NSString* const iTetNoConnectingMessageDesignation =			@"noconnecting";
-NSString* const iTetClientInfoRequestMessageDesignation =		@"lvl";			// Same as "level update message"
 
 NSString* const iTetPlayerNumberMessageDesignation =			@"playernum";	// Tetrinet protocol
 NSString* const iTetTetrifastPlayerNumberMessageDesignation =	@")#)(!@(*3";	// Tetrifast protocol
@@ -53,8 +52,6 @@ NSString* const iTetPlayerWonMessageDesignation =				@"playerwon";
 	// Connection-handling messages
 	[messages setObject:[NSNumber numberWithInt:noConnectingMessage]
 				 forKey:iTetNoConnectingMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:clientInfoRequestMessage]
-				 forKey:iTetClientInfoRequestMessageDesignation];
 	
 	// Player-status messages
 	[messages setObject:[NSNumber numberWithInt:playerNumberMessage]
