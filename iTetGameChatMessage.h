@@ -20,5 +20,6 @@
 - (id)initWithContents:(NSString*)contents;
 
 @property (readonly) NSString* messageContents;
+@property (readonly) NSString* firstWord;
 
 @end

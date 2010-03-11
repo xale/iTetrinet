@@ -79,4 +79,13 @@ NSString* const iTetGameChatMessageFormat =	@"gmsg %@";
 
 @synthesize messageContents;
 
+- (NSString*)firstWord
+{
+	NSArray* messageTokens = [[self messageContents] componentsSeparatedByString:@" "];
+	if ([messageTokens count] > 0)
+		return [messageTokens objectAtIndex:0];
+	
+	return [NSString string];
+}
+
 @end
