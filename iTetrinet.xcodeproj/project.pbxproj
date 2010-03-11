@@ -129,6 +129,8 @@
 		6A09E3CC114899660063F2A1 /* iTetMessage+ClassFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetMessage+ClassFactory.m"; sourceTree = "<group>"; };
 		6A0B2EA51124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWinlistEntryTypeImageTransformer.h; sourceTree = "<group>"; };
 		6A0B2EA61124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistEntryTypeImageTransformer.m; sourceTree = "<group>"; };
+		6A127B7D1148AB1900747A7C /* iTetIncomingMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetIncomingMessages.h; sourceTree = "<group>"; };
+		6A127B7E1148AB4C00747A7C /* iTetOutgoingMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetOutgoingMessages.h; sourceTree = "<group>"; };
 		6A12A26410E4A03400EA67B7 /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
 		6A12A26510E4A03400EA67B7 /* gTetrinetTheme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = gTetrinetTheme.cfg; sourceTree = "<group>"; };
 		6A12A26610E4A03400EA67B7 /* iTetBlocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks.png; sourceTree = "<group>"; };
@@ -657,6 +659,8 @@
 				6ACA39AD113D88A60026924D /* iTetMessage.m */,
 				6A09E3CB114899660063F2A1 /* iTetMessage+ClassFactory.h */,
 				6A09E3CC114899660063F2A1 /* iTetMessage+ClassFactory.m */,
+				6A127B7D1148AB1900747A7C /* iTetIncomingMessages.h */,
+				6A127B7E1148AB4C00747A7C /* iTetOutgoingMessages.h */,
 			);
 			name = Superclass;
 			sourceTree = "<group>";
