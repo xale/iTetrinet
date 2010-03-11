@@ -53,11 +53,20 @@
 	// Find the first space in the message data
 	NSUInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
 	
-	// Split the data at the space, convert the first token to a string, and parse it as the sender player's number
-	senderNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
-	
-	// Convert the remaining data to the message contents as an attributed string
-	messageContents = [[iTetTextAttributes formattedMessageFromData:[messageData subdataFromIndex:(firstSpace + 1)]] retain];
+	if (firstSpace != NSNotFound)
+	{
+		// Split the data at the space, convert the first token to a string, and parse it as the sender player's number
+		senderNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
+		
+		// Convert the remaining data to the message contents as an attributed string
+		messageContents = [[iTetTextAttributes formattedMessageFromData:[messageData subdataFromIndex:(firstSpace + 1)]] retain];
+	}
+	else
+	{
+		// Treat the message data as the sender's player number, and the message contents as blank
+		senderNumber = [[NSString stringWithASCIIData:messageData] integerValue];
+		messageContents = [[NSString alloc] init];
+	}
 	
 	return self;
 }
