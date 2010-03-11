@@ -14,7 +14,7 @@
 + (id)messageForPlayer:(iTetPlayer*)player
 {
 	return [[[self alloc] initWithPlayerNumber:[player playerNumber]
-									  teamName:[player team]] autorelease];
+									  teamName:[player teamName]] autorelease];
 }
 
 - (id)initWithPlayerNumber:(NSInteger)number
