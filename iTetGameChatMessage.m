@@ -6,6 +6,7 @@
 //
 
 #import "iTetGameChatMessage.h"
+#import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 
 @implementation iTetGameChatMessage
