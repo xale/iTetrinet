@@ -7,32 +7,37 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define ITET_NUM_MESSAGE_TYPES	23
+#define ITET_NUM_MESSAGE_TYPES	(23)
 
 typedef enum
 {
 	loginMessage,
+	noConnectingMessage,
 	clientInfoRequestMessage,
 	clientInfoReplyMessage,
+	heartbeatMessage,
+	
 	playerNumberMessage,
 	playerJoinMessage,
 	playerLeaveMessage,
 	playerTeamMessage,
 	winlistMessage,
-	plineMessage,
+	
+	plineChatMessage,
+	plineActionMessage,
 	gameChatMessage,
+	
 	startStopGameMessage,
 	newGameMessage,
 	inGameMessage,
+	pauseResumeGameMessage,
+	endGameMessage,
+	
 	fieldstringMessage,
 	levelUpdateMessage,
 	specialMessage,
 	playerLostMessage,
-	playerWonMessage,
-	pauseResumeGameMessage,
-	endGameMessage,
-	noConnectingMessage,
-	heartbeatMessage
+	playerWonMessage
 } iTetMessageType;
 
 @interface iTetMessage : NSObject

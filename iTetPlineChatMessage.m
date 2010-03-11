@@ -1,36 +1,32 @@
 //
-//  iTetPlineMessage.m
+//  iTetPlineChatMessage.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 3/3/10.
 //
 
-#import "iTetPlineMessage.h"
+#import "iTetPlineChatMessage.h"
 #import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 #import "NSData+Searching.h"
 #import "iTetTextAttributes.h"
 
-@implementation iTetPlineMessage
+@implementation iTetPlineChatMessage
 
 + (id)messageWithContents:(NSAttributedString*)contentsOfMessage
 			   fromPlayer:(iTetPlayer*)player
-			actionMessage:(BOOL)isAction
 {
 	return [[[self alloc] initWithContents:contentsOfMessage
-						  fromPlayerNumber:[player playerNumber]
-							 actionMessage:isAction] autorelease];
+						  fromPlayerNumber:[player playerNumber]] autorelease];
 }
 
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber
-		 actionMessage:(BOOL)isAction
 {
-	messageType = plineMessage;
+	messageType = plineChatMessage;
 	
 	senderNumber = playerNumber;
 	messageContents = [contentsOfMessage copy];
-	action = isAction;
 	
 	return self;
 }
@@ -52,7 +48,7 @@
 
 - (id)initWithMessageData:(NSData*)messageData
 {
-	messageType = plineMessage;
+	messageType = plineChatMessage;
 	
 	// Find the first space in the message data
 	NSUInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
@@ -70,17 +66,21 @@
 #pragma mark iTetOutgoingMessage Protocol Methods
 
 NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
-NSString* const iTetPlineActionMessageFormat =	@"plineact %d ";
 
 - (NSData*)rawMessageData
 {
 	// Create the message format
-	NSString* initialFormat;
-	if ([self isAction])
-		initialFormat = [NSString stringWithFormat:iTetPlineActionMessageFormat, [self senderNumber]];
-	else
-		initialFormat = [NSString stringWithFormat:iTetPlineChatMessageFormat, [self senderNumber]];
+	NSString* initialFormat = [NSString stringWithFormat:iTetPlineChatMessageFormat, [self senderNumber]];
 	
+	// Append the message contents, convert to NSData, and return
+	return [self rawMessageDataByAppendingContentsToString:initialFormat];
+}
+
+#pragma mark -
+#pragma mark Utility
+
+- (NSData*)rawMessageDataByAppendingContentsToString:(NSString*)initialFormat
+{
 	// Create a mutable attributed string with the existing format at the base
 	NSMutableAttributedString* fullMessage = [[[NSMutableAttributedString alloc] initWithString:initialFormat] autorelease];
 	
@@ -91,7 +91,7 @@ NSString* const iTetPlineActionMessageFormat =	@"plineact %d ";
 	NSRange attributedRange;
 	attributedRange.location = ([fullMessage length] - [initialFormat length]);
 	attributedRange.length = ([fullMessage length] - attributedRange.location);
-									
+	
 	// Convert the completed message to data
 	return [iTetTextAttributes dataFromFormattedMessage:fullMessage
 									withAttributedRange:attributedRange];
@@ -102,6 +102,5 @@ NSString* const iTetPlineActionMessageFormat =	@"plineact %d ";
 
 @synthesize senderNumber;
 @synthesize messageContents;
-@synthesize action;
 
 @end
