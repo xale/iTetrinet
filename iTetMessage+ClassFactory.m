@@ -34,7 +34,7 @@
 	// Search for the first space in the message data
 	NSInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
 	
-	// If the message contains no spaces, use the entire message
+	// If the message contains no spaces, treat it as a one-word message with no contents
 	if (firstSpace == NSNotFound)
 	{
 		messageDesignation = [NSString stringWithASCIIData:messageData];
@@ -91,13 +91,12 @@
 			return [iTetFieldstringMessage messageFromData:messageContents];
 		case levelUpdateMessage:
 		{
-			iTetLevelUpdateMessage* message = [iTetLevelUpdateMessage messageFromData:messageContents];
-			
-			// Special case: "lvl 0 0" is a client info request
-			if (([message playerNumber] == 0) && ([message level] == 0))
+			// Special case: "lvl 0 *" is a client info request
+			NSString* contents = [NSString stringWithASCIIData:messageContents];
+			if ([[contents substringToIndex:1] integerValue] == 0)
 				return [iTetClientInfoRequestMessage messageFromData:messageContents];
 			
-			return message;
+			return [iTetLevelUpdateMessage messageFromData:messageContents];
 		}
 		case specialMessage:
 			return [iTetSpecialMessage messageFromData:messageContents];
