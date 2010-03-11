@@ -21,6 +21,14 @@
 								 targetNumber:[target playerNumber]] autorelease];
 }
 
++ (id)messageWithClassicStyleLines:(NSInteger)lines
+							sender:(iTetPlayer*)sender
+{
+	return [[[self alloc] initWithSpecialType:[iTetSpecials specialTypeForClassicLines:lines]
+								 senderNumber:[sender playerNumber]
+								 targetNumber:0] autorelease];
+}
+
 - (id)initWithSpecialType:(iTetSpecialType)special
 			 senderNumber:(NSInteger)senderNum
 			 targetNumber:(NSInteger)targetNum

@@ -20,6 +20,8 @@
 + (id)messageWithSpecialType:(iTetSpecialType)special
 					  sender:(iTetPlayer*)sender
 					  target:(iTetPlayer*)target;
++ (id)messageWithClassicStyleLines:(NSInteger)lines
+							sender:(iTetPlayer*)sender;
 - (id)initWithSpecialType:(iTetSpecialType)special
 			 senderNumber:(NSInteger)senderNum
 			 targetNumber:(NSInteger)targetNum;
