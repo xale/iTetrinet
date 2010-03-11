@@ -56,8 +56,11 @@
 	// Parse the first token as the player number
 	playerNumber = [[messageTokens objectAtIndex:0] integerValue];
 	
-	// Treat the second token as the player's team name
-	teamName = [[messageTokens objectAtIndex:1] retain];
+	// Treat the second token (if present) as the player's team name
+	if ([tokens count] >= 2)
+		teamName = [[[messageTokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))] componentsJoinedByString:@" "] retain];
+	else
+		teamName = @"";
 	
 	return self;
 }
