@@ -58,52 +58,52 @@
 	switch ([type intValue])
 	{
 		case noConnectingMessage:
-			return [iTetNoConnectingMessage messageFromData:messageContents];
+			return [iTetNoConnectingMessage messageWithMessageData:messageContents];
 			
 		case playerNumberMessage:
-			return [iTetPlayerNumberMessage messageFromData:messageContents];
+			return [iTetPlayerNumberMessage messageWithMessageData:messageContents];
 		case playerJoinMessage:
-			return [iTetPlayerJoinMessage messageFromData:messageContents];
+			return [iTetPlayerJoinMessage messageWithMessageData:messageContents];
 		case playerLeaveMessage:
-			return [iTetPlayerLeaveMessage messageFromData:messageContents];
+			return [iTetPlayerLeaveMessage messageWithMessageData:messageContents];
 		case playerTeamMessage:
-			return [iTetPlayerTeamMessage messageFromData:messageContents];
+			return [iTetPlayerTeamMessage messageWithMessageData:messageContents];
 		case winlistMessage:
-			return [iTetWinlistMessage messageFromData:messageContents];
+			return [iTetWinlistMessage messageWithMessageData:messageContents];
 			
 		case plineChatMessage:
-			return [iTetPlineChatMessage messageFromData:messageContents];
+			return [iTetPlineChatMessage messageWithMessageData:messageContents];
 		case plineActionMessage:
-			return [iTetPlineActionMessage messageFromData:messageContents];
+			return [iTetPlineActionMessage messageWithMessageData:messageContents];
 		case gameChatMessage:
-			return [iTetGameChatMessage messageFromData:messageContents];
+			return [iTetGameChatMessage messageWithMessageData:messageContents];
 			
 		case newGameMessage:
-			return [iTetNewGameMessage messageFromData:messageContents];
+			return [iTetNewGameMessage messageWithMessageData:messageContents];
 		case inGameMessage:
-			return [iTetInGameMessage messageFromData:messageContents];
+			return [iTetInGameMessage messageWithMessageData:messageContents];
 		case pauseResumeGameMessage:
-			return [iTetPauseResumeGameMessage messageFromData:messageContents];
+			return [iTetPauseResumeGameMessage messageWithMessageData:messageContents];
 		case endGameMessage:
-			return [iTetEndGameMessage messageFromData:messageContents];
+			return [iTetEndGameMessage messageWithMessageData:messageContents];
 			
 		case fieldstringMessage:
-			return [iTetFieldstringMessage messageFromData:messageContents];
+			return [iTetFieldstringMessage messageWithMessageData:messageContents];
 		case levelUpdateMessage:
 		{
 			// Special case: "lvl 0 *" is a client info request
 			NSString* contents = [NSString stringWithASCIIData:messageContents];
 			if ([[contents substringToIndex:1] integerValue] == 0)
-				return [iTetClientInfoRequestMessage messageFromData:messageContents];
+				return [iTetClientInfoRequestMessage messageWithMessageData:messageContents];
 			
-			return [iTetLevelUpdateMessage messageFromData:messageContents];
+			return [iTetLevelUpdateMessage messageWithMessageData:messageContents];
 		}
 		case specialMessage:
-			return [iTetSpecialMessage messageFromData:messageContents];
+			return [iTetSpecialMessage messageWithMessageData:messageContents];
 		case playerLostMessage:
-			return [iTetPlayerLostMessage messageFromData:messageContents];
+			return [iTetPlayerLostMessage messageWithMessageData:messageContents];
 		case playerWonMessage:
-			return [iTetPlayerWonMessage messageFromData:messageContents];
+			return [iTetPlayerWonMessage messageWithMessageData:messageContents];
 			
 		default:
 			break;
