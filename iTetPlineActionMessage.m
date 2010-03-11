@@ -5,6 +5,7 @@
 //  Created by Alex Heinz on 3/10/10.
 //
 
+#import "iTetMessage.h"
 #import "iTetPlineActionMessage.h"
 
 @implementation iTetPlineActionMessage
