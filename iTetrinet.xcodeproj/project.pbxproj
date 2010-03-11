@@ -13,6 +13,7 @@
 		6A05EE1010B5A94D0002F86E /* iTetKeyActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A05EE0F10B5A94D0002F86E /* iTetKeyActions.m */; };
 		6A09E3A41148799D0063F2A1 /* iTetPlayerWonMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A09E3A31148799D0063F2A1 /* iTetPlayerWonMessage.m */; };
 		6A09E3B3114889360063F2A1 /* iTetPlineActionMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A09E3B2114889360063F2A1 /* iTetPlineActionMessage.m */; };
+		6A09E3CD114899660063F2A1 /* iTetMessage+ClassFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A09E3CC114899660063F2A1 /* iTetMessage+ClassFactory.m */; };
 		6A0B2EA71124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A0B2EA61124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m */; };
 		6A12A26710E4A03400EA67B7 /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26410E4A03400EA67B7 /* gtetblocks.png */; };
 		6A12A26810E4A03400EA67B7 /* gTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26510E4A03400EA67B7 /* gTetrinetTheme.cfg */; };
@@ -124,6 +125,8 @@
 		6A09E3A31148799D0063F2A1 /* iTetPlayerWonMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayerWonMessage.m; sourceTree = "<group>"; };
 		6A09E3B1114889360063F2A1 /* iTetPlineActionMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlineActionMessage.h; sourceTree = "<group>"; };
 		6A09E3B2114889360063F2A1 /* iTetPlineActionMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlineActionMessage.m; sourceTree = "<group>"; };
+		6A09E3CB114899660063F2A1 /* iTetMessage+ClassFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetMessage+ClassFactory.h"; sourceTree = "<group>"; };
+		6A09E3CC114899660063F2A1 /* iTetMessage+ClassFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetMessage+ClassFactory.m"; sourceTree = "<group>"; };
 		6A0B2EA51124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWinlistEntryTypeImageTransformer.h; sourceTree = "<group>"; };
 		6A0B2EA61124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistEntryTypeImageTransformer.m; sourceTree = "<group>"; };
 		6A12A26410E4A03400EA67B7 /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
@@ -652,6 +655,8 @@
 			children = (
 				6ACA39AC113D88A60026924D /* iTetMessage.h */,
 				6ACA39AD113D88A60026924D /* iTetMessage.m */,
+				6A09E3CB114899660063F2A1 /* iTetMessage+ClassFactory.h */,
+				6A09E3CC114899660063F2A1 /* iTetMessage+ClassFactory.m */,
 			);
 			name = Superclass;
 			sourceTree = "<group>";
@@ -901,6 +906,7 @@
 				6AF8A909114419480096D55F /* iTetPlayerLostMessage.m in Sources */,
 				6A09E3A41148799D0063F2A1 /* iTetPlayerWonMessage.m in Sources */,
 				6A09E3B3114889360063F2A1 /* iTetPlineActionMessage.m in Sources */,
+				6A09E3CD114899660063F2A1 /* iTetMessage+ClassFactory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

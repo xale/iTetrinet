@@ -37,7 +37,9 @@ typedef enum
 	levelUpdateMessage,
 	specialMessage,
 	playerLostMessage,
-	playerWonMessage
+	playerWonMessage,
+	
+	invalidMessage
 } iTetMessageType;
 
 @interface iTetMessage : NSObject
@@ -45,7 +47,7 @@ typedef enum
 	iTetMessageType messageType;
 }
 
-+ (iTetMessage*)messageFromData:(NSData*)data;
++ (NSDictionary*)messageDesignations;
 
 @property (readonly) iTetMessageType messageType;
 
