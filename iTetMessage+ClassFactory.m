@@ -25,7 +25,7 @@
 		else
 			[debugString appendFormat:@"<\\%02d>", byte];
 	}
-	NSLog(@"DEBUG:   received incoming message: %@", debugString);
+	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
 	
 	// Convert the first space-delimited word of the message to a string, and treat the rest as the contents
 	NSString* messageDesignation;
