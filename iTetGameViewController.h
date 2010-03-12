@@ -15,9 +15,7 @@
 @class iTetSpecialsView;
 @class iTetPlayer;
 @class iTetGameRules;
-@class iTetBlock;
 @class iTetKeyNamePair;
-@class Queue;
 
 typedef enum
 {
