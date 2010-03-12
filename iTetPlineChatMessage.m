@@ -98,8 +98,8 @@ NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
 	
 	// Make note of the range of the output string with attributes
 	NSRange attributedRange;
-	attributedRange.location = ([fullMessage length] - [initialFormat length]);
-	attributedRange.length = ([fullMessage length] - attributedRange.location);
+	attributedRange.length = ([fullMessage length] - [initialFormat length]);
+	attributedRange.location = ([fullMessage length] - attributedRange.length);
 	
 	// Convert the completed message to data
 	return [iTetTextAttributes dataFromFormattedMessage:fullMessage
