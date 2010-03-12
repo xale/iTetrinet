@@ -6,8 +6,14 @@
 //
 
 #import "iTetNetworkController.h"
+
 #import "iTetServerInfo.h"
+
+#import "iTetMessage+ClassFactory.h"
+#import "iTetLoginMessage.h"
+
 #import "Queue.h"
+
 #import "NSMutableData+SingleByte.h"
 
 NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
@@ -68,23 +74,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[readStream open];
 	[writeStream open];
 	
-	// Create and enqueue the initialization message
-	[self initializeConnection];
-}
-
-#define TetrinetFormat	@"tetrisstart %@ 1.13"
-#define TetrifastFormat	@"tetrifaster %@ 1.13"
-
-- (void)initializeConnection
-{
-	// Generate the base string format, which consists of:
-	// <protocol string> <player nickname> <version number>
-	NSString* connectString;
-	if ([currentServer protocol] == tetrinetProtocol)
-		connectString = [NSString stringWithFormat:TetrinetFormat, [currentServer nickname]];
-	else
-		connectString = [NSString stringWithFormat:TetrifastFormat, [currentServer nickname]];
-	
 	// Find the server's IPv4 address
 	NSString* address;
 	for (address in [currentConnection addresses])
@@ -94,36 +83,10 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			break;
 	}
 	
-	// Split the server's IP address into integer components
-	NSArray* ipComponents = [address componentsSeparatedByString:@"."];
-	NSInteger ip[4];
-	NSUInteger i;
-	for (i = 0; i < 4; i++)
-		ip[i] = [[ipComponents objectAtIndex:i] integerValue];
-	
-	// Create the "hash" of the IP address
-	NSString* ipHash = [NSString stringWithFormat:@"%d", (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
-	
-	// Start with a random salt, and use it to create the initialization request
-	NSInteger x = random() % 255;
-	NSMutableString* encodedString = [NSMutableString stringWithFormat:@"%02X", x];
-	
-	// For each character in the connection request, create the two-character
-	// hexadecimal "hash" and append it to the string
-	for (i = 0; i < [connectString length]; i++)
-	{
-		// Modular-add value of current character
-		x = ((x + [connectString characterAtIndex:i]) % 255);
-		
-		// XOR with a character of the IP address hash
-		x ^= [ipHash characterAtIndex:(i % [ipHash length])];
-		
-		// Append the hexadecimal value to the output string
-		[encodedString appendFormat:@"%02X", x];
-	}
-	
-	// Send the initialization request to the server
-	[self sendMessage:encodedString];
+	// Create and enqueue the initialization message
+	[self sendMessage:[iTetLoginMessage messageWithProtocol:[server protocol]
+												   nickname:[server nickname]
+													address:address]];
 }
 
 #pragma mark -
@@ -230,7 +193,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			
 			// Relay the message to the delegate
 			if ([delegate respondsToSelector:@selector(messageReceived:)])
-				[delegate messageReceived:[[partialRead copy] autorelease]];
+				[delegate messageReceived:[iTetMessage messageFromData:partialRead]];
 			
 			// Clear the partial read buffer
 			[partialRead setLength:0];
@@ -253,23 +216,10 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		[self attemptRead];
 }
 
-- (void)sendMessage:(NSString*)message
+- (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message
 {
 	// Send the message
-	[self sendMessageData:[message dataUsingEncoding:NSASCIIStringEncoding
-								allowLossyConversion:YES]];
-}
-
-NSString* const iTetClientInfoFormat = @"clientinfo %@ %@";
-
-- (void)sendClientInfo
-{
-	// Retrieve the application name and version
-	NSString* appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
-	NSString* version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
-	
-	// Send the client info to the server
-	[self sendMessage:[NSString stringWithFormat:iTetClientInfoFormat, appName, version]];
+	[self sendMessageData:[message rawMessageData]];
 }
 
 - (void)sendMessageData:(NSData*)messageData
@@ -283,9 +233,9 @@ NSString* const iTetClientInfoFormat = @"clientinfo %@ %@";
 		if (byte > 31)
 			[debugString appendFormat:@"%c", byte];
 		else
-			[debugString appendFormat:@"<%02d>", byte];
+			[debugString appendFormat:@"<\\%02d>", byte];
 	}
-	NSLog(@"DEBUG: enqueueing outgoing message: %@", debugString);
+	NSLog(@"DEBUG: enqueueing outgoing message: '%@'", debugString);
 	
 	// Make the data mutable
 	NSMutableData* data = [NSMutableData dataWithData:messageData];

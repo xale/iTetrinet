@@ -6,18 +6,26 @@
 //
 
 #import "iTetAppController.h"
+
 #import "iTetNetworkController.h"
+#import "iTetIncomingMessages.h"
+#import "iTetOutgoingMessages.h"
+
 #import "iTetPreferencesController.h"
+
 #import "iTetGameViewController.h"
 #import "iTetChatViewController.h"
 #import "iTetWinlistViewController.h"
+
 #import "iTetPreferencesWindowController.h"
+
 #import "iTetServerInfo.h"
 #import "iTetLocalPlayer.h"
 #import "iTetGameRules.h"
-#import "iTetTextAttributes.h"
+
 #import "NSMutableDictionary+KeyBindings.h"
 #import "NSString+ASCIIData.h"
+
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
@@ -156,9 +164,6 @@
 						 contextInfo:NULL];
 }
 
-NSString* const StartGameFormat =	@"startgame 1 %d";
-NSString* const StopGameFormat =	@"startgame 0 %d";
-
 - (IBAction)startStopGame:(id)sender
 {	
 	// Check if a game is already in progress
@@ -181,7 +186,7 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 	else
 	{
 		// Start the game
-		[networkController sendMessage:[NSString stringWithFormat:StartGameFormat, [[self localPlayer] playerNumber]]];
+		[networkController sendMessage:[iTetStartStopGameMessage startMessageFromSender:[self localPlayer]]];
 	}
 }
 
@@ -201,21 +206,18 @@ NSString* const StopGameFormat =	@"startgame 0 %d";
 						 contextInfo:NULL];
 }
 
-NSString* const PauseGameFormat =	@"pause 1 %d";
-NSString* const ResumeGameFormat =	@"pause 0 %d";
-
 - (IBAction)pauseResumeGame:(id)sender
 {
 	// Check if game is already paused
 	if ([gameController gameplayState] == gamePaused)
 	{	
 		// Send a message asking the server to resume play
-		[networkController sendMessage:[NSString stringWithFormat:ResumeGameFormat, [[self localPlayer] playerNumber]]];
+		[networkController sendMessage:[iTetPauseResumeGameMessage resumeMessageFromSender:[self localPlayer]]];
 	}
 	else
 	{
 		// Send a message asking the server to pause
-		[networkController sendMessage:[NSString stringWithFormat:PauseGameFormat, [[self localPlayer] playerNumber]]];
+		[networkController sendMessage:[iTetPauseResumeGameMessage pauseMessageFromSender:[self localPlayer]]];
 	}
 }
 
@@ -317,8 +319,8 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
-	// Send the server an "end game" message
-	[networkController sendMessage:[NSString stringWithFormat:StopGameFormat, [[self localPlayer] playerNumber]]];
+	// Send the server a "stop game" message
+	[networkController sendMessage:[iTetStartStopGameMessage stopMessageFromSender:[self localPlayer]]];
 }
 
 - (void)forfeitDialogDidEnd:(NSAlert*)dialog
@@ -549,203 +551,217 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[connectionButton setImage:[NSImage imageNamed:@"Network"]];
 }
 
-#define HeartbeatMessage	@""
-#define NoConnectingMessage	@"noconnecting"
-#define WinlistMessage		@"winlist"
-#define PlayerNumMessage	(([[networkController currentServer] protocol] == tetrinetProtocol)?@"playernum":@")#)(!@(*3")
-#define PlayerJoinedMessage	@"playerjoin"
-#define PlayerTeamMessage	@"team"
-#define FieldstringMessage	@"f"
-#define PlayerLostMessage	@"playerlost"
-#define ServerInGameMessage	@"ingame"
-#define PauseMessage		@"pause"
-#define PlayerLeftMessage	@"playerleave"
-#define PLineTextMessage	@"pline"
-#define PLineActionMessage	@"plineact"
-#define NewGameMessage		(([[networkController currentServer] protocol] == tetrinetProtocol)?@"newgame":@"*******")
-#define SpecialUsedMessage	@"sb"
-#define GameChatMessage		@"gmsg"
-#define LevelUpdateMessage	@"lvl"
-#define PlayerWonMessage	@"playerwon"
-#define EndGameMessage		@"endgame"
-
-- (void)messageReceived:(NSData*)messageData
+- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message
 {
-	// FIXME: debug logging
-	NSMutableString* debugString = [NSMutableString string];
-	char byte;
-	for (NSUInteger i = 0; i < [messageData length]; i++)
-	{
-		byte = ((char*)[messageData bytes])[i];
-		if (byte > 31)
-			[debugString appendFormat:@"%c", byte];
-		else
-			[debugString appendFormat:@"<\\%02d>", byte];
-	}
-	NSLog(@"DEBUG:   received incoming message: %@", debugString);
-	
-	// Naively convert the message to ASCII
-	NSString* message = [NSString stringWithASCIIData:messageData];
-	
-	// Split the message into space-separated tokens
-	NSArray* tokens = [message componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	
-	// Get the first token of the message
-	NSString* messageType = [tokens objectAtIndex:0];
-	NSInteger playerNum;
-	
 	// Determine the nature of the message
-#pragma mark Server Heartbeat Message
-	if ([messageType isEqualToString:HeartbeatMessage])
+	iTetMessageType type = [message messageType];
+	switch (type)
 	{
-		// Send a keepalive message
-		[networkController sendMessage:@""];
-	}
 #pragma mark No Connecting (Error) Message
-	else if ([messageType isEqualToString:NoConnectingMessage])
-	{
-		// Create an error
-		message = [[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))] componentsJoinedByString:@" "];
-		NSDictionary* info = [NSDictionary dictionaryWithObject:message
-														 forKey:@"errorMessage"];
-		NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
-											 code:iTetNoConnectingError
-										 userInfo:info];
-		
-		// Pass the error to our own error-handling method
-		[self connectionError:error];
-	}
-#pragma mark Winlist Message
-	else if ([messageType isEqualToString:WinlistMessage])
-	{
-		// Hand the remaining tokens to the winlist controller
-		[winlistController parseWinlist:[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))]];
-	}
+		case noConnectingMessage:
+		{
+			// Create an error
+			NSDictionary* info = [NSDictionary dictionaryWithObject:[(iTetNoConnectingMessage*)message reason]
+															 forKey:@"errorMessage"];
+			NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
+												 code:iTetNoConnectingError
+											 userInfo:info];
+			
+			// Pass the error to our own error-handling method
+			[self connectionError:error];
+			break;
+		}
+			
+#pragma mark Server Heartbeat
+		case heartbeatMessage:
+			// Send a keepalive message
+			[networkController sendMessage:[iTetHeartbeatMessage message]];
+			break;
+			
+#pragma mark Client Info Request
+		case clientInfoRequestMessage:
+			// Send client info to server
+			[networkController sendMessage:[iTetClientInfoReplyMessage message]];
+			break;
+			
 #pragma mark Player Number Message
-	else if ([messageType isEqualToString:PlayerNumMessage])
-	{
-		// Set the local player's number
-		[self setLocalPlayerNumber:[[tokens objectAtIndex:1] integerValue]];
-		
-		// Send the player's team name to the server
-		NSString* teamMessage = [NSString stringWithFormat:@"team %d %@", [[self localPlayer] playerNumber], [[self localPlayer] teamName]];
-		[networkController sendMessage:teamMessage];
-	}
-#pragma mark Player Joined Message
-	else if ([messageType isEqualToString:PlayerJoinedMessage])
-	{
-		// Add a new player with specified name and number
-		NSString* nick = [tokens objectAtIndex:2];
-		[self addPlayerWithNumber:[[tokens objectAtIndex:1] integerValue]
-						 nickname:nick];
-		
-		// Add a message to the chat view
-		[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", nick]];
-	}
+		case playerNumberMessage:
+			// Set the local player's number
+			[self setLocalPlayerNumber:[(iTetPlayerNumberMessage*)message playerNumber]];
+			
+			// Send the player's team name to the server
+			[networkController sendMessage:[iTetPlayerTeamMessage messageForPlayer:[self localPlayer]]];
+			break;
+			
+#pragma mark Player Join Message
+		case playerJoinMessage:
+		{
+			// Add a new player with the specified name and number
+			iTetPlayerJoinMessage* joinMessage = (iTetPlayerJoinMessage*)message;
+			[self addPlayerWithNumber:[joinMessage playerNumber]
+							 nickname:[joinMessage nickname]];
+			
+			// Add a message to the chat view
+			[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", [joinMessage nickname]]];
+			break;
+		}
+			
+#pragma mark Player Leave Message
+		case playerLeaveMessage:
+		{
+			// Get player number
+			NSInteger playerNum = [(iTetPlayerLeaveMessage*)message playerNumber];
+			
+			// Add a chat line
+			[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [self playerNameForNumber:playerNum]]];
+			
+			// Remove the player from the game
+			[self removePlayerNumber:playerNum];
+			break;
+		}
+			
 #pragma mark Player Team Message
-	else if ([messageType isEqualToString:PlayerTeamMessage])
-	{
-		// Get the player number
-		playerNum = [[tokens objectAtIndex:1] integerValue];
-		
-		// Get the team name (if present)
-		NSString* team = @"";
-		if ([tokens count] >= 3)
+		case playerTeamMessage:
 		{
-			// Remaining tokens are part of the team name
-			team = [[tokens subarrayWithRange:NSMakeRange(2, ([tokens count] - 2))] componentsJoinedByString:@" "];
+			// Change the specified player's team name
+			iTetPlayerTeamMessage* teamMessage = (iTetPlayerTeamMessage*)message;
+			[[self playerNumber:[teamMessage playerNumber]] setTeamName:[teamMessage teamName]];
+			break;
 		}
-		
-		// Change the player's team name
-		[[self playerNumber:playerNum] setTeamName:team];
-	}
-#pragma mark Fieldstring Message
-	else if ([messageType isEqualToString:FieldstringMessage])
-	{
-		// Get the player number
-		playerNum = [[tokens objectAtIndex:1] integerValue];
-		
-		// If the message includes an update string, apply it to the relevant field
-		if ([tokens count] > 2)
-		{
-			// Get the update string
-			NSString* update = [tokens objectAtIndex:2];
 			
-			// Determine if this is a partial update
-			char first = [update cStringUsingEncoding:NSASCIIStringEncoding][0];
-			if ((first >= 0x21) && (first <= 0x2F))
+#pragma mark Winlist Message
+		case winlistMessage:
+			// Pass the winlist entries to the winlist controller
+			[winlistController parseWinlist:[(iTetWinlistMessage*)message winlistTokens]];
+			break;
+			
+#pragma mark Partyline Messages
+		case plineChatMessage:
+		case plineActionMessage:
+		{
+			// Add the message to the chat controller
+			iTetPlineChatMessage* plineMessage = (iTetPlineChatMessage*)message;
+			[chatController appendChatLine:[plineMessage messageContents]
+							fromPlayerName:[self playerNameForNumber:[plineMessage senderNumber]]
+									action:(type == plineActionMessage)];
+			break;
+		}
+			
+#pragma mark Game Chat Message
+		case gameChatMessage:
+		{
+			// Check if the first space-delimited word of the message is or contains a player's name
+			iTetGameChatMessage* chatMessage = (iTetGameChatMessage*)message;
+			for (iTetPlayer* player in [self playerList])
 			{
-				// Update the player's field with a partial update
-				[[[self playerNumber:playerNum] field] applyPartialUpdate:update];
+				if ([[chatMessage firstWord] rangeOfString:[player nickname]].location != NSNotFound)
+				{
+					// Add the message to the game chat view
+					[gameController appendChatLine:[chatMessage contentsAfterFirstWord]
+									fromPlayerName:[player nickname]];
+					goto playerfound;
+				}
 			}
-			else
-			{
-				// Give the player a new field created from the fieldstring
-				[[self playerNumber:playerNum] setField:[iTetField fieldFromFieldstring:update]];
-			}
-		}
-	}
-#pragma mark Player Lost Message
-	else if ([messageType isEqualToString:PlayerLostMessage])
-	{
-		// Get the player number
-		playerNum = [[tokens objectAtIndex:1] integerValue];
-		
-		// Set that player to "not playing"
-		[[self playerNumber:playerNum] setPlaying:NO];
-		
-		// FIXME: anything else?
-	}
-#pragma mark Server In-Game Message
-	else if ([messageType isEqualToString:ServerInGameMessage])
-	{
-		// Set all players to "playing" (server will send "playerlost" for players not playing)
-		for (iTetPlayer* player in [self playerList])
-		{
-			if (![player isKindOfClass:[iTetLocalPlayer class]])
-				[player setPlaying:YES];
-		}
-		
-		// Set the game view controller's state as "playing"
-		[gameController setGameplayState:gamePlaying];
-		
-		// Tell the game view controller to send the local player's field to the server
-		[gameController sendFieldstring];
-		
-		// Change the "new game" toolbar item
-		[gameButton setLabel:@"End Game"];
-		[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
-		
-		// Change the "new game" menu item
-		[gameMenuItem setTitle:@"End Game..."];
-		[gameMenuItem setKeyEquivalent:@"e"];
-	}
-#pragma mark Pause Game Message
-	else if ([messageType isEqualToString:PauseMessage])
-	{
-		// Get pause state
-		BOOL pauseGame = ([[tokens objectAtIndex:1] integerValue] == 1);
-		
-		// Pause or resume the game
-		if (pauseGame && ([gameController gameplayState] == gamePlaying))
-		{
-			// Pause the game
-			[gameController pauseGame];
 			
-			// Change the pause button to a "resume" button
-			[pauseButton setLabel:@"Resume Game"];
-			[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
+			// Otherwise, just dump the message on the game chat view
+			[gameController appendChatLine:[chatMessage messageContents]];
 			
-			// Change the menu item
-			[pauseMenuItem setTitle:@"Resume Game"];
+		playerfound:
+			break;
 		}
-		else if (!pauseGame && ([gameController gameplayState] == gamePaused))
-		{
-			// Make sure we have the game tab open
+			
+#pragma mark New Game Message
+		case newGameMessage:
+			// Switch to the game view tab, if not already there
 			[self switchToGameTab:self];
 			
-			// Resume the game
-			[gameController resumeGame];
+			// Tell the gameController to start the game
+			[gameController newGameWithPlayers:[self playerList]
+										 rules:[iTetGameRules gameRulesFromArray:[(iTetNewGameMessage*)message rulesList]
+																	withGameType:[[networkController currentServer] protocol]]];
+			
+			// Change the "new game" toolbar item
+			[gameButton setLabel:@"End Game"];
+			[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
+			
+			// Change the "new game" menu item
+			[gameMenuItem setTitle:@"End Game..."];
+			[gameMenuItem setKeyEquivalent:@"e"];
+			break;
+			
+#pragma mark Server In-Game Message
+		case inGameMessage:
+			// Set all players to "playing" (server will send "playerlost" for players not playing)
+			for (iTetPlayer* player in [self playerList])
+			{
+				if (![player isKindOfClass:[iTetLocalPlayer class]])
+					[player setPlaying:YES];
+			}
+			
+			// Set the game view controller's state as "playing"
+			[gameController setGameplayState:gamePlaying];
+			
+			// Tell the game view controller to send the local player's field to the server
+			[gameController sendFieldstring];
+			
+			// Change the "new game" toolbar item
+			[gameButton setLabel:@"End Game"];
+			[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
+			
+			// Change the "new game" menu item
+			[gameMenuItem setTitle:@"End Game..."];
+			[gameMenuItem setKeyEquivalent:@"e"];
+			break;
+
+#pragma mark Pause/Resume Game Message
+		case pauseResumeGameMessage:
+		{
+			// Get pause state
+			BOOL pauseGame = [(iTetPauseResumeGameMessage*)message pauseGame];
+			
+			// Pause or resume the game
+			if (pauseGame && ([gameController gameplayState] == gamePlaying))
+			{
+				// Pause the game
+				[gameController pauseGame];
+				
+				// Change the pause button to a "resume" button
+				[pauseButton setLabel:@"Resume Game"];
+				[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
+				
+				// Change the menu item
+				[pauseMenuItem setTitle:@"Resume Game"];
+			}
+			else if (!pauseGame && ([gameController gameplayState] == gamePaused))
+			{
+				// Make sure we have the game tab open
+				[self switchToGameTab:self];
+				
+				// Resume the game
+				[gameController resumeGame];
+				
+				// Change the "resume" button back into pause button
+				[pauseButton setLabel:@"Pause Game"];
+				[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+				
+				// Change the menu item
+				[pauseMenuItem setTitle:@"Pause Game"];
+			}
+			break;
+		}
+			
+#pragma mark End Game Message
+		case endGameMessage:
+			// End the game
+			[gameController endGame];
+			
+			// Change the "end game" toolbar item
+			[gameButton setLabel:@"New Game"];
+			[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
+			
+			// Change the "end game" menu item
+			[gameMenuItem setTitle:@"New Game"];
+			[gameMenuItem setKeyEquivalent:@"n"];
 			
 			// Change the "resume" button back into pause button
 			[pauseButton setLabel:@"Pause Game"];
@@ -753,185 +769,63 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			
 			// Change the menu item
 			[pauseMenuItem setTitle:@"Pause Game"];
-		}
-	}
-#pragma mark Player Left Message
-	else if ([messageType isEqualToString:PlayerLeftMessage])
-	{
-		// Get player number
-		playerNum = [[tokens objectAtIndex:1] integerValue];
-		
-		// Add a chat line
-		[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [self playerNameForNumber:playerNum]]];
-		
-		// Remove the player from the game
-		[self removePlayerNumber:playerNum];
-	}
-#pragma mark Partyline Text Message
-	else if ([messageType isEqualToString:PLineTextMessage])
-	{
-		// Check if the message has actual chat text
-		if (([tokens count] > 2) && ([[tokens objectAtIndex:2] length] > 0))
-		{
-			// Trim the first two tokens off of the message
-			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
-			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
+			break;
 			
-			// Format the chat text and hand off to the chat controller
-			[chatController appendChatLine:[iTetTextAttributes formattedMessageFromData:chatData]
-							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-									action:NO];
-		}
-	}
-#pragma mark Partyline Action Message
-	else if ([messageType isEqualToString:PLineActionMessage])
-	{
-		// Check if the message has actual action text
-		if (([tokens count] > 2) && ([[tokens objectAtIndex:2] length] > 0))
+#pragma mark Fieldstring Message
+		case fieldstringMessage:
 		{
-			// Trim the first two tokens off of the message
-			NSUInteger startOfChatText = [message rangeOfString:[tokens objectAtIndex:2]].location;
-			NSData* chatData = [messageData subdataWithRange:NSMakeRange(startOfChatText, ([messageData length] - startOfChatText))];
-			
-			// Format the chat text and hand off to the chat controller
-			[chatController appendChatLine:[iTetTextAttributes formattedMessageFromData:chatData]
-							fromPlayerName:[self playerNameForNumber:[[tokens objectAtIndex:1] integerValue]]
-									action:YES];
+			// Pass to the game controller
+			iTetFieldstringMessage* fieldMessage = (iTetFieldstringMessage*)message;
+			[gameController fieldstringReceived:[fieldMessage fieldstring]
+									  forPlayer:[self playerNumber:[fieldMessage playerNumber]]
+								  partialUpdate:[fieldMessage isPartialUpdate]];
+			break;
 		}
-	}
-#pragma mark New Game Message
-	else if ([messageType isEqualToString:NewGameMessage])
-	{
-		// All tokens beyond the first (the "newgame" string) are game rules 
-		NSArray* rules = [tokens subarrayWithRange:NSMakeRange(1, [tokens count] - 1)];
-		
-		// Switch to the game view tab, if not already there
-		[self switchToGameTab:self];
-		
-		// Tell the gameController to start the game
-		[gameController newGameWithPlayers:[self playerList]
-									 rules:[iTetGameRules gameRulesFromArray:rules
-																withGameType:[[networkController currentServer] protocol]]];
-		
-		// Change the "new game" toolbar item
-		[gameButton setLabel:@"End Game"];
-		[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
-		
-		// Change the "new game" menu item
-		[gameMenuItem setTitle:@"End Game..."];
-		[gameMenuItem setKeyEquivalent:@"e"];
-	}
+			
+#pragma mark Level Update Message
+		case levelUpdateMessage:
+		{
+			// Update the specified player's level
+			iTetLevelUpdateMessage* levelMessage = (iTetLevelUpdateMessage*)message;
+			[[self playerNumber:[levelMessage playerNumber]] setLevel:[levelMessage level]];
+			break;
+		}
+			
 #pragma mark Special Used/Lines Received Message
-	else if ([messageType isEqualToString:SpecialUsedMessage])
-	{
-		// Get the target and sending player numbers
-		NSInteger targetNum = [[tokens objectAtIndex:1] integerValue];
-		NSInteger senderNum = [[tokens objectAtIndex:3] integerValue];
-		
-		// Get the special type
-		NSString* special = [tokens objectAtIndex:2];
-		
-		// Translate player numbers into players
-		iTetPlayer* sender = nil;
-		iTetPlayer* target = nil;
-		if (senderNum > 0)
-			sender = [self playerNumber:senderNum];
-		if (targetNum > 0)
-			target = [self playerNumber:targetNum];
-		
-		// Check if this is a classic-style addline
-		if (([special length] > 1) && ([[special substringToIndex:2] isEqualToString:@"cs"]))
+		case specialMessage:
 		{
-			// Get the number of lines
-			NSInteger numLines = [[special substringFromIndex:2] integerValue];
+			// Translate player numbers into players
+			iTetSpecialMessage* spMessage = (iTetSpecialMessage*)message;
+			iTetPlayer* sender = nil;
+			iTetPlayer* target = nil;
+			if ([spMessage senderNumber] > 0)
+				sender = [self playerNumber:[spMessage senderNumber]];
+			if ([spMessage targetNumber] > 0)
+				target = [self playerNumber:[spMessage targetNumber]];
 			
 			// Pass to game controller
-			[gameController linesAdded:numLines
-							  byPlayer:sender];
-		}
-		// Normal special
-		else
-		{	
-			// Pass to game controller
-			[gameController specialUsed:(iTetSpecialType)[special cStringUsingEncoding:NSASCIIStringEncoding][0]
+			[gameController specialUsed:[spMessage specialType]
 							   byPlayer:sender
 							   onPlayer:target];
+			break;
 		}
-	}
-#pragma mark Game Chat Message
-	else if ([messageType isEqualToString:GameChatMessage])
-	{
-		// Check if the second token is a player's nickname
-		NSString* firstWord = [tokens objectAtIndex:1];
-		for (iTetPlayer* player in [self playerList])
-		{
-			if ([firstWord rangeOfString:[player nickname]].location != NSNotFound)
-			{
-				// Compose the message from the remaining tokens
-				message = [[tokens subarrayWithRange:NSMakeRange(2, [tokens count] - 2)] componentsJoinedByString:@" "];
-				
-				// Add the message to the game chat view
-				[gameController appendChatLine:message
-								fromPlayerName:[player nickname]];
-				
-				return;
-			}
-		}
-		
-		// Otherwise, just dump the message on the game chat view
-		message = [[tokens subarrayWithRange:NSMakeRange(1, [tokens count] - 1)] componentsJoinedByString:@" "];
-		[gameController appendChatLine:message];
-	}
-#pragma mark Level Update Message
-	else if ([messageType isEqualToString:LevelUpdateMessage])
-	{
-		// Check if this is a request for the client info ("lvl 0 0")
-		if (([[tokens objectAtIndex:1] integerValue] == 0) && ([[tokens objectAtIndex:2] integerValue] == 0))
-		{
-			// Send the client info string
-			[networkController sendClientInfo];
-		}
-		else
-		{
-			// Otherwise, update the specified player's level
-			[[self playerNumber:[[tokens objectAtIndex:1] integerValue]] setLevel:[[tokens objectAtIndex:2] integerValue]];    
-		}
-	}
+			
+#pragma mark Player Lost Message
+		case playerLostMessage:
+			// Set the player to "not playing"
+			[[self playerNumber:[(iTetPlayerLostMessage*)message playerNumber]] setPlaying:NO];
+			
+			// FIXME: anything else?
+			break;
+			
 #pragma mark Player Won Message
-	else if ([messageType isEqualToString:PlayerWonMessage])
-	{
-		// Get player number
-		playerNum = [[tokens objectAtIndex:1] integerValue];
+		case playerWonMessage:
+			// FIXME: should this do anything?
+			break;
 		
-		// FIXME: WRITEME: player win message
-	}
-#pragma mark Game End Message
-	else if ([messageType isEqualToString:EndGameMessage])
-	{
-		// End the game
-		[gameController endGame];
-		
-		// Change the "end game" toolbar item
-		[gameButton setLabel:@"New Game"];
-		[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
-		
-		// Change the "end game" menu item
-		[gameMenuItem setTitle:@"New Game"];
-		[gameMenuItem setKeyEquivalent:@"n"];
-		
-		// Change the "resume" button back into pause button
-		[pauseButton setLabel:@"Pause Game"];
-		[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
-		
-		// Change the menu item
-		[pauseMenuItem setTitle:@"Pause Game"];
-	}
-#pragma mark Unknown Message
-	else
-	{
-		// Unknown message type
-		NSLog(@"WARNING: Unrecognized message recieved: %@",
-			  [tokens componentsJoinedByString:@" "]);
+		default:
+			NSLog(@"WARNING: invalid message type in appController messageReceived:");
+			break;
 	}
 }
 

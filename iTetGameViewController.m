@@ -6,15 +6,22 @@
 //
 
 #import "iTetGameViewController.h"
+
 #import "iTetAppController.h"
 #import "iTetPreferencesController.h"
+
+#import "iTetNetworkController.h"
+#import "iTetOutgoingMessages.h"
+
+#import "iTetGameRules.h"
 #import "iTetLocalPlayer.h"
+#import "iTetField.h"
+#import "iTetBlock.h"
+
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
-#import "iTetField.h"
-#import "iTetBlock.h"
-#import "iTetGameRules.h"
+
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
@@ -107,10 +114,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark -
 #pragma mark Chat Actions
 
-// Game messages are sent GTetrinet-style: nickname wrapped in angle-brackets
-NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
-
-- (IBAction)sendMessage:(id)sender
+- (IBAction)submitChatMessage:(id)sender
 {
 	// Check that there is a message to send
 	NSString* message = [messageField stringValue];
@@ -118,7 +122,8 @@ NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
 		return;
 	
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetGameMessageFormat, [LOCALPLAYER nickname], message]];
+	[NETCONTROLLER sendMessage:[iTetGameChatMessage messageWithContents:message
+																 sender:LOCALPLAYER]];
 	
 	// Do not add the message to our chat view; the server will echo it back to us
 	
@@ -464,14 +469,11 @@ NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
 		fromSender:(iTetPlayer*)sender
 
 {
-	// Get the affected player numbers
-	NSInteger localNum, targetNum, senderNum;
-	localNum = [LOCALPLAYER playerNumber];
-	targetNum = [target playerNumber];
-	senderNum = [sender playerNumber];
-	
 	// Check if this action affects the local player
-	if ((targetNum != localNum) && ((senderNum != localNum) || (special != switchField)))
+	BOOL localPlayerAffected = (((target == nil) && (sender != nil) && ([sender playerNumber] != [LOCALPLAYER playerNumber])) ||
+								((target != nil) && ([target playerNumber] == [LOCALPLAYER playerNumber])) ||
+								((sender != nil) && ([sender playerNumber] == [LOCALPLAYER playerNumber]) && (special == switchField)));
+	if (!localPlayerAffected)
 		return;
 	
 	// Determine the action to take
@@ -500,7 +502,7 @@ NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
 			
 		case switchField:
 			// If the local player is the target, copy the sender's field
-			if (targetNum == localNum)
+			if ([target playerNumber] == [LOCALPLAYER playerNumber])
 				[LOCALPLAYER setField:[[sender field] copy]];
 			// If the local player is the sender, copy the target's field
 			else
@@ -537,8 +539,17 @@ NSString* const iTetGameMessageFormat = @"gmsg <%@> %@";
 			[[LOCALPLAYER field] clearLines];
 			break;
 			
+		case classicStyle1:
+		case classicStyle2:
+		case classicStyle4:
+			// Add line(s) to the field, check for field overflow
+			if ([[LOCALPLAYER field] addLines:[iTetSpecials classicLinesForSpecialType:special] style:classicStyle])
+				[self playerLost];
+			break;
+			
 		default:
 			NSLog(@"WARNING: gameViewController -activateSpecial: called with invalid special type: %d", special);
+			break;
 	}
 	
 	// Send field changes to the server
@@ -707,35 +718,32 @@ doCommandBySelector:(SEL)command
 #pragma mark -
 #pragma mark Client-to-Server Events
 
-NSString* const iTetFieldMessageFormat = @"f %d %@";
-
 - (void)sendFieldstring
 {	
 	// Send the string for the local player's field to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] fieldstring]]];
+	[NETCONTROLLER sendMessage:[iTetFieldstringMessage fieldMessageForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetFieldMessageFormat, [LOCALPLAYER playerNumber], [[LOCALPLAYER field] lastPartialUpdate]]];
+	[NETCONTROLLER sendMessage:[iTetFieldstringMessage partialUpdateMessageForPlayer:LOCALPLAYER]];
 }
-
-NSString* const iTetLevelMessageFormat = @"lvl %d %d";
 
 - (void)sendCurrentLevel
 {
 	// Send the local player's level to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetLevelMessageFormat, [LOCALPLAYER playerNumber], [LOCALPLAYER level]]];
+	[NETCONTROLLER sendMessage:[iTetLevelUpdateMessage messageWithUpdateForPlayer:LOCALPLAYER]];
 }
-
-NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 
 - (void)sendSpecial:(iTetSpecialType)special
 		   toPlayer:(iTetPlayer*)target
 {	
 	// Send a message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendSpecialMessageFormat, [target playerNumber], (uint8_t)special, [LOCALPLAYER playerNumber]]];
+	iTetSpecialMessage* message = [iTetSpecialMessage messageWithSpecialType:special
+																	  sender:LOCALPLAYER
+																	  target:target];
+	[NETCONTROLLER sendMessage:message];
 	
 	// Perform and record the action
 	[self specialUsed:special
@@ -743,35 +751,54 @@ NSString* const iTetSendSpecialMessageFormat = @"sb %d %c %d";
 			 onPlayer:target];
 }
 
-NSString* const iTetSendLinesMessageFormat = @"sb 0 cs%d %d";
-
 - (void)sendLines:(NSInteger)lines
 {	
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetSendLinesMessageFormat, lines, [LOCALPLAYER playerNumber]]];
+	iTetSpecialMessage* message = [iTetSpecialMessage messageWithClassicStyleLines:lines
+																			sender:LOCALPLAYER];
+	[NETCONTROLLER sendMessage:message];
 	
 	// Perform and record the action
-	[self linesAdded:lines
-			byPlayer:LOCALPLAYER];
+	[self specialUsed:[message specialType]
+			 byPlayer:LOCALPLAYER
+			 onPlayer:nil];
 }
-
-NSString* const iTetLoseMessageFormat = @"playerlost %d";
 
 - (void)sendPlayerLostMessage
 {
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[NSString stringWithFormat:iTetLoseMessageFormat, [LOCALPLAYER playerNumber]]];
+	[NETCONTROLLER sendMessage:[iTetPlayerLostMessage messageForPlayer:LOCALPLAYER]];
 }
 
 #pragma mark -
 #pragma mark Server-to-Client Events
 
-NSString* const iTetSpecialEventDescriptionFormat =	@"%@ used on %@ by %@";
-NSString* const iTetNilSenderNamePlaceholder =		@"Server";
-NSString* const iTetNilTargetNamePlaceholder =		@"All";
+- (void)fieldstringReceived:(NSString*)fieldstring
+				  forPlayer:(iTetPlayer*)player
+			  partialUpdate:(BOOL)isPartial;
+{
+	if (isPartial)
+	{
+		// Update the player's field with a partial update
+		[[player field] applyPartialUpdate:fieldstring];
+	}
+	else
+	{
+		// Give the player a new field created from the fieldstring
+		[player setField:[iTetField fieldFromFieldstring:fieldstring]];
+	}
+}
+
+NSString* const iTetSpecialEventDescriptionFormat =		@"%@ used on %@ by %@";
+NSString* const iTetLinesAddedEventDescriptionFormat =	@"%@ added to %@ by %@";
+NSString* const iTetOneLineAddedFormat =				@"1 Line";
+NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
+NSString* const iTetNilSenderNamePlaceholder =			@"Server";
+NSString* const iTetNilTargetNamePlaceholder =			@"All";
 
 #define iTetBadSpecialForegroundColor		[NSColor redColor]
 #define iTetGoodSpecialForegroundColor		[NSColor greenColor]
+#define iTetLinesAddedForegroundColor		[NSColor blueColor]
 #define iTetEventBackgroundColorFraction	(0.2)
 
 - (void)specialUsed:(iTetSpecialType)special
@@ -784,6 +811,7 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 		  fromSender:sender];
 	
 	// Add a description of the event to the list of actions
+	/*
 	// Get the name of the special
 	NSString* specialName = [iTetSpecials nameForSpecialType:special];
 	
@@ -834,15 +862,10 @@ NSString* const iTetNilTargetNamePlaceholder =		@"All";
 	
 	// Record the event
 	[self recordAction:desc];
+	 */
 }
 
-NSString* const iTetLinesAddedEventDescriptionFormat =	@"%@ added to %@ by %@";
-NSString* const iTetOneLineAddedFormat =				@"1 Line";
-NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
-NSString* const iTetLineAddTargetAllDescription =		@"All";
-
-#define iTetLinesAddedForegroundColor	[NSColor blueColor]
-
+/*
 - (void)linesAdded:(NSInteger)numLines
 		  byPlayer:(iTetPlayer*)sender
 {
@@ -859,12 +882,7 @@ NSString* const iTetLineAddTargetAllDescription =		@"All";
 	}
 	
 	// Create a description
-	// Describe the number of lines added
-	NSString* linesDesc;
-	if (numLines > 1)
-		linesDesc = [NSString stringWithFormat:iTetMultipleLinesAddedFormat, numLines];
-	else
-		linesDesc = iTetOneLineAddedFormat;
+	
 	
 	// Get the target name (done this way for localization and formatting reasons)
 	NSString* targetName = iTetLineAddTargetAllDescription;
@@ -907,6 +925,7 @@ NSString* const iTetLineAddTargetAllDescription =		@"All";
 	// Record the event
 	[self recordAction:desc];
 }
+*/
 
 - (void)recordAction:(NSAttributedString*)description
 {
