@@ -64,7 +64,7 @@
 	specialType = [iTetSpecials specialTypeFromMessageName:[tokens objectAtIndex:1]];
 	
 	// Parse the third token as the sender's player number
-	senderNumber = [[tokens objectAtIndex:3] integerValue];
+	senderNumber = [[tokens objectAtIndex:2] integerValue];
 	
 	return self;
 }
