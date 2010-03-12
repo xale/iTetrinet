@@ -11,7 +11,7 @@
 
 @interface iTetGameChatMessage : iTetMessage <iTetIncomingMessage, iTetOutgoingMessage>
 {
-	NSString* messageContents;
+	NSArray* messageContents;
 }
 
 + (id)messageWithContents:(NSString*)contents
@@ -21,5 +21,6 @@
 
 @property (readonly) NSString* messageContents;
 @property (readonly) NSString* firstWord;
+@property (readonly) NSString* contentsAfterFirstWord;
 
 @end

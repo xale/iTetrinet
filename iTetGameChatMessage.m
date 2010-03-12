@@ -31,7 +31,7 @@ NSString* const iTetGameChatMessageWithSenderFormat =	@"<%@> %@";
 {
 	messageType = gameChatMessage;
 	
-	messageContents = [contents copy];
+	messageContents = [[contents componentsSeparatedByString:@" "] retain];
 	
 	return self;
 }
@@ -55,8 +55,8 @@ NSString* const iTetGameChatMessageWithSenderFormat =	@"<%@> %@";
 {
 	messageType = gameChatMessage;
 	
-	// Convert the message data to a string
-	messageContents = [[NSString stringWithASCIIData:messageData] retain];
+	// Convert the message data to an array of space-delimited strings
+	messageContents = [[[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "] retain];
 	
 	return self;
 }
@@ -77,13 +77,23 @@ NSString* const iTetGameChatMessageFormat =	@"gmsg %@";
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize messageContents;
+- (NSString*)messageContents
+{
+	return [messageContents componentsJoinedByString:@" "];
+}
 
 - (NSString*)firstWord
 {
-	NSArray* messageTokens = [[self messageContents] componentsSeparatedByString:@" "];
-	if ([messageTokens count] > 0)
-		return [messageTokens objectAtIndex:0];
+	if ([messageContents count] > 0)
+		return [messageContents objectAtIndex:0];
+	
+	return [NSString string];
+}
+
+- (NSString*)contentsAfterFirstWord
+{
+	if ([messageContents count] > 1)
+		return [[messageContents subarrayWithRange:NSMakeRange(1, [messageContents count] - 1)] componentsJoinedByString:@" "];
 	
 	return [NSString string];
 }
