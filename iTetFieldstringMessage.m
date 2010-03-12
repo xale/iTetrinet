@@ -8,7 +8,6 @@
 #import "iTetFieldstringMessage.h"
 #import "iTetPlayer.h"
 #import "iTetField.h"
-#import "NSData+Searching.h"
 #import "NSString+ASCIIData.h"
 
 @implementation iTetFieldstringMessage
@@ -59,18 +58,27 @@
 {
 	messageType = fieldstringMessage;
 	
-	// Find the first space in the message data (there should be only one)
-	NSUInteger firstSpace = [messageData indexOfByte:(uint8_t)' '];
+	// Convert the message to a string, and split into space-separated tokens
+	NSArray* messageTokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
 	
-	// Split the data at the space, convert the first token to a string, and parse it as the sender player's number
-	playerNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
+	// Parse the first token as the sender player's number
+	playerNumber = [[messageTokens objectAtIndex:0] integerValue];
 	
-	// Convert the remaining data into the fieldstring
-	fieldstring = [[NSString stringWithASCIIData:[messageData subdataFromIndex:firstSpace]] retain];
-	
-	// Determine if this is a partial update, based on the first character of the fieldstring
-	unichar first = [fieldstring characterAtIndex:0];
-	partial = ((first >= 0x21) && (first <= 0x2F));
+	// If present, treat the rest of the data as the fieldstring
+	if (([messageTokens count] > 1) && ([[messageTokens objectAtIndex:1] length] > 0))
+	{
+		fieldstring = [[messageTokens objectAtIndex:1] retain];
+		
+		// Determine if this is a partial update, based on the first character of the fieldstring
+		unichar first = [fieldstring characterAtIndex:0];
+		partial = ((first >= 0x21) && (first <= 0x2F));
+	}
+	else
+	{
+		// Blank update: I have no idea what this is supposed to indicate, but some clients will send them
+		fieldstring = [[NSString alloc] init];
+		partial = YES;
+	}
 	
 	return self;
 }
