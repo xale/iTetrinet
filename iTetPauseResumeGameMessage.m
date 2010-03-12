@@ -49,11 +49,17 @@
 	// Convert the message to a string, and split into space-delimited tokens
 	NSArray* tokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
 	
+	// FIXME: debug logging
+	NSLog(@"DEBUG: message tokens in received pause message: %@", tokens);
+	
 	// Treat the first token as the "pause state"
 	pauseGame = [[tokens objectAtIndex:0] boolValue];
 	
-	// Parse the second token as the sender's player number
-	senderNumber = [[tokens objectAtIndex:1] integerValue];
+	// If present, parse the second token as the sender's player number
+	if ([tokens count] > 1)
+		senderNumber = [[tokens objectAtIndex:1] integerValue];
+	else
+		senderNumber = 0;
 	
 	return self;
 }
