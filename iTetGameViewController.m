@@ -799,7 +799,7 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 		   onPlayer:(iTetPlayer*)target
 {
 	// Check if this action affects the local player
-	BOOL localPlayerAffected = (((target == nil) && (sender != nil) && ([sender playerNumber] != [LOCALPLAYER playerNumber])) ||
+	BOOL localPlayerAffected = (((target == nil) && ((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber]))) ||
 								((target != nil) && ([target playerNumber] == [LOCALPLAYER playerNumber])) ||
 								((sender != nil) && ([sender playerNumber] == [LOCALPLAYER playerNumber]) && (special == switchField)));
 	
