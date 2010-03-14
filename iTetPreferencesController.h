@@ -22,6 +22,8 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 {
 	NSTimeInterval connectionTimeout;
 	
+	BOOL autoSwitchChat;
+	
 	NSMutableArray* serverList;
 	
 	NSMutableArray* themeList;
@@ -39,6 +41,8 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 - (void)stopObservingServersInArray:(NSArray*)array;
 
 @property (readwrite, assign) NSTimeInterval connectionTimeout;
+
+@property (readwrite, assign) BOOL autoSwitchChat;
 
 - (NSUInteger)countOfServerList;
 - (iTetServerInfo*)objectInServerListAtIndex:(NSUInteger)index;

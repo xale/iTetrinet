@@ -288,7 +288,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 	[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
 	
 	// Start the connection timer
-	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:[[iTetPreferencesController preferencesController] connectionTimeout]
+	connectionTimer = [NSTimer scheduledTimerWithTimeInterval:[[self preferencesController] connectionTimeout]
 													   target:self
 													 selector:@selector(connectionTimedOut:)
 													 userInfo:nil
@@ -750,7 +750,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			break;
 		}
 			
-#pragma mark End Game Message
+#pragma mark End of Game Message
 		case endGameMessage:
 			// End the game
 			[gameController endGame];
@@ -769,6 +769,11 @@ NSString* const iTetServerConnectionInfoFormat = @"Attempting to connect to serv
 			
 			// Change the menu item
 			[pauseMenuItem setTitle:@"Pause Game"];
+			
+			// If the user wants us to, automatically switch to the chat tab
+			if ([[self preferencesController] autoSwitchChat])
+				[self switchToChatTab:self];
+			
 			break;
 			
 #pragma mark Fieldstring Message

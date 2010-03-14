@@ -10,12 +10,13 @@
 #import "iTetTheme.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
+NSString* const iTetConnectionTimeoutKey =		@"connectionTimeout";
+NSString* const iTetAutoSwitchChatKey =			@"autoSwitchChat";
 NSString* const iTetThemeListPrefKey =			@"themeList";
 NSString* const iTetCurrentThemePrefKey =		@"currentTheme";
 NSString* const iTetServerListPrefKey =			@"serverList";
 NSString* const iTetKeyConfigsPrefKey =			@"keyConfigs";
 NSString* const iTetCurrentKeyConfigNumberKey =	@"currentKeyConfigNum";
-NSString* const iTetConnectionTimeoutKey =		@"connectionTimeout";
 
 NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange";
 
@@ -30,6 +31,8 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	[defaults setObject:[NSNumber numberWithDouble:5.0]
 				 forKey:iTetConnectionTimeoutKey];
+	[defaults setObject:[NSNumber numberWithBool:YES]
+				 forKey:iTetAutoSwitchChatKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemeList]]
 				 forKey:iTetThemeListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultTheme]]
@@ -51,12 +54,14 @@ static iTetPreferencesController* preferencesController = nil;
 	NSData* prefsData;
 	
 	// Load the connection timeout
-	connectionTimeout = [[defaults objectForKey:iTetConnectionTimeoutKey] doubleValue];
+	connectionTimeout = [defaults doubleForKey:iTetConnectionTimeoutKey];
+	
+	// Load the "auto-switch to chat after game" flag
+	autoSwitchChat = [defaults boolForKey:iTetAutoSwitchChatKey];
 	
 	// Load the list of themes from user defaults
 	prefsData = [defaults objectForKey:iTetThemeListPrefKey];
-	themeList = [[NSMutableArray alloc] initWithArray:
-				 [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+	themeList = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Load the current theme
 	prefsData = [defaults objectForKey:iTetCurrentThemePrefKey];
@@ -72,16 +77,14 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Load the list of bookmarked servers
 	prefsData = [defaults objectForKey:iTetServerListPrefKey];
-	serverList = [[NSMutableArray alloc] initWithArray:
-				  [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+	serverList = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Start observing all the servers in the serverList
 	[self startObservingServersInArray:serverList];
 	
 	// Load the list of keyboard configurations
 	prefsData = [defaults objectForKey:iTetKeyConfigsPrefKey];
-	keyConfigurations = [[NSMutableArray alloc] initWithArray:
-						 [NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
+	keyConfigurations = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Load the current configuration number
 	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey]
@@ -280,10 +283,22 @@ static iTetPreferencesController* preferencesController = nil;
 	connectionTimeout = timeout;
 	
 	// Update the value in user defaults
-	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithDouble:timeout]
+	[[NSUserDefaults standardUserDefaults] setDouble:timeout
 											  forKey:iTetConnectionTimeoutKey];
 }
 @synthesize connectionTimeout;
+
+#pragma mark Chat Auto-Switch After Game
+
+- (void)setAutoSwitchChat:(BOOL)switchAfterGame
+{
+	autoSwitchChat = switchAfterGame;
+	
+	// Update the value in user defaults
+	[[NSUserDefaults standardUserDefaults] setBool:switchAfterGame
+											forKey:iTetAutoSwitchChatKey];
+}
+@synthesize autoSwitchChat;
 
 #pragma mark Servers
 
