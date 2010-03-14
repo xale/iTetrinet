@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="522"/>
 			<integer value="1078"/>
+			<integer value="501"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3594,14 +3594,6 @@
 					<int key="connectionID">659</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">sendMessage:</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="43540619"/>
-					</object>
-					<int key="connectionID">674</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">chatView</string>
 						<reference key="source" ref="484487917"/>
@@ -3828,14 +3820,6 @@
 						</object>
 					</object>
 					<int key="connectionID">761</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">sendMessage:</string>
-						<reference key="source" ref="814200211"/>
-						<reference key="destination" ref="342405319"/>
-					</object>
-					<int key="connectionID">764</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4730,30 +4714,6 @@
 					<int key="connectionID">1184</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">textAttributesController</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="462083609"/>
-					</object>
-					<int key="connectionID">1211</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">textAttributesController</string>
-						<reference key="source" ref="814200211"/>
-						<reference key="destination" ref="462083609"/>
-					</object>
-					<int key="connectionID">1214</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">partylineChatView</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="941267877"/>
-					</object>
-					<int key="connectionID">1215</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: winlist</string>
 						<reference key="source" ref="678131185"/>
@@ -4912,6 +4872,22 @@
 						<reference key="destination" ref="484487917"/>
 					</object>
 					<int key="connectionID">1266</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">submitChatMessage:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="342405319"/>
+					</object>
+					<int key="connectionID">1267</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">submitChatMessage:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="43540619"/>
+					</object>
+					<int key="connectionID">1268</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -6998,9 +6974,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{209, 87}, {824, 713}}</string>
+					<string>{{252, 14}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{209, 87}, {824, 713}}</string>
+					<string>{{252, 14}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -7196,11 +7172,32 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1266</int>
+			<int key="maxID">1268</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetKeyView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier" id="996822837">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetLocalFieldView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetNetworkController.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">iTetAppController</string>
 					<string key="superclassName">NSObject</string>
@@ -7246,7 +7243,6 @@
 							<string>serverListController</string>
 							<string>serverListView</string>
 							<string>tabView</string>
-							<string>textAttributesController</string>
 							<string>window</string>
 							<string>winlistController</string>
 						</object>
@@ -7265,7 +7261,6 @@
 							<string>NSArrayController</string>
 							<string>NSScrollView</string>
 							<string>NSTabView</string>
-							<string>iTetTextAttributesController</string>
 							<string>NSWindow</string>
 							<string>iTetWinlistViewController</string>
 						</object>
@@ -7279,7 +7274,7 @@
 					<string key="className">iTetChatViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">sendMessage:</string>
+						<string key="NS.key.0">submitChatMessage:</string>
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -7289,14 +7284,12 @@
 							<string>appController</string>
 							<string>chatView</string>
 							<string>messageField</string>
-							<string>textAttributesController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>iTetAppController</string>
 							<string>NSTextView</string>
 							<string>NSTextField</string>
-							<string>iTetTextAttributesController</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7316,7 +7309,7 @@
 					<string key="className">iTetGameViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">sendMessage:</string>
+						<string key="NS.key.0">submitChatMessage:</string>
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -7364,10 +7357,7 @@
 						<string key="NS.key.0">eventDelegate</string>
 						<string key="NS.object.0">id</string>
 					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetLocalFieldView.h</string>
-					</object>
+					<reference key="sourceIdentifier" ref="996822837"/>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">iTetNextBlockView</string>
@@ -7401,17 +7391,8 @@
 						<string key="NS.object.0">id</string>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>partylineChatView</string>
-							<string>partylineMessageField</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>NSTextView</string>
-							<string>NSTextField</string>
-						</object>
+						<string key="NS.key.0">partylineMessageField</string>
+						<string key="NS.object.0">NSTextField</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>

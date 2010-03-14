@@ -172,8 +172,8 @@ uint8_t partialUpdateCharToCell(char updateChar);
 	return side;
 }
 
-- (iTetObstructionState)cellObstructedAtRow:(int)row
-									 column:(int)col
+- (iTetObstructionState)cellObstructedAtRow:(NSInteger)row
+									 column:(NSInteger)col
 {
 	// Check if obstructed by sides of field
 	if ((col < 0) || (col >= ITET_FIELD_WIDTH))
@@ -291,6 +291,10 @@ uint8_t partialUpdateCharToCell(char updateChar);
 
 - (void)applyPartialUpdate:(NSString *)partialUpdate
 {
+	// Check that the update is not blank (some clients send blank updates)
+	if ([partialUpdate length] == 0)
+		return;
+	
 	[self willChangeValueForKey:@"contents"];
 	
 	// Get the first type of cell we are adding
@@ -710,11 +714,11 @@ cellfound:
 	
 	// Scatter the collected cells around the field, keeping the top six rows clear
 	// note: this is GTetrinet's implemetation; some cells may overwrite others
-	for (NSNumber* cell in scatteredCells)
+	for (NSNumber* movedCell in scatteredCells)
 	{
 		row = random() % (ITET_FIELD_HEIGHT - 6);
 		col = random() % ITET_FIELD_WIDTH;
-		contents[row][col] = [cell unsignedCharValue];
+		contents[row][col] = [movedCell unsignedCharValue];
 	}
 	
 	[self didChangeValueForKey:@"contents"];

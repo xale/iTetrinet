@@ -21,7 +21,7 @@
 	NSMutableArray* channels;
 }
 
-- (IBAction)sendMessage:(id)sender;
+- (IBAction)submitChatMessage:(id)sender;
 
 - (void)clearChat;
 - (void)appendChatLine:(NSAttributedString*)line;
@@ -30,7 +30,7 @@
 				action:(BOOL)isAction;
 - (void)appendStatusMessage:(NSString*)message;
 
-- (void)addChannel:(NSString*)channelData;
+// - (void)addChannel:(NSString*)channelData;
 
 @property (readonly) NSArray* channels;
 

@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetMessage.h"
 
 @class iTetServerInfo;
 @class Queue;
@@ -21,7 +22,7 @@ typedef enum
 - (void)connectionOpened;
 - (void)connectionClosed;
 - (void)connectionError:(NSError*)error;
-- (void)messageReceived:(NSData*)messageData;
+- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message;
 
 @end
 
@@ -43,11 +44,9 @@ typedef enum
 - (id)initWithDelegate:(id)theDelegate;
 
 - (void)connectToServer:(iTetServerInfo*)server;
-- (void)initializeConnection;
 - (void)disconnect;
 
-- (void)sendMessage:(NSString*)message;
-- (void)sendClientInfo;
+- (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
 - (void)sendMessageData:(NSData*)messageData;
 
 - (void)attemptRead;

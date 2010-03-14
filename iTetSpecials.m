@@ -154,6 +154,40 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 	return iTetInvalidOrNoneSpecialName;
 }
 
++ (iTetSpecialType)specialTypeForClassicLines:(NSInteger)lines
+{
+	switch (lines)
+	{
+		case 1:
+			return classicStyle1;
+		case 2:
+			return classicStyle2;
+		case 4:
+			return classicStyle4;
+		default:
+			break;
+	}
+	
+	return invalidSpecial;
+}
+
++ (NSInteger)classicLinesForSpecialType:(iTetSpecialType)type
+{
+	switch (type)
+	{
+		case classicStyle1:
+			return 1;
+		case classicStyle2:
+			return 2;
+		case classicStyle4:
+			return 4;
+		default:
+			break;
+	}
+	
+	return 0;
+}
+
 + (BOOL)specialIsPositive:(iTetSpecialType)type
 {
 	switch (type)

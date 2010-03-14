@@ -46,6 +46,9 @@ extern NSString* const iTetInvalidOrNoneSpecialName;
 + (iTetSpecialType)specialTypeFromMessageName:(NSString*)name;
 + (NSString*)messageNameForSpecialType:(iTetSpecialType)type;
 
++ (iTetSpecialType)specialTypeForClassicLines:(NSInteger)lines;
++ (NSInteger)classicLinesForSpecialType:(iTetSpecialType)type;
+
 + (NSString*)nameForSpecialType:(iTetSpecialType)type;
 
 + (BOOL)specialIsPositive:(iTetSpecialType)type;

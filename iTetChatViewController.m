@@ -6,11 +6,15 @@
 //
 
 #import "iTetChatViewController.h"
+
 #import "iTetAppController.h"
+
 #import "iTetNetworkController.h"
-#import "iTetTextAttributes.h"
+#import "iTetPlineChatMessage.h"
+#import "iTetPlineActionMessage.h"
+
 #import "iTetChannelInfo.h"
-#import "iTetPlayer.h"
+#import "iTetLocalPlayer.h"
 
 @implementation iTetChatViewController
 
@@ -37,49 +41,43 @@
 #pragma mark -
 #pragma mark Interface Actions
 
-NSString* const iTetPlineFormat =		@"pline %d ";
-NSString* const iTetPlineActionFormat =	@"plineact %d ";
-
-- (IBAction)sendMessage:(id)sender
+- (IBAction)submitChatMessage:(id)sender
 {
 	// Check if there is a message to send
-	NSAttributedString* message = [messageField attributedStringValue];
-	if ([message length] == 0)
+	NSAttributedString* messageContents = [messageField attributedStringValue];
+	if ([messageContents length] == 0)
 		return;
 	
 	// Check if the string is an action
-	BOOL action = ([message length] > 3) && [[[message string] substringToIndex:3] isEqualToString:@"/me"];
+	BOOL action = ([messageContents length] > 3) && [[[messageContents string] substringToIndex:3] isEqualToString:@"/me"];
 	
-	// Format the message as text or action
-	NSString* format;
+	// Construct the message
+	iTetMessage<iTetOutgoingMessage>* message;
+	iTetPlayer* localPlayer = [appController localPlayer];
 	if (action)
 	{
-		format = iTetPlineActionFormat;
-		message = [message attributedSubstringFromRange:NSMakeRange(4, [message length] - 4)];
+		// Trim off the "/me "
+		messageContents = [messageContents attributedSubstringFromRange:NSMakeRange(4, [messageContents length] - 4)];
+		
+		// Create the message
+		message = [iTetPlineActionMessage messageWithContents:messageContents
+												   fromPlayer:localPlayer];
+		
 	}
 	else
 	{
-		format = iTetPlineFormat;
+		// Create the message
+		message = [iTetPlineChatMessage messageWithContents:messageContents
+												 fromPlayer:localPlayer];
 	}
 	
-	// Concatenate the formatting with the message contents
-	iTetPlayer* localPlayer = (iTetPlayer*)[appController localPlayer];
-	NSMutableAttributedString* toSend = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, [localPlayer playerNumber]]] autorelease];
-	[toSend appendAttributedString:message];
-	
-	// Note the range of the concatenated string that has attributes
-	NSRange attrRange;
-	attrRange.location = ([toSend length] - [message length]);
-	attrRange.length = ([toSend length] - attrRange.location);
-	
 	// Send the message
-	[[appController networkController] sendMessageData:[iTetTextAttributes dataFromFormattedMessage:toSend
-																				withAttributedRange:attrRange]];
+	[[appController networkController] sendMessage:message];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
-	if (action || ([[message string] characterAtIndex:0] != '/'))
+	if (action || ([[messageContents string] characterAtIndex:0] != '/'))
 	{
-		[self appendChatLine:message
+		[self appendChatLine:messageContents
 			  fromPlayerName:[localPlayer nickname]
 					  action:action];
 	}
@@ -180,12 +178,12 @@ NSString* const iTetPlineActionFormat =	@"plineact %d ";
  // Send the request
  [iTetNetworkController sendMessage:request];
  pendingChannelRequest = YES;
- }*/
-
-- (void)addChannel:(NSString*)channelData
-{
+ }
+ 
+ - (void)addChannel:(NSString*)channelData
+ {
 	// FIXME: WRITEME
-}
+ }*/
 
 #pragma mark -
 #pragma mark Accessors

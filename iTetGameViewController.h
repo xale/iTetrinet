@@ -15,9 +15,7 @@
 @class iTetSpecialsView;
 @class iTetPlayer;
 @class iTetGameRules;
-@class iTetBlock;
 @class iTetKeyNamePair;
-@class Queue;
 
 typedef enum
 {
@@ -66,7 +64,8 @@ typedef enum
 	NSMutableArray* actionHistory;
 }
 
-- (IBAction)sendMessage:(id)sender;
+- (IBAction)submitChatMessage:(id)sender;
+
 - (void)appendChatLine:(NSString*)line
 		fromPlayerName:(NSString*)playerName;
 - (void)appendChatLine:(NSString*)line;
@@ -98,11 +97,12 @@ typedef enum
 - (void)sendLines:(NSInteger)lines;
 - (void)sendPlayerLostMessage;
 
+- (void)fieldstringReceived:(NSString*)fieldstring
+				  forPlayer:(iTetPlayer*)player
+			  partialUpdate:(BOOL)isPartial;
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;
-- (void)linesAdded:(NSInteger)numLines
-		  byPlayer:(iTetPlayer*)sender;
 - (void)recordAction:(NSAttributedString*)description;
 - (void)clearActions;
 

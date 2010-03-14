@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "iTetMessage.h"
 
 @class iTetNetworkController;
 @class iTetPreferencesController;
@@ -73,7 +74,7 @@
 - (void)connectionOpened;
 - (void)connectionClosed;
 - (void)connectionError:(NSError*)error;
-- (void)messageReceived:(NSData*)message;
+- (void)messageReceived:(iTetMessage*)message;
 
 - (void)setLocalPlayerNumber:(NSInteger)number;
 - (void)addPlayerWithNumber:(NSInteger)number

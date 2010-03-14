@@ -57,8 +57,8 @@ typedef enum
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block;
 
 // Checks whether the specified cell is valid (i.e., on the field) and empty
-- (iTetObstructionState)cellObstructedAtRow:(int)row
-									 column:(int)col;
+- (iTetObstructionState)cellObstructedAtRow:(NSInteger)row
+									 column:(NSInteger)col;
 
 // Add the cells of the specified block to the field's contents
 - (void)solidifyBlock:(iTetBlock*)block;
