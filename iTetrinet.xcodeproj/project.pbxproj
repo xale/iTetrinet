@@ -20,6 +20,9 @@
 		6A12A26910E4A03400EA67B7 /* iTetBlocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A12A26610E4A03400EA67B7 /* iTetBlocks.png */; };
 		6A1851A710E7394000A29E0F /* iTetBlocks_White.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A1851A510E7394000A29E0F /* iTetBlocks_White.png */; };
 		6A1851A810E7394000A29E0F /* theme_white.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A1851A610E7394000A29E0F /* theme_white.cfg */; };
+		6A268692114F0EC5007B1420 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A268691114F0EC5007B1420 /* AsyncSocket.m */; };
+		6A2687D4114F131A007B1420 /* iTetPlayersController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2687D3114F131A007B1420 /* iTetPlayersController.m */; };
+		6A2687D8114F152D007B1420 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A2687D7114F152D007B1420 /* CoreServices.framework */; };
 		6A2922AE100BE5CF0008A3C3 /* iTetPreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */; };
 		6A29233D100BED350008A3C3 /* iTetNextBlockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A29233C100BED350008A3C3 /* iTetNextBlockView.m */; };
 		6A2923CF100BFB7A0008A3C3 /* iTetThemedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A2923CE100BFB7A0008A3C3 /* iTetThemedView.m */; };
@@ -136,6 +139,11 @@
 		6A12A26610E4A03400EA67B7 /* iTetBlocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks.png; sourceTree = "<group>"; };
 		6A1851A510E7394000A29E0F /* iTetBlocks_White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_White.png; sourceTree = "<group>"; };
 		6A1851A610E7394000A29E0F /* theme_white.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_white.cfg; sourceTree = "<group>"; };
+		6A268690114F0EC5007B1420 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
+		6A268691114F0EC5007B1420 /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
+		6A2687D2114F131A007B1420 /* iTetPlayersController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayersController.h; sourceTree = "<group>"; };
+		6A2687D3114F131A007B1420 /* iTetPlayersController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayersController.m; sourceTree = "<group>"; };
+		6A2687D7114F152D007B1420 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		6A2922AC100BE5CF0008A3C3 /* iTetPreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPreferencesController.h; sourceTree = "<group>"; };
 		6A2922AD100BE5CF0008A3C3 /* iTetPreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPreferencesController.m; sourceTree = "<group>"; };
 		6A29233B100BED350008A3C3 /* iTetNextBlockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNextBlockView.h; sourceTree = "<group>"; };
@@ -292,6 +300,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				6A2687D8114F152D007B1420 /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				6A2687D7114F152D007B1420 /* CoreServices.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -380,6 +390,15 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6A26868F114F0EB5007B1420 /* AsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				6A268690114F0EC5007B1420 /* AsyncSocket.h */,
+				6A268691114F0EC5007B1420 /* AsyncSocket.m */,
+			);
+			name = AsyncSocket;
 			sourceTree = "<group>";
 		};
 		6A29DC8810BB46130054D353 /* Superclass */ = {
@@ -538,6 +557,8 @@
 				6A4A3749101BB32500F27DE9 /* View Controllers */,
 				6A96B57D10098F49003D353E /* iTetAppController.h */,
 				6A96B57E10098F49003D353E /* iTetAppController.m */,
+				6A2687D2114F131A007B1420 /* iTetPlayersController.h */,
+				6A2687D3114F131A007B1420 /* iTetPlayersController.m */,
 				6A96B5F8100992F1003D353E /* iTetNetworkController.h */,
 				6A96B5F9100992F1003D353E /* iTetNetworkController.m */,
 				6A2922AC100BE5CF0008A3C3 /* iTetPreferencesController.h */,
@@ -754,6 +775,7 @@
 		6AFDE346100AA7C600BED4A0 /* Miscellaneous */ = {
 			isa = PBXGroup;
 			children = (
+				6A26868F114F0EB5007B1420 /* AsyncSocket */,
 				6A3ACC5210B7C7CC00459D97 /* Key Image Caching */,
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
 				6A96B57B10098EF9003D353E /* Queue Data Structure */,
@@ -911,6 +933,8 @@
 				6A09E3A41148799D0063F2A1 /* iTetPlayerWonMessage.m in Sources */,
 				6A09E3B3114889360063F2A1 /* iTetPlineActionMessage.m in Sources */,
 				6A09E3CD114899660063F2A1 /* iTetMessage+ClassFactory.m in Sources */,
+				6A268692114F0EC5007B1420 /* AsyncSocket.m in Sources */,
+				6A2687D4114F131A007B1420 /* iTetPlayersController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
