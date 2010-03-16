@@ -9,7 +9,7 @@
 #import "iTetMessage.h"
 
 @class iTetServerInfo;
-@class Queue;
+@class AsyncSocket;
 
 extern NSString* const iTetNetworkErrorDomain;
 typedef enum
@@ -17,43 +17,24 @@ typedef enum
 	iTetNoConnectingError = 1
 } iTetNetworkError;
 
-@interface NSObject (iTetNetworkControllerDelegate)
-
-- (void)connectionOpened;
-- (void)connectionClosed;
-- (void)connectionError:(NSError*)error;
-- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message;
-
-@end
-
 @interface iTetNetworkController : NSObject
 {
-	id delegate;
+	// Other top-level controllers
+	iTetPlayersController* playersController;
+	iTetGameViewController* gameController;
+	iTetChatViewController* chatController;
+	iTetWinlistViewController* winlistController;
 	
+	// Network-related
 	iTetServerInfo* currentServer;
-	NSHost* currentConnection;
-	BOOL connected;
-	
-	NSInputStream* readStream;
-	NSMutableData* partialRead;
-	
-	NSOutputStream* writeStream;
-	Queue* writeQueue;
+	AsyncSocket* connectionSocket;
 }
-
-- (id)initWithDelegate:(id)theDelegate;
 
 - (void)connectToServer:(iTetServerInfo*)server;
 - (void)disconnect;
 
 - (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
-- (void)sendMessageData:(NSData*)messageData;
-
-- (void)attemptRead;
-- (void)attemptWrite;
-- (void)handleError:(NSStream*)stream;
 
 @property (readonly) iTetServerInfo* currentServer;
-@property (readwrite, assign) BOOL connected;
 
 @end
