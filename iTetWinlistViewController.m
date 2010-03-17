@@ -10,8 +10,8 @@
 
 @implementation iTetWinlistViewController
 
-static const unichar iTetPlayerEntryCharacter = 'p';
-static const unichar iTetTeamEntryCharacter = 't';
+NSString* const	iTetPlayerWinlistEntryCharacter =	@"p";
+NSString* const iTetTeamWinlistEntryCharacter =		@"t";
 
 - (void)parseWinlist:(NSArray*)winlistTokens
 {
@@ -30,13 +30,14 @@ static const unichar iTetTeamEntryCharacter = 't';
 		}
 		
 		// Determine if this entry represents a player or a team
-		unichar firstChar = [entryToken characterAtIndex:0];
-		if (firstChar == iTetPlayerEntryCharacter)
+		if ([entryToken rangeOfString:iTetPlayerWinlistEntryCharacter
+							  options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound)
 		{
 			[winlistEntries addObject:[iTetWinlistEntry playerEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
 																	  score:[[entryComponents objectAtIndex:1] integerValue]]];
 		}
-		else if (firstChar == iTetTeamEntryCharacter)
+		else if ([entryToken rangeOfString:iTetTeamWinlistEntryCharacter
+								   options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound)
 		{
 			[winlistEntries addObject:[iTetWinlistEntry teamEntryWithName:[[entryComponents objectAtIndex:0] substringFromIndex:1]
 																	score:[[entryComponents objectAtIndex:1] integerValue]]];
