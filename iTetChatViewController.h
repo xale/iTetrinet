@@ -7,11 +7,16 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class iTetAppController;
+@class iTetWindowController;
+@class iTetPlayersController;
+@class iTetNetworkController;
 
 @interface iTetChatViewController : NSObject
 {
-	IBOutlet iTetAppController* appController;
+	// Top-level controllers
+	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetPlayersController* playersController;
+	IBOutlet iTetNetworkController* networkController;
 	
 	// Chat views
 	IBOutlet NSTextView* chatView;

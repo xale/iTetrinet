@@ -40,6 +40,7 @@
 		6A7997E8114074D8005C3093 /* iTetNewGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */; };
 		6A7997F91140C9A7005C3093 /* iTetInGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */; };
 		6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */; };
+		6A7DC210115047080068584D /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DC20F115047080068584D /* iTetWindowController.m */; };
 		6A96B56D10098E88003D353E /* iTetBlock+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55710098E88003D353E /* iTetBlock+Drawing.m */; };
 		6A96B56E10098E88003D353E /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55910098E88003D353E /* iTetBlock.m */; };
 		6A96B56F10098E88003D353E /* iTetField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55B10098E88003D353E /* iTetField.m */; };
@@ -51,7 +52,6 @@
 		6A96B57510098E88003D353E /* iTetTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56810098E88003D353E /* iTetTheme.m */; };
 		6A96B57610098E88003D353E /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56A10098E88003D353E /* Node.m */; };
 		6A96B57710098E88003D353E /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56C10098E88003D353E /* Queue.m */; };
-		6A96B57F10098F49003D353E /* iTetAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B57E10098F49003D353E /* iTetAppController.m */; };
 		6A96B59110098FFD003D353E /* Cancel Red Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58A10098FFD003D353E /* Cancel Red Button.png */; };
 		6A96B59210098FFD003D353E /* Eject Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58B10098FFD003D353E /* Eject Blue Button.png */; };
 		6A96B59310098FFD003D353E /* Network.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58C10098FFD003D353E /* Network.png */; };
@@ -103,7 +103,7 @@
 		6AFCE0F5108771310090F3DF /* iTetSpecials.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F4108771310090F3DF /* iTetSpecials.m */; };
 		6AFCE0F9108772B10090F3DF /* iTetSpecialNameTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFCE0F8108772B10090F3DF /* iTetSpecialNameTransformer.m */; };
 		6AFD368F1122598000BE4CAB /* iTetAttributeRangePair.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */; };
-		6AFDE349100AA7E900BED4A0 /* NSMutableData+SingleByte.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */; };
+		6AFDE349100AA7E900BED4A0 /* NSData+SingleByte.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AFDE348100AA7E900BED4A0 /* NSData+SingleByte.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -177,6 +177,8 @@
 		6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetInGameMessage.m; sourceTree = "<group>"; };
 		6A7997FE1140CB38005C3093 /* iTetFieldstringMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetFieldstringMessage.h; sourceTree = "<group>"; };
 		6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetFieldstringMessage.m; sourceTree = "<group>"; };
+		6A7DC20E115047080068584D /* iTetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWindowController.h; sourceTree = "<group>"; };
+		6A7DC20F115047080068584D /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
 		6A96B55610098E88003D353E /* iTetBlock+Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetBlock+Drawing.h"; sourceTree = "<group>"; };
 		6A96B55710098E88003D353E /* iTetBlock+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetBlock+Drawing.m"; sourceTree = "<group>"; };
 		6A96B55810098E88003D353E /* iTetBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlock.h; sourceTree = "<group>"; };
@@ -200,8 +202,6 @@
 		6A96B56A10098E88003D353E /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
 		6A96B56B10098E88003D353E /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
 		6A96B56C10098E88003D353E /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
-		6A96B57D10098F49003D353E /* iTetAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetAppController.h; sourceTree = "<group>"; };
-		6A96B57E10098F49003D353E /* iTetAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetAppController.m; sourceTree = "<group>"; };
 		6A96B58A10098FFD003D353E /* Cancel Red Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cancel Red Button.png"; sourceTree = "<group>"; };
 		6A96B58B10098FFD003D353E /* Eject Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Eject Blue Button.png"; sourceTree = "<group>"; };
 		6A96B58C10098FFD003D353E /* Network.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Network.png; sourceTree = "<group>"; };
@@ -288,8 +288,8 @@
 		6AFCE0F8108772B10090F3DF /* iTetSpecialNameTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecialNameTransformer.m; sourceTree = "<group>"; };
 		6AFD368D1122598000BE4CAB /* iTetAttributeRangePair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetAttributeRangePair.h; sourceTree = "<group>"; };
 		6AFD368E1122598000BE4CAB /* iTetAttributeRangePair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetAttributeRangePair.m; sourceTree = "<group>"; };
-		6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableData+SingleByte.h"; sourceTree = "<group>"; };
-		6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableData+SingleByte.m"; sourceTree = "<group>"; };
+		6AFDE347100AA7E900BED4A0 /* NSData+SingleByte.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SingleByte.h"; sourceTree = "<group>"; };
+		6AFDE348100AA7E900BED4A0 /* NSData+SingleByte.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SingleByte.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iTetrinet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTetrinet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -555,8 +555,8 @@
 			isa = PBXGroup;
 			children = (
 				6A4A3749101BB32500F27DE9 /* View Controllers */,
-				6A96B57D10098F49003D353E /* iTetAppController.h */,
-				6A96B57E10098F49003D353E /* iTetAppController.m */,
+				6A7DC20E115047080068584D /* iTetWindowController.h */,
+				6A7DC20F115047080068584D /* iTetWindowController.m */,
 				6A2687D2114F131A007B1420 /* iTetPlayersController.h */,
 				6A2687D3114F131A007B1420 /* iTetPlayersController.m */,
 				6A96B5F8100992F1003D353E /* iTetNetworkController.h */,
@@ -710,8 +710,8 @@
 				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
 				6A387E31113F4D0C0074A5F6 /* NSData+Searching.h */,
 				6A387E32113F4D0C0074A5F6 /* NSData+Searching.m */,
-				6AFDE347100AA7E900BED4A0 /* NSMutableData+SingleByte.h */,
-				6AFDE348100AA7E900BED4A0 /* NSMutableData+SingleByte.m */,
+				6AFDE347100AA7E900BED4A0 /* NSData+SingleByte.h */,
+				6AFDE348100AA7E900BED4A0 /* NSData+SingleByte.m */,
 				6AFA9134113F16F400300F33 /* NSString+ASCIIData.h */,
 				6AFA9135113F16F400300F33 /* NSString+ASCIIData.m */,
 			);
@@ -872,9 +872,8 @@
 				6A96B57510098E88003D353E /* iTetTheme.m in Sources */,
 				6A96B57610098E88003D353E /* Node.m in Sources */,
 				6A96B57710098E88003D353E /* Queue.m in Sources */,
-				6A96B57F10098F49003D353E /* iTetAppController.m in Sources */,
 				6A96B5FA100992F1003D353E /* iTetNetworkController.m in Sources */,
-				6AFDE349100AA7E900BED4A0 /* NSMutableData+SingleByte.m in Sources */,
+				6AFDE349100AA7E900BED4A0 /* NSData+SingleByte.m in Sources */,
 				6A2922AE100BE5CF0008A3C3 /* iTetPreferencesController.m in Sources */,
 				6A29233D100BED350008A3C3 /* iTetNextBlockView.m in Sources */,
 				6A2923CF100BFB7A0008A3C3 /* iTetThemedView.m in Sources */,
@@ -935,6 +934,7 @@
 				6A09E3CD114899660063F2A1 /* iTetMessage+ClassFactory.m in Sources */,
 				6A268692114F0EC5007B1420 /* AsyncSocket.m in Sources */,
 				6A2687D4114F131A007B1420 /* iTetPlayersController.m in Sources */,
+				6A7DC210115047080068584D /* iTetWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

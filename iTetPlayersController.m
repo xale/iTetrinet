@@ -11,9 +11,29 @@
 
 @implementation iTetPlayersController
 
+- (id)init
+{
+	// Create the players array (initially filled with NSNull placeholders)
+	players = [[NSMutableArray alloc] initWithCapacity:ITET_MAX_PLAYERS];
+	for (NSInteger i = 0; i < ITET_MAX_PLAYERS; i++)
+		[players addObject:[NSNull null]];
+	
+	return self;
+}
+
+- (void)dealloc
+{
+	[players release];
+	[localPlayer release];
+	
+	[super dealloc];
+}
+
 #define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= ITET_MAX_PLAYERS))
 
 - (void)setLocalPlayerNumber:(NSInteger)number
+					nickname:(NSString*)nickname
+					teamName:(NSString*)teamName
 {
 	// Sanity check
 	iTetCheckPlayerNumber(number);
@@ -41,14 +61,14 @@
 		[players replaceObjectAtIndex:(number - 1)
 						   withObject:[self localPlayer]];
 		
-		// No need to notify game controller; field assignment will not change
+		// Player count unchanged
 	}
 	else
 	{
 		// Create the local player
-		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:[[networkController currentServer] nickname]
+		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:nickname
 														  number:number
-														teamName:[[networkController currentServer] playerTeam]]];
+														teamName:teamName]];
 		
 		// Place the player in the players array
 		[players replaceObjectAtIndex:(number - 1)
@@ -89,6 +109,39 @@
 	playerCount++;
 	
 	[self didChangeValueForKey:@"playerList"];
+}
+
+- (void)setTeamName:(NSString*)teamName
+	forPlayerNumber:(NSInteger)number
+{
+	// Sanity check
+	iTetCheckPlayerNumber(number);
+	
+	[self willChangeValueForKey:@"playerList"];
+	
+	[[self playerNumber:number] setTeamName:teamName];
+	
+	[self didChangeValueForKey:@"playerList"];
+}
+
+- (void)setPlayerIsPlaying:(BOOL)playing
+		   forPlayerNumber:(NSInteger)number
+{
+	// Sanity check
+	iTetCheckPlayerNumber(number);
+	
+	[[self playerNumber:number] setPlaying:playing];
+}
+
+- (void)setAllRemotePlayersToPlaying
+{
+	// Iterate through all objects in the player list
+	for (id player in players)
+	{
+		// Only set to "playing" if the object is an iTetPlayer (skips NSNull objects and the iTetLocalPlayer subclass)
+		if ([player isMemberOfClass:[iTetPlayer class]])
+			[player setPlaying:YES];
+	}
 }
 
 - (void)removePlayerNumber:(NSInteger)number
@@ -224,8 +277,8 @@
 	// Return the player with the lowest player number (first player in the array)
 	for (NSInteger index = 0; index < ITET_MAX_PLAYERS; index++)
 	{
-		if (players[index] != [NSNull null])
-			return players[index];
+		if ([[players objectAtIndex:index] isKindOfClass:[iTetPlayer class]])
+			return [players objectAtIndex:index];
 	}
 	
 	return nil;

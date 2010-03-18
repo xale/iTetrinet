@@ -8,12 +8,15 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetSpecials.h"
 
-@class iTetAppController;
+@class iTetWindowController;
+@class iTetPlayersController;
+@class iTetNetworkController;
 @class iTetFieldView;
 @class iTetLocalFieldView;
 @class iTetNextBlockView;
 @class iTetSpecialsView;
 @class iTetPlayer;
+@class iTetServerInfo;
 @class iTetGameRules;
 @class iTetKeyNamePair;
 
@@ -24,9 +27,24 @@ typedef enum
 	gamePaused
 } iTetGameplayState;
 
-@interface iTetGameViewController : NSObject
+typedef enum
 {
-	IBOutlet iTetAppController* appController;
+	nextBlock,
+	blockFall
+} iTetBlockTimerType;
+
+@interface iTetGameViewController : NSObject <NSUserInterfaceValidations>
+{
+	// Top-level controllers
+	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetPlayersController* playersController;
+	IBOutlet iTetNetworkController* networkController;
+	
+	// Menu and toolbar items
+	IBOutlet NSToolbarItem* gameButton;
+	IBOutlet NSMenuItem* gameMenuItem;
+	IBOutlet NSToolbarItem* pauseButton;
+	IBOutlet NSMenuItem* pauseMenuItem;
 	
 	// Local player's views
 	IBOutlet iTetLocalFieldView* localFieldView;
@@ -58,13 +76,16 @@ typedef enum
 	
 	// Data stored when game is paused
 	NSTimeInterval timeUntilNextTimerFire;
-	NSString* lastTimerType;
+	iTetBlockTimerType lastTimerType;
 	
 	// List of player actions (e.g., specials)
 	NSMutableArray* actionHistory;
 }
 
 - (IBAction)submitChatMessage:(id)sender;
+- (IBAction)startStopGame:(id)sender;
+- (IBAction)forfeitGame:(id)sender;
+- (IBAction)pauseResumeGame:(id)sender;
 
 - (void)appendChatLine:(NSString*)line
 		fromPlayerName:(NSString*)playerName;
@@ -72,22 +93,11 @@ typedef enum
 - (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
-					 rules:(iTetGameRules*)rules;
+				 rulesList:(NSArray*)rulesArray
+				  onServer:(iTetServerInfo*)gameServer;
 - (void)pauseGame;
 - (void)resumeGame;
 - (void)endGame;
-
-- (void)moveCurrentBlockDown;
-- (void)solidifyCurrentBlock;
-- (BOOL)checkForLinesCleared;
-- (void)moveNextBlockToField;
-- (void)useSpecial:(iTetSpecialType)special
-		  onTarget:(iTetPlayer*)target
-		fromSender:(iTetPlayer*)sender;
-- (void)playerLost;
-
-- (void)keyPressed:(iTetKeyNamePair*)key
-  onLocalFieldView:(iTetLocalFieldView*)fieldView;
 
 - (void)sendFieldstring;
 - (void)sendPartialFieldstring;
@@ -95,7 +105,6 @@ typedef enum
 - (void)sendSpecial:(iTetSpecialType)special
 		   toPlayer:(iTetPlayer*)target;
 - (void)sendLines:(NSInteger)lines;
-- (void)sendPlayerLostMessage;
 
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player
@@ -103,11 +112,6 @@ typedef enum
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;
-- (void)recordAction:(NSAttributedString*)description;
-- (void)clearActions;
-
-- (NSTimer*)nextBlockTimer;
-- (NSTimer*)fallTimer;
 
 @property (readwrite, retain) iTetGameRules* currentGameRules;
 @property (readwrite, assign) iTetGameplayState gameplayState;

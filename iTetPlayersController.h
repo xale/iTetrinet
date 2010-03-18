@@ -19,9 +19,16 @@
 	iTetLocalPlayer* localPlayer;
 }
 
-- (void)setLocalPlayerNumber:(NSInteger)number;
+- (void)setLocalPlayerNumber:(NSInteger)number
+					nickname:(NSString*)nickname
+					teamName:(NSString*)teamName;
 - (void)addPlayerWithNumber:(NSInteger)number
 				   nickname:(NSString*)nick;
+- (void)setTeamName:(NSString*)teamName
+	forPlayerNumber:(NSInteger)number;
+- (void)setPlayerIsPlaying:(BOOL)playing
+		   forPlayerNumber:(NSInteger)number;
+- (void)setAllRemotePlayersToPlaying;
 - (void)removePlayerNumber:(NSInteger)number;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)number;

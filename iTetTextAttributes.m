@@ -8,7 +8,7 @@
 #import "iTetTextAttributes.h"
 #import "NSColor+Comparisons.h"
 #import "NSString+ASCIIData.h"
-#import "NSMutableData+SingleByte.h"
+#import "NSData+SingleByte.h"
 #import "iTetAttributeRangePair.h"
 
 #define iTetSilverTextColor		[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]

@@ -8,6 +8,12 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetMessage.h"
 
+@class iTetWindowController;
+@class iTetPlayersController;
+@class iTetGameViewController;
+@class iTetChatViewController;
+@class iTetWinlistViewController;
+
 @class iTetServerInfo;
 @class AsyncSocket;
 
@@ -17,18 +23,41 @@ typedef enum
 	iTetNoConnectingError = 1
 } iTetNetworkError;
 
+typedef enum
+{
+	disconnected,
+	connecting,
+	connected
+} iTetConnectionState;
+
 @interface iTetNetworkController : NSObject
 {
 	// Other top-level controllers
-	iTetPlayersController* playersController;
-	iTetGameViewController* gameController;
-	iTetChatViewController* chatController;
-	iTetWinlistViewController* winlistController;
+	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetPlayersController* playersController;
+	IBOutlet iTetGameViewController* gameController;
+	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetWinlistViewController* winlistController;
 	
-	// Network-related
+	// Menu and toolbar items
+	IBOutlet NSToolbarItem* connectionButton;
+	IBOutlet NSMenuItem* connectionMenuItem;
+	
+	// Connection progress indicator
+	IBOutlet NSProgressIndicator* connectionProgressIndicator;
+	IBOutlet NSTextField* connectionStatusLabel;
+	
+	// List view (and controller) for servers on connection sheet
+	IBOutlet NSScrollView* serverListView;
+	IBOutlet NSArrayController* serverListController;
+	
+	// Network connection
 	iTetServerInfo* currentServer;
 	AsyncSocket* connectionSocket;
+	iTetConnectionState connectionState;
 }
+
+- (IBAction)openCloseConnection:(id)sender;
 
 - (void)connectToServer:(iTetServerInfo*)server;
 - (void)disconnect;
@@ -36,5 +65,6 @@ typedef enum
 - (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
 
 @property (readonly) iTetServerInfo* currentServer;
+@property (readonly) iTetConnectionState connectionState;
 
 @end
