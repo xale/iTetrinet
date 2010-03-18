@@ -50,8 +50,6 @@
 		6A96B57310098E88003D353E /* iTetServerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56310098E88003D353E /* iTetServerInfo.m */; };
 		6A96B57410098E88003D353E /* iTetSpecialsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56610098E88003D353E /* iTetSpecialsView.m */; };
 		6A96B57510098E88003D353E /* iTetTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56810098E88003D353E /* iTetTheme.m */; };
-		6A96B57610098E88003D353E /* Node.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56A10098E88003D353E /* Node.m */; };
-		6A96B57710098E88003D353E /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B56C10098E88003D353E /* Queue.m */; };
 		6A96B59110098FFD003D353E /* Cancel Red Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58A10098FFD003D353E /* Cancel Red Button.png */; };
 		6A96B59210098FFD003D353E /* Eject Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58B10098FFD003D353E /* Eject Blue Button.png */; };
 		6A96B59310098FFD003D353E /* Network.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A96B58C10098FFD003D353E /* Network.png */; };
@@ -198,10 +196,6 @@
 		6A96B56610098E88003D353E /* iTetSpecialsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecialsView.m; sourceTree = "<group>"; };
 		6A96B56710098E88003D353E /* iTetTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTheme.h; sourceTree = "<group>"; };
 		6A96B56810098E88003D353E /* iTetTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTheme.m; sourceTree = "<group>"; };
-		6A96B56910098E88003D353E /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
-		6A96B56A10098E88003D353E /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
-		6A96B56B10098E88003D353E /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
-		6A96B56C10098E88003D353E /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
 		6A96B58A10098FFD003D353E /* Cancel Red Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Cancel Red Button.png"; sourceTree = "<group>"; };
 		6A96B58B10098FFD003D353E /* Eject Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Eject Blue Button.png"; sourceTree = "<group>"; };
 		6A96B58C10098FFD003D353E /* Network.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Network.png; sourceTree = "<group>"; };
@@ -540,17 +534,6 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		6A96B57B10098EF9003D353E /* Queue Data Structure */ = {
-			isa = PBXGroup;
-			children = (
-				6A96B56B10098E88003D353E /* Queue.h */,
-				6A96B56C10098E88003D353E /* Queue.m */,
-				6A96B56910098E88003D353E /* Node.h */,
-				6A96B56A10098E88003D353E /* Node.m */,
-			);
-			name = "Queue Data Structure";
-			sourceTree = "<group>";
-		};
 		6A96B57C10098F29003D353E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -778,7 +761,6 @@
 				6A26868F114F0EB5007B1420 /* AsyncSocket */,
 				6A3ACC5210B7C7CC00459D97 /* Key Image Caching */,
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
-				6A96B57B10098EF9003D353E /* Queue Data Structure */,
 				6AEBBF18113F1C1D003C997B /* Utility Categories */,
 			);
 			name = Miscellaneous;
@@ -870,8 +852,6 @@
 				6A96B57310098E88003D353E /* iTetServerInfo.m in Sources */,
 				6A96B57410098E88003D353E /* iTetSpecialsView.m in Sources */,
 				6A96B57510098E88003D353E /* iTetTheme.m in Sources */,
-				6A96B57610098E88003D353E /* Node.m in Sources */,
-				6A96B57710098E88003D353E /* Queue.m in Sources */,
 				6A96B5FA100992F1003D353E /* iTetNetworkController.m in Sources */,
 				6AFDE349100AA7E900BED4A0 /* NSData+SingleByte.m in Sources */,
 				6A2922AE100BE5CF0008A3C3 /* iTetPreferencesController.m in Sources */,
