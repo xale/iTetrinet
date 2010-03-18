@@ -7,8 +7,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class iTetAppController;
-
 @interface iTetTextAttributesController : NSObject <NSUserInterfaceValidations>
 {
 	IBOutlet NSTextField* partylineMessageField;
