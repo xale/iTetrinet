@@ -37,6 +37,7 @@
 		6A7997E8114074D8005C3093 /* iTetNewGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */; };
 		6A7997F91140C9A7005C3093 /* iTetInGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */; };
 		6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */; };
+		6A8EEEE1115439020050339E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 6A8EEEDF115439020050339E /* Credits.rtf */; };
 		6A96B56D10098E88003D353E /* iTetBlock+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55710098E88003D353E /* iTetBlock+Drawing.m */; };
 		6A96B56E10098E88003D353E /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55910098E88003D353E /* iTetBlock.m */; };
 		6A96B56F10098E88003D353E /* iTetField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55B10098E88003D353E /* iTetField.m */; };
@@ -169,6 +170,7 @@
 		6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetInGameMessage.m; sourceTree = "<group>"; };
 		6A7997FE1140CB38005C3093 /* iTetFieldstringMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetFieldstringMessage.h; sourceTree = "<group>"; };
 		6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetFieldstringMessage.m; sourceTree = "<group>"; };
+		6A8EEEE0115439020050339E /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		6A96B55610098E88003D353E /* iTetBlock+Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetBlock+Drawing.h"; sourceTree = "<group>"; };
 		6A96B55710098E88003D353E /* iTetBlock+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetBlock+Drawing.m"; sourceTree = "<group>"; };
 		6A96B55810098E88003D353E /* iTetBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlock.h; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				6A8EEEDF115439020050339E /* Credits.rtf */,
 				6A96B59710099001003D353E /* Images */,
 				6A96B5981009900C003D353E /* Themes */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -828,6 +831,7 @@
 				6ADDDB3B111A86C9004EEE61 /* iTetBlocks_Mono.png in Resources */,
 				6ADDDB3C111A86C9004EEE61 /* theme_mono.cfg in Resources */,
 				6A5F2688111CC9AC00DD63DA /* Minus Red Button.png in Resources */,
+				6A8EEEE1115439020050339E /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -931,6 +935,14 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		6A8EEEDF115439020050339E /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6A8EEEE0115439020050339E /* English */,
+			);
+			name = Credits.rtf;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
