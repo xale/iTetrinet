@@ -117,7 +117,7 @@ NSString* const iTetPlayerWonMessageDesignation =				@"playerwon";
 
 + (NSDictionary*)messageDesignations
 {
-	@synchronized (self)
+	@synchronized(self)
 	{
 		if (iTetMessageDesignations == nil)
 		{
