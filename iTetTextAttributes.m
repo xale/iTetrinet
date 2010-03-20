@@ -18,6 +18,15 @@
 #define iTetDarkBlueTextColor	[NSColor colorWithCalibratedRed:0.0 green:0.0 blue:0.5 alpha:1.0]
 #define iTetMaroonTextColor		[NSColor colorWithCalibratedRed:0.5 green:0.0 blue:0.0 alpha:1.0]
 
+NSCharacterSet* iTetTextAttributeCharacterSet = nil;
+
+@interface iTetTextAttributes (Private)
+
++ (NSCharacterSet*)textAttributeCharacterSet;
++ (NSString*)textAttributeCharactersString;
+
+@end
+
 @implementation iTetTextAttributes
 
 - (id)init
@@ -25,121 +34,6 @@
 	[self doesNotRecognizeSelector:_cmd];
 	[self release];
 	return nil;
-}
-
-#pragma mark -
-#pragma mark Color/Code Conversions
-
-+ (NSColor*)textColorForAttribute:(iTetTextColorAttribute)attribute
-{
-	switch (attribute)
-	{
-		case blackTextColor:
-			return [NSColor blackColor];
-			
-		case whiteTextColor:
-			return [NSColor whiteColor];
-			
-		case grayTextColor:
-			return [NSColor grayColor];
-			
-		case silverTextColor:
-			return iTetSilverTextColor;
-			
-		case redTextColor:
-			return [NSColor redColor];
-			
-		case yellowTextColor:
-			return [NSColor yellowColor];
-			
-		case limeTextColor:
-			return [NSColor greenColor];
-			
-		case greenTextColor:
-			return iTetGreenTextColor;
-			
-		case oliveTextColor:
-			return iTetOliveTextColor;
-			
-		case tealTextColor:
-			return iTetTealTextColor;
-			
-		case cyanTextColor:
-			return [NSColor cyanColor];
-			
-		case blueTextColor:
-			return [NSColor blueColor];
-			
-		case darkBlueTextColor:
-			return iTetDarkBlueTextColor;
-			
-		case purpleTextColor:
-			return [NSColor purpleColor];
-			
-		case maroonTextColor:
-			return iTetMaroonTextColor;
-			
-		case magentaTextColor:
-			return [NSColor magentaColor];
-			
-		default:
-			break;
-	}
-	
-	return nil;
-}
-
-+ (iTetTextColorAttribute)attributeForTextColor:(NSColor*)color
-{
-	if ([color hasSameRGBValuesAsColor:[NSColor blackColor]])
-		return blackTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor whiteColor]])
-		return whiteTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor grayColor]])
-		return grayTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetSilverTextColor])
-		return silverTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor redColor]])
-		return redTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor yellowColor]])
-		return yellowTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor greenColor]])
-		return limeTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetGreenTextColor])
-		return greenTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetOliveTextColor])
-		return oliveTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetTealTextColor])
-		return tealTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor cyanColor]])
-		return cyanTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor blueColor]])
-		return blueTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetDarkBlueTextColor])
-		return darkBlueTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor purpleColor]])
-		return purpleTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:iTetMaroonTextColor])
-		return maroonTextColor;
-	
-	if ([color hasSameRGBValuesAsColor:[NSColor magentaColor]])
-		return magentaTextColor;
-	
-	return noColor;
 }
 
 #pragma mark -
@@ -421,6 +315,176 @@ NSString* const iTetMultipleAttributesPredicateFormat =	@"(attributeType == %d) 
 	
 	// Return the formatted data
 	return [NSData dataWithData:messageData];
+}
+
+#pragma mark -
+#pragma mark Color/Code Conversions
+
++ (NSColor*)textColorForAttribute:(iTetTextColorAttribute)attribute
+{
+	switch (attribute)
+	{
+		case blackTextColor:
+			return [NSColor blackColor];
+			
+		case whiteTextColor:
+			return [NSColor whiteColor];
+			
+		case grayTextColor:
+			return [NSColor grayColor];
+			
+		case silverTextColor:
+			return iTetSilverTextColor;
+			
+		case redTextColor:
+			return [NSColor redColor];
+			
+		case yellowTextColor:
+			return [NSColor yellowColor];
+			
+		case limeTextColor:
+			return [NSColor greenColor];
+			
+		case greenTextColor:
+			return iTetGreenTextColor;
+			
+		case oliveTextColor:
+			return iTetOliveTextColor;
+			
+		case tealTextColor:
+			return iTetTealTextColor;
+			
+		case cyanTextColor:
+			return [NSColor cyanColor];
+			
+		case blueTextColor:
+			return [NSColor blueColor];
+			
+		case darkBlueTextColor:
+			return iTetDarkBlueTextColor;
+			
+		case purpleTextColor:
+			return [NSColor purpleColor];
+			
+		case maroonTextColor:
+			return iTetMaroonTextColor;
+			
+		case magentaTextColor:
+			return [NSColor magentaColor];
+			
+		default:
+			break;
+	}
+	
+	return nil;
+}
+
++ (iTetTextColorAttribute)attributeForTextColor:(NSColor*)color
+{
+	if ([color hasSameRGBValuesAsColor:[NSColor blackColor]])
+		return blackTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor whiteColor]])
+		return whiteTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor grayColor]])
+		return grayTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetSilverTextColor])
+		return silverTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor redColor]])
+		return redTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor yellowColor]])
+		return yellowTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor greenColor]])
+		return limeTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetGreenTextColor])
+		return greenTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetOliveTextColor])
+		return oliveTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetTealTextColor])
+		return tealTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor cyanColor]])
+		return cyanTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor blueColor]])
+		return blueTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetDarkBlueTextColor])
+		return darkBlueTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor purpleColor]])
+		return purpleTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:iTetMaroonTextColor])
+		return maroonTextColor;
+	
+	if ([color hasSameRGBValuesAsColor:[NSColor magentaColor]])
+		return magentaTextColor;
+	
+	return noColor;
+}
+
+#pragma mark -
+#pragma mark Text Attribute Character Set
+
++ (NSCharacterSet*)textAttributeCharacterSet
+{
+	@synchronized(self)
+	{
+		if (iTetTextAttributeCharacterSet == nil)
+		{
+			iTetTextAttributeCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:[self textAttributeCharactersString]] retain];
+		}
+	}
+	
+	return iTetTextAttributeCharacterSet;
+}
+
++ (NSString*)textAttributeCharactersString
+{
+	NSMutableString* attributeChars = [NSMutableString string];
+	
+	for (char c = 0; c < ITET_HIGHEST_ATTR_CODE; c++)
+	{
+		switch (c)
+		{
+			case blackTextColor:
+			case whiteTextColor:
+			case grayTextColor:
+			case silverTextColor:
+			case redTextColor:
+			case yellowTextColor:
+			case limeTextColor:
+			case greenTextColor:
+			case oliveTextColor:
+			case tealTextColor:
+			case cyanTextColor:
+			case blueTextColor:
+			case darkBlueTextColor:
+			case purpleTextColor:
+			case maroonTextColor:
+			case magentaTextColor:
+			case italicText:
+			case underlineText:
+			case boldText:
+				[attributeChars appendFormat:@"%c", c];
+				break;
+			
+			case noColor:
+			case boldItalicText:
+				break;
+		}
+	}
+	
+	return [NSString stringWithString:attributeChars];
 }
 
 @end
