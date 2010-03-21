@@ -276,7 +276,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 		case obstructHoriz:
 		{
 			// Attempt to shift the block horizontally to accommodate rotation
-			// (blatently stolen from gTetrinet source)
+			// (blatantly stolen from GTetrinet source)
 			NSInteger shifts[4] = {1, -1, 2, -2};
 			for (NSInteger i = 0; i < 4; i++)
 			{

@@ -169,8 +169,7 @@
 											  options:0
 												range:dataRange];
 	
-	// If a newline was found, the section ends there; otherwise, the section
-	// is assumed to end at the end of the file
+	// If a newline was found, the section ends there; otherwise, the section is assumed to end at the end of the file
 	if (searchResult.location != NSNotFound)
 		dataRange.length = searchResult.location - dataRange.location;
 	

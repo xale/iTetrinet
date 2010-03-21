@@ -199,7 +199,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 		// Create a context info dictionary
 		NSDictionary* infoDict = [[NSDictionary alloc] initWithObjectsAndKeys:
 								  sender, iTetOriginalSenderInfoKey,
-								  newController, iTetNewControllerInfoKey, nil];
+								  newController, iTetNewControllerInfoKey,
+								  nil];
 		
 		// Run the alert as a sheet
 		[alert beginSheetModalForWindow:[[self view] window]
@@ -294,7 +295,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 			return;
 		}
 		
-		// If the context info has a "window to close" object, send it a 
+		// If the context info has a "window to close" object, tell it to close
 		NSWindow* window = [infoDict objectForKey:iTetWindowToCloseInfoKey];
 		if (window != nil)
 		{
@@ -412,8 +413,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	NSMutableDictionary* newConfig = [[unsavedConfiguration mutableCopy] autorelease];
 	
 	// Set the configuration name (same as the config we are replacing)
-	[newConfig setConfigurationName:
-	 [[[PREFS keyConfigurations] objectAtIndex:i] configurationName]];
+	[newConfig setConfigurationName:[[[PREFS keyConfigurations] objectAtIndex:i] configurationName]];
 	
 	// Clear the unsaved configuration
 	[self clearUnsavedConfiguration];
@@ -520,8 +520,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 						change:(NSDictionary*)changeDict
 					   context:(void*)context
 {
-	// If this isn't a key view, we don't care (and we shouldn't be getting
-	// this notification...)
+	// If this isn't a key view, we don't care (and we shouldn't be getting this notification...)
 	if (![object isKindOfClass:[iTetKeyView class]])
 		return;
 	
@@ -531,14 +530,12 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	// Determine whether the view is highlighted
 	if ([[changeDict objectForKey:NSKeyValueChangeNewKey] boolValue])
 	{
-		// Key view is now highlighted: set the description text to that
-		// key view's description
+		// Key view is now highlighted: set the description text to that key view's description
 		[self setKeyDescriptionForKeyView:keyView];
 	}
 	else
 	{
-		// Key view is no longer highlighted: if the description text currently
-		// contains the key's description, clear the text
+		// Key view is no longer highlighted: if the description text currently contains the key's description, clear the text
 		// FIXME: kinda hacky
 		NSString* desc = [keyDescriptionField stringValue];
 		if (([desc length] > 0) && ([desc characterAtIndex:0] == 'P'))
@@ -583,9 +580,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 			NSBeep();
 			
 			// Place a warning in the text field
-			[keyDescriptionField setStringValue:
-			 [NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"",
-			  [key printedName], iTetNameForAction(boundAction)]];
+			[keyDescriptionField setStringValue:[NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"", [key printedName], iTetNameForAction(boundAction)]];
 		}
 		
 		return NO;
@@ -664,9 +659,7 @@ NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to \'%@\'";
 
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView
 {
-	[keyDescriptionField setStringValue:
-	 [NSString stringWithFormat:iTetKeyDescriptionFormat,
-	  iTetNameForAction([keyView associatedAction])]];
+	[keyDescriptionField setStringValue:[NSString stringWithFormat:iTetKeyDescriptionFormat, iTetNameForAction([keyView associatedAction])]];
 }
 
 - (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum

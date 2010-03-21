@@ -53,7 +53,7 @@ NSString* const iTetInvalidOrNoneSpecialName =	@"No Special";
 			break;
 	}
 	
-	// Not a valid type
+	// Classic-style add or invalid type
 	return 0;
 }
 

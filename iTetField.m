@@ -9,8 +9,7 @@
 #import "iTetBlock.h"
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
-// (conveniently, the row function is its own inverse)
-#define ITET_CONVERT_ROW(coord)		(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3')
+#define ITET_CONVERT_ROW(coord)		(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3') // (conveniently, this is its own inverse)
 #define ITET_PARTIAL_TO_COL(coord)	((coord) - '3')
 #define ITET_COL_TO_PARTIAL(coord)	((coord) + '3')
 // ...and the cell contents are mapped to different characters
@@ -74,7 +73,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 - (id)initWithStackHeight:(NSInteger)stackHeight
 {	
 	// For each row of the starting stack, fill with debris
-	// Uses gtetrinet's method; bizarre, but whatever
+	// Uses GTetrinet's method; bizarre, but whatever
 	for (NSInteger row = 0; row < stackHeight; row++)
 	{
 		// Fill the row randomly

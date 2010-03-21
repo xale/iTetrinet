@@ -87,8 +87,7 @@ static iTetPreferencesController* preferencesController = nil;
 	keyConfigurations = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
 	// Load the current configuration number
-	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey]
-									 unsignedIntegerValue];
+	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey] unsignedIntegerValue];
 	
 	return self;
 }

@@ -4,8 +4,8 @@
 //
 //  Created by Alex Heinz on 11/19/09.
 //
-//  NOTE: This file is imported by the NSMutableDictionary Key Bindings category,
-//        so any file importing that header needn't import this one
+//  NOTE: This file is imported by the NSMutableDictionary Key Bindings category, so any file importing that header needn't import this one
+//
 
 #import <Cocoa/Cocoa.h>
 

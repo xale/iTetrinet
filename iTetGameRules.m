@@ -23,8 +23,7 @@
 	// Set the game type
 	gameType = protocol;
 	
-	// The array recieved contains strings, which need to be parsed into the
-	// respective rules:
+	// The array recieved contains strings, which need to be parsed into the respective rules:
 	// Number of lines of "garbage" on the board when the game begins
 	initialStackHeight = [[rules objectAtIndex:0] integerValue];
 	

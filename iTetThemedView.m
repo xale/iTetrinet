@@ -51,8 +51,7 @@
 
 - (BOOL)acceptsFirstResponder
 {
-	// Themed views, by default, do not accept key input; the one exception is
-	// the local player's board, implemented in iTetLocalBoardView
+	// Themed views, by default, do not accept key input; the one exception is the local player's board, implemented in iTetLocalBoardView
 	return NO;
 }
 
