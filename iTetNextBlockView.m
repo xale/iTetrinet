@@ -34,7 +34,6 @@
 	
 	// Ask the block to draw itself to an NSImage
 	NSImage* blockImage = [[self block] previewImageWithTheme:[self theme]];
-	//NSImage* blockImage = [[self block] imageWithSize:[self bounds].size theme:[self theme]];
 	
 	// Center the image in the view
 	NSSize viewSize = [self bounds].size;
