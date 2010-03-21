@@ -20,7 +20,7 @@
 - (id)initWithContents:(NSAttributedString*)contentsOfMessage
 	  fromPlayerNumber:(NSInteger)playerNumber;
 
-- (NSData*)rawMessageDataByAppendingContentsToString:(NSString*)initialFormat;
+- (NSData*)rawMessageDataWithInitialFormat:(NSString*)initialFormat;
 
 @property (readonly) NSInteger senderNumber;
 @property (readonly) NSAttributedString* messageContents;

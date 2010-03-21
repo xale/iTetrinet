@@ -9,7 +9,7 @@
 #import "iTetPlayer.h"
 #import "NSString+ASCIIData.h"
 #import "NSData+Searching.h"
-#import "iTetTextAttributes.h"
+#import "NSAttributedString+TetrinetTextAttributes.h"
 
 @implementation iTetPlineChatMessage
 
@@ -59,13 +59,13 @@
 		senderNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
 		
 		// Convert the remaining data to the message contents as an attributed string
-		messageContents = [[iTetTextAttributes formattedMessageFromData:[messageData subdataFromIndex:(firstSpace + 1)]] retain];
+		messageContents = [[NSAttributedString alloc] initWithPlineMessageData:[messageData subdataFromIndex:(firstSpace + 1)]];
 	}
 	else
 	{
 		// Treat the message data as the sender's player number, and the message contents as blank
 		senderNumber = [[NSString stringWithASCIIData:messageData] integerValue];
-		messageContents = [[NSString alloc] init];
+		messageContents = [[NSAttributedString alloc] init];
 	}
 	
 	return self;
@@ -81,29 +81,24 @@ NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
 	// Create the message format
 	NSString* initialFormat = [NSString stringWithFormat:iTetPlineChatMessageFormat, [self senderNumber]];
 	
-	// Append the message contents, convert to NSData, and return
-	return [self rawMessageDataByAppendingContentsToString:initialFormat];
+	// Convert to NSData, append the contents, and return
+	return [self rawMessageDataWithInitialFormat:initialFormat];
 }
 
 #pragma mark -
 #pragma mark Utility
 
-- (NSData*)rawMessageDataByAppendingContentsToString:(NSString*)initialFormat
+- (NSData*)rawMessageDataWithInitialFormat:(NSString*)initialFormat
 {
-	// Create a mutable attributed string with the existing format at the base
-	NSMutableAttributedString* fullMessage = [[[NSMutableAttributedString alloc] initWithString:initialFormat] autorelease];
+	// Convert the initial format to an NSMutableData object
+	NSMutableData* messageData = [NSMutableData dataWithData:[initialFormat dataUsingEncoding:NSASCIIStringEncoding
+																		 allowLossyConversion:YES]];
 	
-	// Append the attributed message contents
-	[fullMessage appendAttributedString:messageContents];
+	// Append the message contents as data
+	[messageData appendData:[[self messageContents] plineMessageData]];
 	
-	// Make note of the range of the output string with attributes
-	NSRange attributedRange;
-	attributedRange.length = ([fullMessage length] - [initialFormat length]);
-	attributedRange.location = ([fullMessage length] - attributedRange.length);
-	
-	// Convert the completed message to data
-	return [iTetTextAttributes dataFromFormattedMessage:fullMessage
-									withAttributedRange:attributedRange];
+	// Return the completed NSData object
+	return [NSData dataWithData:messageData];
 }
 
 #pragma mark -
