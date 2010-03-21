@@ -6,7 +6,7 @@
 //
 
 #import "iTetTextAttributesController.h"
-#import "iTetAttributeRangePair.h"
+#import "iTetTextAttributes.h"
 
 @implementation iTetTextAttributesController
 
