@@ -20,6 +20,8 @@
 #import "iTetIncomingMessages.h"
 #import "iTetOutgoingMessages.h"
 
+#import "iTetLocalPlayer.h"
+
 #import "NSData+SingleByte.h"
 #import "NSData+Searching.h"
 
@@ -348,7 +350,7 @@ willDisconnectWithError:(NSError*)error
 										   nickname:[currentServer nickname]
 										   teamName:[currentServer playerTeam]];
 			
-			[self sendMessage:[iTetPlayerTeamMessage messageForPlayer:(iTetPlayer*)[playersController localPlayer]]];
+			[self sendMessage:[iTetPlayerTeamMessage messageForPlayer:[playersController localPlayer]]];
 			
 			// Change the connection state
 			[self setConnectionState:connected];
@@ -361,8 +363,13 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Join Message
 		case playerJoinMessage:
 		{
-			// Add a new player with the specified name and number
 			iTetPlayerJoinMessage* joinMessage = (iTetPlayerJoinMessage*)message;
+			
+			// Check that this isn't an echo of our own join event
+			if ([joinMessage playerNumber] == [[playersController localPlayer] playerNumber])
+				break;
+			
+			// Add a new player with the specified name and number
 			[playersController addPlayerWithNumber:[joinMessage playerNumber]
 										  nickname:[joinMessage nickname]];
 			
