@@ -7,7 +7,6 @@
 
 #import "iTetLocalPlayer.h"
 #import "iTetBlock.h"
-#import "Queue.h"
 
 @implementation iTetLocalPlayer
 

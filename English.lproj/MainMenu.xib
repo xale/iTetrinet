@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1078"/>
-			<integer value="501"/>
+			<integer value="451"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -928,7 +928,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">game</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1889,7 +1889,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2529,7 +2528,7 @@
 								<object class="NSTabViewItem" id="644695880">
 									<string key="NSIdentifier">winlist</string>
 									<object class="NSView" key="NSView" id="625816372">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2646,13 +2645,13 @@
 																<reference key="NSBackgroundColor" ref="205996634"/>
 																<reference key="NSGridColor" ref="716993424"/>
 																<double key="NSRowHeight">17</double>
-																<int key="NSTvFlags">-700416000</int>
+																<int key="NSTvFlags">-767524864</int>
 																<reference key="NSDelegate"/>
 																<reference key="NSDataSource"/>
 																<int key="NSColumnAutoresizingStyle">1</int>
 																<int key="NSDraggingSourceMaskForLocal">15</int>
 																<int key="NSDraggingSourceMaskForNonLocal">0</int>
-																<bool key="NSAllowsTypeSelect">YES</bool>
+																<bool key="NSAllowsTypeSelect">NO</bool>
 																<int key="NSTableViewDraggingDestinationStyle">0</int>
 															</object>
 														</object>
@@ -2711,19 +2710,20 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Winlist</string>
 									<reference key="NSColor" ref="751214572"/>
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="210918728"/>
+							<reference key="NSSelectedTabViewItem" ref="644695880"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="1052209441"/>
+								<reference ref="625816372"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -2761,8 +2761,11 @@
 				<string key="NSMinSize">{824, 766}</string>
 				<string key="NSMaxSize">{824, 791}</string>
 			</object>
-			<object class="NSCustomObject" id="742664187">
-				<string key="NSClassName">iTetAppController</string>
+			<object class="NSCustomObject" id="547177939">
+				<string key="NSClassName">iTetWindowController</string>
+			</object>
+			<object class="NSCustomObject" id="28388600">
+				<string key="NSClassName">iTetPlayersController</string>
 			</object>
 			<object class="NSCustomObject" id="814200211">
 				<string key="NSClassName">iTetChatViewController</string>
@@ -2772,6 +2775,9 @@
 			</object>
 			<object class="NSCustomObject" id="807690998">
 				<string key="NSClassName">iTetWinlistViewController</string>
+			</object>
+			<object class="NSCustomObject" id="515573689">
+				<string key="NSClassName">iTetNetworkController</string>
 			</object>
 			<object class="NSCustomObject" id="462083609">
 				<string key="NSClassName">iTetTextAttributesController</string>
@@ -3244,130 +3250,6 @@
 					<int key="connectionID">598</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showPreferences:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="609285721"/>
-					</object>
-					<int key="connectionID">599</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">startStopGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="610594128"/>
-					</object>
-					<int key="connectionID">600</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openCloseConnection:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="722745758"/>
-					</object>
-					<int key="connectionID">601</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">gameMenuItem</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="610594128"/>
-					</object>
-					<int key="connectionID">602</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">connectionMenuItem</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="722745758"/>
-					</object>
-					<int key="connectionID">603</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">openCloseConnection:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="937001246"/>
-					</object>
-					<int key="connectionID">605</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">startStopGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="675152273"/>
-					</object>
-					<int key="connectionID">606</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">showPreferences:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="554869922"/>
-					</object>
-					<int key="connectionID">608</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">connectionButton</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="937001246"/>
-					</object>
-					<int key="connectionID">609</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">gameButton</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="675152273"/>
-					</object>
-					<int key="connectionID">610</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">serverListView</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="530930803"/>
-					</object>
-					<int key="connectionID">611</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">serverListController</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="541646725"/>
-					</object>
-					<int key="connectionID">612</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">window</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="1048072440"/>
-					</object>
-					<int key="connectionID">613</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: preferencesController.serverList</string>
-						<reference key="source" ref="541646725"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="541646725"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">contentArray: preferencesController.serverList</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">preferencesController.serverList</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSConditionallySetsEditable</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">614</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.nickname</string>
 						<reference key="source" ref="832649409"/>
@@ -3429,14 +3311,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">appController</string>
-						<reference key="source" ref="814200211"/>
-						<reference key="destination" ref="742664187"/>
-					</object>
-					<int key="connectionID">638</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">chatView</string>
 						<reference key="source" ref="814200211"/>
 						<reference key="destination" ref="941267877"/>
@@ -3450,30 +3324,6 @@
 						<reference key="destination" ref="82022787"/>
 					</object>
 					<int key="connectionID">640</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">chatController</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="814200211"/>
-					</object>
-					<int key="connectionID">642</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: playerList</string>
-						<reference key="source" ref="371424170"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="371424170"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">contentArray: playerList</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">playerList</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">644</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -3611,22 +3461,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">appController</string>
-						<reference key="source" ref="484487917"/>
-						<reference key="destination" ref="742664187"/>
-					</object>
-					<int key="connectionID">683</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">gameController</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="484487917"/>
-					</object>
-					<int key="connectionID">686</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">actionListView</string>
 						<reference key="source" ref="484487917"/>
 						<reference key="destination" ref="623554226"/>
@@ -3642,596 +3476,12 @@
 					<int key="connectionID">724</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">pauseResumeGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="667775392"/>
-					</object>
-					<int key="connectionID">730</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">pauseResumeGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="266735925"/>
-					</object>
-					<int key="connectionID">733</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">connectionProgressIndicator</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="744756666"/>
-					</object>
-					<int key="connectionID">737</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">connectionStatusLabel</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="834459839"/>
-					</object>
-					<int key="connectionID">739</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">pauseButton</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="667775392"/>
-					</object>
-					<int key="connectionID">740</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">pauseMenuItem</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="266735925"/>
-					</object>
-					<int key="connectionID">741</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: networkController.connected</string>
-						<reference key="source" ref="48704040"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="48704040"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">enabled: networkController.connected</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">networkController.connected</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSMultipleValuesPlaceholder</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<integer value="1"/>
-									<integer value="0"/>
-									<integer value="0"/>
-									<integer value="0"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">746</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: networkController.connected</string>
-						<reference key="source" ref="43540619"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="43540619"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">enabled: networkController.connected</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">networkController.connected</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSMultipleValuesPlaceholder</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<integer value="1"/>
-									<integer value="0"/>
-									<integer value="0"/>
-									<integer value="0"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">751</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: networkController.connected</string>
-						<reference key="source" ref="342405319"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="342405319"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">enabled: networkController.connected</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">networkController.connected</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSMultipleValuesPlaceholder</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<integer value="1"/>
-									<integer value="0"/>
-									<integer value="0"/>
-									<integer value="0"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">757</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">enabled: networkController.connected</string>
-						<reference key="source" ref="82022787"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="82022787"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">enabled: networkController.connected</string>
-							<string key="NSBinding">enabled</string>
-							<string key="NSKeyPath">networkController.connected</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSMultipleValuesPlaceholder</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<integer value="1"/>
-									<integer value="0"/>
-									<integer value="0"/>
-									<integer value="0"/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">761</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">eventDelegate</string>
 						<reference key="source" ref="701483452"/>
 						<reference key="destination" ref="484487917"/>
 					</object>
 					<int key="connectionID">773</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">delegate</string>
-						<reference key="source" ref="1048072440"/>
-						<reference key="destination" ref="742664187"/>
-					</object>
-					<int key="connectionID">774</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer1.playerNumber</string>
-						<reference key="source" ref="512262620"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="512262620"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer1.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer1.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">905</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer1.nickname</string>
-						<reference key="source" ref="383164859"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="383164859"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer1.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer1.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">910</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer2.playerNumber</string>
-						<reference key="source" ref="307933378"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="307933378"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer2.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer2.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">916</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer2.nickname</string>
-						<reference key="source" ref="756125185"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="756125185"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer2.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer2.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">921</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer3.playerNumber</string>
-						<reference key="source" ref="659842136"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="659842136"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer3.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer3.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">939</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer3.nickname</string>
-						<reference key="source" ref="1034487509"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1034487509"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer3.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer3.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">944</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer4.playerNumber</string>
-						<reference key="source" ref="365053049"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="365053049"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer4.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer4.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">949</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer4.nickname</string>
-						<reference key="source" ref="937122370"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="937122370"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer4.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer4.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">954</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer5.playerNumber</string>
-						<reference key="source" ref="29880785"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="29880785"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer5.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer5.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">959</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: remotePlayer5.nickname</string>
-						<reference key="source" ref="619752276"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="619752276"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: remotePlayer5.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">remotePlayer5.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">964</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.nickname</string>
-						<reference key="source" ref="107636205"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="107636205"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.nickname</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.nickname</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Player</string>
-									<string>No Player</string>
-									<string>No Player</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">988</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.playerNumber</string>
-						<reference key="source" ref="1002741777"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1002741777"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.playerNumber</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.playerNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string/>
-									<string/>
-									<string/>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">990</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -4315,65 +3565,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.nextSpecial</string>
-						<reference key="source" ref="1003838065"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1003838065"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.nextSpecial</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.nextSpecial</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-									<string>NSValueTransformerName</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>No Specials</string>
-									<string>No Specials</string>
-									<string>No Specials</string>
-									<string>TetrinetSpecialNameTransformer</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1043</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">tabView</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="1015514340"/>
-					</object>
-					<int key="connectionID">1047</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">switchToChatTab:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="494755245"/>
-					</object>
-					<int key="connectionID">1050</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">switchToGameTab:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="868311026"/>
-					</object>
-					<int key="connectionID">1052</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: currentGameRules.linesPerLevel</string>
 						<reference key="source" ref="639068641"/>
 						<reference key="destination" ref="484487917"/>
@@ -4408,72 +3599,6 @@
 					<int key="connectionID">1059</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.linesCleared</string>
-						<reference key="source" ref="637516923"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="637516923"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.linesCleared</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.linesCleared</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>n/a</string>
-									<string>n/a</string>
-									<string>n/a</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1062</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.level</string>
-						<reference key="source" ref="775220361"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="775220361"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: localPlayer.level</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.level</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>n/a</string>
-									<string>n/a</string>
-									<string>n/a</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1065</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">initialFirstResponder</string>
 						<reference key="source" ref="210918728"/>
@@ -4504,22 +3629,6 @@
 						<reference key="destination" ref="701483452"/>
 					</object>
 					<int key="connectionID">1070</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">forfeitGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="912562400"/>
-					</object>
-					<int key="connectionID">1075</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">forfeitGame:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="235355489"/>
-					</object>
-					<int key="connectionID">1076</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -4658,22 +3767,6 @@
 					<int key="connectionID">1125</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">switchToWinlistTab:</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="946448388"/>
-					</object>
-					<int key="connectionID">1132</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">winlistController</string>
-						<reference key="source" ref="742664187"/>
-						<reference key="destination" ref="807690998"/>
-					</object>
-					<int key="connectionID">1171</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.score</string>
 						<reference key="source" ref="965808270"/>
@@ -4761,39 +3854,6 @@
 						</object>
 					</object>
 					<int key="connectionID">1224</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: averagePlayerLevel</string>
-						<reference key="source" ref="547118700"/>
-						<reference key="destination" ref="742664187"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="547118700"/>
-							<reference key="NSDestination" ref="742664187"/>
-							<string key="NSLabel">value: averagePlayerLevel</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">averagePlayerLevel</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSAllowsEditingMultipleValuesSelection</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>n/a</string>
-									<string>n/a</string>
-									<string>n/a</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1255</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -4888,6 +3948,947 @@
 						<reference key="destination" ref="43540619"/>
 					</object>
 					<int key="connectionID">1268</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">windowController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="547177939"/>
+					</object>
+					<int key="connectionID">1271</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">chatController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="814200211"/>
+					</object>
+					<int key="connectionID">1272</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">gameController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="484487917"/>
+					</object>
+					<int key="connectionID">1273</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">winlistController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="807690998"/>
+					</object>
+					<int key="connectionID">1274</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">windowController</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="547177939"/>
+					</object>
+					<int key="connectionID">1275</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">networkController</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="515573689"/>
+					</object>
+					<int key="connectionID">1276</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">windowController</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="547177939"/>
+					</object>
+					<int key="connectionID">1277</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">networkController</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="515573689"/>
+					</object>
+					<int key="connectionID">1278</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playersController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="28388600"/>
+					</object>
+					<int key="connectionID">1280</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playersController</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="28388600"/>
+					</object>
+					<int key="connectionID">1281</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playersController</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="28388600"/>
+					</object>
+					<int key="connectionID">1282</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tabView</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="1015514340"/>
+					</object>
+					<int key="connectionID">1283</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">window</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="1048072440"/>
+					</object>
+					<int key="connectionID">1284</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">switchToGameTab:</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="868311026"/>
+					</object>
+					<int key="connectionID">1286</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">switchToChatTab:</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="494755245"/>
+					</object>
+					<int key="connectionID">1287</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">switchToWinlistTab:</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="946448388"/>
+					</object>
+					<int key="connectionID">1288</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showPreferences:</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="609285721"/>
+					</object>
+					<int key="connectionID">1289</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showPreferences:</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="554869922"/>
+					</object>
+					<int key="connectionID">1290</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openCloseConnection:</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="937001246"/>
+					</object>
+					<int key="connectionID">1291</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">startStopGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="675152273"/>
+					</object>
+					<int key="connectionID">1292</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">forfeitGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="235355489"/>
+					</object>
+					<int key="connectionID">1293</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">pauseResumeGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="667775392"/>
+					</object>
+					<int key="connectionID">1294</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">openCloseConnection:</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="722745758"/>
+					</object>
+					<int key="connectionID">1296</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">startStopGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="610594128"/>
+					</object>
+					<int key="connectionID">1297</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">pauseResumeGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="266735925"/>
+					</object>
+					<int key="connectionID">1299</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">forfeitGame:</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="912562400"/>
+					</object>
+					<int key="connectionID">1300</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">connectionButton</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="937001246"/>
+					</object>
+					<int key="connectionID">1301</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">connectionProgressIndicator</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="744756666"/>
+					</object>
+					<int key="connectionID">1302</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">connectionStatusLabel</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="834459839"/>
+					</object>
+					<int key="connectionID">1303</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">serverListController</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="541646725"/>
+					</object>
+					<int key="connectionID">1304</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">serverListView</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="530930803"/>
+					</object>
+					<int key="connectionID">1305</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">gameButton</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="675152273"/>
+					</object>
+					<int key="connectionID">1306</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">pauseButton</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="667775392"/>
+					</object>
+					<int key="connectionID">1307</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">gameMenuItem</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="610594128"/>
+					</object>
+					<int key="connectionID">1308</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">pauseMenuItem</string>
+						<reference key="source" ref="484487917"/>
+						<reference key="destination" ref="266735925"/>
+					</object>
+					<int key="connectionID">1309</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">connectionMenuItem</string>
+						<reference key="source" ref="515573689"/>
+						<reference key="destination" ref="722745758"/>
+					</object>
+					<int key="connectionID">1310</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.playerNumber</string>
+						<reference key="source" ref="1002741777"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1002741777"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1311</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: localPlayer</string>
+						<reference key="source" ref="1002741777"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1002741777"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: localPlayer</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">localPlayer</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1328</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.nickname</string>
+						<reference key="source" ref="107636205"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="107636205"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1336</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: averagePlayerLevel</string>
+						<reference key="source" ref="547118700"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="547118700"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: averagePlayerLevel</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">averagePlayerLevel</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1356</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.level</string>
+						<reference key="source" ref="775220361"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="775220361"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.level</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.level</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>n/a</string>
+									<string>n/a</string>
+									<string>n/a</string>
+									<string>n/a</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1360</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.linesCleared</string>
+						<reference key="source" ref="637516923"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="637516923"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.linesCleared</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.linesCleared</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>n/a</string>
+									<string>n/a</string>
+									<string>n/a</string>
+									<string>n/a</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1364</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.nextSpecial</string>
+						<reference key="source" ref="1003838065"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1003838065"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.nextSpecial</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.nextSpecial</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>TetrinetSpecialNameTransformer</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1368</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer1.playerNumber</string>
+						<reference key="source" ref="512262620"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="512262620"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer1.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer1.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1370</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: remotePlayer1</string>
+						<reference key="source" ref="512262620"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="512262620"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: remotePlayer1</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">remotePlayer1</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1376</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer1.nickname</string>
+						<reference key="source" ref="383164859"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="383164859"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer1.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer1.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1382</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: playerList</string>
+						<reference key="source" ref="371424170"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="371424170"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">contentArray: playerList</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">playerList</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1383</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer2.playerNumber</string>
+						<reference key="source" ref="307933378"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="307933378"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer2.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer2.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1384</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: remotePlayer2</string>
+						<reference key="source" ref="307933378"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="307933378"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: remotePlayer2</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">remotePlayer2</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1390</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer2.nickname</string>
+						<reference key="source" ref="756125185"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="756125185"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer2.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer2.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1396</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer3.playerNumber</string>
+						<reference key="source" ref="659842136"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="659842136"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer3.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer3.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1398</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer3.nickname</string>
+						<reference key="source" ref="1034487509"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1034487509"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer3.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer3.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1403</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: remotePlayer3</string>
+						<reference key="source" ref="659842136"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="659842136"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: remotePlayer3</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">remotePlayer3</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1413</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer4.nickname</string>
+						<reference key="source" ref="937122370"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="937122370"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer4.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer4.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1418</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer5.nickname</string>
+						<reference key="source" ref="619752276"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="619752276"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer5.nickname</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer5.nickname</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+									<string>No Player</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1423</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: remotePlayer4</string>
+						<reference key="source" ref="365053049"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="365053049"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: remotePlayer4</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">remotePlayer4</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1431</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer4.playerNumber</string>
+						<reference key="source" ref="365053049"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="365053049"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer4.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer4.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1432</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: remotePlayer5.playerNumber</string>
+						<reference key="source" ref="29880785"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="29880785"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: remotePlayer5.playerNumber</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">remotePlayer5.playerNumber</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1433</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">hidden: remotePlayer5</string>
+						<reference key="source" ref="29880785"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="29880785"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">hidden: remotePlayer5</string>
+							<string key="NSBinding">hidden</string>
+							<string key="NSKeyPath">remotePlayer5</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<integer value="1"/>
+									<string>NSIsNil</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1441</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: prefs.serverList</string>
+						<reference key="source" ref="541646725"/>
+						<reference key="destination" ref="547177939"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="541646725"/>
+							<reference key="NSDestination" ref="547177939"/>
+							<string key="NSLabel">contentArray: prefs.serverList</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">prefs.serverList</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1442</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5760,12 +5761,6 @@
 						<string key="objectName">Server List Controller</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">597</int>
-						<reference key="object" ref="742664187"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">App Controller</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">615</int>
 						<reference key="object" ref="323286668"/>
 						<object class="NSMutableArray" key="children">
@@ -6555,6 +6550,24 @@
 						<reference key="object" ref="932668463"/>
 						<reference key="parent" ref="938395049"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1269</int>
+						<reference key="object" ref="547177939"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Window Controller</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1270</int>
+						<reference key="object" ref="515573689"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Network Controller</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1279</int>
+						<reference key="object" ref="28388600"/>
+						<reference key="parent" ref="0"/>
+						<string key="objectName">Players Controller</string>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -6862,7 +6875,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{432, 756}, {164, 23}}</string>
+					<string>{{395, 760}, {164, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{596, 852}, {216, 23}}</string>
@@ -6870,7 +6883,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{360, 426}, {157, 323}}</string>
+					<string>{{354, 440}, {157, 323}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -6938,7 +6951,7 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{251, 626}, {151, 153}}</string>
+					<string>{{218, 634}, {151, 153}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{187, 434}, {243, 243}}</string>
@@ -6956,17 +6969,17 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{330, 626}, {194, 143}}</string>
+					<string>{{328, 644}, {194, 143}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{70, 769}, {392, 20}}</string>
+					<string>{{68, 787}, {392, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{264, 726}, {96, 43}}</string>
+					<string>{{262, 744}, {96, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{397, 721}, {141, 63}}</string>
@@ -6974,16 +6987,16 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{252, 14}, {824, 713}}</string>
+					<string>{{230, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{252, 14}, {824, 713}}</string>
+					<string>{{230, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
 					<string>{824, 713}</string>
 					<string>{824, 688}</string>
-					<string>{{306, 800}, {616, 0}}</string>
+					<string>{{334, 800}, {616, 0}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSMutableDictionary">
@@ -7082,7 +7095,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{132, 500}, {193, 183}}</string>
+					<string>{{80, 604}, {193, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -7134,7 +7147,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{194, 676}, {210, 103}}</string>
+					<string>{{161, 684}, {210, 103}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{145, 474}, {199, 203}}</string>
@@ -7172,11 +7185,18 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1268</int>
+			<int key="maxID">1442</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">AsyncSocket.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7192,85 +7212,6 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
-					<string key="className">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetNetworkController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">iTetAppController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>forfeitGame:</string>
-							<string>openCloseConnection:</string>
-							<string>pauseResumeGame:</string>
-							<string>showPreferences:</string>
-							<string>startStopGame:</string>
-							<string>switchToChatTab:</string>
-							<string>switchToGameTab:</string>
-							<string>switchToWinlistTab:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>chatController</string>
-							<string>connectionButton</string>
-							<string>connectionMenuItem</string>
-							<string>connectionProgressIndicator</string>
-							<string>connectionStatusLabel</string>
-							<string>gameButton</string>
-							<string>gameController</string>
-							<string>gameMenuItem</string>
-							<string>pauseButton</string>
-							<string>pauseMenuItem</string>
-							<string>serverListController</string>
-							<string>serverListView</string>
-							<string>tabView</string>
-							<string>window</string>
-							<string>winlistController</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>iTetChatViewController</string>
-							<string>NSToolbarItem</string>
-							<string>NSMenuItem</string>
-							<string>NSProgressIndicator</string>
-							<string>NSTextField</string>
-							<string>NSToolbarItem</string>
-							<string>iTetGameViewController</string>
-							<string>NSMenuItem</string>
-							<string>NSToolbarItem</string>
-							<string>NSMenuItem</string>
-							<string>NSArrayController</string>
-							<string>NSScrollView</string>
-							<string>NSTabView</string>
-							<string>NSWindow</string>
-							<string>iTetWinlistViewController</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetAppController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
 					<string key="className">iTetChatViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -7281,15 +7222,19 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>appController</string>
 							<string>chatView</string>
 							<string>messageField</string>
+							<string>networkController</string>
+							<string>playersController</string>
+							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>iTetAppController</string>
 							<string>NSTextView</string>
 							<string>NSTextField</string>
+							<string>iTetNetworkController</string>
+							<string>iTetPlayersController</string>
+							<string>iTetWindowController</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7309,40 +7254,65 @@
 					<string key="className">iTetGameViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">submitChatMessage:</string>
-						<string key="NS.object.0">id</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>forfeitGame:</string>
+							<string>pauseResumeGame:</string>
+							<string>startStopGame:</string>
+							<string>submitChatMessage:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>actionListView</string>
-							<string>appController</string>
 							<string>chatView</string>
+							<string>gameButton</string>
+							<string>gameMenuItem</string>
 							<string>localFieldView</string>
 							<string>messageField</string>
+							<string>networkController</string>
 							<string>nextBlockView</string>
+							<string>pauseButton</string>
+							<string>pauseMenuItem</string>
+							<string>playersController</string>
 							<string>remoteFieldView1</string>
 							<string>remoteFieldView2</string>
 							<string>remoteFieldView3</string>
 							<string>remoteFieldView4</string>
 							<string>remoteFieldView5</string>
 							<string>specialsView</string>
+							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSTableView</string>
-							<string>iTetAppController</string>
 							<string>NSTextView</string>
+							<string>NSToolbarItem</string>
+							<string>NSMenuItem</string>
 							<string>iTetLocalFieldView</string>
 							<string>NSTextField</string>
+							<string>iTetNetworkController</string>
 							<string>iTetNextBlockView</string>
+							<string>NSToolbarItem</string>
+							<string>NSMenuItem</string>
+							<string>iTetPlayersController</string>
 							<string>iTetFieldView</string>
 							<string>iTetFieldView</string>
 							<string>iTetFieldView</string>
 							<string>iTetFieldView</string>
 							<string>iTetFieldView</string>
 							<string>iTetSpecialsView</string>
+							<string>iTetWindowController</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7360,6 +7330,49 @@
 					<reference key="sourceIdentifier" ref="996822837"/>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">iTetNetworkController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">openCloseConnection:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>chatController</string>
+							<string>connectionButton</string>
+							<string>connectionMenuItem</string>
+							<string>connectionProgressIndicator</string>
+							<string>connectionStatusLabel</string>
+							<string>gameController</string>
+							<string>playersController</string>
+							<string>serverListController</string>
+							<string>serverListView</string>
+							<string>windowController</string>
+							<string>winlistController</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iTetChatViewController</string>
+							<string>NSToolbarItem</string>
+							<string>NSMenuItem</string>
+							<string>NSProgressIndicator</string>
+							<string>NSTextField</string>
+							<string>iTetGameViewController</string>
+							<string>iTetPlayersController</string>
+							<string>NSArrayController</string>
+							<string>NSScrollView</string>
+							<string>iTetWindowController</string>
+							<string>iTetWinlistViewController</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetNetworkController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">iTetNextBlockView</string>
 					<string key="superclassName">iTetThemedView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -7373,6 +7386,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iTetPlayersController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetPlayersController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -7405,6 +7426,52 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">iTetThemedView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iTetWindowController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>openGeneralPreferencesTab:</string>
+							<string>openKeyboardPreferencesTab:</string>
+							<string>openServersPreferencesTab:</string>
+							<string>openThemesPreferencesTab:</string>
+							<string>showPreferences:</string>
+							<string>switchToChatTab:</string>
+							<string>switchToGameTab:</string>
+							<string>switchToWinlistTab:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>tabView</string>
+							<string>window</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSTabView</string>
+							<string>NSWindow</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">iTetWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

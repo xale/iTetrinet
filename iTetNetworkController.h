@@ -8,8 +8,14 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetMessage.h"
 
+@class iTetWindowController;
+@class iTetPlayersController;
+@class iTetGameViewController;
+@class iTetChatViewController;
+@class iTetWinlistViewController;
+
 @class iTetServerInfo;
-@class Queue;
+@class AsyncSocket;
 
 extern NSString* const iTetNetworkErrorDomain;
 typedef enum
@@ -17,43 +23,48 @@ typedef enum
 	iTetNoConnectingError = 1
 } iTetNetworkError;
 
-@interface NSObject (iTetNetworkControllerDelegate)
-
-- (void)connectionOpened;
-- (void)connectionClosed;
-- (void)connectionError:(NSError*)error;
-- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message;
-
-@end
+typedef enum
+{
+	disconnected,
+	connecting,
+	connected
+} iTetConnectionState;
 
 @interface iTetNetworkController : NSObject
 {
-	id delegate;
+	// Other top-level controllers
+	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetPlayersController* playersController;
+	IBOutlet iTetGameViewController* gameController;
+	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetWinlistViewController* winlistController;
 	
+	// Menu and toolbar items
+	IBOutlet NSToolbarItem* connectionButton;
+	IBOutlet NSMenuItem* connectionMenuItem;
+	
+	// Connection progress indicator
+	IBOutlet NSProgressIndicator* connectionProgressIndicator;
+	IBOutlet NSTextField* connectionStatusLabel;
+	
+	// List view (and controller) for servers on connection sheet
+	IBOutlet NSScrollView* serverListView;
+	IBOutlet NSArrayController* serverListController;
+	
+	// Network connection
 	iTetServerInfo* currentServer;
-	NSHost* currentConnection;
-	BOOL connected;
-	
-	NSInputStream* readStream;
-	NSMutableData* partialRead;
-	
-	NSOutputStream* writeStream;
-	Queue* writeQueue;
+	AsyncSocket* connectionSocket;
+	iTetConnectionState connectionState;
 }
 
-- (id)initWithDelegate:(id)theDelegate;
+- (IBAction)openCloseConnection:(id)sender;
 
 - (void)connectToServer:(iTetServerInfo*)server;
 - (void)disconnect;
 
 - (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
-- (void)sendMessageData:(NSData*)messageData;
-
-- (void)attemptRead;
-- (void)attemptWrite;
-- (void)handleError:(NSStream*)stream;
 
 @property (readonly) iTetServerInfo* currentServer;
-@property (readwrite, assign) BOOL connected;
+@property (readonly) iTetConnectionState connectionState;
 
 @end

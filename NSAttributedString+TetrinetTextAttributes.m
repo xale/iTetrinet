@@ -8,7 +8,7 @@
 #import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
 #import "NSString+ASCIIData.h"
-#import "NSMutableData+SingleByte.h"
+#import "NSData+SingleByte.h"
 #import "NSColor+Comparisons.h"
 
 @implementation NSAttributedString (TetrinetTextAttributes)

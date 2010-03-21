@@ -7,7 +7,8 @@
 
 #import "iTetGameViewController.h"
 
-#import "iTetAppController.h"
+#import "iTetWindowController.h"
+#import "iTetPlayersController.h"
 #import "iTetPreferencesController.h"
 
 #import "iTetNetworkController.h"
@@ -15,6 +16,7 @@
 
 #import "iTetGameRules.h"
 #import "iTetLocalPlayer.h"
+#import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
 
@@ -25,13 +27,29 @@
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
-#define LOCALPLAYER				[appController localPlayer]
-#define NETCONTROLLER			[appController networkController]
-
-NSString* const iTetNextBlockTimerType = @"nextBlock";
-NSString* const iTetBlockFallTimerType = @"blockFall";
+#define LOCALPLAYER	[playersController localPlayer]
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
+
+@interface iTetGameViewController (Private)
+
+- (void)moveCurrentBlockDown;
+- (void)solidifyCurrentBlock;
+- (BOOL)checkForLinesCleared;
+- (void)moveNextBlockToField;
+- (void)useSpecial:(iTetSpecialType)special
+		  onTarget:(iTetPlayer*)target
+		fromSender:(iTetPlayer*)sender;
+- (void)playerLost;
+
+- (void)recordAction:(NSAttributedString*)description;
+- (void)clearActions;
+
+- (NSTimer*)nextBlockTimer;
+- (NSTimer*)fallTimer;
+
+@end
+
 
 @implementation iTetGameViewController
 
@@ -49,23 +67,23 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Bind the game views to the app controller
 	// Local field view (field and falling block)
 	[localFieldView bind:@"field"
-				toObject:appController
+				toObject:playersController
 			 withKeyPath:@"localPlayer.field"
 				 options:nil];
 	[localFieldView bind:@"block"
-				toObject:appController
+				toObject:playersController
 			 withKeyPath:@"localPlayer.currentBlock"
 				 options:nil];
 	
 	// Next block view
 	[nextBlockView bind:@"block"
-			   toObject:appController
+			   toObject:playersController
 			withKeyPath:@"localPlayer.nextBlock"
 				options:nil];
 	
 	// Specials queue view
 	[specialsView bind:@"specials"
-			  toObject:appController
+			  toObject:playersController
 		   withKeyPath:@"localPlayer.specialsQueue"
 			   options:nil];
 	[specialsView bind:@"capacity"
@@ -76,23 +94,23 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Remote field views
 	[remoteFieldView1 bind:@"field"
-				  toObject:appController
+				  toObject:playersController
 			   withKeyPath:@"remotePlayer1.field"
 				   options:nil];
 	[remoteFieldView2 bind:@"field"
-				  toObject:appController
+				  toObject:playersController
 			   withKeyPath:@"remotePlayer2.field"
 				   options:nil];
 	[remoteFieldView3 bind:@"field"
-				  toObject:appController
+				  toObject:playersController
 			   withKeyPath:@"remotePlayer3.field"
 				   options:nil];
 	[remoteFieldView4 bind:@"field"
-				  toObject:appController
+				  toObject:playersController
 			   withKeyPath:@"remotePlayer4.field"
 				   options:nil];
 	[remoteFieldView5 bind:@"field"
-				  toObject:appController
+				  toObject:playersController
 			   withKeyPath:@"remotePlayer5.field"
 				   options:nil];
 	
@@ -104,7 +122,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 {
 	[currentGameRules release];
 	[actionHistory release];
-	[lastTimerType release];
 	
 	[blockTimer invalidate];
 	
@@ -112,7 +129,64 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 }
 
 #pragma mark -
-#pragma mark Chat Actions
+#pragma mark Interface Actions
+
+- (IBAction)startStopGame:(id)sender
+{	
+	// Check if a game is already in progress
+	if ([self gameplayState] != gameNotPlaying)
+	{
+		// Confirm with user before ending game
+		// Create a confirmation dialog
+		NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
+		[dialog setMessageText:@"End Game in Progress?"];
+		[dialog setInformativeText:@"Are you sure you want to end the game in progress?"];
+		[dialog addButtonWithTitle:@"End Game"];
+		[dialog addButtonWithTitle:@"Continue Playing"];
+		
+		// Run the dialog as a window-modal sheet
+		[dialog beginSheetModalForWindow:[windowController window]
+						   modalDelegate:self
+						  didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
+							 contextInfo:NULL];
+	}
+	else
+	{
+		// Start the game
+		[networkController sendMessage:[iTetStartStopGameMessage startMessageFromSender:LOCALPLAYER]];
+	}
+}
+
+- (IBAction)forfeitGame:(id)sender
+{
+	// Create a confirmation dialog
+	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
+	[dialog setMessageText:@"Forfeit Game?"];
+	[dialog setInformativeText:@"Are you sure you want to forfeit the current game?"];
+	[dialog addButtonWithTitle:@"Forfeit"];
+	[dialog addButtonWithTitle:@"Continue Playing"];
+	
+	// Run the dialog as a window-modal sheet
+	[dialog beginSheetModalForWindow:[windowController window]
+					   modalDelegate:self
+					  didEndSelector:@selector(forfeitDialogDidEnd:returnCode:contextInfo:)
+						 contextInfo:NULL];
+}
+
+- (IBAction)pauseResumeGame:(id)sender
+{
+	// Check if game is already paused
+	if ([self gameplayState] == gamePaused)
+	{	
+		// Send a message asking the server to resume play
+		[networkController sendMessage:[iTetPauseResumeGameMessage resumeMessageFromSender:LOCALPLAYER]];
+	}
+	else
+	{
+		// Send a message asking the server to pause
+		[networkController sendMessage:[iTetPauseResumeGameMessage pauseMessageFromSender:LOCALPLAYER]];
+	}
+}
 
 - (IBAction)submitChatMessage:(id)sender
 {
@@ -122,8 +196,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		return;
 	
 	// Send the message to the server
-	[NETCONTROLLER sendMessage:[iTetGameChatMessage messageWithContents:message
-																 sender:LOCALPLAYER]];
+	[networkController sendMessage:[iTetGameChatMessage messageWithContents:message
+																	 sender:LOCALPLAYER]];
 	
 	// Do not add the message to our chat view; the server will echo it back to us
 	
@@ -132,10 +206,38 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// If there is a game in progress, return first responder status to the field
 	if (([self gameplayState] == gamePlaying) && [LOCALPLAYER isPlaying])
-	{
-		[[localFieldView window] makeFirstResponder:localFieldView];
-	}
+		[[windowController window] makeFirstResponder:localFieldView];
 }
+
+#pragma mark -
+#pragma mark Modal Sheet Callbacks
+
+- (void)stopGameAlertDidEnd:(NSAlert*)dialog
+				 returnCode:(NSInteger)returnCode
+				contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Send the server a "stop game" message
+	[networkController sendMessage:[iTetStartStopGameMessage stopMessageFromSender:LOCALPLAYER]];
+}
+
+- (void)forfeitDialogDidEnd:(NSAlert*)dialog
+				 returnCode:(NSInteger)returnCode
+				contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Forfeit the current game
+	[self playerLost];
+}
+
+#pragma mark -
+#pragma mark Chat
 
 - (void)appendChatLine:(NSString*)line
 		fromPlayerName:(NSString*)playerName
@@ -163,16 +265,50 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 }
 
 #pragma mark -
+#pragma mark Interface Validations
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+	// Determine which item we are looking at based on its action
+	SEL itemAction = [item action];
+	
+	// Get the current operator player
+	iTetPlayer* op = [playersController operatorPlayer];
+	
+	// "New Game" button/menu item
+	if (itemAction == @selector(startStopGame:))
+	{
+		return (([networkController connectionState] == connected) && [op isEqual:LOCALPLAYER]);
+	}
+	
+	// "Forfeit" button/menu item
+	if (itemAction == @selector(forfeitGame:))
+	{
+		return (([self gameplayState] != gameNotPlaying) && [LOCALPLAYER isPlaying]);
+	}
+	
+	// "Pause" button/menu item
+	if (itemAction == @selector(pauseResumeGame:))
+	{
+		return (([self gameplayState] != gameNotPlaying) && [op isEqual:LOCALPLAYER]);
+	}
+	
+	return YES;
+}
+
+#pragma mark -
 #pragma mark Controlling Game State
 
 - (void)newGameWithPlayers:(NSArray*)players
-					 rules:(iTetGameRules*)rules
+				 rulesList:(NSArray*)rulesArray
+				  onServer:(iTetServerInfo*)gameServer;
 {
 	// Clear the list of actions from the last game
 	[self clearActions];
 	
-	// Retain the game rules
-	[self setCurrentGameRules:rules];
+	// Create the game rules
+	[self setCurrentGameRules:[iTetGameRules gameRulesFromArray:rulesArray
+												   withGameType:[gameServer protocol]]];
 	
 	// Set up the players' fields
 	for (iTetPlayer* player in players)
@@ -184,14 +320,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[player setField:[iTetField field]];
 		
 		// Set the starting level
-		[player setLevel:[rules startingLevel]];
+		[player setLevel:[[self currentGameRules] startingLevel]];
 	}
 	
 	// If there is a starting stack, give the local player a field with garbage
-	if ([rules initialStackHeight] > 0)
+	if ([[self currentGameRules] initialStackHeight] > 0)
 	{
 		// Create the field
-		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules initialStackHeight]]];
+		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[[self currentGameRules] initialStackHeight]]];
 		
 		// Send the field to the server
 		[self sendFieldstring];
@@ -210,7 +346,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[LOCALPLAYER resetLinesCleared];
 	
 	// Make sure the field is the first responder
-	[[localFieldView window] makeFirstResponder:localFieldView];
+	[[windowController window] makeFirstResponder:localFieldView];
 	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
@@ -218,7 +354,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)pauseGame
 {
-	// Pause the game
+	// Set the game state to "paused"
 	[self setGameplayState:gamePaused];
 	
 	// If the local player is still in the game, record the time until the next timer fires
@@ -228,7 +364,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
 		
 		// Record the type of timer
-		lastTimerType = [[blockTimer userInfo] retain];
+		lastTimerType = [[blockTimer userInfo] intValue];
 		
 		// Invalidate and nil the timer
 		[blockTimer invalidate];
@@ -238,31 +374,27 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)resumeGame
 {
-	// Resume the game
+	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
 	
 	// If the local player is in the game, re-create the block timer, and give the field first responder status
 	if ([LOCALPLAYER isPlaying])
 	{
 		// Create a timer with a firing date calculated from the time recorded when the game was paused
-		BOOL timerRepeats = [lastTimerType isEqualToString:iTetBlockFallTimerType];
+		BOOL timerRepeats = (lastTimerType == blockFall);
 		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
 											   interval:blockFallDelayForLevel([LOCALPLAYER level])
 												 target:self
 											   selector:@selector(timerFired:)
-											   userInfo:lastTimerType
+											   userInfo:[NSNumber numberWithInt:lastTimerType]
 												repeats:timerRepeats] autorelease];
 		
 		// Add the timer to the current run loop
 		[[NSRunLoop currentRunLoop] addTimer:blockTimer
 									 forMode:NSDefaultRunLoopMode];
 		
-		// Clear the last timer type
-		[lastTimerType release];
-		lastTimerType = nil;
-		
 		// Move first responder to the field
-		[[localFieldView window] makeFirstResponder:localFieldView];
+		[[windowController window] makeFirstResponder:localFieldView];
 	}
 }
 
@@ -272,16 +404,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self setGameplayState:gameNotPlaying];
 	
 	// Set all players to "not playing"
-	for (iTetPlayer* player in [appController playerList])
+	for (iTetPlayer* player in [playersController playerList])
 		[player setPlaying:NO];
 	
 	// Invalidate the block timer
 	[blockTimer invalidate];
 	blockTimer = nil;
-	
-	// Release the last timer type string
-	[lastTimerType release];
-	lastTimerType = nil;
 	
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
@@ -381,22 +509,26 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			NSInteger linesToSend = 0;
 			switch (numLines)
 			{
-					// For two lines cleared, send one line
+				// For two lines cleared, send one line
 				case 2:
 					linesToSend = 1;
 					break;
-					// For three lines cleared, send two lines
+					
+				// For three lines cleared, send two lines
 				case 3:
 					linesToSend = 2;
 					break;
-					// For four lines cleared, send four lines
+					
+				// For four lines cleared, send four lines
 				case 4:
 					linesToSend = 4;
 					break;
-					// For one line, send nothing
+					
+				// For one line, send nothing
 				default:
 					break;
 			}
+			
 			// Send the lines
 			if (linesToSend > 0)
 				[self sendLines:linesToSend];
@@ -475,7 +607,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case addLine:
 			// Add a line to the field, check for field overflow
 			if ([[LOCALPLAYER field] addLines:1 style:specialStyle])
+			{
 				[self playerLost];
+				return;
+			}
 			break;
 			
 		case clearLine:
@@ -502,6 +637,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 				[LOCALPLAYER setField:[[target field] copy]];
 			
 			// Safety check: ensure the top six rows of the swapped field are clear
+			// FIXME: why is this commented-out?
 			//[[LOCALPLAYER field] shiftClearTopSixRows];
 			
 			break;
@@ -537,7 +673,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case classicStyle4:
 			// Add line(s) to the field, check for field overflow
 			if ([[LOCALPLAYER field] addLines:[iTetSpecials classicLinesForSpecialType:special] style:classicStyle])
+			{
 				[self playerLost];
+				return;
+			}
 			break;
 			
 		default:
@@ -567,8 +706,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[blockTimer invalidate];
 	blockTimer = nil;
 	
-	// Send a message to the server
-	[self sendPlayerLostMessage];
+	// Send a "player lost" message to the server, along with the final field state
+	[networkController sendMessage:[iTetPlayerLostMessage messageForPlayer:LOCALPLAYER]];
 	[self sendFieldstring];
 }
 
@@ -585,7 +724,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if (action == gameChat)
 	{
 		// Change first responder
-		[[messageField window] makeFirstResponder:messageField];
+		[[windowController window] makeFirstResponder:messageField];
 		return;
 	}
 	
@@ -654,22 +793,22 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 			// Attempt to send special to the player in the specified slot
 		case specialPlayer1:
-			targetPlayer = [appController playerNumber:1];
+			targetPlayer = [playersController playerNumber:1];
 			break;
 		case specialPlayer2:
-			targetPlayer = [appController playerNumber:2];
+			targetPlayer = [playersController playerNumber:2];
 			break;
 		case specialPlayer3:
-			targetPlayer = [appController playerNumber:3];
+			targetPlayer = [playersController playerNumber:3];
 			break;
 		case specialPlayer4:
-			targetPlayer = [appController playerNumber:4];
+			targetPlayer = [playersController playerNumber:4];
 			break;
 		case specialPlayer5:
-			targetPlayer = [appController playerNumber:5];
+			targetPlayer = [playersController playerNumber:5];
 			break;
 		case specialPlayer6:
-			targetPlayer = [appController playerNumber:6];
+			targetPlayer = [playersController playerNumber:6];
 			break;
 			
 		default:
@@ -702,7 +841,7 @@ doCommandBySelector:(SEL)command
 		[messageField setStringValue:@""];
 		
 		// Return first responder to the game field
-		[[localFieldView window] makeFirstResponder:localFieldView];
+		[[windowController window] makeFirstResponder:localFieldView];
 	}
 	
 	return NO;
@@ -714,19 +853,19 @@ doCommandBySelector:(SEL)command
 - (void)sendFieldstring
 {	
 	// Send the string for the local player's field to the server
-	[NETCONTROLLER sendMessage:[iTetFieldstringMessage fieldMessageForPlayer:LOCALPLAYER]];
+	[networkController sendMessage:[iTetFieldstringMessage fieldMessageForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendPartialFieldstring
 {
 	// Send the last partial update on the local player's field to the server
-	[NETCONTROLLER sendMessage:[iTetFieldstringMessage partialUpdateMessageForPlayer:LOCALPLAYER]];
+	[networkController sendMessage:[iTetFieldstringMessage partialUpdateMessageForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendCurrentLevel
 {
 	// Send the local player's level to the server
-	[NETCONTROLLER sendMessage:[iTetLevelUpdateMessage messageWithUpdateForPlayer:LOCALPLAYER]];
+	[networkController sendMessage:[iTetLevelUpdateMessage messageWithUpdateForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendSpecial:(iTetSpecialType)special
@@ -736,7 +875,7 @@ doCommandBySelector:(SEL)command
 	iTetSpecialMessage* message = [iTetSpecialMessage messageWithSpecialType:special
 																	  sender:LOCALPLAYER
 																	  target:target];
-	[NETCONTROLLER sendMessage:message];
+	[networkController sendMessage:message];
 	
 	// Perform and record the action
 	[self specialUsed:special
@@ -749,18 +888,12 @@ doCommandBySelector:(SEL)command
 	// Send the message to the server
 	iTetSpecialMessage* message = [iTetSpecialMessage messageWithClassicStyleLines:lines
 																			sender:LOCALPLAYER];
-	[NETCONTROLLER sendMessage:message];
+	[networkController sendMessage:message];
 	
 	// Perform and record the action
 	[self specialUsed:[message specialType]
 			 byPlayer:LOCALPLAYER
 			 onPlayer:nil];
-}
-
-- (void)sendPlayerLostMessage
-{
-	// Send the message to the server
-	[NETCONTROLLER sendMessage:[iTetPlayerLostMessage messageForPlayer:LOCALPLAYER]];
 }
 
 #pragma mark -
@@ -964,7 +1097,7 @@ objectValueForTableColumn:(NSTableColumn*)column
 	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
 											target:self
 										  selector:@selector(timerFired:)
-										  userInfo:iTetNextBlockTimerType
+										  userInfo:[NSNumber numberWithInt:nextBlock]
 										   repeats:NO];
 }
 
@@ -974,31 +1107,27 @@ objectValueForTableColumn:(NSTableColumn*)column
 	return [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
 											target:self
 										  selector:@selector(timerFired:)
-										  userInfo:iTetBlockFallTimerType
+										  userInfo:[NSNumber numberWithInt:blockFall]
 										   repeats:YES];
 }
 
 - (void)timerFired:(NSTimer*)timer
 {
-	NSString* timerType = [timer userInfo];
-	
-	if ([timerType isEqualToString:iTetNextBlockTimerType])
+	switch ([[timer userInfo] intValue])
 	{
-		[self moveNextBlockToField];
-		return;
+		case nextBlock:
+			[self moveNextBlockToField];
+			break;
+			
+		case blockFall:
+			[self moveCurrentBlockDown];
+			break;
 	}
-	else if ([timerType isEqualToString:iTetBlockFallTimerType])
-	{
-		[self moveCurrentBlockDown];
-		return;
-	}
-	
-	NSLog(@"WARNING: invalid timer type in GameViewController timerFired:");
 }
 
-#define ITET_MAX_DELAY_TIME			(1.005)
+#define ITET_MAX_DELAY_TIME				(1.005)
 #define ITET_DELAY_REDUCTION_PER_LEVEL	(0.01)
-#define ITET_MIN_DELAY_TIME			(0.005)
+#define ITET_MIN_DELAY_TIME				(0.005)
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level)
 {
@@ -1014,6 +1143,59 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 #pragma mark Accessors
 
 @synthesize currentGameRules;
+
+- (void)setGameplayState:(iTetGameplayState)newState
+{
+	if (gameplayState == newState)
+		return;
+	
+	switch (newState)
+	{
+		case gameNotPlaying:
+			// Reset the "end game" menu and toolbar items
+			[gameMenuItem setTitle:@"New Game"];
+			[gameMenuItem setKeyEquivalent:@"n"];
+			[gameButton setLabel:@"New Game"];
+			[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
+			
+			// If the game was paused, reset the "resume" menu and toolbar items
+			if (gameplayState == gamePaused)
+			{
+				[pauseMenuItem setTitle:@"Pause Game"];
+				[pauseButton setLabel:@"Pause Game"];
+				[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+			}
+			
+			break;
+		
+		case gamePaused:
+			// Change the "pause" toolbar and menu items to "resume" items
+			[pauseMenuItem setTitle:@"Resume Game"];
+			[pauseButton setLabel:@"Resume Game"];
+			[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
+			
+			break;
+			
+		case gamePlaying:
+			// Change the "new game" menu and toolbar items to "end game" items
+			[gameMenuItem setTitle:@"End Game..."];
+			[gameMenuItem setKeyEquivalent:@"e"];
+			[gameButton setLabel:@"End Game"];
+			[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
+			
+			// If the game was paused, reset the "resume" menu and toolbar items
+			if (gameplayState == gamePaused)
+			{
+				[pauseMenuItem setTitle:@"Pause Game"];
+				[pauseButton setLabel:@"Pause Game"];
+				[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
+			}
+			
+			break;
+	}
+	
+	gameplayState = newState;
+}
 @synthesize gameplayState;
 
 @end

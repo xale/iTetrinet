@@ -7,14 +7,14 @@
 
 #import "iTetChatViewController.h"
 
-#import "iTetAppController.h"
+#import "iTetPlayersController.h"
+#import "iTetLocalPlayer.h"
+
+#import "iTetChannelInfo.h"
 
 #import "iTetNetworkController.h"
 #import "iTetPlineChatMessage.h"
 #import "iTetPlineActionMessage.h"
-
-#import "iTetChannelInfo.h"
-#import "iTetLocalPlayer.h"
 
 @implementation iTetChatViewController
 
@@ -53,7 +53,7 @@
 	
 	// Construct the message
 	iTetMessage<iTetOutgoingMessage>* message;
-	iTetPlayer* localPlayer = [appController localPlayer];
+	iTetPlayer* localPlayer = [playersController localPlayer];
 	if (action)
 	{
 		// Trim off the "/me "
@@ -72,7 +72,7 @@
 	}
 	
 	// Send the message
-	[[appController networkController] sendMessage:message];
+	[networkController sendMessage:message];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
 	if (action || ([[messageContents string] characterAtIndex:0] != '/'))
@@ -112,30 +112,24 @@
 		fromPlayerName:(NSString*)playerName
 				action:(BOOL)isAction
 {
-	NSMutableAttributedString* formattedMessage = [[[NSMutableAttributedString alloc] init] autorelease];
-	
-	// Create a bold version of the chat view's font
-	NSFont* boldFont = [[NSFontManager sharedFontManager] convertFont:[chatView font]
-														  toHaveTrait:NSBoldFontMask];
-	NSDictionary* boldAttribute = [NSDictionary dictionaryWithObject:boldFont
-															  forKey:NSFontAttributeName];
+	NSMutableAttributedString* formattedMessage;
 	if (isAction)
 	{
-		// Append a dot in bold (to indicate an action)
-		NSAttributedString* asterisk = [[[NSAttributedString alloc] initWithString:@"•"
-																		attributes:boldAttribute] autorelease];
-		[formattedMessage appendAttributedString:asterisk];
+		// Begin the message line with a dot (to indicate an action)
+		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:@"•"] autorelease];
 		
-		// Append the player's name in bold (and a space)
+		// Append the player's name (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", playerName];
 	}
 	else
 	{
-		// Append the player's name and a colon, in bold
-		NSAttributedString* name = [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", playerName]
-																	attributes:boldAttribute] autorelease];
-		[formattedMessage appendAttributedString:name];
+		// Begin the mesasge line with the player's name, followed by a colon and a space
+		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", playerName]] autorelease];
 	}
+	
+	// Format the name in bold
+	[formattedMessage applyFontTraits:NSBoldFontMask
+								range:NSMakeRange(0, ([playerName length] + 1))];
 	
 	// Append the message contents
 	[formattedMessage appendAttributedString:line];
