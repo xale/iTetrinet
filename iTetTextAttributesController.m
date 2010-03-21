@@ -18,7 +18,7 @@
 	NSTextView* editor = (NSTextView*)[partylineMessageField currentEditor];
 	
 	// Determine the text color to use
-	NSColor* textColor = [iTetTextAttributes textColorForAttribute:[sender tag]];
+	NSColor* textColor = [iTetTextAttributes textColorForCode:[sender tag]];
 	
 	// Determine if there is text selected
 	NSRange selection = [editor selectedRange];

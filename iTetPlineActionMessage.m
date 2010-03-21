@@ -49,8 +49,8 @@ NSString* const iTetPlineActionMessageFormat =	@"plineact %d ";
 	// Create the message format
 	NSString* initialFormat = [NSString stringWithFormat:iTetPlineActionMessageFormat, [self senderNumber]];
 	
-	// Append the message contents, convert to NSData, and return
-	return [super rawMessageDataByAppendingContentsToString:initialFormat];
+	// Convert to NSData, append the contents, and return
+	return [self rawMessageDataWithInitialFormat:initialFormat];
 }
 
 @end

@@ -32,26 +32,37 @@ typedef enum
 {
 	italicText =		22,
 	underlineText =		31,
-	boldText =			2,
-	boldItalicText =	30 // Not part of the spec, just for our use; never sent over the wire
+	boldText =			2
 } iTetTextFontAttribute;
 
 #define ITET_HIGHEST_ATTR_CODE	31
 
 @interface iTetTextAttributes : NSObject
 
-// Returns the NSColor represented by the specified color code
-+ (NSColor*)textColorForAttribute:(iTetTextColorAttribute)attribute;
+// Returns an NSCharacterSet containing all characters used as formatting data in the TetriNET protocol
++ (NSCharacterSet*)textAttributeCharacterSet;
 
-// Returns the color code representing the specified NSColor
-+ (iTetTextColorAttribute)attributeForTextColor:(NSColor*)color;
+// Returns a dictionary containing the default text attributes
++ (NSDictionary*)defaultTextAttributes;
 
-// Creates an attributed string from message data read off-the-wire
-+ (NSAttributedString*)formattedMessageFromData:(NSData*)messageData;
+// Returns the text attribute corresponding to the specified attribute code
++ (NSDictionary*)textAttributeForCode:(uint8_t)attributeCode;
 
-// Creates data suitable for sending over-the-wire from an attributed string with the specified formatted range
-+ (NSData*)dataFromFormattedMessage:(NSAttributedString*)message
-				withAttributedRange:(NSRange)rangeWithAttributes;
+// Returns the foreground text color represented by the specified color code
++ (NSColor*)textColorForCode:(uint8_t)attribute;
+
+// Returns the color code representing the specified foreground text color
++ (iTetTextColorAttribute)codeForTextColor:(NSColor*)color;
+
+// Returns the default foreground text color for the partyline message view
++ (NSColor*)defaultTextColor;
+
+// Returns the fonts used in the partyline message view
++ (NSFont*)fontWithTraits:(NSFontTraitMask)fontTraits;
++ (NSFont*)plainTextFont;
++ (NSFont*)boldTextFont;
++ (NSFont*)italicTextFont;
++ (NSFont*)boldItalicTextFont;
 
 @end
 
