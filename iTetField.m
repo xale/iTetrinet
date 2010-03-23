@@ -511,7 +511,7 @@ abort:; // Unable to add more specials; bail
 
 #define ITET_NUM_CLEAR_ROWS	(6)
 
-- (void)shiftClearTopSixRows
+- (void)shiftClearTopRows
 {
 	// Find the highest row among the top six with an occupied cell
 	NSInteger row, col, rowsToShift = 0;
@@ -534,21 +534,21 @@ cellfound:
 
 - (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount
 {
-	if (shiftAmount == 0)
+	if (shiftAmount <= 0)
 		return;
 	
 	[self willChangeValueForKey:@"contents"];
 	
 	// Iterate over rows on the field, bottom to top, and shift them down
 	NSInteger row;
-	for (row = shiftAmount; row < ITET_FIELD_HEIGHT; row++)
+	for (row = shiftAmount; row < (ITET_FIELD_HEIGHT - (ITET_NUM_CLEAR_ROWS - shiftAmount)); row++)
 	{
 		// Move the row down
 		memcpy(contents[row - shiftAmount], contents[row], sizeof(contents[row]));
 	}
 	
 	// Clear the rows that haven't been overwritten
-	for (row = (ITET_FIELD_HEIGHT - shiftAmount); row < ITET_FIELD_HEIGHT; row++)
+	for (row = (ITET_FIELD_HEIGHT - ITET_NUM_CLEAR_ROWS); row < (ITET_FIELD_HEIGHT - (ITET_NUM_CLEAR_ROWS - shiftAmount)); row++)
 	{
 		// Clear the row
 		memset(contents[row], 0, sizeof(contents[row]));

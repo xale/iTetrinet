@@ -88,8 +88,8 @@ typedef enum
 // Clears ten random cells on the field
 - (void)clearRandomCells;
 
-// Pushes the contents down to clear the top six rows of a field that has just been swapped via the switchfield special
-- (void)shiftClearTopSixRows;
+// Pushes the contents down to clear the top rows of a field that has just been swapped via the switchfield special
+- (void)shiftClearTopRows;
 
 // Shifts the contents of the field down by the specified number of rows
 - (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount;

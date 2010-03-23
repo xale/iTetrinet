@@ -636,9 +636,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			else
 				[LOCALPLAYER setField:[[target field] copy]];
 			
-			// Safety check: ensure the top six rows of the swapped field are clear
-			// FIXME: why is this commented-out?
-			//[[LOCALPLAYER field] shiftClearTopSixRows];
+			// Safety check: ensure the top rows of the swapped field are clear (prevents the switchfield from being an insta-kill)
+			[[LOCALPLAYER field] shiftClearTopRows];
 			
 			break;
 			
