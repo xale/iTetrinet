@@ -923,9 +923,6 @@ NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
 NSString* const iTetNilSenderNamePlaceholder =			@"Server";
 NSString* const iTetNilTargetNamePlaceholder =			@"All";
 
-#define iTetBadSpecialForegroundColor		[NSColor redColor]
-#define iTetGoodSpecialForegroundColor		[[NSColor greenColor] blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]]
-#define iTetLinesAddedForegroundColor		[NSColor blueColor]
 #define iTetEventBackgroundColorFraction	(0.1)
 
 - (void)specialUsed:(iTetSpecialType)special
@@ -981,7 +978,7 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 		
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:linesDesc];
-		textColor = iTetLinesAddedForegroundColor;
+		textColor = [iTetTextAttributes linesAddedDescriptionTextColor];
 	}
 	else
 	{
@@ -995,9 +992,9 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:specialName];
 		if ([iTetSpecials specialIsPositive:special])
-			textColor = iTetGoodSpecialForegroundColor;
+			textColor = [iTetTextAttributes goodSpecialDescriptionTextColor];
 		else
-			textColor = iTetBadSpecialForegroundColor;
+			textColor = [iTetTextAttributes badSpecialDescriptionTextColor];
 	}
 	
 	// Apply bold and color to the chosen highlight range

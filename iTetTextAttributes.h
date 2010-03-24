@@ -60,6 +60,11 @@ typedef enum
 // Returns the default foreground text color (black)
 + (NSColor*)defaultTextColor;
 
+// Returns the text colors for various event descriptions in the game actions list
++ (NSColor*)goodSpecialDescriptionTextColor;
++ (NSColor*)badSpecialDescriptionTextColor;
++ (NSColor*)linesAddedDescriptionTextColor;
+
 // Returns the fonts used in the partyline message view
 + (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits;
 + (NSFont*)plainChatTextFont;

@@ -90,6 +90,21 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return [NSColor blackColor];
 }
 
++ (NSColor*)goodSpecialDescriptionTextColor
+{
+	return [[NSColor greenColor] blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]];
+}
+
++ (NSColor*)badSpecialDescriptionTextColor
+{
+	return [NSColor redColor];
+}
+
++ (NSColor*)linesAddedDescriptionTextColor
+{
+	return [NSColor blueColor];
+}
+
 + (NSColor*)chatTextColorForCode:(uint8_t)attributeCode
 {
 	switch (attributeCode)
