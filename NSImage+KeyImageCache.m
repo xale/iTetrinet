@@ -11,15 +11,15 @@
 @implementation NSImage (KeyImageCache)
 
 + (void)setImage:(NSImage*)image
-	  forKeyName:(NSString*)keyName
+		  forKey:(iTetKeyNamePair*)key
 {
 	[[NSMutableDictionary cacheDictionary] setObject:image
-											  forKey:keyName];
+											  forKey:key];
 }
 
-+ (NSImage*)imageForKeyName:(NSString*)keyName
++ (NSImage*)imageForKey:(iTetKeyNamePair*)key
 {
-	return [[NSMutableDictionary cacheDictionary] objectForKey:keyName];
+	return [[NSMutableDictionary cacheDictionary] objectForKey:key];
 }
 
 @end

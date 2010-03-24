@@ -7,6 +7,13 @@
 
 #import "iTetKeyNamePair.h"
 
+@interface iTetKeyNamePair (Private)
+
+- (NSString*)keyNameForEvent:(NSEvent*)event;
+- (NSString*)modifierNameForEvent:(NSEvent*)event;
+
+@end
+
 @implementation iTetKeyNamePair
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
@@ -17,8 +24,18 @@
 + (id)keyNamePairForKeyCode:(NSInteger)code
 					   name:(NSString*)name
 {
+	return [self keyNamePairForKeyCode:code
+								  name:name
+							 numpadKey:NO];
+}
+
++ (id)keyNamePairForKeyCode:(NSInteger)code
+					   name:(NSString*)name
+				  numpadKey:(BOOL)isOnNumpad
+{
 	return [[[self alloc] initWithKeyCode:code
-									 name:name] autorelease];
+									 name:name
+								numpadKey:isOnNumpad] autorelease];
 }
 
 - (id)initWithKeyEvent:(NSEvent*)event
@@ -33,7 +50,12 @@
 	if (isModifier)
 		keyName = [[self modifierNameForEvent:event] retain];
 	else
+	{
 		keyName = [[self keyNameForEvent:event] retain];
+		
+		// Check if the key is on the numeric keypad
+		numpadKey = (([event modifierFlags] & NSNumericPadKeyMask) > 0);
+	}
 	
 	return self;
 	
@@ -41,9 +63,11 @@
 
 - (id)initWithKeyCode:(NSInteger)code
 				 name:(NSString*)name
+			numpadKey:(BOOL)isOnNumpad
 {
 	keyCode = code;
 	keyName = [name copy];
+	numpadKey = isOnNumpad;
 	
 	return self;
 }
@@ -156,13 +180,9 @@ NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
 - (id)copyWithZone:(NSZone*)zone
 {
 	return [[[self class] allocWithZone:zone] initWithKeyCode:[self keyCode]
-														 name:[self keyName]];
+														 name:[self keyName]
+													numpadKey:[self isNumpadKey]];
 	
-}
-
-- (id)copy
-{
-	return [self copyWithZone:nil];
 }
 
 #pragma mark -
@@ -170,6 +190,7 @@ NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
 
 NSString* const iTetKeyNamePairCodeKey =	@"keyCode";
 NSString* const iTetKeyNamePairNameKey =	@"keyName";
+NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
@@ -177,12 +198,15 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 					forKey:iTetKeyNamePairCodeKey];
 	[encoder encodeObject:[self keyName]
 				   forKey:iTetKeyNamePairNameKey];
+	[encoder encodeBool:[self isNumpadKey]
+				 forKey:iTetKeyNamePairNumpadKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
 	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
+	numpadKey = [decoder decodeBoolForKey:iTetKeyNamePairNumpadKey];
 	
 	return self;
 }
@@ -212,45 +236,83 @@ NSString* const iTetKeyNamePairNameKey =	@"keyName";
 
 @synthesize keyCode;
 @synthesize keyName;
+@synthesize numpadKey;
+
+- (BOOL)isArrowKey
+{
+	switch ([self keyCode])
+	{
+		case iTetUpArrowKeyCode:
+		case iTetDownArrowKeyCode:
+		case iTetLeftArrowKeyCode:
+		case iTetRightArrowKeyCode:
+			return YES;
+			
+		default:
+			break;
+	}
+	
+	return NO;
+}
 
 - (NSString*)printedName
 {
+	NSString* name = nil;
+	
 	if ([[self keyName] isEqualToString:iTetEscapeKeyPlaceholderString])
-		return @"Escape";
+	{
+		name = @"Escape";
+	}
+	else if ([[self keyName] isEqualToString:iTetSpacebarPlaceholderString])
+	{
+		name = @"Space";
+	}
+	else if ([[self keyName] isEqualToString:iTetTabKeyPlaceholderString])
+	{
+		name = @"Tab";
+	}
+	else if ([[self keyName] isEqualToString:iTetReturnKeyPlaceholderString])
+	{
+		name = @"Return";
+	}
+	else if ([[self keyName] isEqualToString:iTetEnterKeyPlaceholderString])
+	{
+		name = @"Enter";
+	}
+	else if ([[self keyName] isEqualToString:iTetDeleteKeyPlaceholderString])
+	{
+		name = @"Delete";
+	}
+	else if ([[self keyName] isEqualToString:iTetShiftKeyPlaceholderString])
+	{
+		name = @"Shift"; // FIXME: left/right?
+	}
+	else if ([[self keyName] isEqualToString:iTetControlKeyPlaceholderString])
+	{
+		name = @"Control"; // FIXME: left/right?
+	}
+	else if ([[self keyName] isEqualToString:iTetAltOptionKeyPlaceholderString])
+	{
+		name = @"Option"; // FIXME: left/right?
+	}
+	else if ([[self keyName] isEqualToString:iTetCommandKeyPlaceholderString])
+	{
+		name = @"Command"; // FIXME: left/right?
+	}
+	else
+	{
+		name = [[self keyName] uppercaseString];
+	}
 	
-	if ([[self keyName] isEqualToString:iTetSpacebarPlaceholderString])
-		return @"Space";
+	if ([self isNumpadKey] && ![self isArrowKey])
+		return [NSString stringWithFormat:@"Numpad %@", name];
 	
-	if ([[self keyName] isEqualToString:iTetTabKeyPlaceholderString])
-		return @"Tab";
-	
-	if ([[self keyName] isEqualToString:iTetReturnKeyPlaceholderString])
-		return @"Return";
-	
-	if ([[self keyName] isEqualToString:iTetEnterKeyPlaceholderString])
-		return @"Enter";
-	
-	if ([[self keyName] isEqualToString:iTetDeleteKeyPlaceholderString])
-		return @"Delete";
-	
-	if ([[self keyName] isEqualToString:iTetShiftKeyPlaceholderString])
-		return @"Shift"; // FIXME: left/right?
-	
-	if ([[self keyName] isEqualToString:iTetControlKeyPlaceholderString])
-		return @"Control";
-	
-	if ([[self keyName] isEqualToString:iTetAltOptionKeyPlaceholderString])
-		return @"Option";
-	
-	if ([[self keyName] isEqualToString:iTetCommandKeyPlaceholderString])
-		return @"Command";
-	
-	return [[self keyName] uppercaseString];
+	return name;
 }
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat:@"<iTetKeyNamePair code:%d name:%@>", [self keyCode], [self printedName]];
+	return [NSString stringWithFormat:@"<iTetKeyNamePair code:%d name:%@ numpad:%d>", [self keyCode], [self printedName], [self isNumpadKey]];
 }
 
 @end

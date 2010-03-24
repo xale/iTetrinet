@@ -8,11 +8,8 @@
 #import "NSMutableDictionary+KeyBindings.h"
 #import "iTetKeyNamePair.h"
 
-#define iTetLeftArrowKeyCode	(123)
-#define iTetRightArrowKeyCode	(124)
 #define iTetZKeyCode			(6)
 #define iTetXKeyCode			(7)
-#define iTetDownArrowKeyCode	(125)
 #define iTetSpacebarKeyCode		(49)
 #define iTetDKeyCode			(2)
 #define iTetSKeyCode			(1)

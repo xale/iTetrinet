@@ -9,6 +9,15 @@
 #import "iTetKeyNamePair.h"
 #import "NSImage+KeyImageCache.h"
 
+@interface iTetKeyView (Private)
+
+- (NSImage*)keyImageForKey:(iTetKeyNamePair*)keyName;
+
+- (void)keyPressed:(iTetKeyNamePair*)key;
+
+@end
+
+
 @implementation iTetKeyView
 
 - (id)initWithFrame:(NSRect)frame
@@ -16,7 +25,7 @@
 	if (![super initWithFrame:frame])
 		return nil;
 	
-	currentKeyImage = [[self keyImageWithString:@"a"] retain];
+	currentKeyImage = nil;
 	
 	return self;
 }
@@ -48,18 +57,20 @@
 						fraction:1.0];
 }
 
-NSString* const iTetKeyFontName =	@"Helvetica";
-#define KEY_LINE_COLOR			[NSColor grayColor]
-#define KEY_FILL_COLOR			[NSColor whiteColor]
-#define KEY_FONT_SIZE			(22.0)
-#define KEY_NAME_MARGIN_SIZE	(10)
-#define KEY_BORDER_WIDTH		(2)
-#define KEY_CORNER_RADIUS		(5)
+NSString* const iTetKeyFontName =		@"Helvetica";
+NSString* const iTetNumpadKeyLabel =	@"num";
+#define KEY_LINE_COLOR				[NSColor grayColor]
+#define KEY_FILL_COLOR				[NSColor whiteColor]
+#define KEY_FONT_SIZE				(22.0)
+#define KEY_NUM_LABEL_FONT_SIZE		(10.0)
+#define KEY_NAME_MARGIN_SIZE		(10)
+#define KEY_BORDER_WIDTH			(2)
+#define KEY_CORNER_RADIUS			(5)
 
-- (NSImage*)keyImageWithString:(NSString*)keyName
-{	
+- (NSImage*)keyImageForKey:(iTetKeyNamePair*)key
+{
 	// Check if an image for this key exists in cache
-	NSImage* image = [NSImage imageForKeyName:keyName];
+	NSImage* image = [NSImage imageForKey:key];
 	if (image != nil)
 		return image;
 	
@@ -71,7 +82,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 							  drawFont, NSFontAttributeName,
 							  KEY_LINE_COLOR, NSForegroundColorAttributeName,
 							  nil];
-	NSAttributedString* drawString = [[[NSAttributedString alloc] initWithString:keyName
+	NSAttributedString* drawString = [[[NSAttributedString alloc] initWithString:[key keyName]
 																	  attributes:attrDict] autorelease];
 	
 	// Determine the size of the string to draw
@@ -81,11 +92,9 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	NSSize viewSize = [self bounds].size;
 	
 	// Create the rect in which we will draw the key
-	NSRect imageRect = NSMakeRect(0, 0,
-								  stringSize.width + (KEY_NAME_MARGIN_SIZE * 2),
-								  viewSize.height);
+	NSRect imageRect = NSMakeRect(0, 0, stringSize.width + (KEY_NAME_MARGIN_SIZE * 2), viewSize.height);
 	
-	// If the rect is taller than it is wide, make it square
+	// If the key image would be taller than it would be wide, make it square
 	if (imageRect.size.height > imageRect.size.width)
 		imageRect.size.width = imageRect.size.height;
 	
@@ -121,12 +130,36 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	// Draw the key name
 	[drawString drawAtPoint:stringDrawPoint];
 	
+	// If the key is on the numeric keypad, (and not an arrow key) add a label to indicate so
+	if ([key isNumpadKey] && ![key isArrowKey])
+	{
+		// Create an attributed string using the "num" label
+		drawFont = [NSFont fontWithName:iTetKeyFontName
+								   size:KEY_NUM_LABEL_FONT_SIZE];
+		attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
+					drawFont, NSFontAttributeName,
+					KEY_LINE_COLOR, NSForegroundColorAttributeName,
+					nil];
+		drawString = [[[NSAttributedString alloc] initWithString:iTetNumpadKeyLabel
+													  attributes:attrDict] autorelease];
+		
+		// Determine the size of the label
+		stringSize = [drawString size];
+		
+		// Center the label beneath the key name
+		stringDrawPoint = NSMakePoint(((imageRect.size.width - stringSize.width)/2),
+									  ((imageRect.size.height / 5) - (stringSize.height / 2)));
+		
+		// Draw the label
+		[drawString drawAtPoint:stringDrawPoint];
+	}
+	
 	// Finished drawing
 	[image unlockFocus];
 	
 	// Store the image in cache, for later access
 	[NSImage setImage:image
-		   forKeyName:keyName];
+			   forKey:key];
 	
 	return image;
 }
@@ -200,7 +233,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 
 - (void)setRepresentedKey:(iTetKeyNamePair*)key
 {
-	[self setCurrentKeyImage:[self keyImageWithString:[key keyName]]];
+	[self setCurrentKeyImage:[self keyImageForKey:key]];
 }
 
 - (void)setAssociatedAction:(iTetGameAction)action

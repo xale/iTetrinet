@@ -7,6 +7,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define iTetLeftArrowKeyCode	(123)
+#define iTetRightArrowKeyCode	(124)
+#define iTetDownArrowKeyCode	(125)
+#define iTetUpArrowKeyCode		(126)
+
 extern NSString* const iTetEscapeKeyPlaceholderString;
 extern NSString* const iTetSpacebarPlaceholderString;
 extern NSString* const iTetTabKeyPlaceholderString;
@@ -31,21 +36,25 @@ extern NSString* const iTetAltOptionKeyPlaceholderString;
 {
 	NSInteger keyCode;
 	NSString* keyName;
+	BOOL numpadKey;
 }
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
 + (id)keyNamePairForKeyCode:(NSInteger)code
 					   name:(NSString*)name;
++ (id)keyNamePairForKeyCode:(NSInteger)code
+					   name:(NSString*)name
+				  numpadKey:(BOOL)isOnNumpad;
 
 - (id)initWithKeyEvent:(NSEvent*)event;
 - (id)initWithKeyCode:(NSInteger)code
-				 name:(NSString*)name;
-
-- (NSString*)keyNameForEvent:(NSEvent*)event;
-- (NSString*)modifierNameForEvent:(NSEvent*)event;
+				 name:(NSString*)name
+			numpadKey:(BOOL)isOnNumpad;
 
 @property (readonly) NSInteger keyCode;
 @property (readonly) NSString* keyName;
+@property (readonly, getter=isNumpadKey) BOOL numpadKey;
+@property (readonly) BOOL isArrowKey;
 @property (readonly) NSString* printedName;
 
 @end

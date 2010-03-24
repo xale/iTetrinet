@@ -438,8 +438,8 @@
 				6A4A375F101BB3E000F27DE9 /* iTetChatViewController.m */,
 				6ACC223D107D0CE7006768C0 /* iTetGameViewController.h */,
 				6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */,
-				6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */,
 				6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */,
+				6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */,
 				6AB76D51101D141700734661 /* Preferences Window Controllers */,
 			);
 			name = "View Controllers";

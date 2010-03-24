@@ -7,10 +7,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class iTetKeyNamePair;
+
 @interface NSImage (KeyImageCache)
 
 + (void)setImage:(NSImage*)image
-	  forKeyName:(NSString*)keyName;
-+ (NSImage*)imageForKeyName:(NSString*)keyName;
+		  forKey:(iTetKeyNamePair*)keyName;
++ (NSImage*)imageForKey:(iTetKeyNamePair*)key;
 
 @end
