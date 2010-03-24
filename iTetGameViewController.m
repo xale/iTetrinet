@@ -922,9 +922,9 @@ NSString* const iTetNilSenderNamePlaceholder =			@"Server";
 NSString* const iTetNilTargetNamePlaceholder =			@"All";
 
 #define iTetBadSpecialForegroundColor		[NSColor redColor]
-#define iTetGoodSpecialForegroundColor		[NSColor greenColor]
+#define iTetGoodSpecialForegroundColor		[[NSColor greenColor] blendedColorWithFraction:0.3 ofColor:[NSColor blackColor]]
 #define iTetLinesAddedForegroundColor		[NSColor blueColor]
-#define iTetEventBackgroundColorFraction	(0.2)
+#define iTetEventBackgroundColorFraction	(0.1)
 
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
@@ -1013,8 +1013,8 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 	// If the local player was affected, add a background color
 	if (localPlayerAffected)
 	{
-		[desc addAttributes:[NSDictionary dictionaryWithObject:[textColor blendedColorWithFraction:(1.0 - iTetEventBackgroundColorFraction)
-																						   ofColor:[NSColor whiteColor]]
+		[desc addAttributes:[NSDictionary dictionaryWithObject:[[NSColor whiteColor] blendedColorWithFraction:iTetEventBackgroundColorFraction
+																									  ofColor:textColor]
 														forKey:NSBackgroundColorAttributeName]
 					  range:NSMakeRange(0, [desc length])];
 	}
