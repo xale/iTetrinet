@@ -88,6 +88,8 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	// Load the current configuration number
 	currentKeyConfigurationNumber = [[defaults objectForKey:iTetCurrentKeyConfigNumberKey] unsignedIntegerValue];
+	if (currentKeyConfigurationNumber >= [keyConfigurations count])
+		currentKeyConfigurationNumber = 0;
 	
 	return self;
 }
