@@ -923,7 +923,7 @@ NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
 NSString* const iTetNilSenderNamePlaceholder =			@"Server";
 NSString* const iTetNilTargetNamePlaceholder =			@"All";
 
-#define iTetEventBackgroundColorFraction	(0.1)
+#define iTetEventBackgroundColorFraction	(0.15)
 
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
