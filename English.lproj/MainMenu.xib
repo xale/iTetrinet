@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
 			<integer value="451"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -928,7 +928,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">game</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -961,7 +961,6 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{227, 197}</string>
 																<reference key="NSSuperview" ref="178493177"/>
-																<bool key="NSEnabled">YES</bool>
 																<object class="NSTableHeaderView" key="NSHeaderView" id="104114768">
 																	<reference key="NSNextResponder" ref="522450691"/>
 																	<int key="NSvFlags">256</int>
@@ -983,7 +982,7 @@
 																		<double key="NSMinWidth">40</double>
 																		<double key="NSMaxWidth">1000</double>
 																		<object class="NSTableHeaderCell" key="NSHeaderCell">
-																			<int key="NSCellFlags">75628096</int>
+																			<int key="NSCellFlags">612499008</int>
 																			<int key="NSCellFlags2">2048</int>
 																			<string key="NSContents">Attacks and Defenses</string>
 																			<object class="NSFont" key="NSSupport" id="26">
@@ -1006,7 +1005,7 @@
 																			</object>
 																		</object>
 																		<object class="NSTextFieldCell" key="NSDataCell" id="826240261">
-																			<int key="NSCellFlags">69336641</int>
+																			<int key="NSCellFlags">606207553</int>
 																			<int key="NSCellFlags2">33691648</int>
 																			<string key="NSContents">Text Cell</string>
 																			<reference key="NSSupport" ref="26"/>
@@ -1020,11 +1019,11 @@
 																					<bytes key="NSWhite">MC42NjY2NjY2NjY3AA</bytes>
 																				</object>
 																			</object>
-																			<object class="NSColor" key="NSTextColor" id="1002094199">
+																			<object class="NSColor" key="NSTextColor">
 																				<int key="NSColorSpace">6</int>
 																				<string key="NSCatalogName">System</string>
-																				<string key="NSColorName">controlTextColor</string>
-																				<reference key="NSColor" ref="432121657"/>
+																				<string key="NSColorName">selectedInactiveColor</string>
+																				<reference key="NSColor" ref="133591378"/>
 																			</object>
 																		</object>
 																		<int key="NSResizingMask">1</int>
@@ -1130,7 +1129,12 @@
 														<string key="NSColorName">controlColor</string>
 														<reference key="NSColor" ref="133591378"/>
 													</object>
-													<reference key="NSTextColor" ref="1002094199"/>
+													<object class="NSColor" key="NSTextColor" id="1002094199">
+														<int key="NSColorSpace">6</int>
+														<string key="NSCatalogName">System</string>
+														<string key="NSColorName">controlTextColor</string>
+														<reference key="NSColor" ref="432121657"/>
+													</object>
 												</object>
 											</object>
 											<object class="NSTextField" id="15250015">
@@ -1889,6 +1893,7 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2528,7 +2533,7 @@
 								<object class="NSTabViewItem" id="644695880">
 									<string key="NSIdentifier">winlist</string>
 									<object class="NSView" key="NSView" id="625816372">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2710,20 +2715,19 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Winlist</string>
 									<reference key="NSColor" ref="751214572"/>
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="644695880"/>
+							<reference key="NSSelectedTabViewItem" ref="210918728"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="625816372"/>
+								<reference ref="1052209441"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
