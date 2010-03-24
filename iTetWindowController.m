@@ -52,6 +52,14 @@
 }
 
 #pragma mark -
+#pragma mark NSWindow Delegate Methods
+
+- (void)windowWillClose:(NSNotification*)n
+{
+	[NSApp terminate:self];
+}
+
+#pragma mark -
 #pragma mark Main Window Tabs
 
 - (IBAction)switchToGameTab:(id)sender
