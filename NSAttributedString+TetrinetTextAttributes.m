@@ -21,7 +21,7 @@
 - (id)initWithPlineMessageData:(NSData*)messageData
 {
 	// Convert the message to a string, and split on formatting characters
-	NSArray* messageTokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByCharactersInSet:[iTetTextAttributes textAttributeCharacterSet]];
+	NSArray* messageTokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
 	
 	// Recombine the message tokens (stripping the formatting characters) and store in an NSMutableAttributedString with no attributes
 	NSMutableAttributedString* formattedMessage = [NSMutableAttributedString attributedStringWithString:[messageTokens componentsJoinedByString:@""]];
@@ -31,7 +31,7 @@
 		return [self init];
 	
 	// Maintain a dictionary of open attributes
-	NSMutableDictionary* openAttributes = [NSMutableDictionary dictionaryWithDictionary:[iTetTextAttributes defaultTextAttributes]];
+	NSMutableDictionary* openAttributes = [NSMutableDictionary dictionaryWithDictionary:[iTetTextAttributes defaultChatTextAttributes]];
 	
 	// Scan the message data for formatting bytes
 	const uint8_t* rawData = (uint8_t*)[messageData bytes];
@@ -46,7 +46,7 @@
 			break;
 		
 		// Determine the attribute specified by the formatting character
-		NSDictionary* newAttribute = [iTetTextAttributes textAttributeForCode:rawData[byteIndex]];
+		NSDictionary* newAttribute = [iTetTextAttributes chatTextAttributeForCode:rawData[byteIndex]];
 		
 		// Apply the existing attributes to the message
 		if ((byteIndex - bytesRemoved) > lastAttributeIndex)
@@ -68,7 +68,7 @@
 			if ([newColor hasSameRGBValuesAsColor:oldColor])
 			{
 				// Set the color attribute to the default text color
-				[openAttributes setObject:[iTetTextAttributes defaultTextColor]
+				[openAttributes setObject:[iTetTextAttributes defaultChatTextColor]
 								   forKey:attributeKey];
 			}
 			else
@@ -84,7 +84,7 @@
 			NSFontTraitMask oldFontTraits = [[NSFontManager sharedFontManager] traitsOfFont:[openAttributes objectForKey:attributeKey]];
 			NSFontTraitMask changedFontTrait = [[NSFontManager sharedFontManager] traitsOfFont:[newAttribute objectForKey:attributeKey]];
 			
-			[openAttributes setObject:[iTetTextAttributes fontWithTraits:(oldFontTraits ^ changedFontTrait)]
+			[openAttributes setObject:[iTetTextAttributes chatTextFontWithTraits:(oldFontTraits ^ changedFontTrait)]
 							   forKey:NSFontAttributeName];
 		}
 		// Underline: toggle between on and off
@@ -139,7 +139,7 @@
 		
 		// Check for specific attributes that interest us
 		// Text color
-		iTetTextColorAttribute color = [iTetTextAttributes codeForTextColor:[attributes objectForKey:NSForegroundColorAttributeName]];
+		iTetTextColorAttribute color = [iTetTextAttributes codeForChatTextColor:[attributes objectForKey:NSForegroundColorAttributeName]];
 		if ((color != noColor) && (color != blackTextColor))
 		{
 			// Add color codes to the outgoing message data

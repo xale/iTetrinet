@@ -40,29 +40,29 @@ typedef enum
 @interface iTetTextAttributes : NSObject
 
 // Returns an NSCharacterSet containing all characters used as formatting data in the TetriNET protocol
-+ (NSCharacterSet*)textAttributeCharacterSet;
++ (NSCharacterSet*)chatTextAttributeCharacterSet;
 
 // Returns a dictionary containing the default text attributes
-+ (NSDictionary*)defaultTextAttributes;
++ (NSDictionary*)defaultChatTextAttributes;
 
 // Returns the text attribute corresponding to the specified attribute code
-+ (NSDictionary*)textAttributeForCode:(uint8_t)attributeCode;
++ (NSDictionary*)chatTextAttributeForCode:(uint8_t)attributeCode;
 
 // Returns the foreground text color represented by the specified color code
-+ (NSColor*)textColorForCode:(uint8_t)attribute;
++ (NSColor*)chatTextColorForCode:(uint8_t)attribute;
 
 // Returns the color code representing the specified foreground text color
-+ (iTetTextColorAttribute)codeForTextColor:(NSColor*)color;
++ (iTetTextColorAttribute)codeForChatTextColor:(NSColor*)color;
 
 // Returns the default foreground text color for the partyline message view
-+ (NSColor*)defaultTextColor;
++ (NSColor*)defaultChatTextColor;
 
 // Returns the fonts used in the partyline message view
-+ (NSFont*)fontWithTraits:(NSFontTraitMask)fontTraits;
-+ (NSFont*)plainTextFont;
-+ (NSFont*)boldTextFont;
-+ (NSFont*)italicTextFont;
-+ (NSFont*)boldItalicTextFont;
++ (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits;
++ (NSFont*)plainChatTextFont;
++ (NSFont*)boldChatTextFont;
++ (NSFont*)italicChatTextFont;
++ (NSFont*)boldItalicChatTextFont;
 
 @end
 

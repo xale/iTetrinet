@@ -19,7 +19,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 
 @interface iTetTextAttributes (Private)
 
-+ (NSString*)textAttributeCharactersString;
++ (NSString*)chatTextAttributeCharactersString;
 
 @end
 
@@ -32,11 +32,11 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return nil;
 }
 
-+ (NSDictionary*)defaultTextAttributes
++ (NSDictionary*)defaultChatTextAttributes
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[self defaultTextColor], NSForegroundColorAttributeName,
-			[self plainTextFont], NSFontAttributeName,
+			[self defaultChatTextColor], NSForegroundColorAttributeName,
+			[self plainChatTextFont], NSFontAttributeName,
 			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
 			nil];
 }
@@ -44,10 +44,10 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark -
 #pragma mark Attribute/Code Conversions
 
-+ (NSDictionary*)textAttributeForCode:(uint8_t)attributeCode
++ (NSDictionary*)chatTextAttributeForCode:(uint8_t)attributeCode
 {
 	// Check if the code represents a color
-	NSColor* color = [self textColorForCode:attributeCode];
+	NSColor* color = [self chatTextColorForCode:attributeCode];
 	if (color != nil)
 	{
 		return [NSDictionary dictionaryWithObject:color
@@ -58,10 +58,10 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	switch (attributeCode)
 	{
 		case boldText:
-			return [NSDictionary dictionaryWithObject:[self boldTextFont]
+			return [NSDictionary dictionaryWithObject:[self boldChatTextFont]
 											   forKey:NSFontAttributeName];
 		case italicText:
-			return [NSDictionary dictionaryWithObject:[self italicTextFont]
+			return [NSDictionary dictionaryWithObject:[self italicChatTextFont]
 											   forKey:NSFontAttributeName];
 		case underlineText:
 			return [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:(NSUnderlineStyleSingle | NSUnderlinePatternSolid)]
@@ -76,12 +76,12 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark -
 #pragma mark Colors
 
-+ (NSColor*)defaultTextColor
++ (NSColor*)defaultChatTextColor
 {
 	return [NSColor blackColor];
 }
 
-+ (NSColor*)textColorForCode:(uint8_t)attributeCode
++ (NSColor*)chatTextColorForCode:(uint8_t)attributeCode
 {
 	switch (attributeCode)
 	{
@@ -140,7 +140,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return nil;
 }
 
-+ (iTetTextColorAttribute)codeForTextColor:(NSColor*)color
++ (iTetTextColorAttribute)codeForChatTextColor:(NSColor*)color
 {
 	if ([color hasSameRGBValuesAsColor:[NSColor blackColor]])
 		return blackTextColor;
@@ -196,63 +196,63 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark -
 #pragma mark Fonts
 
-+ (NSFont*)fontWithTraits:(NSFontTraitMask)fontTraits
++ (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits
 {
 	if (fontTraits & NSBoldFontMask)
 	{
 		if (fontTraits & NSItalicFontMask)
-			return [self boldItalicTextFont];
+			return [self boldItalicChatTextFont];
 		
-		return [self boldTextFont];
+		return [self boldChatTextFont];
 	}
 	
 	if (fontTraits & NSItalicFontMask)
-		return [self italicTextFont];
+		return [self italicChatTextFont];
 	
-	return [self plainTextFont];
+	return [self plainChatTextFont];
 }
 
-+ (NSFont*)plainTextFont
++ (NSFont*)plainChatTextFont
 {
 	return [NSFont fontWithName:@"Helvetica"
 						   size:12.0];
 }
 
-+ (NSFont*)boldTextFont
++ (NSFont*)boldChatTextFont
 {
-	return [[NSFontManager sharedFontManager] convertFont:[self plainTextFont]
+	return [[NSFontManager sharedFontManager] convertFont:[self plainChatTextFont]
 											  toHaveTrait:NSBoldFontMask];
 }
 
-+ (NSFont*)italicTextFont
++ (NSFont*)italicChatTextFont
 {
-	return [[NSFontManager sharedFontManager] convertFont:[self plainTextFont]
+	return [[NSFontManager sharedFontManager] convertFont:[self plainChatTextFont]
 											  toHaveTrait:NSItalicFontMask];
 }
 
-+ (NSFont*)boldItalicTextFont
++ (NSFont*)boldItalicChatTextFont
 {
-	return [[NSFontManager sharedFontManager] convertFont:[self plainTextFont]
+	return [[NSFontManager sharedFontManager] convertFont:[self plainChatTextFont]
 											  toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
 }
 
 #pragma mark -
 #pragma mark Text Attribute Character Set
 
-+ (NSCharacterSet*)textAttributeCharacterSet
++ (NSCharacterSet*)chatTextAttributeCharacterSet
 {
 	@synchronized(self)
 	{
 		if (iTetTextAttributeCharacterSet == nil)
 		{
-			iTetTextAttributeCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:[self textAttributeCharactersString]] retain];
+			iTetTextAttributeCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:[self chatTextAttributeCharactersString]] retain];
 		}
 	}
 	
 	return iTetTextAttributeCharacterSet;
 }
 
-+ (NSString*)textAttributeCharactersString
++ (NSString*)chatTextAttributeCharactersString
 {
 	NSMutableString* attributeChars = [NSMutableString string];
 	
