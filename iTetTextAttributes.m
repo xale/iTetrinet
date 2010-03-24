@@ -35,8 +35,17 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 + (NSDictionary*)defaultChatTextAttributes
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
-			[self defaultChatTextColor], NSForegroundColorAttributeName,
+			[self defaultTextColor], NSForegroundColorAttributeName,
 			[self plainChatTextFont], NSFontAttributeName,
+			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
+			nil];
+}
+
++ (NSDictionary*)defaultGameActionsTextAttributes
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[self defaultTextColor], NSForegroundColorAttributeName,
+			[self gameActionsTextFont], NSFontAttributeName,
 			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
 			nil];
 }
@@ -76,7 +85,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark -
 #pragma mark Colors
 
-+ (NSColor*)defaultChatTextColor
++ (NSColor*)defaultTextColor
 {
 	return [NSColor blackColor];
 }
@@ -196,6 +205,9 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark -
 #pragma mark Fonts
 
+NSString* const iTetChatTextFontName =	@"Helvetica";
+#define iTetChatTextFontSize			12.0
+
 + (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits
 {
 	if (fontTraits & NSBoldFontMask)
@@ -214,8 +226,8 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 
 + (NSFont*)plainChatTextFont
 {
-	return [NSFont fontWithName:@"Helvetica"
-						   size:12.0];
+	return [NSFont fontWithName:iTetChatTextFontName
+						   size:iTetChatTextFontSize];
 }
 
 + (NSFont*)boldChatTextFont
@@ -234,6 +246,15 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 {
 	return [[NSFontManager sharedFontManager] convertFont:[self plainChatTextFont]
 											  toHaveTrait:(NSBoldFontMask | NSItalicFontMask)];
+}
+
+NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
+#define iTetGameActionsTextFontSize				11.0
+
++ (NSFont*)gameActionsTextFont
+{
+	return [NSFont fontWithName:iTetGameActionsTextFontName
+						   size:iTetGameActionsTextFontSize];
 }
 
 #pragma mark -

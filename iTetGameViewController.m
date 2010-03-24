@@ -27,6 +27,8 @@
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
 
+#import "iTetTextAttributes.h"
+
 #define LOCALPLAYER	[playersController localPlayer]
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
@@ -974,7 +976,8 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 			linesDesc = iTetOneLineAddedFormat;
 		
 		// Create the description string
-		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]] autorelease];
+		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]
+													   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
 		
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:linesDesc];
@@ -986,7 +989,8 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 		NSString* specialName = [iTetSpecials nameForSpecialType:special];
 		
 		// Create the description string
-		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]] autorelease];
+		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
+													   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
 		
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:specialName];

@@ -68,7 +68,7 @@
 			if ([newColor hasSameRGBValuesAsColor:oldColor])
 			{
 				// Set the color attribute to the default text color
-				[openAttributes setObject:[iTetTextAttributes defaultChatTextColor]
+				[openAttributes setObject:[iTetTextAttributes defaultTextColor]
 								   forKey:attributeKey];
 			}
 			else

@@ -42,8 +42,11 @@ typedef enum
 // Returns an NSCharacterSet containing all characters used as formatting data in the TetriNET protocol
 + (NSCharacterSet*)chatTextAttributeCharacterSet;
 
-// Returns a dictionary containing the default text attributes
+// Returns a dictionary containing the default text attributes for the partyline message view
 + (NSDictionary*)defaultChatTextAttributes;
+
+// Returns a dictionary containing the default text attributes for the game actions list
++ (NSDictionary*)defaultGameActionsTextAttributes;
 
 // Returns the text attribute corresponding to the specified attribute code
 + (NSDictionary*)chatTextAttributeForCode:(uint8_t)attributeCode;
@@ -54,8 +57,8 @@ typedef enum
 // Returns the color code representing the specified foreground text color
 + (iTetTextColorAttribute)codeForChatTextColor:(NSColor*)color;
 
-// Returns the default foreground text color for the partyline message view
-+ (NSColor*)defaultChatTextColor;
+// Returns the default foreground text color (black)
++ (NSColor*)defaultTextColor;
 
 // Returns the fonts used in the partyline message view
 + (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits;
@@ -63,6 +66,9 @@ typedef enum
 + (NSFont*)boldChatTextFont;
 + (NSFont*)italicChatTextFont;
 + (NSFont*)boldItalicChatTextFont;
+
+// Returns the font used in the game actions list
++ (NSFont*)gameActionsTextFont;
 
 @end
 
