@@ -221,7 +221,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 #pragma mark Fonts
 
 NSString* const iTetChatTextFontName =	@"Helvetica";
-#define iTetChatTextFontSize			12.0
+#define iTetChatTextFontSize			(12.0)
 
 + (NSFont*)chatTextFontWithTraits:(NSFontTraitMask)fontTraits
 {
@@ -264,7 +264,7 @@ NSString* const iTetChatTextFontName =	@"Helvetica";
 }
 
 NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
-#define iTetGameActionsTextFontSize				11.0
+#define iTetGameActionsTextFontSize				(11.0)
 
 + (NSFont*)gameActionsTextFont
 {
