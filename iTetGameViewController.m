@@ -239,34 +239,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 }
 
 #pragma mark -
-#pragma mark Chat
-
-- (void)appendChatLine:(NSString*)line
-		fromPlayerName:(NSString*)playerName
-{
-	[self appendChatLine:[NSString stringWithFormat:@"%@: %@", playerName, line]];
-}
-
-- (void)appendChatLine:(NSString*)line
-{
-	// If the chat view is not empty, add a line separator
-	if ([[chatView textStorage] length] > 0)
-		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSLineSeparatorCharacter];
-	
-	// Add the line
-	[[[chatView textStorage] mutableString] appendString:line];
-	
-	// Scroll down
-	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
-}
-
-- (void)clearChat
-{
-	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
-							withString:@""];
-}
-
-#pragma mark -
 #pragma mark Interface Validations
 
 - (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
@@ -296,6 +268,34 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	
 	return YES;
+}
+
+#pragma mark -
+#pragma mark Chat
+
+- (void)appendChatLine:(NSString*)line
+		fromPlayerName:(NSString*)playerName
+{
+	[self appendChatLine:[NSString stringWithFormat:@"%@: %@", playerName, line]];
+}
+
+- (void)appendChatLine:(NSString*)line
+{
+	// If the chat view is not empty, add a line separator
+	if ([[chatView textStorage] length] > 0)
+		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSLineSeparatorCharacter];
+	
+	// Add the line
+	[[[chatView textStorage] mutableString] appendString:line];
+	
+	// Scroll down
+	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
+}
+
+- (void)clearChat
+{
+	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
+							withString:@""];
 }
 
 #pragma mark -
@@ -1194,8 +1194,33 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 			break;
 	}
 	
+	[self willChangeValueForKey:@"gameplayState"];
 	gameplayState = newState;
+	[self didChangeValueForKey:@"gameplayState"];
 }
 @synthesize gameplayState;
+
+- (BOOL)gameInProgress
+{
+	return ([self gameplayState] == gamePlaying) || ([self gameplayState] == gamePaused);
+}
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"gameplayState"])
+		return NO;
+	
+	return [super automaticallyNotifiesObserversForKey:key];
+}
+
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+	NSSet* keys = [super keyPathsForValuesAffectingValueForKey:key];
+	
+	if ([key isEqualToString:@"gameInProgress"])
+		keys = [keys setByAddingObject:@"gameplayState"];
+	
+	return keys;
+}
 
 @end

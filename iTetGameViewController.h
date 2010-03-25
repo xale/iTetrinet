@@ -115,5 +115,6 @@ typedef enum
 
 @property (readwrite, retain) iTetGameRules* currentGameRules;
 @property (readwrite, assign) iTetGameplayState gameplayState;
+@property (readonly) BOOL gameInProgress;
 
 @end

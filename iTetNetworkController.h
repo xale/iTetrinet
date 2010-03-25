@@ -27,10 +27,14 @@ typedef enum
 {
 	disconnected,
 	connecting,
-	connected
+	login,
+	connected,
+	disconnecting,
+	canceled,
+	connectionError
 } iTetConnectionState;
 
-@interface iTetNetworkController : NSObject
+@interface iTetNetworkController : NSObject <NSUserInterfaceValidations>
 {
 	// Other top-level controllers
 	IBOutlet iTetWindowController* windowController;
@@ -66,5 +70,6 @@ typedef enum
 
 @property (readonly) iTetServerInfo* currentServer;
 @property (readonly) iTetConnectionState connectionState;
+@property (readonly) BOOL connectionOpen;
 
 @end

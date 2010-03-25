@@ -86,25 +86,27 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 								 didEndSelector:@selector(disconnectWithGameInProgressAlertDidEnd:returnCode:contextInfo:)
 									contextInfo:NULL];
 				
-				return;
+				break;
 			}
 			
 			// Otherwise, just disconnect from the server
+			[self setConnectionState:disconnecting];
 			[self disconnect];
 			
-			return;
+			break;
 		}
 		
 		// If we are attempting to open a connection, abort the attempt
 		case connecting:
+		case login:
 		{
+			// Change connection state
+			[self setConnectionState:canceled];
+			
 			// Abort connection
 			[self disconnect];
 			
-			// Change the connection status label
-			[connectionStatusLabel setStringValue:@"Connection canceled"];
-			
-			return;
+			break;
 		}
 		
 		// If we are not connected, open the server list for a new connection
@@ -126,7 +128,15 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 							   modalDelegate:self
 							  didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
 								 contextInfo:NULL];
+			
+			break;
 		}
+		
+		case canceled:
+		case connectionError:
+		case disconnecting:
+			NSLog(@"WARNING: openCloseConnection: called with network controller in invalid state");
+			break;
 	}
 }
 
@@ -169,24 +179,45 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[gameController endGame];
 	
 	// Disconnect from the server
+	[self setConnectionState:disconnecting];
 	[self disconnect];
+}
+
+#pragma mark -
+#pragma mark Interface Validations
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+	// Determine the element's action
+	SEL action = [item action];
+	
+	if (action == @selector(openCloseConnection:))
+	{
+		switch ([self connectionState])
+		{
+			case canceled:
+			case connectionError:
+			case disconnecting:
+				return NO;
+			
+			default:
+				break;
+		}
+	}
+	
+	return YES;
 }
 
 #pragma mark -
 #pragma mark Connecting
 
-NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
-
 - (void)connectToServer:(iTetServerInfo*)server
 {
-	// Change the connection status label
-	[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [server address]]];
+	// Retain the server info
+	currentServer = [server retain];
 	
 	// Change the connection state
 	[self setConnectionState:connecting];
-	
-	// Retain the server info
-	currentServer = [server retain];
 	
 	// Attempt to open a connection to the server
 	NSError* error;
@@ -197,7 +228,6 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 	// If the connection fails, determine the error
 	if (!connectionSuccessful)
 	{
-		[self setConnectionState:disconnected];
 		[self handleError:error];
 	}
 }
@@ -215,13 +245,8 @@ didConnectToHost:(NSString*)hostname
 												   nickname:[[self currentServer] nickname]
 													address:hostname]];
 	
-	// Change the connection status label
-	[connectionStatusLabel setStringValue:@"Logging in..."];
-	
-	// Clear the chat views
-	[chatController clearChat];
-	[chatController appendStatusMessage:@"Connection Opened"];
-	[gameController clearChat];
+	// Change the connection state
+	[self setConnectionState:login];
 	
 	// Start reading data
 	[connectionSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
@@ -261,12 +286,6 @@ willDisconnectWithError:(NSError*)error
 	
 	// Remove all players from the players controller
 	[playersController removeAllPlayers];
-	
-	// Change the connection status label
-	[connectionStatusLabel setStringValue:@"Disconnected"];
-	
-	// Append a status message on the chat view
-	[chatController appendStatusMessage:@"Connection Closed"];
 }
 
 #pragma mark -
@@ -354,9 +373,6 @@ willDisconnectWithError:(NSError*)error
 			
 			// Change the connection state
 			[self setConnectionState:connected];
-			
-			// Change the connection status label
-			[connectionStatusLabel setStringValue:@"Connected"];
 			
 			break;
 			
@@ -568,6 +584,9 @@ willDisconnectWithError:(NSError*)error
 
 - (void)handleError:(NSError*)error
 {
+	// Change the connection state
+	[self setConnectionState:connectionError];
+	
 	// Create an alert
 	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 	[alert setMessageText:@"Error connecting to server"];
@@ -635,6 +654,8 @@ willDisconnectWithError:(NSError*)error
 
 @synthesize currentServer;
 
+NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
+
 - (void)setConnectionState:(iTetConnectionState)newState
 {
 	if (connectionState == newState)
@@ -651,11 +672,14 @@ willDisconnectWithError:(NSError*)error
 			[connectionMenuItem setTitle:@"Connect to Server..."];
 			[connectionMenuItem setKeyEquivalent:@"o"];
 			
-			// If we were attempting to connect, stop and hide the progress indicator
-			if (connectionState == connecting)
+			// If the connection was not caneceled or errored-out, this was a "clean" disconnect
+			if (connectionState == disconnecting)
 			{
-				[connectionProgressIndicator stopAnimation:self];
-				[connectionProgressIndicator setHidden:YES];
+				// Change the status label
+				[connectionStatusLabel setStringValue:@"Disconnected"];
+				
+				// Append a status message to the chat tab
+				[chatController appendStatusMessage:@"Connection Closed"];
 			}
 			
 			break;
@@ -667,9 +691,37 @@ willDisconnectWithError:(NSError*)error
 			[connectionMenuItem setTitle:@"Cancel Connection in Progress"];
 			[connectionMenuItem setKeyEquivalent:@"w"];
 			
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [[self currentServer] address]]];
+			
 			// Reveal and start the progress indicator
 			[connectionProgressIndicator setHidden:NO];
 			[connectionProgressIndicator startAnimation:self];
+			
+			break;
+			
+		case login:
+			// Clear the chat views, and append a status message on the chat tab
+			[chatController clearChat];
+			[gameController clearChat];
+			[chatController appendStatusMessage:@"Connection Opened"];
+			
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:@"Logging in..."];
+			
+			break;
+			
+		case canceled:
+			// Stop and hide the progress indicator
+			[connectionProgressIndicator stopAnimation:self];
+			[connectionProgressIndicator setHidden:YES];
+			
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:@"Connection canceled"];
+			
+			// If we had already opened the connection, append a status message indicating we are closing it
+			if (connectionState == login)
+				[chatController appendStatusMessage:@"Connection Closed"];
 			
 			break;
 			
@@ -684,11 +736,63 @@ willDisconnectWithError:(NSError*)error
 			[connectionMenuItem setTitle:@"Disconnect from Server"];
 			[connectionMenuItem setKeyEquivalent:@"w"];
 			
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:@"Connected"];
+			
+			break;
+		
+		case disconnecting:
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:@"Disconnecting..."];
+			
+			break;
+			
+		case connectionError:
+			// If we were connecting, stop and hide the progress indicator
+			if ((connectionState == connecting) || (connectionState == login))
+			{
+				// Stop and hide the progress indicator
+				[connectionProgressIndicator stopAnimation:self];
+				[connectionProgressIndicator setHidden:YES];
+			}
+			
+			// If the connection was open when the error occurred, append a status message
+			if ((connectionState == connected) || (connectionState == login))
+				[chatController appendStatusMessage:@"Connection Error"];
+			
+			// Change the connection status label
+			[connectionStatusLabel setStringValue:@"Connection error occurred"];
+			
 			break;
 	}
 	
+	[self willChangeValueForKey:@"connectionState"];
 	connectionState = newState;
+	[self didChangeValueForKey:@"connectionState"];
 }
 @synthesize connectionState;
+
+- (BOOL)connectionOpen
+{
+	return ([self connectionState] == connected);
+}
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"connectionState"])
+		return NO;
+	
+	return [super automaticallyNotifiesObserversForKey:key];
+}
+
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+	NSSet* keys = [super keyPathsForValuesAffectingValueForKey:key];
+	
+	if ([key isEqualToString:@"connectionOpen"])
+		keys = [keys setByAddingObject:@"connectionState"];
+	
+	return keys;
+}
 
 @end
