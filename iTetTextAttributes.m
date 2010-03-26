@@ -264,7 +264,7 @@ NSString* const iTetChatTextFontName =	@"Helvetica";
 }
 
 NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
-#define iTetGameActionsTextFontSize				(11.0)
+#define iTetGameActionsTextFontSize				(12.0)
 
 + (NSFont*)gameActionsTextFont
 {

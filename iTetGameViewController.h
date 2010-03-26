@@ -63,7 +63,7 @@ typedef enum
 	IBOutlet NSTextField* messageField;
 	
 	// Action history view
-	IBOutlet NSTableView* actionListView;
+	IBOutlet NSTextView* actionListView;
 	
 	// Rules for game in progress
 	iTetGameRules* currentGameRules;
@@ -77,9 +77,6 @@ typedef enum
 	// Data stored when game is paused
 	NSTimeInterval timeUntilNextTimerFire;
 	iTetBlockTimerType lastTimerType;
-	
-	// List of player actions (e.g., specials)
-	NSMutableArray* actionHistory;
 }
 
 - (IBAction)submitChatMessage:(id)sender;

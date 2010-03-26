@@ -44,7 +44,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		fromSender:(iTetPlayer*)sender;
 - (void)playerLost;
 
-- (void)recordAction:(NSAttributedString*)description;
+- (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
 
 - (NSTimer*)nextBlockTimer;
@@ -57,8 +57,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (id)init
 {
-	actionHistory = [[NSMutableArray alloc] init];
-	
 	gameplayState = gameNotPlaying;
 	
 	return self;
@@ -123,7 +121,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)dealloc
 {
 	[currentGameRules release];
-	[actionHistory release];
 	
 	[blockTimer invalidate];
 	
@@ -1021,69 +1018,28 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 	}
 	
 	// Record the event
-	[self recordAction:desc];
+	[self appendEventDescription:desc];
 }
 
-- (void)recordAction:(NSAttributedString*)description
+#pragma mark -
+#pragma mark Event Descriptions
+
+- (void)appendEventDescription:(NSAttributedString*)description
 {
-	// Add the action to the list
-	[actionHistory addObject:description];
+	// Add the line
+	[[actionListView textStorage] appendAttributedString:description];
 	
-	// Reload the action list table view
-	[actionListView noteNumberOfRowsChanged];
-	[actionListView scrollRowToVisible:([actionHistory count] - 1)];
+	// Add a line separator
+	[[[actionListView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
+	
+	// Scroll the view to ensure the line is visible
+	[actionListView scrollRangeToVisible:NSMakeRange([[actionListView textStorage] length], 0)];
 }
 
 - (void)clearActions
 {
-	[actionHistory removeAllObjects];
-	[actionListView reloadData];
-}
-
-#pragma mark -
-#pragma mark NSTableView Data Source / Delegate Methods
-
-- (NSInteger)numberOfRowsInTableView:(NSTableView*)tableView
-{
-	if ([tableView isEqual:actionListView])
-		return [actionHistory count];
-	
-	return 0;
-}
-
-- (id)tableView:(NSTableView*)tableView
-objectValueForTableColumn:(NSTableColumn*)column
-			row:(NSInteger)row
-{
-	if ([tableView isEqual:actionListView])
-		return [actionHistory objectAtIndex:row];
-	
-	return nil;
-}
-
-- (void)tableView:(NSTableView*)tableView
-  willDisplayCell:(id)cell
-   forTableColumn:(NSTableColumn*)tableColumn
-			  row:(NSInteger)rowIndex
-{
-	if ([tableView isEqual:actionListView])
-	{
-		// Check if the cell has a background color to draw
-		NSColor* bgColor = [[actionHistory objectAtIndex:rowIndex] attribute:NSBackgroundColorAttributeName
-																	 atIndex:0
-															  effectiveRange:NULL];
-		if (bgColor != nil)
-		{
-			// Tell the cell to draw its background in the color
-			[cell setBackgroundColor:bgColor];
-			[cell setDrawsBackground:YES];
-		}
-		else
-		{
-			// Tell the cell not to draw its background
-			[cell setDrawsBackground:NO];
-		}
-	}
+	[actionListView replaceCharactersInRange:NSMakeRange(0, [[actionListView textStorage] length])
+								  withString:@""];
 }
 
 #pragma mark -
