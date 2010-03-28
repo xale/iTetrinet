@@ -15,6 +15,7 @@
 @class iTetLocalFieldView;
 @class iTetNextBlockView;
 @class iTetSpecialsView;
+@class IPSScalableLevelIndicator;
 @class iTetPlayer;
 @class iTetServerInfo;
 @class iTetGameRules;
@@ -50,6 +51,8 @@ typedef enum
 	IBOutlet iTetLocalFieldView* localFieldView;
 	IBOutlet iTetNextBlockView* nextBlockView;
 	IBOutlet iTetSpecialsView* specialsView;
+	IBOutlet IPSScalableLevelIndicator* levelProgressIndicator;
+	IBOutlet IPSScalableLevelIndicator* specialsProgressIndicator;
 	
 	// Remote players' views
 	IBOutlet iTetFieldView* remoteFieldView1;

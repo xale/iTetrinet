@@ -23,6 +23,7 @@
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
 #import "iTetSpecialsView.h"
+#import "IPSScalableLevelIndicator.h"
 
 #import "iTetKeyActions.h"
 #import "NSMutableDictionary+KeyBindings.h"
@@ -91,6 +92,30 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		   withKeyPath:@"currentGameRules.specialCapacity"
 			   options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
 												   forKey:NSNullPlaceholderBindingOption]];
+	
+	// Level progress indicator
+	[levelProgressIndicator bind:@"maxValue"
+						toObject:self
+					 withKeyPath:@"currentGameRules.linesPerLevel"
+						 options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:1]
+															 forKey:NSNullPlaceholderBindingOption]];
+	[levelProgressIndicator bind:@"value"
+						toObject:playersController
+					 withKeyPath:@"localPlayer.linesSinceLastLevel"
+						 options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
+															 forKey:NSNullPlaceholderBindingOption]];
+	
+	// Specials progress indicator
+	[specialsProgressIndicator bind:@"maxValue"
+						   toObject:self
+						withKeyPath:@"currentGameRules.linesPerSpecial"
+							options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:1]
+																forKey:NSNullPlaceholderBindingOption]];
+	[specialsProgressIndicator bind:@"value"
+						   toObject:playersController
+						withKeyPath:@"localPlayer.linesSinceLastSpecials"
+							options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
+																forKey:NSNullPlaceholderBindingOption]];
 	
 	// Remote field views
 	[remoteFieldView1 bind:@"field"
