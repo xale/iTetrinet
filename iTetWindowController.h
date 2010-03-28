@@ -7,6 +7,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class iTetNetworkController;
+@class iTetPlayersController;
 @class iTetPreferencesController;
 @class iTetPreferencesWindowController;
 
@@ -17,6 +19,10 @@
 	
 	// Main tab view
 	IBOutlet NSTabView* tabView;
+	
+	// Top-level controllers
+	IBOutlet iTetNetworkController* networkController;
+	IBOutlet iTetPlayersController* playersController;
 	
 	// Preferences window
 	iTetPreferencesWindowController* prefsWindowController;

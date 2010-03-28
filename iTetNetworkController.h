@@ -68,7 +68,7 @@ typedef enum
 
 - (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
 
-@property (readonly) iTetServerInfo* currentServer;
+@property (readonly) NSString* currentServerAddress;
 @property (readonly) iTetConnectionState connectionState;
 @property (readonly) BOOL connectionOpen;
 

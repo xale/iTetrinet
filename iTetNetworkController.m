@@ -241,8 +241,8 @@ didConnectToHost:(NSString*)hostname
 		hostname = @"127.0.0.1";
 	
 	// Create and send the server login message
-	[self sendMessage:[iTetLoginMessage messageWithProtocol:[[self currentServer] protocol]
-												   nickname:[[self currentServer] nickname]
+	[self sendMessage:[iTetLoginMessage messageWithProtocol:[currentServer protocol]
+												   nickname:[currentServer nickname]
 													address:hostname]];
 	
 	// Change the connection state
@@ -468,7 +468,7 @@ willDisconnectWithError:(NSError*)error
 			// Tell the gameController to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
 									 rulesList:[(iTetNewGameMessage*)message rulesList]
-									  onServer:[self currentServer]];
+									  onServer:currentServer];
 			
 			break;
 			
@@ -652,7 +652,10 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize currentServer;
+- (NSString*)currentServerAddress
+{
+	return [currentServer address];
+}
 
 NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 
@@ -692,7 +695,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			[connectionMenuItem setKeyEquivalent:@"w"];
 			
 			// Change the connection status label
-			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [[self currentServer] address]]];
+			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [currentServer address]]];
 			
 			// Reveal and start the progress indicator
 			[connectionProgressIndicator setHidden:NO];

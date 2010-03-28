@@ -6,6 +6,11 @@
 //
 
 #import "iTetWindowController.h"
+#import "iTetNetworkController.h"
+#import "iTetPlayersController.h"
+
+#import "iTetLocalPlayer.h"
+
 #import "iTetPreferencesController.h"
 #import "iTetPreferencesWindowController.h"
 
@@ -52,11 +57,63 @@
 }
 
 #pragma mark -
+#pragma mark NSApplication Delegate Methods
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+{
+	// Check if there is an open connection
+	if ([networkController connectionOpen])
+	{
+		// Create an alert
+		NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+		
+		// Check if there is a game in progress
+		if ([[playersController localPlayer] isPlaying])
+		{
+			[alert setMessageText:@"Game in Progress"];
+			[alert setInformativeText:@"A game is currently in progress. Are you sure you want to quit?"];
+			[alert addButtonWithTitle:@"Quit Anyway"];
+			[alert addButtonWithTitle:@"Continue Playing"];
+		}
+		else
+		{
+			[alert setMessageText:@"Open Connection"];
+			[alert setInformativeText:[NSString stringWithFormat:@"You are currently connected to the server %@. Are you sure you want to quit?", [networkController currentServerAddress]]];
+			[alert addButtonWithTitle:@"Disconnect and Quit"];
+			[alert addButtonWithTitle:@"Don't Quit"];
+		}
+		
+		// Run the alert as a modal sheet
+		[alert beginSheetModalForWindow:window
+						  modalDelegate:self
+						 didEndSelector:@selector(connectionOpenAlertDidEnd:returnCode:contextInfo:)
+							contextInfo:NULL];
+		
+		return NSTerminateLater;
+	}
+	
+	return NSTerminateNow;
+}
+
+- (void)connectionOpenAlertDidEnd:(NSAlert*)alert
+					   returnCode:(NSInteger)returnCode
+					  contextInfo:(void*)contextInfo
+{
+	// Ensure the sheet has closed
+	[[alert window] orderOut:self];
+	
+	// Reply to the NSApplication instance, telling it whether or not to quit
+	[NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertFirstButtonReturn)];
+}
+
+#pragma mark -
 #pragma mark NSWindow Delegate Methods
 
-- (void)windowWillClose:(NSNotification*)n
+- (BOOL)windowShouldClose:(id)closingWindow
 {
 	[NSApp terminate:self];
+	
+	return NO;
 }
 
 #pragma mark -
