@@ -107,6 +107,46 @@ NSString* const iTetServerInfoProtocolKey =		@"protocol";
 }
 
 #pragma mark -
+#pragma mark Key-Value Validation
+
+NSString* const iTetInvalidNicknameErrorDomain =	@"iTetInvalidNickname";
+#define iTetInvalidNicknameErrorCode				(1)
+
+- (BOOL)validateNickname:(id*)newValue
+				   error:(NSError**)error
+{
+	// Check that the new value is not nil, or blank
+	NSString* newNickname = (NSString*)*newValue;
+	if ((newNickname == nil) || ([newNickname length] == 0))
+	{
+		// If an error address has been provided, create an error object
+		if (error != NULL)
+		{
+			NSDictionary* infoDict = [NSDictionary dictionaryWithObject:@"You must provide a nickname."
+																 forKey:NSLocalizedDescriptionKey];
+			*error = [NSError errorWithDomain:iTetInvalidNicknameErrorDomain
+										 code:iTetInvalidNicknameErrorCode
+									 userInfo:infoDict];
+		}
+		
+		// Nickname is invalid
+		return NO;
+	}
+	
+	// Strip whitespace from the ends of the nickname
+	newNickname = [newNickname stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Split the nickname on any internal whitespace characters
+	NSArray* nicknameTokens = [newNickname componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Re-join the nickame with underscores
+	*newValue = [nicknameTokens componentsJoinedByString:@"_"];
+	
+	// Nickname is valid
+	return YES;
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize serverName;
