@@ -43,6 +43,12 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	[discardSpecialKeyView setAssociatedAction:discardSpecial];
 	[selfSpecialKeyView setAssociatedAction:selfSpecial];
 	[gameChatKeyView setAssociatedAction:gameChat];
+	[useSpecialOnPlayer1KeyView setAssociatedAction:specialPlayer1];
+	[useSpecialOnPlayer2KeyView setAssociatedAction:specialPlayer2];
+	[useSpecialOnPlayer3KeyView setAssociatedAction:specialPlayer3];
+	[useSpecialOnPlayer4KeyView setAssociatedAction:specialPlayer4];
+	[useSpecialOnPlayer5KeyView setAssociatedAction:specialPlayer5];
+	[useSpecialOnPlayer6KeyView setAssociatedAction:specialPlayer6];
 	
 	// Add the key views to an array for easy enumeration
 	keyViews = [[NSArray alloc] initWithObjects:
@@ -54,7 +60,14 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 				dropKeyView,
 				discardSpecialKeyView,
 				selfSpecialKeyView,
-				gameChatKeyView, nil];
+				gameChatKeyView,
+				useSpecialOnPlayer1KeyView,
+				useSpecialOnPlayer2KeyView,
+				useSpecialOnPlayer3KeyView,
+				useSpecialOnPlayer4KeyView,
+				useSpecialOnPlayer5KeyView,
+				useSpecialOnPlayer6KeyView,
+				nil];
 	
 	// Register for notifications when a key view changes highlight state
 	for (iTetKeyView* keyView in keyViews)
@@ -118,7 +131,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (IBAction)changeConfiguration:(id)sender
 {
 	// Check if we have an unsaved configuration
-	if (unsavedConfiguration)
+	if (unsavedConfiguration != nil)
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
@@ -186,7 +199,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 				byWindowController:(iTetPreferencesWindowController*)sender
 {
-	if (unsavedConfiguration)
+	if (unsavedConfiguration != nil)
 	{
 		// Create an "unsaved configuration" alert
 		NSAlert* alert = [[NSAlert alloc] init];
@@ -216,7 +229,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 
 - (BOOL)windowShouldClose:(id)window
 {
-	if (unsavedConfiguration)
+	if (unsavedConfiguration != nil)
 	{
 		// Create an "unsaved configuration" alert
 		NSAlert* alert = [[NSAlert alloc] init];
@@ -551,7 +564,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	// Check if the pressed key is already in use
 	iTetGameAction boundAction;
-	if (unsavedConfiguration)
+	if (unsavedConfiguration != nil)
 	{
 		boundAction = [unsavedConfiguration actionForKey:key];
 	}
@@ -564,18 +577,8 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 	// If the action is already bound, disallow the binding
 	if (boundAction != noAction)
 	{
-		// If the key is reserved, warn the user
-		if ((boundAction >= specialPlayer1) && (boundAction <= specialPlayer6))
-		{
-			NSBeep();
-			
-			// Place a warning in the text field
-			[keyDescriptionField setStringValue:
-			 [NSString stringWithFormat:@"The key \'%@\' is reserved. Please choose another key.",
-			  [key printedName]]];
-		}
 		// If the key is bound to another action, inform the user
-		else if (boundAction != [keyView associatedAction])
+		if (boundAction != [keyView associatedAction])
 		{
 			NSBeep();
 			
@@ -593,7 +596,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 didSetRepresentedKey:(iTetKeyNamePair*)key
 {	
 	// If the current configuration is clean, make a copy
-	if (!unsavedConfiguration)
+	if (unsavedConfiguration == nil)
 	{
 		// Copy the current configuration
 		unsavedConfiguration = [[PREFS currentKeyConfiguration] mutableCopy];
@@ -632,7 +635,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 {
 	if ([menuItem action] == @selector(saveConfiguration:))
 	{
-		if (unsavedConfiguration)
+		if (unsavedConfiguration != nil)
 			return YES;
 		
 		return NO;
@@ -640,7 +643,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	
 	if ([menuItem action] == @selector(deleteConfiguration:))
 	{
-		if (unsavedConfiguration)
+		if (unsavedConfiguration != nil)
 			return NO;
 		
 		if ([[PREFS keyConfigurations] count] <= 1)

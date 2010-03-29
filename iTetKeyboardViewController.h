@@ -24,6 +24,12 @@
 	IBOutlet iTetKeyView* discardSpecialKeyView;
 	IBOutlet iTetKeyView* selfSpecialKeyView;
 	IBOutlet iTetKeyView* gameChatKeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer1KeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer2KeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer3KeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer4KeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer5KeyView;
+	IBOutlet iTetKeyView* useSpecialOnPlayer6KeyView;
 	NSArray* keyViews;
 	
 	IBOutlet NSTextField* keyDescriptionField;
