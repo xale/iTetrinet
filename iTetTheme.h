@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define ITET_DEF_CELL_WIDTH	20
+#define ITET_DEF_CELL_WIDTH		20
 #define ITET_DEF_CELL_HEIGHT	20
 
 @interface iTetTheme: NSObject <NSCoding>
