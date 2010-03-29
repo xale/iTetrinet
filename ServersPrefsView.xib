@@ -12,7 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -39,7 +38,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSCustomView" id="1005">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -426,7 +425,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{600, 387}</string>
-				<reference key="NSSuperview"/>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSArrayController" id="546769263">
@@ -435,7 +433,7 @@
 					<string>serverName</string>
 					<string>address</string>
 					<string>nickname</string>
-					<string>playerTeam</string>
+					<string>teamName</string>
 					<string>protocol</string>
 				</object>
 				<string key="NSObjectClassName">iTetServerInfo</string>
@@ -596,15 +594,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: arrangedObjects.playerTeam</string>
+						<string key="label">value: arrangedObjects.teamName</string>
 						<reference key="source" ref="197947031"/>
 						<reference key="destination" ref="546769263"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="197947031"/>
 							<reference key="NSDestination" ref="546769263"/>
-							<string key="NSLabel">value: arrangedObjects.playerTeam</string>
+							<string key="NSLabel">value: arrangedObjects.teamName</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">arrangedObjects.playerTeam</string>
+							<string key="NSKeyPath">arrangedObjects.teamName</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>

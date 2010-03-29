@@ -367,7 +367,7 @@ willDisconnectWithError:(NSError*)error
 			// Set the local player's number
 			[playersController setLocalPlayerNumber:[(iTetPlayerNumberMessage*)message playerNumber]
 										   nickname:[currentServer nickname]
-										   teamName:[currentServer playerTeam]];
+										   teamName:[currentServer teamName]];
 			
 			[self sendMessage:[iTetPlayerTeamMessage messageForPlayer:[playersController localPlayer]]];
 			

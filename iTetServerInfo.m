@@ -47,7 +47,7 @@
 	serverName = [name copy];
 	address = [addr copy];
 	nickname = [nick copy];
-	playerTeam = [team copy];
+	teamName = [team copy];
 	protocol = p;
 	
 	return self;
@@ -67,7 +67,7 @@
 	[serverName release];
 	[address release];
 	[nickname release];
-	[playerTeam release];
+	[teamName release];
 	
 	[super dealloc];
 }
@@ -89,7 +89,7 @@ NSString* const iTetServerInfoProtocolKey =		@"protocol";
 				   forKey:iTetServerInfoAddressKey];
 	[encoder encodeObject:[self nickname]
 				   forKey:iTetServerInfoNicknameKey];
-	[encoder encodeObject:[self playerTeam]
+	[encoder encodeObject:[self teamName]
 				   forKey:iTetServerInfoPlayerTeamKey];
 	[encoder encodeInt:[self protocol]
 				forKey:iTetServerInfoProtocolKey];
@@ -100,7 +100,7 @@ NSString* const iTetServerInfoProtocolKey =		@"protocol";
 	serverName = [[decoder decodeObjectForKey:iTetServerInfoServerNameKey] retain];
 	address = [[decoder decodeObjectForKey:iTetServerInfoAddressKey] retain];
 	nickname = [[decoder decodeObjectForKey:iTetServerInfoNicknameKey] retain];
-	playerTeam = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamKey] retain];
+	teamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamKey] retain];
 	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolKey];
 	
 	return self;
@@ -152,14 +152,14 @@ NSString* const iTetInvalidNicknameErrorDomain =	@"iTetInvalidNickname";
 @synthesize serverName;
 @synthesize address;
 @synthesize nickname;
-@synthesize playerTeam;
+@synthesize teamName;
 @synthesize protocol;
 
 - (NSString*)description
 {
 	return [NSString stringWithFormat:
 			@"iTetServerInfo; serverName: %@; address: %@; nickname: %@; playerTeam: %@",
-			serverName, address, nickname, playerTeam];
+			serverName, address, nickname, teamName];
 }
 
 @end

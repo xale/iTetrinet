@@ -18,7 +18,7 @@ typedef enum
 	NSString* serverName;
 	NSString* address;
 	NSString* nickname;
-	NSString* playerTeam;
+	NSString* teamName;
 	iTetProtocolType protocol;
 }
 
@@ -37,7 +37,7 @@ typedef enum
 @property (readwrite, copy) NSString* serverName;
 @property (readwrite, copy) NSString* address;
 @property (readwrite, copy) NSString* nickname;
-@property (readwrite, copy) NSString* playerTeam;
+@property (readwrite, copy) NSString* teamName;
 @property (readwrite, assign) iTetProtocolType protocol;
 
 @end
