@@ -109,8 +109,12 @@ NSString* const iTetServerInfoProtocolKey =		@"protocol";
 #pragma mark -
 #pragma mark Key-Value Validation
 
-NSString* const iTetInvalidNicknameErrorDomain =	@"iTetInvalidNickname";
-#define iTetInvalidNicknameErrorCode				(1)
+NSString* const iTetInvalidNameErrorDomain =	@"iTetInvalidNickname";
+typedef enum
+{
+	invalidNicknameErrorCode,
+	invalidTeamNameErrorCode
+} iTetInvalidNameErrorCode;
 
 - (BOOL)validateNickname:(id*)newValue
 				   error:(NSError**)error
@@ -124,8 +128,8 @@ NSString* const iTetInvalidNicknameErrorDomain =	@"iTetInvalidNickname";
 		{
 			NSDictionary* infoDict = [NSDictionary dictionaryWithObject:@"You must provide a nickname."
 																 forKey:NSLocalizedDescriptionKey];
-			*error = [NSError errorWithDomain:iTetInvalidNicknameErrorDomain
-										 code:iTetInvalidNicknameErrorCode
+			*error = [NSError errorWithDomain:iTetInvalidNameErrorDomain
+										 code:invalidNicknameErrorCode
 									 userInfo:infoDict];
 		}
 		
@@ -139,10 +143,34 @@ NSString* const iTetInvalidNicknameErrorDomain =	@"iTetInvalidNickname";
 	// Split the nickname on any internal whitespace characters
 	NSArray* nicknameTokens = [newNickname componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	
-	// Re-join the nickame with underscores
+	// Re-join the nickname with underscores
 	*newValue = [nicknameTokens componentsJoinedByString:@"_"];
 	
 	// Nickname is valid
+	return YES;
+}
+
+- (BOOL)validateTeamName:(id*)newValue
+				   error:(NSError**)error
+{
+	// Blank nicknames are valid
+	NSString* newTeamName = (NSString*)*newValue;
+	if (newTeamName == nil)
+	{
+		*newValue = [NSString string];
+		return YES;
+	}
+	
+	// Strip whitespace from the ends of the team name
+	newTeamName = [newTeamName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Split the name on any internal whitespace characters
+	NSArray* teamNameTokens = [newTeamName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Re-join the name with underscores
+	*newValue = [teamNameTokens componentsJoinedByString:@"_"];
+	
+	// Team name is valid
 	return YES;
 }
 
