@@ -10,8 +10,11 @@
 
 @interface iTetServersViewController : iTetPreferencesViewController
 {
-	
+	IBOutlet NSTableView* serversTableView;
+	IBOutlet NSArrayController* serversArrayController;
 }
+
+- (IBAction)createServer:(id)sender;
 
 @property (readonly) NSArray* valuesForProtocolPopUpCell;
 
