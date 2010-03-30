@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="455"/>
 			<integer value="29"/>
-			<integer value="501"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -928,7 +928,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">game</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1760,7 +1760,7 @@
 														<reference key="NSDocView" ref="1054741480"/>
 														<reference key="NSBGColor" ref="1150383"/>
 														<object class="NSCursor" key="NSCursor">
-															<string key="NSHotSpot">{1, 1}</string>
+															<string key="NSHotSpot">{1, -1}</string>
 															<int key="NSCursorType">0</int>
 														</object>
 														<int key="NScvFlags">4</int>
@@ -1892,7 +1892,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -1901,7 +1900,7 @@
 								<object class="NSTabViewItem" id="886642519">
 									<string key="NSIdentifier">chat</string>
 									<object class="NSView" key="NSView" id="88341571">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2542,6 +2541,7 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Chat</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2738,13 +2738,13 @@
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="210918728"/>
+							<reference key="NSSelectedTabViewItem" ref="886642519"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="1052209441"/>
+								<reference ref="88341571"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -3245,14 +3245,6 @@
 						<reference key="destination" ref="345497398"/>
 					</object>
 					<int key="connectionID">559</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">initialFirstResponder</string>
-						<reference key="source" ref="1048072440"/>
-						<reference key="destination" ref="82022787"/>
-					</object>
-					<int key="connectionID">560</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -5107,6 +5099,14 @@
 						<reference key="destination" ref="29850154"/>
 					</object>
 					<int key="connectionID">1506</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">initialFirstResponder</string>
+						<reference key="source" ref="1048072440"/>
+						<reference key="destination" ref="82022787"/>
+					</object>
+					<int key="connectionID">1508</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7206,7 +7206,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{80, 947}, {392, 20}}</string>
+					<string>{{80, 836}, {392, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -7220,9 +7220,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{230, 267}, {824, 713}}</string>
+					<string>{{230, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{230, 267}, {824, 713}}</string>
+					<string>{{230, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -7411,7 +7411,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1506</int>
+			<int key="maxID">1508</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
