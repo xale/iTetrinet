@@ -7,7 +7,7 @@
 
 #import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 #import "NSData+SingleByte.h"
 #import "NSColor+Comparisons.h"
 
@@ -21,7 +21,7 @@
 - (id)initWithPlineMessageData:(NSData*)messageData
 {
 	// Convert the message to a string, and split on formatting characters
-	NSArray* messageTokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
+	NSArray* messageTokens = [[NSString stringWithMessageData:messageData] componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
 	
 	// Recombine the message tokens (stripping the formatting characters) and store in an NSMutableAttributedString with no attributes
 	NSMutableAttributedString* formattedMessage = [NSMutableAttributedString attributedStringWithString:[messageTokens componentsJoinedByString:@""]];
@@ -122,8 +122,7 @@
 - (NSData*)plineMessageData
 {
 	// Create the raw-data ASCII version of the message
-	NSMutableData* messageData = [NSMutableData dataWithData:[[self string] dataUsingEncoding:NSASCIIStringEncoding
-																		 allowLossyConversion:YES]];
+	NSMutableData* messageData = [NSMutableData dataWithData:[[self string] messageData]];
 	NSUInteger bytesAdded = 0;
 	
 	// Search the messages for attributes

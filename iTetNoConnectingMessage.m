@@ -6,7 +6,7 @@
 //
 
 #import "iTetNoConnectingMessage.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetNoConnectingMessage
 
@@ -30,7 +30,7 @@
 	messageType = noConnectingMessage;
 	
 	// Convert the data to a string
-	reason = [[NSString stringWithASCIIData:messageData] retain];
+	reason = [[NSString stringWithMessageData:messageData] retain];
 	
 	return self;
 }

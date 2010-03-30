@@ -7,7 +7,7 @@
 
 #import "iTetLevelUpdateMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetLevelUpdateMessage
 
@@ -41,7 +41,7 @@
 	messageType = levelUpdateMessage;
 	
 	// Convert the message data to an array of space-delimited strings
-	NSArray* tokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
+	NSArray* tokens = [[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "];
 	
 	// Parse the first token as the player number
 	playerNumber = [[tokens objectAtIndex:0] integerValue];
@@ -61,8 +61,7 @@ NSString* const iTetLevelUpdateMessageFormat =	@"lvl %d %d";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetLevelUpdateMessageFormat, [self playerNumber], [self level]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

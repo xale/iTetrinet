@@ -7,7 +7,7 @@
 
 #import "iTetPlayerLostMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetPlayerLostMessage
 
@@ -38,7 +38,7 @@
 	messageType = playerLostMessage;
 	
 	// Convert the message to a string, and parse as the player number
-	playerNumber = [[NSString stringWithASCIIData:messageData] integerValue];
+	playerNumber = [[NSString stringWithMessageData:messageData] integerValue];
 	
 	return self;
 }
@@ -52,8 +52,7 @@ NSString* const iTetPlayerLostMessageFormat =	@"playerlost %d";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetPlayerLostMessageFormat, [self playerNumber]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

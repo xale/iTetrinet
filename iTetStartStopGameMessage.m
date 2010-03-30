@@ -7,6 +7,7 @@
 
 #import "iTetStartStopGameMessage.h"
 #import "iTetPlayer.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetStartStopGameMessage
 
@@ -42,8 +43,7 @@ NSString* const iTetStartStopGameMessageFormat =	@"startgame %d %d";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetStartStopGameMessageFormat, ([self startGame]?1:0), [self senderNumber]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

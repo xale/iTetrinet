@@ -7,7 +7,7 @@
 
 #import "iTetGameChatMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetGameChatMessage
 
@@ -56,7 +56,7 @@ NSString* const iTetGameChatMessageWithSenderFormat =	@"<%@> %@";
 	messageType = gameChatMessage;
 	
 	// Convert the message data to an array of space-delimited strings
-	messageContents = [[[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "] retain];
+	messageContents = [[[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "] retain];
 	
 	return self;
 }
@@ -70,8 +70,7 @@ NSString* const iTetGameChatMessageFormat =	@"gmsg %@";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetGameChatMessageFormat, [self messageContents]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

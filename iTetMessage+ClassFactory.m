@@ -8,7 +8,7 @@
 #import "iTetMessage+ClassFactory.h"
 #import "iTetIncomingMessages.h"
 #import "NSData+Searching.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetMessage (ClassFactory)
 
@@ -37,12 +37,12 @@
 	// If the message contains no spaces, treat it as a one-word message with no contents
 	if (firstSpace == NSNotFound)
 	{
-		messageDesignation = [NSString stringWithASCIIData:messageData];
+		messageDesignation = [NSString stringWithMessageData:messageData];
 		messageContents = [NSData data];
 	}
 	else
 	{
-		messageDesignation = [NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]];
+		messageDesignation = [NSString stringWithMessageData:[messageData subdataToIndex:firstSpace]];
 		messageContents = [messageData subdataFromIndex:(firstSpace + 1)];
 	}
 	
@@ -92,7 +92,7 @@
 		case levelUpdateMessage:
 		{
 			// Special case: "lvl 0 *" is a client info request
-			NSString* contents = [NSString stringWithASCIIData:messageContents];
+			NSString* contents = [NSString stringWithMessageData:messageContents];
 			if ([[contents substringToIndex:1] integerValue] == 0)
 				return [iTetClientInfoRequestMessage messageWithMessageData:messageContents];
 			

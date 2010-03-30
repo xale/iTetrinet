@@ -8,7 +8,7 @@
 #import "iTetFieldstringMessage.h"
 #import "iTetPlayer.h"
 #import "iTetField.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetFieldstringMessage
 
@@ -59,7 +59,7 @@
 	messageType = fieldstringMessage;
 	
 	// Convert the message to a string, and split into space-separated tokens
-	NSArray* messageTokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
+	NSArray* messageTokens = [[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "];
 	
 	// Parse the first token as the sender player's number
 	playerNumber = [[messageTokens objectAtIndex:0] integerValue];
@@ -92,8 +92,7 @@ NSString* const iTetFieldstringMessageFormat =	@"f %d %@";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetFieldstringMessageFormat, [self playerNumber], [self fieldstring]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

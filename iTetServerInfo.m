@@ -6,6 +6,14 @@
 //
 
 #import "iTetServerInfo.h"
+#import "iTetNetworkController.h"
+
+@interface iTetServerInfo (Private)
+
+- (NSString*)sanitizedName:(NSString*)inputString;
+
+@end
+
 
 @implementation iTetServerInfo
 
@@ -137,14 +145,8 @@ typedef enum
 		return NO;
 	}
 	
-	// Strip whitespace from the ends of the nickname
-	newNickname = [newNickname stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	
-	// Split the nickname on any internal whitespace characters
-	NSArray* nicknameTokens = [newNickname componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	
-	// Re-join the nickname with underscores
-	*newValue = [nicknameTokens componentsJoinedByString:@"_"];
+	// Sanitize any invalid characters
+	*newValue = [self sanitizedName:newNickname];
 	
 	// Nickname is valid
 	return YES;
@@ -161,17 +163,29 @@ typedef enum
 		return YES;
 	}
 	
-	// Strip whitespace from the ends of the team name
-	newTeamName = [newTeamName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	
-	// Split the name on any internal whitespace characters
-	NSArray* teamNameTokens = [newTeamName componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-	
-	// Re-join the name with underscores
-	*newValue = [teamNameTokens componentsJoinedByString:@"_"];
+	// Sanitize any invalid characters
+	*newValue = [self sanitizedName:newTeamName];
 	
 	// Team name is valid
 	return YES;
+}
+
+- (NSString*)sanitizedName:(NSString*)inputString
+{
+	// Strip whitespace from the ends of the name
+	inputString = [inputString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Split the name on any internal whitespace characters
+	NSArray* nameTokens = [inputString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Re-join the name with underscores
+	inputString = [nameTokens componentsJoinedByString:@"_"];
+	
+	// Split the name on any incidences of the protocol's separator character
+	nameTokens = [inputString componentsSeparatedByString:@"ÿ"];
+	
+	// Re-join with 'y's
+	return [nameTokens componentsJoinedByString:@"y"];
 }
 
 #pragma mark -

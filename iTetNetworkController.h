@@ -34,6 +34,8 @@ typedef enum
 	connectionError
 } iTetConnectionState;
 
+#define iTetNetworkTerminatorCharacter	(0xFF)
+
 @interface iTetNetworkController : NSObject <NSUserInterfaceValidations>
 {
 	// Other top-level controllers

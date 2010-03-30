@@ -6,6 +6,7 @@
 //
 
 #import "iTetClientInfoReplyMessage.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetClientInfoReplyMessage
 
@@ -30,8 +31,7 @@ NSString* const iTetClientInfoReplyMessageFormat	=	@"clientinfo %@ %@";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetClientInfoReplyMessageFormat, [self clientName], [self clientVersion]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

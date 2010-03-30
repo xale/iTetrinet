@@ -6,7 +6,7 @@
 //
 
 #import "iTetPlayerLeaveMessage.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetPlayerLeaveMessage
 
@@ -23,7 +23,7 @@
 	messageType = playerLeaveMessage;
 	
 	// Convert the message data to a string
-	NSString* rawMessage = [NSString stringWithASCIIData:messageData];
+	NSString* rawMessage = [NSString stringWithMessageData:messageData];
 	
 	// Read the player number as an integer
 	playerNumber = [rawMessage integerValue];

@@ -7,7 +7,7 @@
 
 #import "iTetPauseResumeGameMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetPauseResumeGameMessage
 
@@ -47,7 +47,7 @@
 	messageType = pauseResumeGameMessage;
 	
 	// Convert the message to a string, and split into space-delimited tokens
-	NSArray* tokens = [[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "];
+	NSArray* tokens = [[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "];
 	
 	// Treat the first token as the "pause state"
 	pauseGame = [[tokens objectAtIndex:0] boolValue];
@@ -70,8 +70,7 @@ NSString* const iTetPauseResumeGameMessageFormat =	@"pause %d %d";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetPauseResumeGameMessageFormat, ([self pauseGame]?1:0), [self senderNumber]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

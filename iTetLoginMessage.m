@@ -6,6 +6,7 @@
 //
 
 #import "iTetLoginMessage.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetLoginMessage
 
@@ -90,8 +91,7 @@ NSString* const TetrifastProtocolConnectionFormat =	@"tetrifaster %@ 1.13";
 	}
 	
 	// Convert the encoded message to a data object before returning
-	return [encodedMessage dataUsingEncoding:NSASCIIStringEncoding
-						allowLossyConversion:YES];
+	return [encodedMessage messageData];
 }
 
 #pragma mark -

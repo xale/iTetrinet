@@ -6,7 +6,7 @@
 //
 
 #import "iTetWinlistMessage.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetWinlistMessage
 
@@ -30,7 +30,7 @@
 	messageType = winlistMessage;
 	
 	// Convert the message data to a string
-	NSString* rawMessage = [NSString stringWithASCIIData:messageData];
+	NSString* rawMessage = [NSString stringWithMessageData:messageData];
 	
 	// Split into space-delimited tokens
 	winlistTokens = [[rawMessage componentsSeparatedByString:@" "] retain];

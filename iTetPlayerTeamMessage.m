@@ -7,7 +7,7 @@
 
 #import "iTetPlayerTeamMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetPlayerTeamMessage
 
@@ -48,7 +48,7 @@
 	messageType = playerTeamMessage;
 	
 	// Convert the message data to a string
-	NSString* rawMessage = [NSString stringWithASCIIData:messageData];
+	NSString* rawMessage = [NSString stringWithMessageData:messageData];
 	
 	// Split into space-delimited tokens
 	NSArray* messageTokens = [rawMessage componentsSeparatedByString:@" "];
@@ -74,8 +74,7 @@ NSString* const iTetPlayerTeamMessageFormat =	@"team %d %@";
 {
 	NSString* rawMessage = [NSString stringWithFormat:iTetPlayerTeamMessageFormat, [self playerNumber], [self teamName]];
 	
-	return [rawMessage dataUsingEncoding:NSASCIIStringEncoding
-					allowLossyConversion:YES];
+	return [rawMessage messageData];
 }
 
 #pragma mark -

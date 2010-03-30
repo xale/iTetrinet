@@ -7,7 +7,7 @@
 
 #import "iTetPlineChatMessage.h"
 #import "iTetPlayer.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 #import "NSData+Searching.h"
 #import "NSAttributedString+TetrinetTextAttributes.h"
 
@@ -56,7 +56,7 @@
 	if (firstSpace != NSNotFound)
 	{
 		// Split the data at the space, convert the first token to a string, and parse it as the sender player's number
-		senderNumber = [[NSString stringWithASCIIData:[messageData subdataToIndex:firstSpace]] integerValue];
+		senderNumber = [[NSString stringWithMessageData:[messageData subdataToIndex:firstSpace]] integerValue];
 		
 		// Convert the remaining data to the message contents as an attributed string
 		messageContents = [[NSAttributedString alloc] initWithPlineMessageData:[messageData subdataFromIndex:(firstSpace + 1)]];
@@ -64,7 +64,7 @@
 	else
 	{
 		// Treat the message data as the sender's player number, and the message contents as blank
-		senderNumber = [[NSString stringWithASCIIData:messageData] integerValue];
+		senderNumber = [[NSString stringWithMessageData:messageData] integerValue];
 		messageContents = [[NSAttributedString alloc] init];
 	}
 	
@@ -91,8 +91,7 @@ NSString* const iTetPlineChatMessageFormat =	@"pline %d ";
 - (NSData*)rawMessageDataWithInitialFormat:(NSString*)initialFormat
 {
 	// Convert the initial format to an NSMutableData object
-	NSMutableData* messageData = [NSMutableData dataWithData:[initialFormat dataUsingEncoding:NSASCIIStringEncoding
-																		 allowLossyConversion:YES]];
+	NSMutableData* messageData = [NSMutableData dataWithData:[initialFormat messageData]];
 	
 	// Append the message contents as data
 	[messageData appendData:[[self messageContents] plineMessageData]];

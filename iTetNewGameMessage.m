@@ -6,7 +6,7 @@
 //
 
 #import "iTetNewGameMessage.h"
-#import "NSString+ASCIIData.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetNewGameMessage
 
@@ -30,7 +30,7 @@
 	messageType = newGameMessage;
 	
 	// Convert the message data to a string, and split into space-delimited tokens
-	rulesList = [[[NSString stringWithASCIIData:messageData] componentsSeparatedByString:@" "] retain];
+	rulesList = [[[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "] retain];
 	
 	return self;
 }

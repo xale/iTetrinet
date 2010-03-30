@@ -27,7 +27,6 @@
 
 NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #define iTetNetworkPort					(31457)
-#define iTetNetworkTerminatorCharacter	(0xFF)
 
 @interface iTetNetworkController (Private)
 
