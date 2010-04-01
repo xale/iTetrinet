@@ -129,27 +129,42 @@ typedef enum
 {
 	// Check that the new value is not nil, or blank
 	NSString* newNickname = (NSString*)*newValue;
-	if ((newNickname == nil) || ([newNickname length] == 0))
+	BOOL validName = YES;
+	if (newNickname == nil)
 	{
-		// If an error address has been provided, create an error object
-		if (error != NULL)
-		{
-			NSDictionary* infoDict = [NSDictionary dictionaryWithObject:@"You must provide a nickname."
-																 forKey:NSLocalizedDescriptionKey];
-			*error = [NSError errorWithDomain:iTetInvalidNameErrorDomain
-										 code:invalidNicknameErrorCode
-									 userInfo:infoDict];
-		}
-		
-		// Nickname is invalid
-		return NO;
+		// No nickname specified
+		validName = NO;
+		goto bail;
 	}
 	
-	// Sanitize any invalid characters
-	*newValue = [self sanitizedName:newNickname];
+	// Strip whitespace, sanitize any invalid characters
+	newNickname = [self sanitizedName:newNickname];
 	
-	// Nickname is valid
-	return YES;
+	// Check that the nickname is not blank
+	if ([newNickname length] <= 0)
+	{
+		// Blank nickname
+		validName = NO;
+		goto bail;
+	}
+	
+bail:
+	// If the nickname is invalid, and an error address has been provided, create an error object
+	if (!validName && (error != NULL))
+	{
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:@"You must provide a nickname."
+															 forKey:NSLocalizedDescriptionKey];
+		*error = [NSError errorWithDomain:iTetInvalidNameErrorDomain
+									 code:invalidNicknameErrorCode
+								 userInfo:infoDict];
+	}
+	// Otherwise, change the final, accepted value to the sanitized nickname
+	else
+	{
+		*newValue = newNickname;
+	}
+	
+	return validName;
 }
 
 - (BOOL)validateTeamName:(id*)newValue
@@ -185,7 +200,9 @@ typedef enum
 	nameTokens = [inputString componentsSeparatedByString:@"ÿ"];
 	
 	// Re-join with 'y's
-	return [nameTokens componentsJoinedByString:@"y"];
+	inputString = [nameTokens componentsJoinedByString:@"y"];
+	
+	return inputString;
 }
 
 #pragma mark -
