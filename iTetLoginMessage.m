@@ -49,14 +49,14 @@ NSString* const TetrifastProtocolConnectionFormat =	@"tetrifaster %@ 1.13";
 - (NSData*)rawMessageData
 {
 	// Determine the message format, which consists of: <protocol string> <player nickname> <version number>
-	NSString* rawMessage;
+	NSData* messageData;
 	switch ([self protocol])
 	{
 		case tetrinetProtocol:
-			rawMessage = [NSString stringWithFormat:TetrinetProtocolConnectionFormat, [self nickname]];
+			messageData = [[NSString stringWithFormat:TetrinetProtocolConnectionFormat, [self nickname]] messageData];
 			break;
 		case tetrifastProtocol:
-			rawMessage = [NSString stringWithFormat:TetrifastProtocolConnectionFormat, [self nickname]];
+			messageData = [[NSString stringWithFormat:TetrifastProtocolConnectionFormat, [self nickname]] messageData];
 			break;
 		default:
 			NSLog(@"WARNING: attempt to construct raw LoginMessage using invalid protocol");
@@ -74,14 +74,15 @@ NSString* const TetrifastProtocolConnectionFormat =	@"tetrifaster %@ 1.13";
 	NSString* ipHash = [NSString stringWithFormat:@"%d", (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
 	
 	// Create an "encoded" version of the message, starting with a random two-digit hexadecimal value in the range [0, 255)
-	NSInteger x = random() % 255;
+	uint8_t x = random() % 255;
 	NSMutableString* encodedMessage = [NSMutableString stringWithFormat:@"%02X", x];
 	
 	// Create a "hash" of each character in the message and append it as a hexadecimal value to the end of the encoded string
-	for (i = 0; i < [rawMessage length]; i++)
+	const uint8_t* rawData = [messageData bytes];
+	for (i = 0; i < [messageData length]; i++)
 	{
 		// Modular-add value of current character
-		x = ((x + [rawMessage characterAtIndex:i]) % 255);
+		x = ((x + rawData[i]) % 255);
 		
 		// XOR with a character of the IP address hash
 		x ^= [ipHash characterAtIndex:(i % [ipHash length])];
