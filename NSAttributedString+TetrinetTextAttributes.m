@@ -8,7 +8,6 @@
 #import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
 #import "NSString+MessageData.h"
-#import "NSData+SingleByte.h"
 #import "NSColor+Comparisons.h"
 
 @implementation NSAttributedString (TetrinetTextAttributes)
@@ -20,10 +19,13 @@
 
 - (id)initWithPlineMessageData:(NSData*)messageData
 {
-	// Convert the message to a string, and split on formatting characters
-	NSArray* messageTokens = [[NSString stringWithMessageData:messageData] componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
+	// Convert the message to a raw string
+	NSString* rawMessage = [NSString stringWithMessageData:messageData];
 	
-	// Recombine the message tokens (stripping the formatting characters) and store in an NSMutableAttributedString with no attributes
+	// Split the message on formatting characters
+	NSArray* messageTokens = [rawMessage componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
+	
+	// Recombine the message tokens (dropping the formatting characters) and store in an NSMutableAttributedString with no attributes
 	NSMutableAttributedString* formattedMessage = [NSMutableAttributedString attributedStringWithString:[messageTokens componentsJoinedByString:@""]];
 	
 	// If the message is blank, return an empty attributed string
@@ -34,26 +36,25 @@
 	NSMutableDictionary* openAttributes = [NSMutableDictionary dictionaryWithDictionary:[iTetTextAttributes defaultChatTextAttributes]];
 	
 	// Scan the message data for formatting bytes
-	const uint8_t* rawData = (uint8_t*)[messageData bytes];
-	NSUInteger byteIndex = -1, lastAttributeIndex = 0, bytesRemoved = 0;
+	NSUInteger characterIndex = -1, lastAttributeIndex = 0, charactersRemoved = 0;
 	for (NSUInteger tokenNumber = 0; tokenNumber < [messageTokens count]; tokenNumber++)
 	{
 		// Find index of the next formatting character
-		byteIndex += [[messageTokens objectAtIndex:tokenNumber] length] + 1;
+		characterIndex += [[messageTokens objectAtIndex:tokenNumber] length] + 1;
 		
-		// Check if we're still within the bounds of the message data
-		if (byteIndex >= [messageData length])
+		// Check that we're still within the bounds of the message
+		if (characterIndex >= [rawMessage length])
 			break;
 		
 		// Determine the attribute specified by the formatting character
-		NSDictionary* newAttribute = [iTetTextAttributes chatTextAttributeForCode:rawData[byteIndex]];
+		NSDictionary* newAttribute = [iTetTextAttributes chatTextAttributeForCode:[rawMessage characterAtIndex:characterIndex]];
 		
 		// Apply the existing attributes to the message
-		if ((byteIndex - bytesRemoved) > lastAttributeIndex)
+		if ((characterIndex - charactersRemoved) > lastAttributeIndex)
 		{
 			[formattedMessage addAttributes:openAttributes
-									  range:NSMakeRange(lastAttributeIndex, ((byteIndex - bytesRemoved) - lastAttributeIndex))];
-			lastAttributeIndex = (byteIndex - bytesRemoved);
+									  range:NSMakeRange(lastAttributeIndex, ((characterIndex - charactersRemoved) - lastAttributeIndex))];
+			lastAttributeIndex = (characterIndex - charactersRemoved);
 		}
 		
 		// Compare the new value for this attribute with the old
@@ -105,14 +106,14 @@
 			NSLog(@"WARNING: unknown attribute key in NSAttributedString -initWithPlineMessageData: '%@'", attributeKey);
 		
 		// Increment the number of formatting bytes removed from the final message
-		bytesRemoved++;
+		charactersRemoved++;
 	}
 	
 	// Apply any final attributes
-	if ((byteIndex - bytesRemoved) > lastAttributeIndex)
+	if ((characterIndex - charactersRemoved) > lastAttributeIndex)
 	{
 		[formattedMessage addAttributes:openAttributes
-								  range:NSMakeRange(lastAttributeIndex, ((byteIndex - bytesRemoved) - lastAttributeIndex))];
+								  range:NSMakeRange(lastAttributeIndex, ((characterIndex - charactersRemoved) - lastAttributeIndex))];
 	}
 	
 	// Return the finished attributed message
@@ -122,8 +123,8 @@
 - (NSData*)plineMessageData
 {
 	// Create the raw-data ASCII version of the message
-	NSMutableData* messageData = [NSMutableData dataWithData:[[self string] messageData]];
-	NSUInteger bytesAdded = 0;
+	NSMutableString* formattedMessage = [NSMutableString stringWithString:[self string]];
+	NSUInteger charactersAdded = 0;
 	
 	// Search the messages for attributes
 	NSMutableArray* openTags = [NSMutableArray array];
@@ -143,12 +144,12 @@
 		{
 			// Add color codes to the outgoing message data
 			// Open tag
-			[messageData insertByte:(uint8_t)color
-							atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
+			[formattedMessage insertString:[NSString stringWithFormat:@"%c", color]
+								   atIndex:(attrRange.location + charactersAdded)];
+			charactersAdded++;
 			
 			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:color]];
+			[openTags addObject:[NSNumber numberWithChar:color]];
 		}
 		
 		// Underline
@@ -156,12 +157,12 @@
 		{
 			// Add underline code to message
 			// Open tag
-			[messageData insertByte:(uint8_t)underlineText
-							atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
+			[formattedMessage insertString:[NSString stringWithFormat:@"%c", underlineText]
+								   atIndex:(attrRange.location + charactersAdded)];
+			charactersAdded++;
 			
 			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:underlineText]];
+			[openTags addObject:[NSNumber numberWithChar:underlineText]];
 		}
 		
 		// Font traits (bold, italic)
@@ -170,32 +171,32 @@
 		{
 			// Add bold code to message
 			// Open tag
-			[messageData insertByte:(uint8_t)boldText
-							atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
+			[formattedMessage insertString:[NSString stringWithFormat:@"%c", boldText]
+								   atIndex:(attrRange.location + charactersAdded)];
+			charactersAdded++;
 			
 			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:boldText]];
+			[openTags addObject:[NSNumber numberWithChar:boldText]];
 		}
 		if (fontTraits & NSItalicFontMask)
 		{
 			// Add italics code to message
 			// Open tag
-			[messageData insertByte:(uint8_t)italicText
-							atIndex:(attrRange.location + bytesAdded)];
-			bytesAdded++;
+			[formattedMessage insertString:[NSString stringWithFormat:@"%c", italicText]
+								   atIndex:(attrRange.location + charactersAdded)];
+			charactersAdded++;
 			
 			// Add to list of open tags
-			[openTags addObject:[NSNumber numberWithInt:italicText]];
+			[openTags addObject:[NSNumber numberWithChar:italicText]];
 		}
 		
 		// Close all open tags (in reverse order) before moving to next attribute range
 		for (NSNumber* tag in [openTags reverseObjectEnumerator])
 		{
 			// Close the tag
-			[messageData insertByte:(uint8_t)[tag intValue]
-							atIndex:(attrRange.location + attrRange.length + bytesAdded)];
-			bytesAdded++;
+			[formattedMessage insertString:[NSString stringWithFormat:@"%c", [tag charValue]]
+								   atIndex:(attrRange.location + attrRange.length + charactersAdded)];
+			charactersAdded++;
 		}
 		
 		// Clear the list of open tags
@@ -205,8 +206,8 @@
 		index = (attrRange.location + attrRange.length);
 	}
 	
-	// Return the formatted data
-	return [NSData dataWithData:messageData];
+	// Return the formatted message as an NSData object
+	return [formattedMessage messageData];
 }
 
 @end
