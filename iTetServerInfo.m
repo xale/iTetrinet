@@ -137,7 +137,7 @@ typedef enum
 		goto bail;
 	}
 	
-	// Strip whitespace, sanitize any invalid characters
+	// Strip/sanitize whitespace
 	newNickname = [self sanitizedName:newNickname];
 	
 	// Check that the nickname is not blank
@@ -178,7 +178,7 @@ bail:
 		return YES;
 	}
 	
-	// Sanitize any invalid characters
+	// Sanitize any whitespace characters
 	*newValue = [self sanitizedName:newTeamName];
 	
 	// Team name is valid
@@ -195,12 +195,6 @@ bail:
 	
 	// Re-join the name with underscores
 	inputString = [nameTokens componentsJoinedByString:@"_"];
-	
-	// Split the name on any incidences of the protocol's separator character
-	nameTokens = [inputString componentsSeparatedByString:@"ÿ"];
-	
-	// Re-join with 'y's
-	inputString = [nameTokens componentsJoinedByString:@"y"];
 	
 	return inputString;
 }
