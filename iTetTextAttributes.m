@@ -292,7 +292,7 @@ NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
 {
 	NSMutableString* attributeChars = [NSMutableString string];
 	
-	for (char c = 0; c < ITET_HIGHEST_ATTR_CODE; c++)
+	for (char c = 0; c <= ITET_HIGHEST_ATTR_CODE; c++)
 	{
 		switch (c)
 		{
