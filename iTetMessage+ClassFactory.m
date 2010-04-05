@@ -10,20 +10,24 @@
 #import "NSData+Searching.h"
 #import "NSString+MessageData.h"
 
+// FIXME: used only for debug logging
+#import "iTetTextAttributes.h"
+
 @implementation iTetMessage (ClassFactory)
 
 + (iTetMessage<iTetIncomingMessage>*)messageFromData:(NSData*)messageData
 {
 	// FIXME: debug logging
+	NSString* message = [NSString stringWithMessageData:messageData];
 	NSMutableString* debugString = [NSMutableString string];
-	char byte;
-	for (NSUInteger i = 0; i < [messageData length]; i++)
+	unichar character;
+	for (NSUInteger i = 0; i < [message length]; i++)
 	{
-		byte = ((char*)[messageData bytes])[i];
-		if (byte > 31)
-			[debugString appendFormat:@"%c", byte];
+		character = [message characterAtIndex:i];
+		if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
+			[debugString appendFormat:@"<\\%02u>", character];
 		else
-			[debugString appendFormat:@"<\\%02d>", byte];
+			[debugString appendFormat:@"%C", character];
 	}
 	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
 	
