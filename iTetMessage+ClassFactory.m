@@ -7,8 +7,9 @@
 
 #import "iTetMessage+ClassFactory.h"
 #import "iTetIncomingMessages.h"
-#import "NSData+Searching.h"
 #import "NSString+MessageData.h"
+#import "NSData+SingleByte.h"
+#import "NSData+Subdata.h"
 
 // FIXME: used only for debug logging
 #import "iTetTextAttributes.h"

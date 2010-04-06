@@ -8,7 +8,8 @@
 #import "iTetPlineChatMessage.h"
 #import "iTetPlayer.h"
 #import "NSString+MessageData.h"
-#import "NSData+Searching.h"
+#import "NSData+SingleByte.h"
+#import "NSData+Subdata.h"
 #import "NSAttributedString+TetrinetTextAttributes.h"
 
 @implementation iTetPlineChatMessage

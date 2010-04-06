@@ -27,6 +27,22 @@
 						  length:(length + 1)];
 }
 
+#pragma mark -
+#pragma mark Byte Searching
+
+- (NSUInteger)indexOfByte:(uint8_t)byte
+{
+	const uint8_t* rawData = [self bytes];
+	
+	for (NSUInteger index = 0; index < [self length]; index++)
+	{
+		if (rawData[index] == byte)
+			return index;
+	}
+	
+	return NSNotFound;
+}
+
 @end
 
 @implementation NSMutableData (SingleByte)

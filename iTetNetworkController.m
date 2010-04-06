@@ -23,7 +23,7 @@
 #import "iTetLocalPlayer.h"
 
 #import "NSData+SingleByte.h"
-#import "NSData+Searching.h"
+#import "NSData+Subdata.h"
 
 // FIXME: used only for debug logging
 #import "NSString+MessageData.h"

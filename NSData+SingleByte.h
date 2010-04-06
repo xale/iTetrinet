@@ -15,6 +15,9 @@
 // Returns an autoreleased NSData object containing the receiver's bytes plus the specified byte a the end
 - (NSData*)dataByAppendingByte:(uint8_t)byte;
 
+// Returns the index of the first occurrence of the specified byte in the receiver, or NSNotFound if the byte is not present in the data
+- (NSUInteger)indexOfByte:(uint8_t)byte;
+
 @end
 
 @interface NSMutableData (SingleByte)
