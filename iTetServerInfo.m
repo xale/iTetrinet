@@ -124,16 +124,23 @@ typedef enum
 	invalidTeamNameErrorCode
 } iTetInvalidNameErrorCode;
 
+NSString* const iTetServerReservedName =	@"SERVER";
+
+NSString* const iTetBlankNicknameErrorMessage =				@"You must provide a nickname.";
+NSString* const iTetReservedNicknameErrorMessageFormat =	@"The name '%@' is reserved; please choose another nickname.";
+
 - (BOOL)validateNickname:(id*)newValue
 				   error:(NSError**)error
 {
 	// Check that the new value is not nil, or blank
 	NSString* newNickname = (NSString*)*newValue;
 	BOOL validName = YES;
+	NSString* errorMessage = nil;
 	if (newNickname == nil)
 	{
 		// No nickname specified
 		validName = NO;
+		errorMessage = [NSString stringWithString:iTetBlankNicknameErrorMessage];
 		goto bail;
 	}
 	
@@ -145,6 +152,16 @@ typedef enum
 	{
 		// Blank nickname
 		validName = NO;
+		errorMessage = [NSString stringWithString:iTetBlankNicknameErrorMessage];
+		goto bail;
+	}
+	
+	// Check that the player is not trying to spoof the server
+	if ([newNickname rangeOfString:iTetServerReservedName options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound)
+	{
+		// Reserved nickname
+		validName = NO;
+		errorMessage = [NSString stringWithFormat:iTetReservedNicknameErrorMessageFormat, newNickname];
 		goto bail;
 	}
 	
@@ -152,14 +169,14 @@ bail:
 	// If the nickname is invalid, and an error address has been provided, create an error object
 	if (!validName && (error != NULL))
 	{
-		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:@"You must provide a nickname."
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:errorMessage
 															 forKey:NSLocalizedDescriptionKey];
 		*error = [NSError errorWithDomain:iTetInvalidNameErrorDomain
 									 code:invalidNicknameErrorCode
 								 userInfo:infoDict];
 	}
 	// Otherwise, change the final, accepted value to the sanitized nickname
-	else
+	else if (validName)
 	{
 		*newValue = newNickname;
 	}
