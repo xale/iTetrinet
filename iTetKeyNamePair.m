@@ -91,6 +91,11 @@ NSString* const iTetReturnKeyPlaceholderString =	@"  return  ";
 NSString* const iTetEnterKeyPlaceholderString =		@" enter ";
 NSString* const iTetDeleteKeyPlaceholderString =	@"  delete  ";
 
+NSString* const iTetLeftArrowKeyPlaceholderString =		@"←";
+NSString* const iTetRightArrowKeyPlaceholderString =	@"→";
+NSString* const iTetUpArrowKeyPlaceholderString =		@"↑";
+NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
+
 - (NSString*)keyNameForEvent:(NSEvent*)keyEvent
 {
 	// Check for events with no characters
@@ -155,6 +160,7 @@ NSString* const iTetUnknownModifierPlaceholderString =	@"(unknown)";
 NSString* const iTetShiftKeyPlaceholderString =			@"   shift   ";
 NSString* const iTetControlKeyPlaceholderString	=		@"control";
 NSString* const iTetAltOptionKeyPlaceholderString =		@"option";
+NSString* const iTetCommandKeyPlaceholderString =		@"   ⌘ ";
 
 - (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
 {
