@@ -9,6 +9,7 @@
 
 @class iTetPlayer;
 @class iTetLocalPlayer;
+@class iTetServerPlayer;
 
 #define ITET_MAX_PLAYERS	(6)
 
@@ -17,27 +18,30 @@
 	NSMutableArray* players;
 	NSInteger playerCount;
 	iTetLocalPlayer* localPlayer;
+	iTetServerPlayer* serverPlayer;
 }
 
-- (void)setLocalPlayerNumber:(NSInteger)number
+- (void)setLocalPlayerNumber:(NSInteger)playerNumber
 					nickname:(NSString*)nickname
 					teamName:(NSString*)teamName;
-- (void)addPlayerWithNumber:(NSInteger)number
+- (void)addPlayerWithNumber:(NSInteger)playerNumber
 				   nickname:(NSString*)nick;
 - (void)setTeamName:(NSString*)teamName
-	forPlayerNumber:(NSInteger)number;
+	forPlayerNumber:(NSInteger)playerNumber;
 - (void)setPlayerIsPlaying:(BOOL)playing
-		   forPlayerNumber:(NSInteger)number;
+		   forPlayerNumber:(NSInteger)playerNumber;
+- (void)setLevel:(NSInteger)level
+ forPlayerNumber:(NSInteger)playerNumber;
 - (void)setAllRemotePlayersToPlaying;
-- (void)removePlayerNumber:(NSInteger)number;
+- (void)removePlayerNumber:(NSInteger)playerNumber;
 - (void)removeAllPlayers;
-- (iTetPlayer*)playerNumber:(NSInteger)number;
+- (iTetPlayer*)playerNumber:(NSInteger)playerNumber;
 - (iTetPlayer*)operatorPlayer;
-- (NSString*)playerNameForNumber:(NSInteger)number;
 
 @property (readonly) NSArray* playerList;
 @property (readonly) NSNumber* averagePlayerLevel;
 @property (readwrite, retain) iTetLocalPlayer* localPlayer;
+@property (readonly) iTetServerPlayer* serverPlayer;
 @property (readonly) iTetPlayer* remotePlayer1;
 @property (readonly) iTetPlayer* remotePlayer2;
 @property (readonly) iTetPlayer* remotePlayer3;

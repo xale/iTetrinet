@@ -16,6 +16,7 @@
 
 #import "iTetGameRules.h"
 #import "iTetLocalPlayer.h"
+#import "iTetServerPlayer.h"
 #import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
@@ -274,7 +275,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// "New Game" button/menu item
 	if (itemAction == @selector(startStopGame:))
 	{
-		return (([networkController connectionState] == connected) && [op isEqual:LOCALPLAYER]);
+		return (([networkController connectionState] == connected) && [op isLocalPlayer]);
 	}
 	
 	// "Forfeit" button/menu item
@@ -286,7 +287,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// "Pause" button/menu item
 	if (itemAction == @selector(pauseResumeGame:))
 	{
-		return (([self gameplayState] != gameNotPlaying) && [op isEqual:LOCALPLAYER]);
+		return (([self gameplayState] != gameNotPlaying) && [op isLocalPlayer]);
 	}
 	
 	return YES;
@@ -654,7 +655,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			
 		case switchField:
 			// If the local player is the target, copy the sender's field
-			if ([target playerNumber] == [LOCALPLAYER playerNumber])
+			if ([target isLocalPlayer])
 				[LOCALPLAYER setField:[[sender field] copy]];
 			// If the local player is the sender, copy the target's field
 			else
@@ -942,8 +943,8 @@ NSString* const iTetSpecialEventDescriptionFormat =		@"%@ used on %@ by %@";
 NSString* const iTetLinesAddedEventDescriptionFormat =	@"%@ added to %@ by %@";
 NSString* const iTetOneLineAddedFormat =				@"1 Line";
 NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
-NSString* const iTetNilSenderNamePlaceholder =			@"Server";
-NSString* const iTetNilTargetNamePlaceholder =			@"All";
+NSString* const iTetServerSenderPlaceholderName =		@"Server";
+NSString* const iTetTargetAllPlaceholderName =			@"All";
 
 #define iTetEventBackgroundColorFraction	(0.15)
 
@@ -951,11 +952,14 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target
 {
-	// Check if this action affects the local player
+	// Check if this action affects the local player; i.e., if the local player is playing and any of the following are true:
+	// - the local player is the target
+	// - the special is a switchfield and the local player sent it
+	// - the special targets all players, and was not sent by the local player
 	BOOL localPlayerAffected = ([LOCALPLAYER isPlaying] &&
-								(((target == nil) && ((sender == nil) || ([sender playerNumber] != [LOCALPLAYER playerNumber]))) ||
-								 ((target != nil) && ([target playerNumber] == [LOCALPLAYER playerNumber])) ||
-								 ((sender != nil) && ([sender playerNumber] == [LOCALPLAYER playerNumber]) && (special == switchField))));
+								([target isLocalPlayer] ||
+								 ((special == switchField) && [sender isLocalPlayer]) ||
+								 (([target playerNumber] == 0) && ![sender isLocalPlayer])));
 	
 	// Perform the action, if applicable
 	if (localPlayerAffected)
@@ -973,14 +977,14 @@ NSString* const iTetNilTargetNamePlaceholder =			@"All";
 	NSRange attributeRange;
 	
 	// Determine the target player's name
-	if (target == nil)
-		targetName = iTetNilTargetNamePlaceholder;
+	if ([target playerNumber] == 0)
+		targetName = iTetTargetAllPlaceholderName;
 	else
 		targetName = [target nickname];
 	
 	// Determine the sender player's name
-	if (sender == nil)
-		senderName = iTetNilSenderNamePlaceholder;
+	if ([sender isServerPlayer])
+		senderName = iTetServerSenderPlaceholderName;
 	else
 		senderName = [sender nickname];
 	

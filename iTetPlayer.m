@@ -9,6 +9,13 @@
 
 @implementation iTetPlayer
 
+- (id)init
+{
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
+}
+
 + (id)playerWithNickname:(NSString*)nick
 				  number:(NSInteger)number
 				teamName:(NSString*)team
@@ -79,6 +86,16 @@
 
 #pragma mark -
 #pragma mark Accessors
+
+- (BOOL)isLocalPlayer
+{
+	return NO;
+}
+
+- (BOOL)isServerPlayer
+{
+	return NO;
+}
 
 @synthesize nickname;
 @synthesize playerNumber;

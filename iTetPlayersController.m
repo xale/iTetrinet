@@ -8,6 +8,7 @@
 #import "iTetPlayersController.h"
 #import "iTetPlayer.h"
 #import "iTetLocalPlayer.h"
+#import "iTetServerPlayer.h"
 
 @implementation iTetPlayersController
 
@@ -18,6 +19,9 @@
 	for (NSInteger i = 0; i < ITET_MAX_PLAYERS; i++)
 		[players addObject:[NSNull null]];
 	
+	// Create a placeholder "server player"
+	serverPlayer = [[iTetServerPlayer alloc] init];
+	
 	return self;
 }
 
@@ -25,6 +29,7 @@
 {
 	[players release];
 	[localPlayer release];
+	[serverPlayer release];
 	
 	[super dealloc];
 }
@@ -129,6 +134,15 @@
 	[[self playerNumber:number] setPlaying:playing];
 }
 
+- (void)setLevel:(NSInteger)level
+ forPlayerNumber:(NSInteger)number
+{
+	// Sanity check
+	iTetCheckPlayerNumber(number);
+	
+	[[self playerNumber:number] setLevel:level];
+}
+
 - (void)setAllRemotePlayersToPlaying
 {
 	// Iterate through all objects in the player list
@@ -206,6 +220,7 @@
 }
 
 @synthesize localPlayer;
+@synthesize serverPlayer;
 
 -(iTetPlayer*)remotePlayer1
 {
@@ -257,9 +272,14 @@
 	return keys;
 }
 
+#define iTetCheckPlayerOrServerNumber(n) NSParameterAssert(((n) >= 0) && ((n) <= ITET_MAX_PLAYERS))
+
 - (iTetPlayer*)playerNumber:(NSInteger)number
 {
-	iTetCheckPlayerNumber(number);
+	iTetCheckPlayerOrServerNumber(number);
+	
+	if (number == 0)
+		return serverPlayer;
 	
 	id player = [players objectAtIndex:(number - 1)];
 	if (player == [NSNull null])
@@ -278,16 +298,6 @@
 	}
 	
 	return nil;
-}
-
-NSString* const iTetServerPlayerNamePlaceholder = @"SERVER";
-
-- (NSString*)playerNameForNumber:(NSInteger)number
-{
-	if (number == 0)
-		return iTetServerPlayerNamePlaceholder;
-	else
-		return [[self playerNumber:number] nickname];
 }
 
 @end

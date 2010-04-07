@@ -400,15 +400,15 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Leave Message
 		case playerLeaveMessage:
 		{
-			// Get player number
-			NSInteger playerNum = [(iTetPlayerLeaveMessage*)message playerNumber];
+			// Get player
+			iTetPlayer* player = [playersController playerNumber:[(iTetPlayerLeaveMessage*)message playerNumber]];
 			
 			// If the player number is not the local player's, add a status message to the chat view
-			if (playerNum != [[playersController localPlayer] playerNumber])
-				[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [playersController playerNameForNumber:playerNum]]];
+			if (![player isLocalPlayer])
+				[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [player nickname]]];
 			
 			// Remove the player from the game
-			[playersController removePlayerNumber:playerNum];
+			[playersController removePlayerNumber:[player playerNumber]];
 			break;
 		}
 			
@@ -539,26 +539,19 @@ willDisconnectWithError:(NSError*)error
 		{
 			// Update the specified player's level
 			iTetLevelUpdateMessage* levelMessage = (iTetLevelUpdateMessage*)message;
-			[[playersController playerNumber:[levelMessage playerNumber]] setLevel:[levelMessage level]];
+			[playersController setLevel:[levelMessage level]
+						forPlayerNumber:[levelMessage playerNumber]];
 			break;
 		}
 			
 #pragma mark Special Used/Lines Received Message
 		case specialMessage:
 		{
-			// Translate player numbers into players
-			iTetSpecialMessage* spMessage = (iTetSpecialMessage*)message;
-			iTetPlayer* sender = nil;
-			iTetPlayer* target = nil;
-			if ([spMessage senderNumber] > 0)
-				sender = [playersController playerNumber:[spMessage senderNumber]];
-			if ([spMessage targetNumber] > 0)
-				target = [playersController playerNumber:[spMessage targetNumber]];
-			
 			// Pass to game controller
+			iTetSpecialMessage* spMessage = (iTetSpecialMessage*)message;
 			[gameController specialUsed:[spMessage specialType]
-							   byPlayer:sender
-							   onPlayer:target];
+							   byPlayer:[playersController playerNumber:[spMessage senderNumber]]
+							   onPlayer:[playersController playerNumber:[spMessage targetNumber]]];
 			break;
 		}
 			

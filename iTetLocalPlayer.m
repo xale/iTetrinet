@@ -22,6 +22,11 @@
 #pragma mark -
 #pragma mark Accessors
 
+- (BOOL)isLocalPlayer
+{
+	return YES;
+}
+
 #pragma mark Lines
 
 - (void)addLines:(NSInteger)lines
