@@ -45,6 +45,9 @@ typedef enum
 // Returns a dictionary containing the default text attributes for the partyline message view
 + (NSDictionary*)defaultChatTextAttributes;
 
+// Returns a dictionary containing the text color attributes used to highlight the local player's name on the partyline message view
++ (NSDictionary*)localPlayerNameTextColorAttributes;
+
 // Returns a dictionary containing the default text attributes for the game actions list
 + (NSDictionary*)defaultGameActionsTextAttributes;
 
@@ -59,6 +62,9 @@ typedef enum
 
 // Returns the default foreground text color (black)
 + (NSColor*)defaultTextColor;
+
+// Returns the color used to highlight the local player's name
++ (NSColor*)localPlayerNameTextColor;
 
 // Returns the text colors for various event descriptions in the game actions list
 + (NSColor*)goodSpecialDescriptionTextColor;

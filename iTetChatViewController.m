@@ -16,6 +16,8 @@
 #import "iTetPlineChatMessage.h"
 #import "iTetPlineActionMessage.h"
 
+#import "iTetTextAttributes.h"
+
 @implementation iTetChatViewController
 
 - (id)init
@@ -128,8 +130,16 @@
 	}
 	
 	// Format the name in bold
+	NSRange nameRange = NSMakeRange(0, ([[player nickname] length] + 1));
 	[formattedMessage applyFontTraits:NSBoldFontMask
-								range:NSMakeRange(0, ([[player nickname] length] + 1))];
+								range:nameRange];
+	
+	// If the player is the local player, change the color of the name
+	if ([player isLocalPlayer])
+	{
+		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextColorAttributes]
+								  range:nameRange];
+	}
 	
 	// Append the message contents
 	[formattedMessage appendAttributedString:line];

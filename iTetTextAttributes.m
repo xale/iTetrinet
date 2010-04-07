@@ -41,6 +41,12 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 			nil];
 }
 
++ (NSDictionary*)localPlayerNameTextColorAttributes
+{
+	return [NSDictionary dictionaryWithObject:[self localPlayerNameTextColor]
+									   forKey:NSForegroundColorAttributeName];
+}
+
 + (NSDictionary*)defaultGameActionsTextAttributes
 {
 	return [NSDictionary dictionaryWithObjectsAndKeys:
@@ -88,6 +94,11 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 + (NSColor*)defaultTextColor
 {
 	return [NSColor blackColor];
+}
+
++ (NSColor*)localPlayerNameTextColor
+{
+	return [[NSColor purpleColor] blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]];
 }
 
 + (NSColor*)goodSpecialDescriptionTextColor
