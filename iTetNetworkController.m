@@ -435,7 +435,7 @@ willDisconnectWithError:(NSError*)error
 			// Add the message to the chat controller
 			iTetPlineChatMessage* plineMessage = (iTetPlineChatMessage*)message;
 			[chatController appendChatLine:[plineMessage messageContents]
-							fromPlayerName:[playersController playerNameForNumber:[plineMessage senderNumber]]
+								fromPlayer:[playersController playerNumber:[plineMessage senderNumber]]
 									action:(type == plineActionMessage)];
 			break;
 		}

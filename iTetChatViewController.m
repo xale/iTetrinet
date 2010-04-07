@@ -78,7 +78,7 @@
 	if (action || ([[messageContents string] characterAtIndex:0] != '/'))
 	{
 		[self appendChatLine:messageContents
-			  fromPlayerName:[localPlayer nickname]
+				  fromPlayer:localPlayer
 					  action:action];
 	}
 	
@@ -109,7 +109,7 @@
 }
 
 - (void)appendChatLine:(NSAttributedString*)line
-		fromPlayerName:(NSString*)playerName
+			fromPlayer:(iTetPlayer*)player
 				action:(BOOL)isAction
 {
 	NSMutableAttributedString* formattedMessage;
@@ -119,17 +119,17 @@
 		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:@"•"] autorelease];
 		
 		// Append the player's name (and a space)
-		[[formattedMessage mutableString] appendFormat:@"%@ ", playerName];
+		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];
 	}
 	else
 	{
 		// Begin the mesasge line with the player's name, followed by a colon and a space
-		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", playerName]] autorelease];
+		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", [player nickname]]] autorelease];
 	}
 	
 	// Format the name in bold
 	[formattedMessage applyFontTraits:NSBoldFontMask
-								range:NSMakeRange(0, ([playerName length] + 1))];
+								range:NSMakeRange(0, ([[player nickname] length] + 1))];
 	
 	// Append the message contents
 	[formattedMessage appendAttributedString:line];

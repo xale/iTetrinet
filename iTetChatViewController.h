@@ -11,6 +11,8 @@
 @class iTetPlayersController;
 @class iTetNetworkController;
 
+@class iTetPlayer;
+
 @interface iTetChatViewController : NSObject
 {
 	// Top-level controllers
@@ -31,7 +33,7 @@
 - (void)clearChat;
 - (void)appendChatLine:(NSAttributedString*)line;
 - (void)appendChatLine:(NSAttributedString*)line
-		fromPlayerName:(NSString*)playerName
+			fromPlayer:(iTetPlayer*)player
 				action:(BOOL)isAction;
 - (void)appendStatusMessage:(NSString*)message;
 
