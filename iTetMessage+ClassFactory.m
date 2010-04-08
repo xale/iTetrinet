@@ -11,27 +11,10 @@
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
 
-// FIXME: used only for debug logging
-#import "iTetTextAttributes.h"
-
 @implementation iTetMessage (ClassFactory)
 
 + (iTetMessage<iTetIncomingMessage>*)messageFromData:(NSData*)messageData
 {
-	// FIXME: debug logging
-	NSString* message = [NSString stringWithMessageData:messageData];
-	NSMutableString* debugString = [NSMutableString string];
-	unichar character;
-	for (NSUInteger i = 0; i < [message length]; i++)
-	{
-		character = [message characterAtIndex:i];
-		if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
-			[debugString appendFormat:@"<\\%02u>", character];
-		else
-			[debugString appendFormat:@"%C", character];
-	}
-	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
-	
 	// Convert the first space-delimited word of the message to a string, and treat the rest as the contents
 	NSString* messageDesignation;
 	NSData* messageContents;

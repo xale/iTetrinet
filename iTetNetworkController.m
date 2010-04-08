@@ -30,7 +30,8 @@
 #import "iTetTextAttributes.h"
 
 NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
-#define iTetNetworkPort					(31457)
+#define iTetNetworkTerminatorCharacter	(0xFF)
+#define iTetGameNetworkPort				(31457)
 
 @interface iTetNetworkController (Private)
 
@@ -46,7 +47,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 - (id)init
 {
-	connectionSocket = [[AsyncSocket alloc] initWithDelegate:self];
+	gameSocket = [[AsyncSocket alloc] initWithDelegate:self];
 	
 	return self;
 }
@@ -57,7 +58,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[self disconnect];
 	
 	// Release socket and server data
-	[connectionSocket release];
+	[gameSocket release];
 	[currentServer release];
 	
 	[super dealloc];
@@ -224,8 +225,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Attempt to open a connection to the server
 	NSError* error;
-	BOOL connectionSuccessful = [connectionSocket connectToHost:[currentServer address]
-														 onPort:iTetNetworkPort
+	BOOL connectionSuccessful = [gameSocket connectToHost:[currentServer address]
+														 onPort:iTetGameNetworkPort
 														  error:&error];
 	
 	// If the connection fails, determine the error
@@ -252,7 +253,7 @@ didConnectToHost:(NSString*)hostname
 	[self setConnectionState:login];
 	
 	// Start reading data
-	[connectionSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
+	[gameSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
 						 withTimeout:-1
 								 tag:0];
 }
@@ -263,11 +264,11 @@ didConnectToHost:(NSString*)hostname
 - (void)disconnect
 {
 	// If we are already disconnected, ignore
-	if (![connectionSocket isConnected])
+	if (![gameSocket isConnected])
 		return;
 	
 	// Tell the sockect to disconnect
-	[connectionSocket disconnectAfterWriting];
+	[gameSocket disconnectAfterWriting];
 }
 
 - (void)onSocket:(AsyncSocket*)socket
@@ -311,7 +312,7 @@ willDisconnectWithError:(NSError*)error
 	NSLog(@"DEBUG:    sending outgoing message: '%@'", debugString);
 	
 	// Append the delimiter byte and send the message
-	[connectionSocket writeData:[[message rawMessageData] dataByAppendingByte:iTetNetworkTerminatorCharacter]
+	[gameSocket writeData:[[message rawMessageData] dataByAppendingByte:iTetNetworkTerminatorCharacter]
 					withTimeout:-1
 							tag:0];
 }
@@ -320,6 +321,20 @@ willDisconnectWithError:(NSError*)error
 	 didReadData:(NSData*)data
 		 withTag:(long)tag
 {
+	// FIXME: debug logging
+	NSString* messageContents = [NSString stringWithMessageData:data];
+	NSMutableString* debugString = [NSMutableString string];
+	unichar character;
+	for (NSUInteger i = 0; i < [messageContents length]; i++)
+	{
+		character = [messageContents characterAtIndex:i];
+		if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
+			[debugString appendFormat:@"<\\%02u>", character];
+		else
+			[debugString appendFormat:@"%C", character];
+	}
+	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
+	
 	// Convert the data to a message, after trimming the delimiter byte
 	iTetMessage<iTetIncomingMessage>* message = [iTetMessage messageFromData:[data subdataToIndex:([data length] - 1)]];
 	
@@ -327,9 +342,9 @@ willDisconnectWithError:(NSError*)error
 	[self messageReceived:message];
 	
 	// Continue reading data
-	[connectionSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
-						 withTimeout:-1
-								 tag:0];
+	[gameSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
+				   withTimeout:-1
+						   tag:0];
 }
 
 - (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message
