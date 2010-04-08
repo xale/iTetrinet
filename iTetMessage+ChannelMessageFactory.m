@@ -7,6 +7,9 @@
 
 #import "iTetMessage+ChannelMessageFactory.h"
 
+// FIXME: imported for debug logging only
+#import "NSString+MessageData.h"
+
 @implementation iTetMessage (ChannelMessageFactory)
 
 + (iTetMessage<iTetIncomingMessage>*)channelMessageFromData:(NSData*)messageData

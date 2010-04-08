@@ -6,6 +6,7 @@
 //
 
 #import "iTetChannelListQueryMessage.h"
+#import "NSString+MessageData.h"
 
 @implementation iTetChannelListQueryMessage
 
