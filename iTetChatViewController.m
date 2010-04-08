@@ -20,20 +20,6 @@
 
 @implementation iTetChatViewController
 
-- (id)init
-{	
-	channels = [[NSMutableArray alloc] init];
-	
-	return self;
-}
-
-- (void)dealloc
-{
-	[channels release];
-	
-	[super dealloc];
-}
-
 - (void)awakeFromNib
 {
 	// Clear the chat text
@@ -165,33 +151,5 @@
 	// Append the message to the chat view
 	[self appendChatLine:formattedMessage];
 }
-
-#pragma mark -
-#pragma mark Channels
-
-/*- (void)requestChannelList
- {
- // If there is already a pending channel request, ignore this one
- if (pendingChannelRequest)
- return;
- 
- // Create a channel request message
- NSString* request = [NSString stringWithFormat:@"pline %d /list",
- [iTetPlayersController localPlayerNumber]];
- 
- // Send the request
- [iTetNetworkController sendMessage:request];
- pendingChannelRequest = YES;
- }
- 
- - (void)addChannel:(NSString*)channelData
- {
-	// FIXME: WRITEME
- }*/
-
-#pragma mark -
-#pragma mark Accessors
-
-@synthesize channels;
 
 @end
