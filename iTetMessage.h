@@ -27,6 +27,10 @@ typedef enum
 	plineActionMessage,
 	gameChatMessage,
 	
+	channelListQueryMessage,
+	channelListEntryMessage,
+	queryResponseTerminatorMessage,
+	
 	startStopGameMessage,
 	newGameMessage,
 	inGameMessage,
