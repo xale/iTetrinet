@@ -268,7 +268,7 @@ didConnectToHost:(NSString*)hostname
 	if (![gameSocket isConnected])
 		return;
 	
-	// Tell the sockect to disconnect
+	// Tell the socket to disconnect
 	[gameSocket disconnectAfterWriting];
 }
 
@@ -392,9 +392,6 @@ willDisconnectWithError:(NSError*)error
 			
 			// Change the connection state
 			[self setConnectionState:connected];
-			
-			// Attempt to retrieve the server's channel list
-			[channelsController requestChannelListFromServer:currentServer];
 			
 			break;
 			
@@ -760,6 +757,9 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:@"Connected"];
+			
+			// Attempt to retrieve the server's channel list
+			[channelsController requestChannelListFromServer:currentServer];
 			
 			break;
 			
