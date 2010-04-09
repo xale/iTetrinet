@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetMessage.h"
-#import "iTetGameViewController.h" // For gameplay state enum
+#import "iTetGameplayState.h"
 
 @interface iTetChannelListEntryMessage : iTetMessage <iTetIncomingMessage>
 {

@@ -7,6 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetSpecials.h"
+#import "iTetGameplayState.h"
 
 @class iTetWindowController;
 @class iTetPlayersController;
@@ -20,13 +21,6 @@
 @class iTetServerInfo;
 @class iTetGameRules;
 @class iTetKeyNamePair;
-
-typedef enum
-{
-	gameNotPlaying,
-	gamePlaying,
-	gamePaused
-} iTetGameplayState;
 
 typedef enum
 {

@@ -32,7 +32,7 @@ NSString* const unknownProtocolName =	@"Unknown Protocol";
 	if (![value isKindOfClass:[NSNumber class]])
 		return unknownProtocolName;
 	
-	// Get the integer value; cast to the enum type iTetProtocolType
+	// Get the integer value, and cast to the protocol enum type
 	iTetProtocolType protocol = (iTetProtocolType)[value intValue];
 	
 	// Return the appropriate string representation

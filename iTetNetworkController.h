@@ -12,6 +12,7 @@
 @class iTetPlayersController;
 @class iTetGameViewController;
 @class iTetChatViewController;
+@class iTetChannelsViewController;
 @class iTetWinlistViewController;
 
 @class iTetServerInfo;
@@ -41,6 +42,7 @@ typedef enum
 	IBOutlet iTetPlayersController* playersController;
 	IBOutlet iTetGameViewController* gameController;
 	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetChannelsViewController* channelsController;
 	IBOutlet iTetWinlistViewController* winlistController;
 	
 	// Menu and toolbar items

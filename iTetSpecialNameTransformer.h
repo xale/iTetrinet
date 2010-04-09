@@ -10,9 +10,6 @@
 extern NSString* const iTetSpecialNameTransformerName;
 
 @interface iTetSpecialNameTransformer : NSValueTransformer
-{
-	
-}
 
 // Overrides
 + (Class)transformedValueClass;

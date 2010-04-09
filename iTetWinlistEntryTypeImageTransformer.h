@@ -10,9 +10,6 @@
 extern NSString* const iTetWinlistEntryTypeImageTransformerName;
 
 @interface iTetWinlistEntryTypeImageTransformer : NSValueTransformer
-{
-	
-}
 
 // Overrides
 + (Class)transformedValueClass;

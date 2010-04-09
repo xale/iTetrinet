@@ -10,9 +10,6 @@
 extern NSString* const iTetProtocolTransformerName;
 
 @interface iTetProtocolTransformer : NSValueTransformer
-{
-	
-}
 
 // Overrides
 + (Class)transformedValueClass;

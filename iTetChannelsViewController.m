@@ -1,0 +1,230 @@
+//
+//  iTetChannelsViewController.m
+//  iTetrinet
+//
+//  Created by Alex Heinz on 4/8/10.
+//
+
+#import "iTetChannelsViewController.h"
+#import "iTetChatViewController.h"
+
+#import "iTetChannelInfo.h"
+
+#import "iTetServerInfo.h"
+#import "AsyncSocket.h"
+
+#import "iTetMessage+ChannelMessageFactory.h"
+#import "iTetChannelListQueryMessage.h"
+#import "iTetChannelListEntryMessage.h"
+
+#import "NSString+MessageData.h"
+#import "NSData+SingleByte.h"
+#import "NSData+Subdata.h"
+
+#define iTetQueryNetworkPort			(31457)
+#define iTetOutgoingQueryTerminator		(0xFF)
+#define iTetIncomingResponseTerminator	(0x0A)
+
+@interface iTetChannelsViewController (Private)
+
+- (void)sendQueryMessage;
+
+- (void)setChannels:(NSArray*)newChannels;
+
+@end
+
+
+@implementation iTetChannelsViewController
+
+- (id)init
+{
+	querySocket = [[AsyncSocket alloc] initWithDelegate:self];
+	updateChannels = [[NSMutableArray alloc] init];
+	
+	return self;
+}
+
+- (void)dealloc
+{
+	[querySocket disconnect];
+	
+	[querySocket release];
+	[currentServer release];
+	[updateChannels release];
+	[channels release];
+	
+	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Channel Queries
+
+- (void)requestChannelListFromServer:(iTetServerInfo*)server
+{
+	// Hold a reference to the server
+	currentServer = [server retain];
+	
+	// Assume, until we determine otherwise, that the server supports the Query protocol
+	serverSupportsQueries = YES;
+	
+	// Attempt to open a Query-protocol connection to the server
+	[querySocket connectToHost:[currentServer address]
+						onPort:iTetQueryNetworkPort
+						 error:NULL];
+	
+	// If the connection fails here, simply abort and retry when someone asks us to refresh the list; that being said, we shouldn't fail here very often, since this method should only be called after the network controller has already established a connection to the server over the game socket
+}
+	 
+- (IBAction)refreshChannelList:(id)sender
+{
+	// If we already know that this server doesn't support the Query protocol, don't bother trying to refresh
+	if (!serverSupportsQueries)
+		return;
+	
+	// FIXME: WRITEME
+}
+
+- (void)sendQueryMessage
+{
+	NSData* messageData = [[iTetChannelListQueryMessage message] rawMessageData];
+	NSLog(@"DEBUG:       sending query message: '%@'", [NSString stringWithMessageData:messageData]);
+	
+	// Enqueue a channel-list query message
+	[querySocket writeData:[messageData dataByAppendingByte:iTetOutgoingQueryTerminator]
+			   withTimeout:-1
+					   tag:0];
+}
+
+#pragma mark -
+#pragma mark AsyncSocket Delegate Methods
+
+- (void)onSocket:(AsyncSocket*)socket
+didConnectToHost:(NSString*)host
+			port:(UInt16)port
+{
+	// FIXME: debug logging
+	NSLog(@"DEBUG: query socket open to host: %@", host);
+	
+	// Request the channel list
+	[self sendQueryMessage];
+	
+	// Start listening for reply messages
+	[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
+					withTimeout:-1
+							tag:0];
+}
+
+- (void)onSocket:(AsyncSocket*)socket
+	 didReadData:(NSData*)data
+		 withTag:(long)tag
+{
+	// If we have determined that the server doesn't support the query protocol, don't bother reading the message
+	if (!serverSupportsQueries)
+		return;
+	
+	// Trim the terminator character from the end of the data
+	data = [data subdataToIndex:([data length] - 1)];
+	
+	// FIXME: debug logging
+	NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
+	
+	// Attempt to parse the data as a Query response message
+	iTetMessage* message = [iTetMessage channelMessageFromData:data];
+	
+	// If the message is not a valid Query response, abort the attempt to retrieve channels
+	if (message == nil)
+	{
+		serverSupportsQueries = NO;
+		[querySocket disconnect];
+		return;
+	}
+	
+	// Otherwise, determine the nature of the message
+	switch ([message messageType])
+	{
+		case channelListEntryMessage:
+		{
+			// Create a new entry for the channel list
+			iTetChannelListEntryMessage* channelMessage = (iTetChannelListEntryMessage*)message;
+			iTetChannelInfo* channel = [iTetChannelInfo channelInfoWithName:[channelMessage channelName]
+																description:[channelMessage channelDescription]
+															 currentPlayers:[channelMessage playerCount]
+																 maxPlayers:[channelMessage maxPlayers]
+																	  state:[channelMessage gameState]];
+			
+			// Add the entry to a temporary list
+			[updateChannels addObject:channel];
+			
+			// Continue listening for reply messages
+			[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
+							withTimeout:-1
+									tag:0];
+			
+			break;
+		}
+		case queryResponseTerminatorMessage:
+		{
+			// Signals the end of the list of channels; finalize the list
+			[self setChannels:updateChannels];
+			
+			// Clear the temporary list
+			[updateChannels removeAllObjects];
+			
+			// Leave ourselves connected, but do not continue reading; we're done until we're asked to refresh
+			
+			break;
+		}	
+		default:
+			NSLog(@"WARNING: invalid message type detected in channel view controller: '%d'", [message messageType]);
+			break;
+	}
+}
+
+- (void)onSocket:(AsyncSocket*)socket
+willDisconnectWithError:(NSError*)error
+{
+	// FIXME: debug logging
+	NSLog(@"DEBUG: query socket will disconnect with error: %@", error);
+	
+	// If an error occurred, abort quietly, but make note that the server doesn't support the Query protocol
+	if (error != nil)
+		serverSupportsQueries = NO;
+}
+
+- (void)onSocketDidDisconnect:(AsyncSocket*)socket
+{
+	// FIXME: debug logging
+	NSLog(@"DEBUG: query socket has disconnected");
+	
+	// Does nothing
+}
+
+#pragma mark -
+#pragma mark Accessors
+
+- (void)setChannels:(NSArray*)newChannels
+{
+	[self willChangeValueForKey:@"channels"];
+	
+	// Copy the new list of channels
+	newChannels = [newChannels copy];
+	
+	// Release the old list
+	[channels release];
+	
+	// Swap the old list for the new
+	channels = newChannels;
+	
+	[self didChangeValueForKey:@"channels"];
+}
+@synthesize channels;
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
+{
+	if ([key isEqualToString:@"channels"])
+		return NO;
+	
+	return [super automaticallyNotifiesObserversForKey:key];
+}
+
+@end

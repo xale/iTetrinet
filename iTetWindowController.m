@@ -14,6 +14,7 @@
 #import "iTetPreferencesController.h"
 #import "iTetPreferencesWindowController.h"
 
+#import "iTetGameStateDescriptionTransformer.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
@@ -23,8 +24,12 @@
 + (void)initialize
 {
 	// Register value transformers
+	// Game state enum to description
+	NSValueTransformer* transformer = [[[iTetGameStateDescriptionTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+									forName:iTetGameStateDescriptionTransformerName];
 	// Protocol enum to name
-	NSValueTransformer* transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
+	transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetProtocolTransformerName];
 	// Special code/number to name

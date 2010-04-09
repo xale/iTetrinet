@@ -7,16 +7,10 @@
 
 #import "iTetMessage+ChannelMessageFactory.h"
 
-// FIXME: imported for debug logging only
-#import "NSString+MessageData.h"
-
 @implementation iTetMessage (ChannelMessageFactory)
 
 + (iTetMessage<iTetIncomingMessage>*)channelMessageFromData:(NSData*)messageData
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: query message response received: '%@'", [NSString stringWithMessageData:messageData]);
-	
 	// Attempt to parse the message as a query-response terminator
 	iTetMessage<iTetIncomingMessage>* message = [iTetQueryResponseTerminatorMessage messageWithMessageData:messageData];
 	if (message != nil)

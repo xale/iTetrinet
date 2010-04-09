@@ -10,6 +10,7 @@
 #import "iTetPlayersController.h"
 #import "iTetGameViewController.h"
 #import "iTetChatViewController.h"
+#import "iTetChannelsViewController.h"
 #import "iTetWinlistViewController.h"
 #import "iTetPreferencesController.h"
 
@@ -71,7 +72,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 {
 	switch ([self connectionState])
 	{
-		// If there is already a connection open, disconnect
+			// If there is already a connection open, disconnect
 		case connected:
 		{
 			// If local player is playing a game, ask the user before disconnecting
@@ -99,8 +100,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			
 			break;
 		}
-		
-		// If we are attempting to open a connection, abort the attempt
+			
+			// If we are attempting to open a connection, abort the attempt
 		case connecting:
 		case login:
 		{
@@ -112,8 +113,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			
 			break;
 		}
-		
-		// If we are not connected, open the server list for a new connection
+			
+			// If we are not connected, open the server list for a new connection
 		case disconnected:
 		{
 			// Create an alert for the server selection dialog
@@ -135,7 +136,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			
 			break;
 		}
-		
+			
 		case canceled:
 		case connectionError:
 		case disconnecting:
@@ -203,7 +204,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			case connectionError:
 			case disconnecting:
 				return NO;
-			
+				
 			default:
 				break;
 		}
@@ -226,8 +227,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	// Attempt to open a connection to the server
 	NSError* error;
 	BOOL connectionSuccessful = [gameSocket connectToHost:[currentServer address]
-														 onPort:iTetGameNetworkPort
-														  error:&error];
+												   onPort:iTetGameNetworkPort
+													error:&error];
 	
 	// If the connection fails, determine the error
 	if (!connectionSuccessful)
@@ -254,8 +255,8 @@ didConnectToHost:(NSString*)hostname
 	
 	// Start reading data
 	[gameSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
-						 withTimeout:-1
-								 tag:0];
+				   withTimeout:-1
+						   tag:0];
 }
 
 #pragma mark -
@@ -313,8 +314,8 @@ willDisconnectWithError:(NSError*)error
 	
 	// Append the delimiter byte and send the message
 	[gameSocket writeData:[[message rawMessageData] dataByAppendingByte:iTetNetworkTerminatorCharacter]
-					withTimeout:-1
-							tag:0];
+			  withTimeout:-1
+					  tag:0];
 }
 
 - (void)onSocket:(AsyncSocket*)socket
@@ -392,6 +393,9 @@ willDisconnectWithError:(NSError*)error
 			// Change the connection state
 			[self setConnectionState:connected];
 			
+			// Attempt to retrieve the server's channel list
+			[channelsController requestChannelListFromServer:currentServer];
+			
 			break;
 			
 #pragma mark Player Join Message
@@ -409,6 +413,7 @@ willDisconnectWithError:(NSError*)error
 			
 			// Add a status message to the chat view
 			[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", [joinMessage nickname]]];
+			
 			break;
 		}
 			
@@ -424,6 +429,7 @@ willDisconnectWithError:(NSError*)error
 			
 			// Remove the player from the game
 			[playersController removePlayerNumber:[player playerNumber]];
+			
 			break;
 		}
 			
@@ -434,6 +440,7 @@ willDisconnectWithError:(NSError*)error
 			iTetPlayerTeamMessage* teamMessage = (iTetPlayerTeamMessage*)message;
 			[playersController setTeamName:[teamMessage teamName]
 						   forPlayerNumber:[teamMessage playerNumber]];
+			
 			break;
 		}
 			
@@ -441,6 +448,7 @@ willDisconnectWithError:(NSError*)error
 		case winlistMessage:
 			// Pass the winlist entries to the winlist controller
 			[winlistController parseWinlist:[(iTetWinlistMessage*)message winlistTokens]];
+			
 			break;
 			
 #pragma mark Partyline Messages
@@ -754,7 +762,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			[connectionStatusLabel setStringValue:@"Connected"];
 			
 			break;
-		
+			
 		case disconnecting:
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:@"Disconnecting..."];
