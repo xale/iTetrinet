@@ -86,6 +86,7 @@
 		6AD81AEE11402E4600522D05 /* iTetStartStopGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD81AED11402E4600522D05 /* iTetStartStopGameMessage.m */; };
 		6ADDDB3B111A86C9004EEE61 /* iTetBlocks_Mono.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */; };
 		6ADDDB3C111A86C9004EEE61 /* theme_mono.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */; };
+		6AE061DE116EB4DB00B59BFD /* Arrow Key.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AE061DD116EB4DB00B59BFD /* Arrow Key.png */; };
 		6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */; };
 		6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */; };
 		6AEB7F851089218C00A8BCFD /* iTetKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F831089218C00A8BCFD /* iTetKeyboardViewController.m */; };
@@ -256,6 +257,7 @@
 		6AD81AED11402E4600522D05 /* iTetStartStopGameMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetStartStopGameMessage.m; sourceTree = "<group>"; };
 		6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_Mono.png; sourceTree = "<group>"; };
 		6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_mono.cfg; sourceTree = "<group>"; };
+		6AE061DD116EB4DB00B59BFD /* Arrow Key.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Arrow Key.png"; sourceTree = "<group>"; };
 		6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyView.h; sourceTree = "<group>"; };
 		6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyView.m; sourceTree = "<group>"; };
 		6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyboardPrefsView.xib; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 		6A96B59710099001003D353E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6AE061DD116EB4DB00B59BFD /* Arrow Key.png */,
 				6A96B58C10098FFD003D353E /* Network.png */,
 				6A96B58A10098FFD003D353E /* Cancel Red Button.png */,
 				6A96B58B10098FFD003D353E /* Eject Blue Button.png */,
@@ -846,6 +849,7 @@
 				6ADDDB3C111A86C9004EEE61 /* theme_mono.cfg in Resources */,
 				6A5F2688111CC9AC00DD63DA /* Minus Red Button.png in Resources */,
 				6A8EEEE1115439020050339E /* Credits.rtf in Resources */,
+				6AE061DE116EB4DB00B59BFD /* Arrow Key.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
