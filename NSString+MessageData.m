@@ -13,13 +13,13 @@
 {
 	// First, attempt to interpret the string as UTF-8
 	NSString* utf8String = [self stringWithData:messageData
-									   encoding:NSUTF8StringEncoding];
+									   encoding:iTetDefaultStringEncoding];
 	if (utf8String != nil)
 		return utf8String;
 	
 	// If that fails, decode the string as Windows-1252
 	return [self stringWithData:messageData
-					   encoding:NSWindowsCP1252StringEncoding];
+					   encoding:iTetFallbackStringEncoding];
 }
 
 + (id)stringWithData:(NSData*)data
@@ -32,7 +32,7 @@
 
 - (NSData*)messageData
 {
-	return [self dataUsingEncoding:NSUTF8StringEncoding];
+	return [self dataUsingEncoding:iTetDefaultStringEncoding];
 }
 
 @end
