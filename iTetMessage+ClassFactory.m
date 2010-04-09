@@ -32,6 +32,10 @@
 	}
 	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
 	
+	// If the message is blank, this is just a server heartbeat
+	if ([messageData length] == 0)
+		return [iTetHeartbeatMessage message];
+	
 	// Convert the first space-delimited word of the message to a string, and treat the rest as the contents
 	NSString* messageDesignation;
 	NSData* messageContents;
@@ -50,10 +54,6 @@
 		messageDesignation = [NSString stringWithMessageData:[messageData subdataToIndex:firstSpace]];
 		messageContents = [messageData subdataFromIndex:(firstSpace + 1)];
 	}
-	
-	// If the message is blank, it is just a server heartbeat
-	if ([messageDesignation length] == 0)
-		return [iTetHeartbeatMessage message];
 	
 	// If the message is not blank, determine which type of message it is
 	NSNumber* type = [[self messageDesignations] objectForKey:messageDesignation];
