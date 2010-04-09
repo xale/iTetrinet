@@ -414,6 +414,9 @@ willDisconnectWithError:(NSError*)error
 			// Add a status message to the chat view
 			[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", [joinMessage nickname]]];
 			
+			// Refresh the channel list
+			[channelsController refreshChannelList:self];
+			
 			break;
 		}
 			
@@ -429,6 +432,9 @@ willDisconnectWithError:(NSError*)error
 			
 			// Remove the player from the game
 			[playersController removePlayerNumber:[player playerNumber]];
+			
+			// Refresh the channel list
+			[channelsController refreshChannelList:self];
 			
 			break;
 		}
@@ -496,6 +502,9 @@ willDisconnectWithError:(NSError*)error
 									 rulesList:[(iTetNewGameMessage*)message rulesList]
 									  onServer:currentServer];
 			
+			// Refresh the channel list
+			[channelsController refreshChannelList:self];
+			
 			break;
 			
 #pragma mark Server In-Game Message
@@ -532,6 +541,9 @@ willDisconnectWithError:(NSError*)error
 				[gameController resumeGame];
 			}
 			
+			// Refresh the channel list
+			[channelsController refreshChannelList:self];
+			
 			break;
 		}
 			
@@ -543,6 +555,9 @@ willDisconnectWithError:(NSError*)error
 			// If the user wants us to, automatically switch to the chat tab
 			if ([[iTetPreferencesController preferencesController] autoSwitchChat])
 				[windowController switchToChatTab:self];
+			
+			// Refresh the channel list
+			[channelsController refreshChannelList:self];
 			
 			break;
 			
