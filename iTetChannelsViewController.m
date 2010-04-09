@@ -91,6 +91,10 @@
 	if (queryInProgess)
 		return;
 	
+	// If we're not looking at the chat view tab, delay the refresh until the user switches
+	if (![[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
+		return;
+	
 	// If we have been disconnected since the last query, (by a read timeout on the server's end, for instance) reconnect
 	if (![querySocket isConnected])
 	{
