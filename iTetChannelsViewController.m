@@ -7,6 +7,7 @@
 
 #import "iTetChannelsViewController.h"
 #import "iTetChatViewController.h"
+#import "iTetWindowController.h"
 
 #import "iTetChannelInfo.h"
 
@@ -47,7 +48,11 @@
 
 - (void)dealloc
 {
+	// Disconnect the query socket
 	[querySocket disconnect];
+	
+	// De-register for notifications
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[querySocket release];
 	[currentServer release];
@@ -109,8 +114,18 @@
 	// Disconnect the socket
 	[querySocket disconnect];
 	
+	// De-register for tab-change notifications
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	// Clear the channel list
 	[self setChannels:nil];
+}
+
+- (void)tabChanged:(NSNotification*)notification
+{
+	// If the chat tab is now active, refresh the channel list
+	if ([[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
+		[self refreshChannelList:self];
 }
 
 #pragma mark -
@@ -151,6 +166,12 @@ didConnectToHost:(NSString*)host
 	
 	// Listen for the query response
 	[self listenForResponse];
+	
+	// Register for notifications when the selected tab of the main window changes, to refresh the channel list
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(tabChanged:)
+												 name:iTetWindowControllerSelectedTabViewItemDidChangeNotification
+											   object:nil];
 }
 
 - (void)onSocket:(AsyncSocket*)socket

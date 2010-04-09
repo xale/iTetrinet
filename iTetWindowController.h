@@ -12,6 +12,11 @@
 @class iTetPreferencesController;
 @class iTetPreferencesWindowController;
 
+extern NSString* const iTetWindowControllerSelectedTabViewItemDidChangeNotification;
+extern NSString* const iTetGameViewTabIdentifier;
+extern NSString* const iTetChatViewTabIdentifier;
+extern NSString* const iTetWinlistViewTabIdentifier;
+
 @interface iTetWindowController : NSObject
 {
 	// Main window
@@ -40,6 +45,7 @@
 - (IBAction)openKeyboardPreferencesTab:(id)sender;
 
 @property (readonly) NSWindow* window;
+@property (readonly) NSTabView* tabView;
 @property (readonly) iTetPreferencesController* prefs;
 
 @end

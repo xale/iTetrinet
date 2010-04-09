@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="619"/>
+			<integer value="480"/>
 			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -1743,7 +1743,7 @@
 														<reference key="NSDocView" ref="1054741480"/>
 														<reference key="NSBGColor" ref="1150383"/>
 														<object class="NSCursor" key="NSCursor">
-															<string key="NSHotSpot">{4, 4}</string>
+															<string key="NSHotSpot">{1, -1}</string>
 															<int key="NSCursorType">0</int>
 														</object>
 														<int key="NScvFlags">4</int>
@@ -1977,7 +1977,7 @@
 																										<reference key="NSTableView" ref="70606200"/>
 																									</object>
 																									<object class="NSTableColumn" id="217095628">
-																										<double key="NSWidth">42</double>
+																										<double key="NSWidth">54</double>
 																										<double key="NSMinWidth">40</double>
 																										<double key="NSMaxWidth">1000</double>
 																										<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -2032,7 +2032,7 @@
 																										<reference key="NSTableView" ref="70606200"/>
 																									</object>
 																									<object class="NSTableColumn" id="70177396">
-																										<double key="NSWidth">242</double>
+																										<double key="NSWidth">238</double>
 																										<double key="NSMinWidth">10</double>
 																										<double key="NSMaxWidth">3.4028229999999999e+38</double>
 																										<object class="NSTableHeaderCell" key="NSHeaderCell">
@@ -3823,14 +3823,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">tabView</string>
-						<reference key="source" ref="547177939"/>
-						<reference key="destination" ref="1015514340"/>
-					</object>
-					<int key="connectionID">1283</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">window</string>
 						<reference key="source" ref="547177939"/>
 						<reference key="destination" ref="1048072440"/>
@@ -5257,6 +5249,30 @@
 						</object>
 					</object>
 					<int key="connectionID">1614</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1015514340"/>
+						<reference key="destination" ref="547177939"/>
+					</object>
+					<int key="connectionID">1615</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">tabView</string>
+						<reference key="source" ref="547177939"/>
+						<reference key="destination" ref="1015514340"/>
+					</object>
+					<int key="connectionID">1616</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">windowController</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="547177939"/>
+					</object>
+					<int key="connectionID">1617</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7016,7 +7032,6 @@
 					<string>1573.IBPluginDependency</string>
 					<string>1574.IBPluginDependency</string>
 					<string>1591.IBPluginDependency</string>
-					<string>1592.IBPluginDependency</string>
 					<string>1596.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>19.ImportedFromIB2</string>
@@ -7307,7 +7322,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -7537,7 +7551,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1614</int>
+			<int key="maxID">1617</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7584,11 +7598,13 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>channelsTableView</string>
 							<string>chatController</string>
+							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>NSTableView</string>
 							<string>iTetChatViewController</string>
+							<string>iTetWindowController</string>
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

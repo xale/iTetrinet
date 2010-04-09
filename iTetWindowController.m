@@ -122,21 +122,39 @@
 }
 
 #pragma mark -
+#pragma mark NSTabView Delegate Methods
+
+NSString* const iTetWindowControllerSelectedTabViewItemDidChangeNotification =	@"selectedTabViewItemDidChange";
+
+- (void)tabView:(NSTabView*)view
+didSelectTabViewItem:(NSTabViewItem*)item
+{
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetWindowControllerSelectedTabViewItemDidChangeNotification
+														object:self];
+}
+
+#pragma mark -
 #pragma mark Main Window Tabs
+
+NSString* const iTetGameViewTabIdentifier =		@"game";
 
 - (IBAction)switchToGameTab:(id)sender
 {
-	[tabView selectTabViewItemAtIndex:0];
+	[tabView selectTabViewItemWithIdentifier:iTetGameViewTabIdentifier];
 }
+
+NSString* const iTetChatViewTabIdentifier =		@"chat";
 
 - (IBAction)switchToChatTab:(id)sender
 {
-	[tabView selectTabViewItemAtIndex:1];
+	[tabView selectTabViewItemWithIdentifier:iTetChatViewTabIdentifier];
 }
+
+NSString* const iTetWinlistViewTabIdentifier =	@"winlist";
 
 - (IBAction)switchToWinlistTab:(id)sender
 {
-	[tabView selectTabViewItemAtIndex:2];
+	[tabView selectTabViewItemWithIdentifier:iTetWinlistViewTabIdentifier];
 }
 
 #pragma mark -
@@ -181,6 +199,7 @@
 #pragma mark Accessors
 
 @synthesize window;
+@synthesize tabView;
 
 - (iTetPreferencesController*)prefs
 {

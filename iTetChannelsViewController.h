@@ -8,6 +8,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class iTetChatViewController;
+@class iTetWindowController;
 @class iTetServerInfo;
 @class AsyncSocket;
 
@@ -15,6 +16,7 @@
 {
 	// Top-level controllers
 	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetWindowController* windowController;
 	
 	// Interface elements
 	IBOutlet NSTableView* channelsTableView;
