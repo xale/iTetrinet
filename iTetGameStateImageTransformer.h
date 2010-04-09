@@ -1,5 +1,5 @@
 //
-//  iTetGameStateDescriptionTransformer.h
+//  iTetGameStateImageTransformer.h
 //  iTetrinet
 //
 //  Created by Alex Heinz on 4/8/10.
@@ -7,9 +7,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString* const iTetGameStateDescriptionTransformerName;
+extern NSString* const iTetGameStateImageTransformerName;
 
-@interface iTetGameStateDescriptionTransformer : NSValueTransformer
+@interface iTetGameStateImageTransformer : NSValueTransformer
 
 // Overrides
 + (Class)transformedValueClass;
