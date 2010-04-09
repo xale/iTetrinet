@@ -17,9 +17,9 @@
 	if (utf8String != nil)
 		return utf8String;
 	
-	// If that fails, decode the string as ISO-8859-1
+	// If that fails, decode the string as Windows-1252
 	return [self stringWithData:messageData
-					   encoding:NSISOLatin1StringEncoding];
+					   encoding:NSWindowsCP1252StringEncoding];
 }
 
 + (id)stringWithData:(NSData*)data
