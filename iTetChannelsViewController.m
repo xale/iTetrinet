@@ -28,6 +28,7 @@
 @interface iTetChannelsViewController (Private)
 
 - (void)sendQueryMessage;
+- (void)listenForResponse;
 
 - (void)setChannels:(NSArray*)newChannels;
 
@@ -57,7 +58,7 @@
 }
 
 #pragma mark -
-#pragma mark Channel Queries
+#pragma mark Public Methods
 
 - (void)requestChannelListFromServer:(iTetServerInfo*)server
 {
@@ -81,8 +82,39 @@
 	if (!serverSupportsQueries)
 		return;
 	
-	// FIXME: WRITEME
+	// If we already have a query in progress, ignore the attempt to refresh
+	if (queryInProgess)
+		return;
+	
+	// If we have been disconnected since the last query, (by a read timeout on the server's end, for instance) reconnect
+	if (![querySocket isConnected])
+	{
+		[querySocket connectToHost:[currentServer address]
+							onPort:iTetQueryNetworkPort
+							 error:NULL];
+		
+		// Request will be sent automatically when the socket reopens
+		return;
+	}
+	
+	// Make a fresh request for the channel list
+	[self sendQueryMessage];
+	
+	// Listen for the response
+	[self listenForResponse];
 }
+
+- (void)stopQueriesAndDisconnect
+{
+	// Disconnect the socket
+	[querySocket disconnect];
+	
+	// Clear the channel list
+	[self setChannels:nil];
+}
+
+#pragma mark -
+#pragma mark Channel Queries
 
 - (void)sendQueryMessage
 {
@@ -93,6 +125,15 @@
 	[querySocket writeData:[messageData dataByAppendingByte:iTetOutgoingQueryTerminator]
 			   withTimeout:-1
 					   tag:0];
+	queryInProgess = YES;
+}
+
+- (void)listenForResponse
+{
+	// Start listening for reply messages
+	[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
+					withTimeout:-1
+							tag:0];
 }
 
 #pragma mark -
@@ -108,10 +149,8 @@ didConnectToHost:(NSString*)host
 	// Request the channel list
 	[self sendQueryMessage];
 	
-	// Start listening for reply messages
-	[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
-					withTimeout:-1
-							tag:0];
+	// Listen for the query response
+	[self listenForResponse];
 }
 
 - (void)onSocket:(AsyncSocket*)socket
@@ -135,6 +174,7 @@ didConnectToHost:(NSString*)host
 	if (message == nil)
 	{
 		serverSupportsQueries = NO;
+		queryInProgess = NO;
 		[querySocket disconnect];
 		return;
 	}
@@ -156,9 +196,7 @@ didConnectToHost:(NSString*)host
 			[updateChannels addObject:channel];
 			
 			// Continue listening for reply messages
-			[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
-							withTimeout:-1
-									tag:0];
+			[self listenForResponse];
 			
 			break;
 		}
@@ -171,6 +209,7 @@ didConnectToHost:(NSString*)host
 			[updateChannels removeAllObjects];
 			
 			// Leave ourselves connected, but do not continue reading; we're done until we're asked to refresh
+			queryInProgess = NO;
 			
 			break;
 		}	
@@ -196,7 +235,7 @@ willDisconnectWithError:(NSError*)error
 	// FIXME: debug logging
 	NSLog(@"DEBUG: query socket has disconnected");
 	
-	// Does nothing
+	queryInProgess = NO;
 }
 
 #pragma mark -

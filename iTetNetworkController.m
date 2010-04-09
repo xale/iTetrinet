@@ -291,6 +291,9 @@ willDisconnectWithError:(NSError*)error
 	
 	// Remove all players from the players controller
 	[playersController removeAllPlayers];
+	
+	// Tell the channels view controller to stop updating the channel list
+	[channelsController stopQueriesAndDisconnect];
 }
 
 #pragma mark -

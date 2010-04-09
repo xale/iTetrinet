@@ -27,10 +27,12 @@
 	AsyncSocket* querySocket;
 	iTetServerInfo* currentServer;
 	BOOL serverSupportsQueries;
+	BOOL queryInProgess;
 }
 
 - (void)requestChannelListFromServer:(iTetServerInfo*)server;
 - (IBAction)refreshChannelList:(id)sender;
+- (void)stopQueriesAndDisconnect;
 
 @property (readonly) NSArray* channels;
 
