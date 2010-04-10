@@ -326,7 +326,7 @@ willDisconnectWithError:(NSError*)error
 		 withTag:(long)tag
 {
 	// FIXME: debug logging
-	NSString* messageContents = [NSString stringWithMessageData:data];
+	NSString* messageContents = [NSString stringWithMessageData:[data subdataToIndex:([data length] - 1)]];
 	NSMutableString* debugString = [NSMutableString string];
 	unichar character;
 	for (NSUInteger i = 0; i < [messageContents length]; i++)
