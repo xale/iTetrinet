@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="480"/>
 			<integer value="29"/>
+			<integer value="451"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1743,7 +1743,7 @@
 														<reference key="NSDocView" ref="1054741480"/>
 														<reference key="NSBGColor" ref="1150383"/>
 														<object class="NSCursor" key="NSCursor">
-															<string key="NSHotSpot">{4, 4}</string>
+															<string key="NSHotSpot">{1, -1}</string>
 															<int key="NSCursorType">0</int>
 														</object>
 														<int key="NScvFlags">4</int>
@@ -1962,7 +1962,11 @@
 																											<int key="NSCellFlags">337772096</int>
 																											<int key="NSCellFlags2">2048</int>
 																											<string key="NSContents">Text Cell</string>
-																											<reference key="NSSupport" ref="760012784"/>
+																											<object class="NSFont" key="NSSupport">
+																												<string key="NSName">LucidaGrande</string>
+																												<double key="NSSize">13</double>
+																												<int key="NSfFlags">16</int>
+																											</object>
 																											<reference key="NSControlView" ref="70606200"/>
 																											<object class="NSColor" key="NSBackgroundColor" id="205996634">
 																												<int key="NSColorSpace">6</int>
