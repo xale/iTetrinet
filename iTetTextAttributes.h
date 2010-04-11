@@ -51,6 +51,9 @@ typedef enum
 // Returns a dictionary containing the default text attributes for the game actions list
 + (NSDictionary*)defaultGameActionsTextAttributes;
 
+// Returns a dictionary containing the default text attributes for the channels list
++ (NSDictionary*)defaultChannelsListTextAttributes;
+
 // Returns the text attribute corresponding to the specified attribute code
 + (NSDictionary*)chatTextAttributeForCode:(uint8_t)attributeCode;
 
@@ -80,6 +83,9 @@ typedef enum
 
 // Returns the font used in the game actions list
 + (NSFont*)gameActionsTextFont;
+
+// Returns the font used in the channels list
++ (NSFont*)channelsListTextFont;
 
 @end
 

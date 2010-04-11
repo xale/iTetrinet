@@ -192,8 +192,17 @@ didConnectToHost:(NSString*)host
 	// FIXME: debug logging
 	NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
 	
+	// Parse the message data _after_ this method returns
+	// The channel description is formatted with HTML, which must be parsed by NSAttributedString's initWithHTML: methods. These methods fork the execution into another thread, which may cause the socket to call this callback again before the parsing is finished, resulting in the socket's buffer not being flushed properly. By returning from this method before attempting to parse the data, we ensure that the socket's buffer is flushed before the next read is attempted.
+	[self performSelector:@selector(parseMessageData:)
+			   withObject:data
+			   afterDelay:0.0];
+}
+
+- (void)parseMessageData:(NSData*)messageData
+{
 	// Attempt to parse the data as a Query response message
-	iTetMessage* message = [iTetMessage channelMessageFromData:data];
+	iTetMessage* message = [iTetMessage channelMessageFromData:messageData];
 	
 	// If the message is not a valid Query response, abort the attempt to retrieve channels
 	if (message == nil)

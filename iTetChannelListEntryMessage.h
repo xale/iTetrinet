@@ -12,7 +12,7 @@
 @interface iTetChannelListEntryMessage : iTetMessage <iTetIncomingMessage>
 {
 	NSString* channelName;
-	NSString* channelDescription;
+	NSAttributedString* channelDescription;
 	NSInteger playerCount;
 	NSInteger maxPlayers;
 	NSInteger priority;
@@ -20,7 +20,7 @@
 }
 
 @property (readonly) NSString* channelName;
-@property (readonly) NSString* channelDescription;
+@property (readonly) NSAttributedString* channelDescription;
 @property (readonly) NSInteger playerCount;
 @property (readonly) NSInteger maxPlayers;
 @property (readonly) NSInteger priority;

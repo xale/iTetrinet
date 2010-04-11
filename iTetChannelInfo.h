@@ -11,25 +11,25 @@
 @interface iTetChannelInfo : NSObject
 {
 	NSString* channelName;
-	NSString* channelDescription;
+	NSAttributedString* channelDescription;
 	NSInteger currentPlayers;
 	NSInteger maxPlayers;
 	iTetGameplayState channelState;
 }
 
 + (id)channelInfoWithName:(NSString*)name
-			  description:(NSString*)desc
+			  description:(NSAttributedString*)desc
 		   currentPlayers:(NSInteger)playerCount
 			   maxPlayers:(NSInteger)max
 					state:(iTetGameplayState)gameState;
 - (id)initWithName:(NSString*)name
-	   description:(NSString*)desc
+	   description:(NSAttributedString*)desc
 	currentPlayers:(NSInteger)playerCount
 		maxPlayers:(NSInteger)max
 			 state:(iTetGameplayState)gameState;
 
 @property (readonly) NSString* channelName;
-@property (readonly) NSString* channelDescription;
+@property (readonly) NSAttributedString* channelDescription;
 @property (readonly) NSString* players;
 @property (readonly) iTetGameplayState channelState;
 

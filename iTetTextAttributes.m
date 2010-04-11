@@ -56,6 +56,15 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 			nil];
 }
 
++ (NSDictionary*)defaultChannelsListTextAttributes
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[self defaultTextColor], NSForegroundColorAttributeName,
+			[self channelsListTextFont], NSFontAttributeName,
+			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
+			nil];
+}
+
 #pragma mark -
 #pragma mark Attribute/Code Conversions
 
@@ -281,6 +290,15 @@ NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
 {
 	return [NSFont fontWithName:iTetGameActionsTextFontName
 						   size:iTetGameActionsTextFontSize];
+}
+
+NSString* const iTetChannelsListTextFontName =	@"Lucida Grande";
+#define iTetChannelsListTextFontSize			(13.0)
+
++ (NSFont*)channelsListTextFont
+{
+	return [NSFont fontWithName:iTetChannelsListTextFontName
+						   size:iTetChannelsListTextFontSize];
 }
 
 #pragma mark -
