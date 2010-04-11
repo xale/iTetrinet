@@ -475,7 +475,6 @@
 				6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */,
 				6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */,
 				6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */,
-				6AB76D51101D141700734661 /* Preferences Window Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -580,6 +579,8 @@
 		6A96B57C10098F29003D353E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6A772C491020011F00AAA2B8 /* Array Controllers */,
+				6AB76D51101D141700734661 /* Preferences Window Controllers */,
 				6A4A3749101BB32500F27DE9 /* View Controllers */,
 				6A7DC20E115047080068584D /* iTetWindowController.h */,
 				6A7DC20F115047080068584D /* iTetWindowController.m */,
@@ -634,7 +635,6 @@
 				6AB76D54101D145000734661 /* iTetPreferencesWindowController.h */,
 				6AB76D55101D145000734661 /* iTetPreferencesWindowController.m */,
 				6AB76D6C101D148C00734661 /* View Controllers */,
-				6A772C491020011F00AAA2B8 /* Array Controllers */,
 			);
 			name = "Preferences Window Controllers";
 			sourceTree = "<group>";
