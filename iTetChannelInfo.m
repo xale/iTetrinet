@@ -51,11 +51,34 @@
 @synthesize channelName;
 @synthesize channelDescription;
 
+- (NSString*)sortableDescription
+{
+	return [channelDescription string];
+}
+
 - (NSString*)players
 {
 	return [NSString stringWithFormat:@"%d / %d", currentPlayers, maxPlayers];
 }
 
+- (NSNumber*)sortablePlayers
+{
+	return [NSNumber numberWithDouble:(currentPlayers + (maxPlayers / 100.0))];
+}
+
 @synthesize channelState;
+
+- (NSNumber*)sortableState
+{
+	switch (channelState)
+	{
+		case gamePlaying:
+			return [NSNumber numberWithInt:2];
+		case gamePaused:
+			return [NSNumber numberWithInt:1];
+		default:
+			return [NSNumber numberWithInt:0];
+	}
+}
 
 @end

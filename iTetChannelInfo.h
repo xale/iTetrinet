@@ -30,7 +30,10 @@
 
 @property (readonly) NSString* channelName;
 @property (readonly) NSAttributedString* channelDescription;
+@property (readonly) NSString* sortableDescription;
 @property (readonly) NSString* players;
+@property (readonly) NSNumber* sortablePlayers;
 @property (readonly) iTetGameplayState channelState;
+@property (readonly) NSNumber* sortableState;
 
 @end
