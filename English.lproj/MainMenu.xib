@@ -5132,14 +5132,6 @@
 					<int key="connectionID">1594</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">channelsTableView</string>
-						<reference key="source" ref="964681874"/>
-						<reference key="destination" ref="70606200"/>
-					</object>
-					<int key="connectionID">1595</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: channels</string>
 						<reference key="source" ref="350412598"/>
@@ -5300,6 +5292,38 @@
 						</object>
 					</object>
 					<int key="connectionID">1625</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">channelsTableView</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="70606200"/>
+					</object>
+					<int key="connectionID">1626</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">channelsArrayController</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="350412598"/>
+					</object>
+					<int key="connectionID">1627</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">playersController</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="28388600"/>
+					</object>
+					<int key="connectionID">1628</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">networkController</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="515573689"/>
+					</object>
+					<int key="connectionID">1629</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7578,7 +7602,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1625</int>
+			<int key="maxID">1629</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7623,14 +7647,20 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>channelsArrayController</string>
 							<string>channelsTableView</string>
 							<string>chatController</string>
+							<string>networkController</string>
+							<string>playersController</string>
 							<string>windowController</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSArrayController</string>
 							<string>NSTableView</string>
 							<string>iTetChatViewController</string>
+							<string>iTetNetworkController</string>
+							<string>iTetPlayersController</string>
 							<string>iTetWindowController</string>
 						</object>
 					</object>

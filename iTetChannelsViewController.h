@@ -8,7 +8,9 @@
 #import <Cocoa/Cocoa.h>
 
 @class iTetChatViewController;
+@class iTetPlayersController;
 @class iTetWindowController;
+@class iTetNetworkController;
 @class iTetServerInfo;
 @class AsyncSocket;
 
@@ -16,10 +18,13 @@
 {
 	// Top-level controllers
 	IBOutlet iTetChatViewController* chatController;
+	IBOutlet iTetPlayersController* playersController;
 	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetNetworkController* networkController;
 	
-	// Interface elements
+	// Interface Builder elements
 	IBOutlet NSTableView* channelsTableView;
+	IBOutlet NSArrayController* channelsArrayController;
 	
 	// Channels
 	NSMutableArray* updateChannels;
@@ -35,6 +40,7 @@
 - (void)requestChannelListFromServer:(iTetServerInfo*)server;
 - (IBAction)refreshChannelList:(id)sender;
 - (void)stopQueriesAndDisconnect;
+- (void)switchToChannelNamed:(NSString*)channelName;
 
 @property (readonly) NSArray* channels;
 

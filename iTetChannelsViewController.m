@@ -7,16 +7,21 @@
 
 #import "iTetChannelsViewController.h"
 #import "iTetChatViewController.h"
+#import "iTetPlayersController.h"
 #import "iTetWindowController.h"
+#import "iTetNetworkController.h"
 
 #import "iTetChannelInfo.h"
 
 #import "iTetServerInfo.h"
 #import "AsyncSocket.h"
 
+#import "iTetLocalPlayer.h"
+
 #import "iTetMessage+ChannelMessageFactory.h"
 #import "iTetChannelListQueryMessage.h"
 #import "iTetChannelListEntryMessage.h"
+#import "iTetJoinChannelMessage.h"
 
 #import "NSString+MessageData.h"
 #import "NSData+SingleByte.h"
@@ -44,6 +49,13 @@
 	updateChannels = [[NSMutableArray alloc] init];
 	
 	return self;
+}
+
+- (void)awakeFromNib
+{
+	// Set up the channels list double-click action
+	[channelsTableView setTarget:self];
+	[channelsTableView setDoubleAction:@selector(doubleClick)];
 }
 
 - (void)dealloc
@@ -130,6 +142,30 @@
 	// If the chat tab is now active, refresh the channel list
 	if ([[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
 		[self refreshChannelList:self];
+}
+
+#pragma mark -
+#pragma mark Changing Channels
+
+- (void)switchToChannelNamed:(NSString*)channelName
+{
+	// Append a status message to the chat view
+	[chatController appendStatusMessage:[NSString stringWithFormat:@"Switching to channel: %@", channelName]];
+	
+	// Send a "/join" message to the server
+	[networkController sendMessage:[iTetJoinChannelMessage messageWithChannelName:channelName
+																		   player:[playersController localPlayer]]];
+}
+
+- (void)doubleClick
+{
+	// Check that the double-click was on a channel
+	NSInteger row = [channelsTableView clickedRow];
+	if ((row < 0) || (row >= (NSInteger)[channels count]))
+		return;
+	
+	// Attempt to switch to the channel described in the clicked row
+	[self switchToChannelNamed:[[[channelsArrayController arrangedObjects] objectAtIndex:row] channelName]];
 }
 
 #pragma mark -
