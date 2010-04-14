@@ -396,6 +396,10 @@ willDisconnectWithError:(NSError*)error
 			// Change the connection state
 			[self setConnectionState:connected];
 			
+			// Refresh channel list and local player's current channel
+			[channelsController refreshChannelList:self];
+			[channelsController refreshLocalPlayerChannel:self];
+			
 			break;
 			
 #pragma mark Player Join Message

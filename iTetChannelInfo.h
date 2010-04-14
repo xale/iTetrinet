@@ -15,6 +15,7 @@
 	NSInteger currentPlayers;
 	NSInteger maxPlayers;
 	iTetGameplayState channelState;
+	BOOL localPlayerChannel;
 }
 
 + (id)channelInfoWithName:(NSString*)name
@@ -35,5 +36,6 @@
 @property (readonly) NSNumber* sortablePlayers;
 @property (readonly) iTetGameplayState channelState;
 @property (readonly) NSNumber* sortableState;
+@property (readwrite, assign, getter=isLocalPlayerChannel) BOOL localPlayerChannel;
 
 @end

@@ -18,9 +18,11 @@
 
 #import "iTetLocalPlayer.h"
 
-#import "iTetMessage+ChannelMessageFactory.h"
+#import "iTetMessage+QueryMessageFactory.h"
 #import "iTetChannelListQueryMessage.h"
 #import "iTetChannelListEntryMessage.h"
+#import "iTetPlayerListQueryMessage.h"
+#import "iTetPlayerListEntryMessage.h"
 #import "iTetJoinChannelMessage.h"
 
 #import "NSString+MessageData.h"
@@ -33,10 +35,11 @@
 
 @interface iTetChannelsViewController (Private)
 
-- (void)sendQueryMessage;
+- (void)sendQueryMessage:(iTetMessage<iTetOutgoingMessage>*)message;
 - (void)listenForResponse;
 
 - (void)setChannels:(NSArray*)newChannels;
+- (void)setLocalPlayerChannelName:(NSString*)channelName;
 
 @end
 
@@ -47,6 +50,8 @@
 {
 	querySocket = [[AsyncSocket alloc] initWithDelegate:self];
 	updateChannels = [[NSMutableArray alloc] init];
+	channels = [[NSArray alloc] init];
+	localPlayerChannelName = [[NSString alloc] init];
 	
 	return self;
 }
@@ -70,6 +75,7 @@
 	[currentServer release];
 	[updateChannels release];
 	[channels release];
+	[localPlayerChannelName release];
 	
 	[super dealloc];
 }
@@ -99,13 +105,20 @@
 	if (!serverSupportsQueries)
 		return;
 	
-	// If we already have a query in progress, ignore the attempt to refresh
-	if (queryInProgess)
-		return;
-	
 	// If we're not looking at the chat view tab, delay the refresh until the user switches
 	if (![[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
 		return;
+	
+	// If we already have a channel query pending or in progress, ignore the attempt to refresh
+	if (channelQueryStatus != noQuery)
+		return;
+	
+	// If we have a player query in progress, wait for it to complete before refreshing the channels
+	if (playerQueryStatus == queryInProgress)
+	{
+		channelQueryStatus = pendingQuery;
+		return;
+	}
 	
 	// If we have been disconnected since the last query, (by a read timeout on the server's end, for instance) reconnect
 	if (![querySocket isConnected])
@@ -118,10 +131,54 @@
 		return;
 	}
 	
-	// Make a fresh request for the channel list
-	[self sendQueryMessage];
+	// If we are still connected, make an immediate request for the channel list
+	[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+	channelQueryStatus = queryInProgress;
 	
-	// Listen for the response
+	// Listen for the query response
+	[self listenForResponse];
+}
+
+- (IBAction)refreshLocalPlayerChannel:(id)sender
+{
+	// If we already know that this server doesn't support the Query protocol, don't bother trying to refresh
+	if (!serverSupportsQueries)
+		return;
+	
+	// If we already have a player query pending or in progress, ignore the attempt to refresh
+	if (playerQueryStatus != noQuery)
+		return;
+	
+	// If we have a channel query in progress, wait for it to complete
+	if (channelQueryStatus == queryInProgress)
+	{
+		playerQueryStatus = pendingQuery;
+		return;
+	}
+	
+	// If we're not looking at the chat view tab, delay the refresh until the user switches
+	if (![[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
+	{
+		playerQueryStatus = pendingQuery;
+		return;
+	}
+	
+	// If we have been disconnected since the last query, reconnect
+	if (![querySocket isConnected])
+	{
+		[querySocket connectToHost:[currentServer address]
+							onPort:iTetQueryNetworkPort
+							 error:NULL];
+		
+		// Player query will be performed automatically (after a channel query)
+		return;
+	}
+	
+	// If we are still connected, make an immediate request for the channel list
+	[self sendQueryMessage:[iTetPlayerListQueryMessage message]];
+	playerQueryStatus = queryInProgress;
+	
+	// Listen for the query response
 	[self listenForResponse];
 }
 
@@ -164,28 +221,33 @@
 	if ((row < 0) || (row >= (NSInteger)[channels count]))
 		return;
 	
+	// Check that the player is not already in this channel
+	NSString* channelName = [[[channelsArrayController arrangedObjects] objectAtIndex:row] channelName];
+	if ([channelName isEqualToString:localPlayerChannelName])
+		return;
+	
 	// Attempt to switch to the channel described in the clicked row
-	[self switchToChannelNamed:[[[channelsArrayController arrangedObjects] objectAtIndex:row] channelName]];
+	[self switchToChannelNamed:channelName];
 }
 
 #pragma mark -
-#pragma mark Channel Queries
+#pragma mark Queries
 
-- (void)sendQueryMessage
+- (void)sendQueryMessage:(iTetMessage<iTetOutgoingMessage>*)message
 {
-	NSData* messageData = [[iTetChannelListQueryMessage message] rawMessageData];
+	// FIXME: debug logging
+	NSData* messageData = [message rawMessageData];
 	NSLog(@"DEBUG:       sending query message: '%@'", [NSString stringWithMessageData:messageData]);
 	
-	// Enqueue a channel-list query message
+	// Append a terminator byte and enqueue the message for sending
 	[querySocket writeData:[messageData dataByAppendingByte:iTetOutgoingQueryTerminator]
 			   withTimeout:-1
 					   tag:0];
-	queryInProgess = YES;
 }
 
 - (void)listenForResponse
 {
-	// Start listening for reply messages
+	// Ask the socket to call us back when it sees a query-response message terminator
 	[querySocket readDataToData:[NSData dataWithByte:iTetIncomingResponseTerminator]
 					withTimeout:-1
 							tag:0];
@@ -202,7 +264,11 @@ didConnectToHost:(NSString*)host
 	NSLog(@"DEBUG: query socket open to host: %@", host);
 	
 	// Request the channel list
-	[self sendQueryMessage];
+	[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+	channelQueryStatus = queryInProgress;
+	
+	// Perform a player list query when the channel query finishes
+	playerQueryStatus = pendingQuery;
 	
 	// Listen for the query response
 	[self listenForResponse];
@@ -238,13 +304,14 @@ didConnectToHost:(NSString*)host
 - (void)parseMessageData:(NSData*)messageData
 {
 	// Attempt to parse the data as a Query response message
-	iTetMessage* message = [iTetMessage channelMessageFromData:messageData];
+	iTetMessage* message = [iTetMessage queryMessageFromData:messageData];
 	
 	// If the message is not a valid Query response, abort the attempt to retrieve channels
 	if (message == nil)
 	{
 		serverSupportsQueries = NO;
-		queryInProgess = NO;
+		channelQueryStatus = noQuery;
+		playerQueryStatus = noQuery;
 		[querySocket disconnect];
 		return;
 	}
@@ -262,6 +329,10 @@ didConnectToHost:(NSString*)host
 																 maxPlayers:[channelMessage maxPlayers]
 																	  state:[channelMessage gameState]];
 			
+			// Check if the channel is the local players'
+			if ([[channel channelName] isEqualToString:localPlayerChannelName])
+				[channel setLocalPlayerChannel:YES];
+			
 			// Add the entry to a temporary list
 			[updateChannels addObject:channel];
 			
@@ -270,16 +341,58 @@ didConnectToHost:(NSString*)host
 			
 			break;
 		}
+		case playerListEntryMessage:
+		{
+			// Check if the entry corresponds to the local player
+			iTetPlayerListEntryMessage* playerMessage = (iTetPlayerListEntryMessage*)message;
+			if ([[playerMessage nickname] isEqualToString:[[playersController localPlayer] nickname]])
+			{
+				// Change the which channel is recognized as the local player's
+				[self setLocalPlayerChannelName:[playerMessage channelName]];
+			}
+			
+			// Continue listening for reply messages
+			[self listenForResponse];
+			
+			break;
+		}
 		case queryResponseTerminatorMessage:
 		{
-			// Signals the end of the list of channels; finalize the list
-			[self setChannels:updateChannels];
-			
-			// Clear the temporary list
-			[updateChannels removeAllObjects];
-			
-			// Leave ourselves connected, but do not continue reading; we're done until we're asked to refresh
-			queryInProgess = NO;
+			// Determine whether this is the end of a player list or a channels list
+			if (channelQueryStatus == queryInProgress)
+			{
+				channelQueryStatus = noQuery;
+				
+				// Signals the end of the list of channels; finalize the list
+				[self setChannels:updateChannels];
+				
+				// Clear the temporary list
+				[updateChannels removeAllObjects];
+				
+				// If necessary, begin a player list request
+				if (playerQueryStatus == pendingQuery)
+				{
+					[self sendQueryMessage:[iTetPlayerListQueryMessage message]];
+					playerQueryStatus = queryInProgress;
+					[self listenForResponse];
+				}
+			}
+			else if (playerQueryStatus == queryInProgress)
+			{
+				playerQueryStatus = noQuery;
+				
+				// If necessary, begin a new channel list request
+				if (channelQueryStatus == pendingQuery)
+				{
+					[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+					channelQueryStatus = queryInProgress;
+					[self listenForResponse];
+				}
+			}
+			else
+			{
+				NSLog(@"WARNING: query-response-terminator received with no query in-progress");
+			}
 			
 			break;
 		}	
@@ -305,7 +418,8 @@ willDisconnectWithError:(NSError*)error
 	// FIXME: debug logging
 	NSLog(@"DEBUG: query socket has disconnected");
 	
-	queryInProgess = NO;
+	channelQueryStatus = noQuery;
+	playerQueryStatus = noQuery;
 }
 
 #pragma mark -
@@ -328,9 +442,55 @@ willDisconnectWithError:(NSError*)error
 }
 @synthesize channels;
 
+- (void)setLocalPlayerChannelName:(NSString*)channelName
+{
+	// Disallow nil channel names
+	if (channelName == nil)
+		channelName = [NSString string];
+	
+	// If the name isn't changing, do nothing (fail-fast optimization)
+	if ([localPlayerChannelName isEqualToString:channelName])
+		return;
+	
+	[self willChangeValueForKey:@"channels"];
+	
+	// Attempt to un-mark the player's previous channel
+	NSArray* filteredChannels = [channels filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"channelName == %@", localPlayerChannelName]];
+	for (iTetChannelInfo* channel in filteredChannels)
+		[channel setLocalPlayerChannel:NO];
+	
+	// Find and mark the player's new channel
+	filteredChannels = [channels filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"channelName == %@", channelName]];
+	if ([filteredChannels count] > 0)
+	{
+		if ([filteredChannels count] > 1)
+			NSLog(@"WARNING: multiple channels named '%@' on this server!", channelName);
+		
+		[[filteredChannels objectAtIndex:0] setLocalPlayerChannel:YES];
+	}
+	else
+	{
+		NSLog(@"WARNING: no channels named '%@' on this server!", channelName);
+	}
+	
+	[self didChangeValueForKey:@"channels"];
+	
+	[self willChangeValueForKey:@"localPlayerChannelName"];
+	
+	// We don't need to bother with the "retain first" business, since we've already eliminated the possibility that this is the same object
+	[localPlayerChannelName release];
+	localPlayerChannelName = [channelName retain];
+	
+	[self didChangeValueForKey:@"localPlayerChannelName"];
+}
+@synthesize localPlayerChannelName;
+
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
 {
 	if ([key isEqualToString:@"channels"])
+		return NO;
+	
+	if ([key isEqualToString:@"localPlayerChannelName"])
 		return NO;
 	
 	return [super automaticallyNotifiesObserversForKey:key];

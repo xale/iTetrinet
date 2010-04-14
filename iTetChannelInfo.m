@@ -33,6 +33,7 @@
 	currentPlayers = playerCount;
 	maxPlayers = max;
 	channelState = gameState;
+	localPlayerChannel = NO;
 	
 	return self;
 }
@@ -80,5 +81,7 @@
 			return [NSNumber numberWithInt:0];
 	}
 }
+
+@synthesize localPlayerChannel;
 
 @end

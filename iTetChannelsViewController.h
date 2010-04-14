@@ -14,6 +14,13 @@
 @class iTetServerInfo;
 @class AsyncSocket;
 
+typedef enum
+{
+	noQuery = 0,
+	pendingQuery,
+	queryInProgress
+} iTetQueryStatus;
+
 @interface iTetChannelsViewController : NSObject
 {
 	// Top-level controllers
@@ -29,19 +36,23 @@
 	// Channels
 	NSMutableArray* updateChannels;
 	NSArray* channels;
+	NSString* localPlayerChannelName;
 	
-	// Channel query socket
+	// Server query socket
 	AsyncSocket* querySocket;
 	iTetServerInfo* currentServer;
 	BOOL serverSupportsQueries;
-	BOOL queryInProgess;
+	iTetQueryStatus channelQueryStatus;
+	iTetQueryStatus playerQueryStatus;
 }
 
 - (void)requestChannelListFromServer:(iTetServerInfo*)server;
 - (IBAction)refreshChannelList:(id)sender;
+- (IBAction)refreshLocalPlayerChannel:(id)sender;
 - (void)stopQueriesAndDisconnect;
 - (void)switchToChannelNamed:(NSString*)channelName;
 
 @property (readonly) NSArray* channels;
+@property (readonly) NSString* localPlayerChannelName;
 
 @end

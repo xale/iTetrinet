@@ -29,6 +29,8 @@ typedef enum
 	
 	channelListQueryMessage,
 	channelListEntryMessage,
+	playerListQueryMessage,
+	playerListEntryMessage,
 	queryResponseTerminatorMessage,
 	
 	startStopGameMessage,
