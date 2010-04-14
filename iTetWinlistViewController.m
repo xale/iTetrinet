@@ -21,6 +21,10 @@ NSString* const iTetTeamWinlistEntryCharacter =		@"t";
 	NSArray* entryComponents;
 	for (NSString* entryToken in winlistTokens)
 	{
+		// Check that this token is of non-zero length
+		if ([entryToken length] == 0)
+			continue;
+		
 		// Divide the token at the semicolon delimiter
 		entryComponents = [entryToken componentsSeparatedByString:@";"];
 		if ([entryComponents count] < 2)
