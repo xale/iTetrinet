@@ -260,9 +260,6 @@
 didConnectToHost:(NSString*)host
 			port:(UInt16)port
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: query socket open to host: %@", host);
-	
 	// Request the channel list
 	[self sendQueryMessage:[iTetChannelListQueryMessage message]];
 	channelQueryStatus = queryInProgress;
@@ -405,9 +402,6 @@ didConnectToHost:(NSString*)host
 - (void)onSocket:(AsyncSocket*)socket
 willDisconnectWithError:(NSError*)error
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: query socket will disconnect with error: %@", error);
-	
 	// If an error occurred, abort quietly, but make note that the server doesn't support the Query protocol
 	if (error != nil)
 		serverSupportsQueries = NO;
@@ -415,9 +409,6 @@ willDisconnectWithError:(NSError*)error
 
 - (void)onSocketDidDisconnect:(AsyncSocket*)socket
 {
-	// FIXME: debug logging
-	NSLog(@"DEBUG: query socket has disconnected");
-	
 	channelQueryStatus = noQuery;
 	playerQueryStatus = noQuery;
 }
