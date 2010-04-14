@@ -49,6 +49,8 @@
 		6A7997F91140C9A7005C3093 /* iTetInGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997F81140C9A7005C3093 /* iTetInGameMessage.m */; };
 		6A7998001140CB38005C3093 /* iTetFieldstringMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */; };
 		6A7DC210115047080068584D /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DC20F115047080068584D /* iTetWindowController.m */; };
+		6A8E0CB7117641F700A0F909 /* Current Channel Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */; };
+		6A8E0CC5117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E0CC4117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m */; };
 		6A8EEEE1115439020050339E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 6A8EEEDF115439020050339E /* Credits.rtf */; };
 		6A96B56D10098E88003D353E /* iTetBlock+Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55710098E88003D353E /* iTetBlock+Drawing.m */; };
 		6A96B56E10098E88003D353E /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A96B55910098E88003D353E /* iTetBlock.m */; };
@@ -205,6 +207,9 @@
 		6A7997FF1140CB38005C3093 /* iTetFieldstringMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetFieldstringMessage.m; sourceTree = "<group>"; };
 		6A7DC20E115047080068584D /* iTetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWindowController.h; sourceTree = "<group>"; };
 		6A7DC20F115047080068584D /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
+		6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Current Channel Icon.png"; sourceTree = "<group>"; };
+		6A8E0CC3117642AD00A0F909 /* iTetCurrentChannelImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetCurrentChannelImageTransformer.h; sourceTree = "<group>"; };
+		6A8E0CC4117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetCurrentChannelImageTransformer.m; sourceTree = "<group>"; };
 		6A8EEEE0115439020050339E /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
 		6A96B55610098E88003D353E /* iTetBlock+Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetBlock+Drawing.h"; sourceTree = "<group>"; };
 		6A96B55710098E88003D353E /* iTetBlock+Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetBlock+Drawing.m"; sourceTree = "<group>"; };
@@ -450,6 +455,8 @@
 		6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */ = {
 			isa = PBXGroup;
 			children = (
+				6A8E0CC3117642AD00A0F909 /* iTetCurrentChannelImageTransformer.h */,
+				6A8E0CC4117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m */,
 				6AE061A0116EAFB200B59BFD /* iTetGameStateImageTransformer.h */,
 				6AE061A1116EAFB200B59BFD /* iTetGameStateImageTransformer.m */,
 				6AC2397A1044A5D0006D3C83 /* iTetProtocolTransformer.h */,
@@ -610,6 +617,7 @@
 			children = (
 				6A96B58C10098FFD003D353E /* Network.png */,
 				6A96B58A10098FFD003D353E /* Cancel Red Button.png */,
+				6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */,
 				6A96B58B10098FFD003D353E /* Eject Blue Button.png */,
 				6A96B58D10098FFD003D353E /* Play Green Button.png */,
 				6A96B58E10098FFD003D353E /* Stop Red Button.png */,
@@ -913,6 +921,7 @@
 				6A01A211116F8E4400D3AE22 /* State Icon Pause.png in Resources */,
 				6A01A212116F8E4400D3AE22 /* State Icon Play.png in Resources */,
 				6A01A213116F8E4400D3AE22 /* State Icon Stop.png in Resources */,
+				6A8E0CB7117641F700A0F909 /* Current Channel Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1007,6 +1016,7 @@
 				6A612AFB11721BF3008B9EE2 /* iTetJoinChannelMessage.m in Sources */,
 				6A3E02301174D81100CCDF42 /* iTetPlayerListQueryMessage.m in Sources */,
 				6A3E02331174D8EC00CCDF42 /* iTetPlayerListEntryMessage.m in Sources */,
+				6A8E0CC5117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

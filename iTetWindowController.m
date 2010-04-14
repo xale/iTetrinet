@@ -14,6 +14,7 @@
 #import "iTetPreferencesController.h"
 #import "iTetPreferencesWindowController.h"
 
+#import "iTetCurrentChannelImageTransformer.h"
 #import "iTetGameStateImageTransformer.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
@@ -24,8 +25,13 @@
 + (void)initialize
 {
 	// Register value transformers
+	// Current channel icon
+	NSValueTransformer* transformer = [[[iTetCurrentChannelImageTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+									forName:iTetCurrentChannelImageTransformerName];
+	
 	// Game state enum to description
-	NSValueTransformer* transformer = [[[iTetGameStateImageTransformer alloc] init] autorelease];
+	transformer = [[[iTetGameStateImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetGameStateImageTransformerName];
 	// Protocol enum to name
