@@ -235,9 +235,10 @@
 
 - (void)sendQueryMessage:(iTetMessage<iTetOutgoingMessage>*)message
 {
-	// FIXME: debug logging
 	NSData* messageData = [message rawMessageData];
+#ifdef _ITETRINET_DEBUG
 	NSLog(@"DEBUG:       sending query message: '%@'", [NSString stringWithMessageData:messageData]);
+#endif
 	
 	// Append a terminator byte and enqueue the message for sending
 	[querySocket writeData:[messageData dataByAppendingByte:iTetOutgoingQueryTerminator]
@@ -288,8 +289,9 @@ didConnectToHost:(NSString*)host
 	// Trim the terminator character from the end of the data
 	data = [data subdataToIndex:([data length] - 1)];
 	
-	// FIXME: debug logging
+#ifdef _ITETRINET_DEBUG
 	NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
+#endif
 	
 	// Parse the message data _after_ this method returns
 	// The channel description is formatted with HTML, which must be parsed by NSAttributedString's initWithHTML: methods. These methods fork the execution into another thread, which may cause the socket to call this callback again before the parsing is finished, resulting in the socket's buffer not being flushed properly. By returning from this method before attempting to parse the data, we ensure that the socket's buffer is flushed before the next read is attempted.

@@ -26,9 +26,10 @@
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
 
-// FIXME: used only for debug logging
+#ifdef _ITETRINET_DEBUG
 #import "NSString+MessageData.h"
 #import "iTetTextAttributes.h"
+#endif
 
 NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #define iTetNetworkTerminatorCharacter	(0xFF)
@@ -301,7 +302,7 @@ willDisconnectWithError:(NSError*)error
 
 - (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message
 {
-	// FIXME: debug logging
+#ifdef _ITETRINET_DEBUG
 	NSString* messageString = [NSString stringWithMessageData:[message rawMessageData]];
 	NSMutableString* debugString = [NSMutableString string];
 	unichar character;
@@ -314,6 +315,7 @@ willDisconnectWithError:(NSError*)error
 			[debugString appendFormat:@"%C", character];
 	}
 	NSLog(@"DEBUG:    sending outgoing message: '%@'", debugString);
+#endif
 	
 	// Append the delimiter byte and send the message
 	[gameSocket writeData:[[message rawMessageData] dataByAppendingByte:iTetNetworkTerminatorCharacter]
@@ -325,7 +327,7 @@ willDisconnectWithError:(NSError*)error
 	 didReadData:(NSData*)data
 		 withTag:(long)tag
 {
-	// FIXME: debug logging
+#ifdef _ITETRINET_DEBUG
 	NSString* messageContents = [NSString stringWithMessageData:[data subdataToIndex:([data length] - 1)]];
 	NSMutableString* debugString = [NSMutableString string];
 	unichar character;
@@ -338,6 +340,7 @@ willDisconnectWithError:(NSError*)error
 			[debugString appendFormat:@"%C", character];
 	}
 	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
+#endif
 	
 	// Convert the data to a message, after trimming the delimiter byte
 	iTetMessage<iTetIncomingMessage>* message = [iTetMessage messageFromData:[data subdataToIndex:([data length] - 1)]];
