@@ -19,6 +19,10 @@
 	if ([messageData length] == 0)
 		return [iTetHeartbeatMessage message];
 	
+	// If the message is blank, this is just a server heartbeat
+	if ([messageData length] == 0)
+		return [iTetHeartbeatMessage message];
+	
 	// Convert the first space-delimited word of the message to a string, and treat the rest as the contents
 	NSString* messageDesignation;
 	NSData* messageContents;

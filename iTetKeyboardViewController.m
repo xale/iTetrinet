@@ -87,17 +87,17 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	[[configurationPopUpButton menu] addItem:[NSMenuItem separatorItem]];
 	
 	// Add the "save configuration" menu item
-	NSMenuItem* menuItem = [[NSMenuItem alloc] initWithTitle:@"Save Configuration..."
-													  action:@selector(saveConfiguration:)
-											   keyEquivalent:@""];
+	NSMenuItem* menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Save Configuration..."
+																				action:@selector(saveConfiguration:)
+																		 keyEquivalent:@""];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
 	
 	// Add the "delete configuration" menu item
-	menuItem = [[NSMenuItem alloc] initWithTitle:@"Delete Configuration"
-										  action:@selector(deleteConfiguration:)
-								   keyEquivalent:@""];
+	menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Delete Configuration"
+																	action:@selector(deleteConfiguration:)
+															 keyEquivalent:@""];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
@@ -475,9 +475,9 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 				  tagNumber:(NSUInteger)tag
 {
 	// Create a menu item
-	NSMenuItem* item = [[[NSMenuItem alloc] initWithTitle:[config configurationName]
-												   action:@selector(changeConfiguration:)
-											keyEquivalent:@""] autorelease];
+	NSMenuItem* item = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:[config configurationName]
+																			 action:@selector(changeConfiguration:)
+																	  keyEquivalent:@""] autorelease];
 	[item setTarget:self];
 	[item setTag:tag];
 	
