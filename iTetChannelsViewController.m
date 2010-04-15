@@ -13,6 +13,8 @@
 
 #import "iTetChannelInfo.h"
 
+#import "IPSContextMenuTableView.h"
+
 #import "iTetServerInfo.h"
 #import "AsyncSocket.h"
 
@@ -202,17 +204,31 @@
 }
 
 #pragma mark -
-#pragma mark Changing Channels
+#pragma mark IPSContextMenuTableView Delegate Methods
 
-- (void)switchToChannelNamed:(NSString*)channelName
+- (NSMenu*)tableView:(IPSContextMenuTableView*)tableView
+		menuForEvent:(NSEvent*)event
 {
-	// Append a status message to the chat view
-	[chatController appendStatusMessage:[NSString stringWithFormat:@"Switching to channel: %@", channelName]];
+	// Check that the table view has exactly one row selected
+	if ([tableView numberOfSelectedRows] != 1)
+		return nil;
 	
-	// Send a "/join" message to the server
-	[networkController sendMessage:[iTetJoinChannelMessage messageWithChannelName:channelName
-																		   player:[playersController localPlayer]]];
+	// Create a menu
+	NSMenu* menu = [[[NSMenu allocWithZone:[NSMenu menuZone]] initWithTitle:@"Channel Actions"] autorelease];
+	[menu setAutoenablesItems:NO];
+	
+	// Create "join channel" a menu item
+	NSMenuItem* menuItem = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Join Channel"
+																				 action:@selector(switchToSelectedChannel:)
+																		  keyEquivalent:[NSString string]] autorelease];
+	[menuItem setTarget:self];
+	[menu addItem:menuItem];
+	
+	return menu;
 }
+
+#pragma mark -
+#pragma mark Changing Channels
 
 - (void)doubleClick
 {
@@ -221,13 +237,33 @@
 	if ((row < 0) || (row >= (NSInteger)[channels count]))
 		return;
 	
+	// Select the channel, and attempt to switch to it
+	[channelsTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row]
+				   byExtendingSelection:NO];
+	[self switchToSelectedChannel:self];
+}
+
+- (IBAction)switchToSelectedChannel:(id)sender
+{
+	// Get the name of the channel described in the clicked row
+	NSString* channelName = [[[channelsArrayController arrangedObjects] objectAtIndex:[channelsTableView selectedRow]] channelName];
+	
+	// Attempt to switch to the channel
+	[self switchToChannelNamed:channelName];	
+}
+
+- (void)switchToChannelNamed:(NSString*)channelName
+{
 	// Check that the player is not already in this channel
-	NSString* channelName = [[[channelsArrayController arrangedObjects] objectAtIndex:row] channelName];
 	if ([channelName isEqualToString:localPlayerChannelName])
 		return;
 	
-	// Attempt to switch to the channel described in the clicked row
-	[self switchToChannelNamed:channelName];
+	// Append a status message to the chat view
+	[chatController appendStatusMessage:[NSString stringWithFormat:@"Switching to channel: %@", channelName]];
+	
+	// Send a "/join" message to the server
+	[networkController sendMessage:[iTetJoinChannelMessage messageWithChannelName:channelName
+																		   player:[playersController localPlayer]]];
 }
 
 #pragma mark -

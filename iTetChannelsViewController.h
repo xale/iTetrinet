@@ -50,6 +50,8 @@ typedef enum
 - (IBAction)refreshChannelList:(id)sender;
 - (IBAction)refreshLocalPlayerChannel:(id)sender;
 - (void)stopQueriesAndDisconnect;
+
+- (IBAction)switchToSelectedChannel:(id)sender;
 - (void)switchToChannelNamed:(NSString*)channelName;
 
 @property (readonly) NSArray* channels;
