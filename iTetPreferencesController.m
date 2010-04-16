@@ -33,7 +33,7 @@ static iTetPreferencesController* preferencesController = nil;
 				 forKey:iTetConnectionTimeoutKey];
 	[defaults setObject:[NSNumber numberWithBool:YES]
 				 forKey:iTetAutoSwitchChatKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemeList]]
+	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemes]]
 				 forKey:iTetThemeListPrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultTheme]]
 				 forKey:iTetCurrentThemePrefKey];

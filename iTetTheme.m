@@ -12,7 +12,7 @@
 
 @implementation iTetTheme
 
-+ (NSArray*)defaultThemeList
++ (NSArray*)defaultThemes
 {
 	return [NSArray arrayWithObjects:
 			[self defaultTheme],

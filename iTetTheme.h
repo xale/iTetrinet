@@ -26,7 +26,7 @@
 	NSImage* preview;
 }
 
-+ (NSArray*)defaultThemeList;
++ (NSArray*)defaultThemes;
 + (id)defaultTheme;
 + (id)themeFromThemeFile:(NSString*)path;
 
