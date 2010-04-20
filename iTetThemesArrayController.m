@@ -36,8 +36,8 @@
 	if (selection == nil)
 		return NO;
 	
-	// Check that the default theme is not selected
-	if ([selection isEqual:[iTetTheme defaultTheme]])
+	// Check that the selected theme is not one of the default themes
+	if ([[iTetTheme defaultThemes] containsObject:selection])
 		return NO;
 	
 	return YES;

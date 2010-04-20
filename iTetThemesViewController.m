@@ -58,14 +58,14 @@
 	
 	// Attempt to create the theme from the selected file
 	iTetTheme* newTheme = [iTetTheme themeFromThemeFile:themeFile];
-	if (newTheme == nil)
+	if ((id)newTheme == [NSNull null])
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
 		
 		// Configure with the error message
 		[alert setMessageText:@"Could not load theme"];
-		[alert setInformativeText:[NSString stringWithFormat:@"Unable to load a theme from the file %@. Check that the file is a valid theme file, and that the image specified by 'Blocks=' in the theme file is in the same directory as the file.", themeFile]];
+		[alert setInformativeText:[NSString stringWithFormat:@"Unable to load a theme from the file '%@'. Check that the file is a valid theme file, and that the image specified by 'Blocks=' in the theme file is in the same directory as the file.", themeFile]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
@@ -80,14 +80,14 @@
 	}
 	
 	// Check if the theme is a duplicate of the default theme
-	if ([newTheme isEqual:[iTetTheme defaultTheme]])
+	if ([[iTetTheme defaultThemes] containsObject:newTheme])
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
 		
 		// Configure with the error message
 		[alert setMessageText:@"Duplicate theme"];
-		[alert setInformativeText:[NSString stringWithFormat:@"The theme '%@' appears to be a duplicate of the default iTetrinet theme. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after 'Name='.)", [newTheme name]]];
+		[alert setInformativeText:[NSString stringWithFormat:@"The theme '%@' appears to be a duplicate of one of the default iTetrinet themes. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after 'Name='.)", [newTheme name]]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
