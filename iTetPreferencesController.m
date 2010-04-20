@@ -95,7 +95,7 @@ static iTetPreferencesController* preferencesController = nil;
 	// Check that the theme loaded successfully
 	if ((id)currentTheme == [NSNull null])
 	{
-		currentTheme = [[iTetTheme defaultTheme] retain];
+		currentTheme = [[themeList objectAtIndex:0] retain];
 		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:currentTheme]
 					 forKey:iTetCurrentThemePrefKey];
 	}
@@ -126,6 +126,8 @@ static iTetPreferencesController* preferencesController = nil;
 	
 	[themeList release];
 	[currentTheme release];
+	
+	[keyConfigurations release];
 	
 	[super dealloc];
 }
@@ -397,6 +399,10 @@ static iTetPreferencesController* preferencesController = nil;
 	// Remove the theme's files from the user's Application Support directory
 	[[themeList objectAtIndex:index] deleteFiles];
 	
+	// Check if this is the currently-active theme
+	if ([[themeList objectAtIndex:index] isEqual:[self currentTheme]])
+		[self setCurrentTheme:[themeList objectAtIndex:((index + 1) % [themeList count])]];
+	
 	// Remove the theme from the list
 	[themeList removeObjectAtIndex:index];
 	
@@ -413,7 +419,7 @@ static iTetPreferencesController* preferencesController = nil;
 	// Release the old list
 	[themeList release];
 	
-	// swap the lists
+	// Swap the lists
 	themeList = themes;
 	
 	// Write the new list to User Defaults
@@ -424,11 +430,14 @@ static iTetPreferencesController* preferencesController = nil;
 
 - (void)setCurrentTheme:(iTetTheme*)theme
 {
+	// Retain the new theme
+	[theme retain];
+	
 	// Release the old theme
 	[currentTheme release];
 	
-	// Retain the new theme
-	currentTheme = [theme retain];
+	// Swap old for new
+	currentTheme = theme;
 	
 	// Write the new theme (serialized) to User Defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:theme]
@@ -439,6 +448,8 @@ static iTetPreferencesController* preferencesController = nil;
 														object:self];
 }
 @synthesize currentTheme;
+
+#pragma mark Key Configurations
 
 - (void)addKeyConfiguration:(NSMutableDictionary*)config
 {
