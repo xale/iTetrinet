@@ -31,7 +31,6 @@ static iTetPreferencesController* preferencesController = nil;
 
 @end
 
-
 @implementation iTetPreferencesController
 
 + (void)initialize

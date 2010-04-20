@@ -127,8 +127,6 @@
 	
 	// Add the new theme to the list
 	[themesArrayController addObject:newTheme];
-	
-	// FIXME: copy theme to Application Support directory
 }
 
 - (IBAction)chooseTheme:(id)sender
@@ -156,9 +154,7 @@
 	
 	// If the user pressed "cancel", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
-	{
 		return;
-	}
 	
 	// If the user chose to replace the existing theme, remove it
 	// (Themes are compared by name, so this will remove the old theme)
