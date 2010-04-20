@@ -10,6 +10,8 @@
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
+#import "IPSApplicationSupportDirectory.h"
+
 @implementation iTetTheme
 
 + (NSArray*)defaultThemes
@@ -231,9 +233,7 @@
 	}
 	
 	// Fill the cell and special arrays with the images clipped from the sheet
-	[cellImages release];
 	cellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
-	[specialImages release];
 	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
@@ -320,7 +320,42 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 - (void)copyFiles
 {
-	// FIXME: WRITEME
+	// Get the path to the user's "Application Support" directory
+	NSString* appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
+	NSError* appSupportError;
+	NSString* appSupportPath = [IPSApplicationSupportDirectory applicationSupportDirectoryPathForApp:appName
+																							   error:&appSupportError];
+	
+	// Check that the app support path is valid
+	if (appSupportPath == nil)
+	{
+		NSLog(@"WARNING: attempt to access application support directory failed; cannot copy support files");
+		return;
+	}
+	
+	// Append the theme and image filenames to the support directory path
+	NSString* themeDestPath = [appSupportPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
+	NSString* imageDestPath = [appSupportPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
+	
+	// Copy the theme and image files to the support directory
+	// FIXME: error checking
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	[fileManager copyItemAtPath:[self themeFilePath]
+						 toPath:themeDestPath
+						  error:NULL];
+	[fileManager copyItemAtPath:[self imageFilePath]
+						 toPath:imageDestPath
+						  error:NULL];
+	
+	// Update the theme and image file paths to reflect the copied files
+	[self willChangeValueForKey:@"themeFilePath"];
+	[themeFilePath release];
+	themeFilePath = [themeDestPath retain];
+	[self didChangeValueForKey:@"themeFilePath"];
+	[self willChangeValueForKey:@"imageFilePath"];
+	[imageFilePath release];
+	imageFilePath = [imageDestPath retain];
+	[self didChangeValueForKey:@"imageFilePath"];
 }
 
 - (void)deleteFiles
