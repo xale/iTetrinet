@@ -42,7 +42,7 @@
 	
 	// Attempt to read data from the theme file
 	if (![self parseThemeFile])
-		return nil;
+		return [NSNull null];
 	
 	// Load and clip the images from the sheet
 	[self loadImages];
@@ -232,11 +232,9 @@
 	
 	// Fill the cell and special arrays with the images clipped from the sheet
 	[cellImages release];
-	cellImages = [[NSArray alloc] initWithArray:
-				  [cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+	cellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
 	[specialImages release];
-	specialImages = [[NSArray alloc] initWithArray:
-					 [cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
 #define PREVIEW_HEIGHT (225)
@@ -318,6 +316,19 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 }
 
 #pragma mark -
+#pragma mark File Organization
+
+- (void)copyFiles
+{
+	// FIXME: WRITEME
+}
+
+- (void)deleteFiles
+{
+	// FIXME: WRITEME
+}
+
+#pragma mark -
 #pragma mark Comparators (uses name)
 
 - (BOOL)isEqual:(id)other
@@ -326,7 +337,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	{
 		iTetTheme* otherTheme = (iTetTheme*)other;
 		
-		if ([otherTheme hash] == [self hash])
+		if ([[otherTheme name] isEqualToString:[self name]])
 			return YES;
 	}
 	

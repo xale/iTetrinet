@@ -10,7 +10,7 @@
 #define ITET_DEF_CELL_WIDTH		20
 #define ITET_DEF_CELL_HEIGHT	20
 
-@interface iTetTheme: NSObject <NSCoding>
+@interface iTetTheme : NSObject <NSCoding>
 {
 	NSString* themeFilePath;
 	NSString* imageFilePath;
@@ -36,6 +36,9 @@
 			  inThemeFile:(NSString*)themeFileContents;
 - (void)loadImages;
 - (void)createPreview;
+
+- (void)copyFiles;
+- (void)deleteFiles;
 
 @property (readonly) NSString* themeFilePath;
 @property (readonly) NSString* imageFilePath;

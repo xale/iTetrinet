@@ -35,22 +35,9 @@ extern NSString* const iTetCurrentThemeDidChangeNotification;
 
 + (iTetPreferencesController*)preferencesController;
 
-- (void)startObservingObject:(id)object;
-- (void)stopObservingObject:(id)object;
-- (void)startObservingServersInArray:(NSArray*)array;
-- (void)stopObservingServersInArray:(NSArray*)array;
-
 @property (readwrite, assign) NSTimeInterval connectionTimeout;
-
 @property (readwrite, assign) BOOL autoSwitchChat;
-
-- (NSUInteger)countOfServerList;
-- (iTetServerInfo*)objectInServerListAtIndex:(NSUInteger)index;
-- (void)insertObject:(iTetServerInfo*)object
- inServerListAtIndex:(NSUInteger)index;
-- (void)removeObjectFromServerListAtIndex:(NSUInteger)index;
 @property (readwrite, retain) NSMutableArray* serverList;
-
 @property (readwrite, retain) NSMutableArray* themeList;
 @property (readwrite, retain) iTetTheme* currentTheme;
 

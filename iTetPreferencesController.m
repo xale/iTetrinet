@@ -22,6 +22,16 @@ NSString* const iTetCurrentThemeDidChangeNotification = @"currentThemeDidChange"
 
 static iTetPreferencesController* preferencesController = nil;
 
+@interface iTetPreferencesController (Private)
+
+- (void)startObservingObject:(id)object;
+- (void)stopObservingObject:(id)object;
+- (void)startObservingServersInArray:(NSArray*)array;
+- (void)stopObservingServersInArray:(NSArray*)array;
+
+@end
+
+
 @implementation iTetPreferencesController
 
 + (void)initialize
@@ -63,12 +73,28 @@ static iTetPreferencesController* preferencesController = nil;
 	prefsData = [defaults objectForKey:iTetThemeListPrefKey];
 	themeList = [[NSMutableArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:prefsData]];
 	
+	// Check for themes that have failed to load
+	for (NSUInteger index = 0; index < [themeList count];)
+	{
+		// Check for instances of NSNull (indicates failure to load)
+		if ([themeList objectAtIndex:index] == [NSNull null])
+		{
+			// Remove the theme
+			[themeList removeObjectAtIndex:index];
+		}
+		else
+		{
+			// Check the next theme
+			index++;
+		}
+	}
+	
 	// Load the current theme
 	prefsData = [defaults objectForKey:iTetCurrentThemePrefKey];
 	currentTheme = [[NSKeyedUnarchiver unarchiveObjectWithData:prefsData] retain];
 	
 	// Check that the theme loaded successfully
-	if (currentTheme == nil)
+	if ((id)currentTheme == [NSNull null])
 	{
 		currentTheme = [[iTetTheme defaultTheme] retain];
 		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:currentTheme]
@@ -303,16 +329,6 @@ static iTetPreferencesController* preferencesController = nil;
 
 #pragma mark Servers
 
-- (NSUInteger)countOfServerList
-{
-	return [serverList count];
-}
-
-- (iTetServerInfo*)objectInServerListAtIndex:(NSUInteger)index
-{
-	return [serverList objectAtIndex:index];
-}
-
 - (void)insertObject:(iTetServerInfo*)object
  inServerListAtIndex:(NSUInteger)index
 {
@@ -361,13 +377,45 @@ static iTetPreferencesController* preferencesController = nil;
 @synthesize serverList;
 
 #pragma mark Themes
+
+- (void)insertObject:(iTetTheme*)theme
+  inThemeListAtIndex:(NSUInteger)index
+{
+	// Copy the theme's associated files to the user's Application Support directory
+	[theme copyFiles];
+	
+	// Add the theme to the list
+	[themeList insertObject:theme
+					atIndex:index];
+	
+	// Write the updated list to user defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
+											  forKey:iTetThemeListPrefKey];
+}
+
+- (void)removeObjectFromThemeListAtIndex:(NSUInteger)index
+{
+	// Remove the theme's files from the user's Application Support directory
+	[[themeList objectAtIndex:index] deleteFiles];
+	
+	// Remove the theme from the list
+	[themeList removeObjectAtIndex:index];
+	
+	// Write the updated list to user defaults
+	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
+											  forKey:iTetThemeListPrefKey];
+}
+
 - (void)setThemeList:(NSMutableArray*)themes
 {
+	// Retain the new list
+	[themes retain];
+	
 	// Release the old list
 	[themeList release];
 	
-	// Retain the new list
-	themeList = [themes retain];
+	// swap the lists
+	themeList = themes;
 	
 	// Write the new list to User Defaults
 	[[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:themeList]
