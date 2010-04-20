@@ -365,7 +365,7 @@ willDisconnectWithError:(NSError*)error
 		{
 			// Create an error
 			NSDictionary* info = [NSDictionary dictionaryWithObject:[(iTetNoConnectingMessage*)message reason]
-															 forKey:@"errorMessage"];
+															 forKey:NSLocalizedFailureReasonErrorKey];
 			NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
 												 code:iTetNoConnectingError
 											 userInfo:info];
@@ -656,7 +656,7 @@ willDisconnectWithError:(NSError*)error
 		{
 			case iTetNoConnectingError:
 				[errorText appendString:@"Server login failed. Reason:\n"];
-				[errorText appendString:[[error userInfo] objectForKey:@"errorMessage"]];
+				[errorText appendString:[[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey]];
 				break;
 			default:
 				[errorText appendString:@"An unknown error occurred.\n"];
