@@ -322,6 +322,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	// Get the path to a subdirectory of the Application Support directory to store this theme
 	NSError* error = nil;
 	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
+																	   createIfNecessary:YES
 																				   error:&error];
 	
 	// Check for errors
@@ -333,7 +334,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
 	// Copy the theme file to the support directory
-	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	NSFileManager* fileManager = [iTetThemesSupportDirectory fileManager];
 	BOOL copySuccessful = [fileManager copyItemAtPath:[self themeFilePath]
 											   toPath:themeDestPath
 												error:&error];
@@ -366,7 +367,22 @@ abort:
 
 - (void)deleteFiles
 {
-	// FIXME: WRITEME
+	// Locate the theme's subdirectory of this user's Application Support directory
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
+																	   createIfNecessary:NO
+																				   error:NULL];
+	if (directoryPath == nil)
+		return;
+	
+	// Attempt to delete the directory and its contents
+	NSFileManager* fileManager = [iTetThemesSupportDirectory fileManager];
+	NSError* error;
+	BOOL deleteSuccessful = [fileManager removeItemAtPath:directoryPath
+													error:&error];
+	if (!deleteSuccessful)
+	{
+		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self name], [error localizedDescription]);
+	}
 }
 
 #pragma mark -
