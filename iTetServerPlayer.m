@@ -13,7 +13,7 @@ NSString* const iTetServerPlayerNamePlaceholder = @"SERVER";
 
 - (id)init
 {
-	nickname = [[NSString alloc] initWithString:@"SERVER"];
+	nickname = [[NSString alloc] initWithString:iTetServerPlayerNamePlaceholder];
 	playerNumber = 0;
 	teamName = nil;
 	playing = NO;
