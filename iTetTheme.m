@@ -320,30 +320,32 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 - (void)copyFiles
 {
 	// Get the path to a subdirectory of the Application Support directory to store this theme
-	NSError* pathError;
+	NSError* error = nil;
 	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
-																				   error:&pathError];
+																				   error:&error];
 	
 	// Check for errors
 	if (directoryPath == nil)
-	{
-		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self name], [pathError localizedDescription]);
-		return;
-	}
+		goto abort;
 	
 	// Append the theme and image filenames to the directory path
 	NSString* themeDestPath = [directoryPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
 	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
-	// Copy the theme and image files to the support directory
-	// FIXME: error checking
+	// Copy the theme file to the support directory
 	NSFileManager* fileManager = [[NSFileManager alloc] init];
-	[fileManager copyItemAtPath:[self themeFilePath]
-						 toPath:themeDestPath
-						  error:NULL];
-	[fileManager copyItemAtPath:[self imageFilePath]
-						 toPath:imageDestPath
-						  error:NULL];
+	BOOL copySuccessful = [fileManager copyItemAtPath:[self themeFilePath]
+											   toPath:themeDestPath
+												error:&error];
+	if (!copySuccessful)
+		goto abort;
+	
+	// Copy the image file
+	copySuccessful = [fileManager copyItemAtPath:[self imageFilePath]
+										  toPath:imageDestPath
+										   error:&error];
+	if (!copySuccessful)
+		goto abort;
 	
 	// Update the theme and image file paths to reflect the copied files
 	[self willChangeValueForKey:@"themeFilePath"];
@@ -354,6 +356,12 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	[imageFilePath release];
 	imageFilePath = [imageDestPath retain];
 	[self didChangeValueForKey:@"imageFilePath"];
+	
+abort:
+	if (error != nil)
+	{
+		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self name], [error localizedDescription]);
+	}
 }
 
 - (void)deleteFiles
