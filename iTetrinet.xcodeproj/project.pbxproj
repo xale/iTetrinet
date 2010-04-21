@@ -36,6 +36,7 @@
 		6A39FB0F111FB346000373E2 /* iTetTextAttributesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */; };
 		6A3ACC4810B7C49500459D97 /* NSImage+KeyImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC4710B7C49500459D97 /* NSImage+KeyImageCache.m */; };
 		6A3ACC5510B7C85A00459D97 /* IPSCacheDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3ACC5410B7C85A00459D97 /* IPSCacheDictionary.m */; };
+		6A3BCE34117F58C900AC067D /* iTetThemesSupportDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3BCE33117F58C900AC067D /* iTetThemesSupportDirectory.m */; };
 		6A3DD0EB116E3A400047B881 /* iTetChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3DD0EA116E3A400047B881 /* iTetChannelsViewController.m */; };
 		6A3E02301174D81100CCDF42 /* iTetPlayerListQueryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E022F1174D81100CCDF42 /* iTetPlayerListQueryMessage.m */; };
 		6A3E02331174D8EC00CCDF42 /* iTetPlayerListEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A3E02321174D8EC00CCDF42 /* iTetPlayerListEntryMessage.m */; };
@@ -185,6 +186,8 @@
 		6A3ACC4710B7C49500459D97 /* NSImage+KeyImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+KeyImageCache.m"; sourceTree = "<group>"; };
 		6A3ACC5310B7C85A00459D97 /* IPSCacheDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPSCacheDictionary.h; sourceTree = "<group>"; };
 		6A3ACC5410B7C85A00459D97 /* IPSCacheDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPSCacheDictionary.m; sourceTree = "<group>"; };
+		6A3BCE32117F58C900AC067D /* iTetThemesSupportDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesSupportDirectory.h; sourceTree = "<group>"; };
+		6A3BCE33117F58C900AC067D /* iTetThemesSupportDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesSupportDirectory.m; sourceTree = "<group>"; };
 		6A3DD0E9116E3A400047B881 /* iTetChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChannelsViewController.h; sourceTree = "<group>"; };
 		6A3DD0EA116E3A400047B881 /* iTetChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelsViewController.m; sourceTree = "<group>"; };
 		6A3E022E1174D81100CCDF42 /* iTetPlayerListQueryMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayerListQueryMessage.h; sourceTree = "<group>"; };
@@ -749,6 +752,8 @@
 			children = (
 				6AD266C8117E155F0081A245 /* IPSApplicationSupportDirectory.h */,
 				6AD266C9117E155F0081A245 /* IPSApplicationSupportDirectory.m */,
+				6A3BCE32117F58C900AC067D /* iTetThemesSupportDirectory.h */,
+				6A3BCE33117F58C900AC067D /* iTetThemesSupportDirectory.m */,
 			);
 			name = "Application Support Directory";
 			sourceTree = "<group>";
@@ -1041,6 +1046,7 @@
 				6A8E0CC5117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m in Sources */,
 				6A08A4F71177748F007105D4 /* IPSContextMenuTableView.m in Sources */,
 				6AD266CA117E155F0081A245 /* IPSApplicationSupportDirectory.m in Sources */,
+				6A3BCE34117F58C900AC067D /* iTetThemesSupportDirectory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

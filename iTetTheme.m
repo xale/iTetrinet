@@ -6,11 +6,10 @@
 //
 
 #import "iTetTheme.h"
+#import "iTetThemesSupportDirectory.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
-
-#import "IPSApplicationSupportDirectory.h"
 
 @implementation iTetTheme
 
@@ -320,23 +319,21 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 - (void)copyFiles
 {
-	// Get the path to the user's "Application Support" directory
-	NSString* appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
-	NSError* appSupportError;
-	NSString* appSupportPath = [IPSApplicationSupportDirectory applicationSupportDirectoryPathForApp:appName
-																							   error:&appSupportError];
+	// Get the path to a subdirectory of the Application Support directory to store this theme
+	NSError* pathError;
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
+																				   error:&pathError];
 	
-	// Check that the app support path is valid
-	if (appSupportPath == nil)
+	// Check for errors
+	if (directoryPath == nil)
 	{
-		NSLog(@"WARNING: attempt to access application support directory failed; cannot copy support files");
+		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self name], [pathError localizedDescription]);
 		return;
 	}
 	
-	// Append the theme and image filenames to the support directory path
-	// FIXME: do something to avoid filename collisions in the app support directory
-	NSString* themeDestPath = [appSupportPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
-	NSString* imageDestPath = [appSupportPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
+	// Append the theme and image filenames to the directory path
+	NSString* themeDestPath = [directoryPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
+	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
 	// Copy the theme and image files to the support directory
 	// FIXME: error checking
