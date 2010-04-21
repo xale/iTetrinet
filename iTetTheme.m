@@ -334,6 +334,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	}
 	
 	// Append the theme and image filenames to the support directory path
+	// FIXME: do something to avoid filename collisions in the app support directory
 	NSString* themeDestPath = [appSupportPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
 	NSString* imageDestPath = [appSupportPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
