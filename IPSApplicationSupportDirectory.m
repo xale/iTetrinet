@@ -12,7 +12,6 @@ NSFileManager* supportFileManager = nil;
 @interface IPSApplicationSupportDirectory (Private)
 
 + (NSString*)userApplicationSupportDirectoryPath;
-+ (NSFileManager*)fileManager;
 
 @end
 
@@ -73,7 +72,7 @@ NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 		{
 			// Create a user info dictionary
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									  @"Unable to create application support directory", NSLocalizedDescriptionKey,
+									  @"Unable to create Application Support directory", NSLocalizedDescriptionKey,
 									  creationError, NSUnderlyingErrorKey,
 									  fullPath, NSFilePathErrorKey,
 									  nil];

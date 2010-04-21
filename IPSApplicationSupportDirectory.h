@@ -13,4 +13,6 @@
 + (NSString*)applicationSupportDirectoryPathForApp:(NSString*)appName
 											 error:(NSError**)error;
 
++ (NSFileManager*)fileManager;
+
 @end
