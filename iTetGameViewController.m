@@ -27,7 +27,7 @@
 #import "IPSScalableLevelIndicator.h"
 
 #import "iTetKeyActions.h"
-#import "NSMutableDictionary+KeyBindings.h"
+#import "NSDictionary+KeyBindings.h"
 
 #import "iTetTextAttributes.h"
 
@@ -52,7 +52,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
 
-- (void)setKeyConfiguration:(NSMutableDictionary*)config;
+- (void)setKeyConfiguration:(NSDictionary*)config;
 
 @end
 
@@ -64,7 +64,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	gameplayState = gameNotPlaying;
 	
 	// Load the default key bindings
-	keyConfiguration = [[NSMutableDictionary currentKeyConfiguration] retain];
+	keyConfiguration = [[NSDictionary currentKeyConfiguration] retain];
 	
 	// Register for notifications of changes to the key bindings
 	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
@@ -465,7 +465,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 					   context:(void *)context
 {
 	// Change to themes list; update the current theme
-	[self setKeyConfiguration:[NSMutableDictionary currentKeyConfiguration]];
+	[self setKeyConfiguration:[NSDictionary currentKeyConfiguration]];
 }
 
 #pragma mark -
@@ -1218,7 +1218,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	return ([self gameplayState] == gamePlaying) || ([self gameplayState] == gamePaused);
 }
 
-- (void)setKeyConfiguration:(NSMutableDictionary*)config
+- (void)setKeyConfiguration:(NSDictionary*)config
 {
 	[config retain];
 	[keyConfiguration release];

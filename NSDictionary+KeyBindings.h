@@ -1,5 +1,5 @@
 //
-//  NSMutableDictionary+KeyBindings.h
+//  NSDictionary+KeyBindings.h
 //  iTetrinet
 //
 //  Created by Alex Heinz on 11/5/09.
@@ -10,7 +10,16 @@
 
 @class iTetKeyNamePair;
 
-extern NSString* const iTetKeyConfigurationNameKey;
+@interface NSDictionary (KeyBindings)
+
++ (NSDictionary*)currentKeyConfiguration;
+
+- (iTetGameAction)actionForKey:(iTetKeyNamePair*)key;
+- (iTetKeyNamePair*)keyForAction:(iTetGameAction)action;
+
+- (NSString*)configurationName;
+
+@end
 
 @interface NSMutableDictionary (KeyBindings)
 
@@ -19,9 +28,6 @@ extern NSString* const iTetKeyConfigurationNameKey;
 
 - (void)setAction:(iTetGameAction)action
 		   forKey:(iTetKeyNamePair*)key;
-- (iTetGameAction)actionForKey:(iTetKeyNamePair*)key;
-- (iTetKeyNamePair*)keyForAction:(iTetGameAction)action;
-
-@property (readwrite, retain) NSString* configurationName;
+- (void)setConfigurationName:(NSString*)newName;
 
 @end

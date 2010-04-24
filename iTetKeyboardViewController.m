@@ -11,7 +11,7 @@
 #import "iTetKeyNamePair.h"
 
 #import "iTetUserDefaults.h"
-#import "NSMutableDictionary+KeyBindings.h"
+#import "NSDictionary+KeyBindings.h"
 #import "NSUserDefaults+AdditionalTypes.h"
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";

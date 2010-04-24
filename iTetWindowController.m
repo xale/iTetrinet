@@ -12,7 +12,7 @@
 #import "iTetLocalPlayer.h"
 #import "iTetServerInfo.h"
 #import "iTetTheme.h"
-#import "NSMutableDictionary+KeyBindings.h"
+#import "NSDictionary+KeyBindings.h"
 
 #import "iTetUserDefaults.h"
 #import "iTetPreferencesWindowController.h"

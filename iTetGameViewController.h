@@ -72,7 +72,7 @@ typedef enum
 	iTetGameplayState gameplayState;
 	
 	// Current key bindings
-	NSMutableDictionary* keyConfiguration;
+	NSDictionary* keyConfiguration;
 	
 	// Data stored when game is paused
 	NSTimeInterval timeUntilNextTimerFire;

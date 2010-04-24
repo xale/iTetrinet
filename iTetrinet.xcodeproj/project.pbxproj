@@ -109,7 +109,7 @@
 		6AEBBF1E113F1DD8003C997B /* iTetPlayerTeamMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBBF1D113F1DD8003C997B /* iTetPlayerTeamMessage.m */; };
 		6AEBBF25113F25A6003C997B /* iTetWinlistMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBBF24113F25A6003C997B /* iTetWinlistMessage.m */; };
 		6AEBBF65113F3029003C997B /* iTetTextAttributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBBF64113F3029003C997B /* iTetTextAttributes.m */; };
-		6AEDB8BC10A3347C00221E69 /* NSMutableDictionary+KeyBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEDB8BB10A3347C00221E69 /* NSMutableDictionary+KeyBindings.m */; };
+		6AEDB8BC10A3347C00221E69 /* NSDictionary+KeyBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEDB8BB10A3347C00221E69 /* NSDictionary+KeyBindings.m */; };
 		6AEFEEC011207BE6006A89CA /* iTetWinlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */; };
 		6AEFEEC711207D51006A89CA /* iTetWinlistEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */; };
 		6AF511D6104860DB00D0B020 /* iTetLocalFieldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AF511D5104860DB00D0B020 /* iTetLocalFieldView.m */; };
@@ -316,8 +316,8 @@
 		6AEBBF24113F25A6003C997B /* iTetWinlistMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistMessage.m; sourceTree = "<group>"; };
 		6AEBBF63113F3029003C997B /* iTetTextAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTextAttributes.h; sourceTree = "<group>"; };
 		6AEBBF64113F3029003C997B /* iTetTextAttributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTextAttributes.m; sourceTree = "<group>"; };
-		6AEDB8BA10A3347C00221E69 /* NSMutableDictionary+KeyBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+KeyBindings.h"; sourceTree = "<group>"; };
-		6AEDB8BB10A3347C00221E69 /* NSMutableDictionary+KeyBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+KeyBindings.m"; sourceTree = "<group>"; };
+		6AEDB8BA10A3347C00221E69 /* NSDictionary+KeyBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+KeyBindings.h"; sourceTree = "<group>"; };
+		6AEDB8BB10A3347C00221E69 /* NSDictionary+KeyBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+KeyBindings.m"; sourceTree = "<group>"; };
 		6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWinlistViewController.h; sourceTree = "<group>"; };
 		6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistViewController.m; sourceTree = "<group>"; };
 		6AEFEEC511207D51006A89CA /* iTetWinlistEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWinlistEntry.h; sourceTree = "<group>"; };
@@ -864,8 +864,8 @@
 				6AFBE88B10AC6373008336EC /* iTetKeyNamePair.m */,
 				6A05EE0E10B5A94D0002F86E /* iTetKeyActions.h */,
 				6A05EE0F10B5A94D0002F86E /* iTetKeyActions.m */,
-				6AEDB8BA10A3347C00221E69 /* NSMutableDictionary+KeyBindings.h */,
-				6AEDB8BB10A3347C00221E69 /* NSMutableDictionary+KeyBindings.m */,
+				6AEDB8BA10A3347C00221E69 /* NSDictionary+KeyBindings.h */,
+				6AEDB8BB10A3347C00221E69 /* NSDictionary+KeyBindings.m */,
 			);
 			name = "Key Bindings";
 			sourceTree = "<group>";
@@ -992,7 +992,7 @@
 				6AFCE0F9108772B10090F3DF /* iTetSpecialNameTransformer.m in Sources */,
 				6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */,
 				6AEB7F851089218C00A8BCFD /* iTetKeyboardViewController.m in Sources */,
-				6AEDB8BC10A3347C00221E69 /* NSMutableDictionary+KeyBindings.m in Sources */,
+				6AEDB8BC10A3347C00221E69 /* NSDictionary+KeyBindings.m in Sources */,
 				6AFBE88C10AC6373008336EC /* iTetKeyNamePair.m in Sources */,
 				6A05EE1010B5A94D0002F86E /* iTetKeyActions.m in Sources */,
 				6A3ACC4810B7C49500459D97 /* NSImage+KeyImageCache.m in Sources */,

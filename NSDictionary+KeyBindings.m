@@ -1,11 +1,11 @@
 //
-//  NSMutableDictionary+KeyBindings.m
+//  NSDictionary+KeyBindings.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 11/5/09.
 //
 
-#import "NSMutableDictionary+KeyBindings.h"
+#import "NSDictionary+KeyBindings.h"
 #import "iTetKeyNamePair.h"
 
 #import "iTetUserDefaults.h"
@@ -23,10 +23,83 @@
 #define iTetPKeyCode			(35)
 #define iTetSemicolonKeyCode	(41)
 
+#define iTet1KeyCode			(18)
+#define iTet2KeyCode			(19)
+#define iTet3KeyCode			(20)
+#define iTet4KeyCode			(21)
+#define iTet5KeyCode			(23)
+#define iTet6KeyCode			(22)
+
+NSString* const iTetKeyConfigurationNameKey = @"keyConfigurationName";
+
+@interface NSDictionary (KeyBindingsPrivate)
+
++ (NSDictionary*)specialTargetsDictionary;
+
+@end
+
 @interface NSMutableDictionary (KeyBindingsPrivate)
 
-+ (NSMutableDictionary*)keyConfigurationDictionary;
-+ (NSMutableDictionary*)specialTargetsDictionary;
++ (NSMutableDictionary*)bareKeyConfigurationDictionary;
+
+@end
+
+@implementation NSDictionary (KeyBindings)
+
++ (NSDictionary*)currentKeyConfiguration
+{
+	return [NSMutableDictionary currentKeyConfiguration];
+}
+
++ (NSDictionary*)specialTargetsDictionary
+{
+	// Create a dictionary with the special-targeting keys
+	NSMutableDictionary* targetKeys = [NSMutableDictionary dictionary];
+	[targetKeys setAction:specialPlayer1
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet1KeyCode
+															name:@"1"]];
+	[targetKeys setAction:specialPlayer2
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet2KeyCode
+															name:@"2"]];
+	[targetKeys setAction:specialPlayer3
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet3KeyCode
+															name:@"3"]];
+	[targetKeys setAction:specialPlayer4
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet4KeyCode
+															name:@"4"]];
+	[targetKeys setAction:specialPlayer5
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet5KeyCode
+															name:@"5"]];
+	[targetKeys setAction:specialPlayer6
+				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet6KeyCode
+															name:@"6"]];
+	return targetKeys;
+}
+
+- (iTetGameAction)actionForKey:(iTetKeyNamePair*)key
+{
+	NSNumber* action = [self objectForKey:key];
+	
+	if (action)
+		return (iTetGameAction)[action intValue];
+	
+	return noAction;
+}
+
+- (iTetKeyNamePair*)keyForAction:(iTetGameAction)action
+{
+	NSArray* keys = [self allKeysForObject:[NSNumber numberWithInt:action]];
+	
+	if ([keys count] > 0)
+		return [keys objectAtIndex:0];
+	
+	return nil;
+}
+
+- (NSString*)configurationName
+{
+	return [self objectForKey:iTetKeyConfigurationNameKey];
+}
 
 @end
 
@@ -44,7 +117,7 @@
 	NSMutableArray* configs = [NSMutableArray array];
 	
 	// "Arrow Keys" Configuration
-	NSMutableDictionary* keyDict = [NSMutableDictionary keyConfigurationDictionary];
+	NSMutableDictionary* keyDict = [NSMutableDictionary bareKeyConfigurationDictionary];
 	[keyDict setConfigurationName:@"Arrow Keys"];
 	[keyDict setAction:movePieceLeft
 				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLeftArrowKeyCode
@@ -76,7 +149,7 @@
 	[configs addObject:keyDict];
 	
 	// "MacBook Keyboard" Configuration
-	keyDict = [NSMutableDictionary keyConfigurationDictionary];
+	keyDict = [NSMutableDictionary bareKeyConfigurationDictionary];
 	[keyDict setConfigurationName:@"MacBook Keyboard"];
 	[keyDict setAction:movePieceLeft
 				forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTetLKeyCode
@@ -110,7 +183,7 @@
 	return configs;
 }
 
-+ (NSMutableDictionary*)keyConfigurationDictionary
++ (NSMutableDictionary*)bareKeyConfigurationDictionary
 {
 	NSMutableDictionary* keyDict = [NSMutableDictionary dictionary];
 	[keyDict setConfigurationName:@"Untitled Key Configuration"];
@@ -118,38 +191,6 @@
 	[keyDict addEntriesFromDictionary:[NSMutableDictionary specialTargetsDictionary]];
 	
 	return keyDict;
-}
-
-#define iTet1KeyCode	(18)
-#define iTet2KeyCode	(19)
-#define iTet3KeyCode	(20)
-#define iTet4KeyCode	(21)
-#define iTet5KeyCode	(23)
-#define iTet6KeyCode	(22)
-
-+ (NSDictionary*)specialTargetsDictionary
-{
-	// Create a dictionary with the special-targeting keys
-	NSMutableDictionary* targetKeys = [NSMutableDictionary dictionary];
-	[targetKeys setAction:specialPlayer1
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet1KeyCode
-															name:@"1"]];
-	[targetKeys setAction:specialPlayer2
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet2KeyCode
-															name:@"2"]];
-	[targetKeys setAction:specialPlayer3
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet3KeyCode
-															name:@"3"]];
-	[targetKeys setAction:specialPlayer4
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet4KeyCode
-															name:@"4"]];
-	[targetKeys setAction:specialPlayer5
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet5KeyCode
-															name:@"5"]];
-	[targetKeys setAction:specialPlayer6
-				   forKey:[iTetKeyNamePair keyNamePairForKeyCode:iTet6KeyCode
-															name:@"6"]];
-	return targetKeys;
 }
 
 - (void)setAction:(iTetGameAction)action
@@ -162,33 +203,6 @@
 	
 	[self setObject:[NSNumber numberWithInt:action]
 			 forKey:key];
-}
-
-- (iTetGameAction)actionForKey:(iTetKeyNamePair*)key
-{
-	NSNumber* action = [self objectForKey:key];
-	
-	if (action)
-		return (iTetGameAction)[action intValue];
-	
-	return noAction;
-}
-
-- (iTetKeyNamePair*)keyForAction:(iTetGameAction)action
-{
-	NSArray* keys = [self allKeysForObject:[NSNumber numberWithInt:action]];
-	
-	if ([keys count] > 0)
-		return [keys objectAtIndex:0];
-	
-	return nil;
-}
-
-NSString* const iTetKeyConfigurationNameKey = @"keyConfigurationName";
-
-- (NSString*)configurationName
-{
-	return [self objectForKey:iTetKeyConfigurationNameKey];
 }
 
 - (void)setConfigurationName:(NSString*)newName
