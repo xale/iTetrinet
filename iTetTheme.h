@@ -31,6 +31,7 @@
 + (id)defaultTheme;
 + (id)themeFromThemeFile:(NSString*)path;
 
+// Designated initializer; all others call this
 - (id)initWithThemeFile:(NSString*)path;
 
 - (void)copyFiles;
