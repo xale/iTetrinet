@@ -47,9 +47,4 @@
 	// By default, does nothing (subclasses override)
 }
 
-- (iTetPreferencesController*)prefs
-{
-	return PREFS;
-}
-
 @end

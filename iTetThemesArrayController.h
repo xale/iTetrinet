@@ -10,14 +10,13 @@
 @class iTetTheme;
 
 @interface iTetThemesArrayController : NSArrayController
-{
-	
-}
 
 // Additions
 - (iTetTheme*)selectedTheme;
 
 // Overrides
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 - (BOOL)canRemove;
 
 @end

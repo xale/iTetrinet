@@ -12,7 +12,7 @@
 #import "iTetChatViewController.h"
 #import "iTetChannelsViewController.h"
 #import "iTetWinlistViewController.h"
-#import "iTetPreferencesController.h"
+#import "iTetUserDefaults.h"
 
 #import "AsyncSocket.h"
 #import "iTetServerInfo.h"
@@ -560,7 +560,7 @@ willDisconnectWithError:(NSError*)error
 			[gameController endGame];
 			
 			// If the user wants us to, automatically switch to the chat tab
-			if ([[iTetPreferencesController preferencesController] autoSwitchChat])
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatPrefKey])
 				[windowController switchToChatTab:self];
 			
 			// Refresh the channel list

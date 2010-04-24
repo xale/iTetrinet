@@ -7,7 +7,6 @@
 
 #import "iTetThemesArrayController.h"
 #import "iTetTheme.h"
-#import "iTetPreferencesController.h"
 
 @implementation iTetThemesArrayController
 
@@ -25,6 +24,22 @@
 	
 	// Otherwise, return the selected theme
 	return [selection objectAtIndex:0];
+}
+
+- (void)addObject:(id)object
+{
+	iTetTheme* theme = (iTetTheme*)object;
+	[theme copyFiles];
+	
+	[super addObject:object];
+}
+
+- (void)removeObject:(id)object
+{
+	iTetTheme* theme = (iTetTheme*)object;
+	[theme deleteFiles];
+	
+	[super removeObject:object];
 }
 
 - (BOOL)canRemove

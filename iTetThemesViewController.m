@@ -102,7 +102,7 @@
 	}
 	
 	// Check for other duplicate themes
-	NSArray* themeList = [[iTetPreferencesController preferencesController] themeList];
+	NSArray* themeList = [themesArrayController content];
 	if ([themeList containsObject:newTheme])
 	{
 		// Create an alert
@@ -127,12 +127,6 @@
 	
 	// Add the new theme to the list
 	[themesArrayController addObject:newTheme];
-}
-
-- (IBAction)chooseTheme:(id)sender
-{
-	// Change the current theme
-	[PREFS setCurrentTheme:[themesArrayController selectedTheme]];
 }
 
 #pragma mark -

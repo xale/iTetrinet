@@ -46,23 +46,4 @@
 - (IBAction)closeSaveSheet:(id)sender;
 - (IBAction)deleteConfiguration:(id)sender;
 
-- (void)insertConfiguration:(NSMutableDictionary*)config
-		 inPopUpMenuAtIndex:(NSUInteger)index
-				  tagNumber:(NSUInteger)tag;
-- (void)displayConfigurationNumber:(NSUInteger)configNum;
-- (void)clearUnsavedConfiguration;
-
-- (void)startObservingKeyView:(iTetKeyView*)keyView;
-- (void)stopObservingKeyView:(iTetKeyView*)keyView;
-
-- (BOOL)keyView:(iTetKeyView*)keyView
-shouldSetRepresentedKey:(iTetKeyNamePair*)key;
-
-- (void)keyView:(iTetKeyView*)keyView
-didSetRepresentedKey:(iTetKeyNamePair*)key;
-
-- (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
-
-- (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum;
-
 @end

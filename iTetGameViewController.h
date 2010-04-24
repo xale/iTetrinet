@@ -71,6 +71,9 @@ typedef enum
 	// State of current game
 	iTetGameplayState gameplayState;
 	
+	// Current key bindings
+	NSMutableDictionary* keyConfiguration;
+	
 	// Data stored when game is paused
 	NSTimeInterval timeUntilNextTimerFire;
 	iTetBlockTimerType lastTimerType;

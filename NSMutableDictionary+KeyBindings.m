@@ -8,6 +8,9 @@
 #import "NSMutableDictionary+KeyBindings.h"
 #import "iTetKeyNamePair.h"
 
+#import "iTetUserDefaults.h"
+#import "NSUserDefaults+AdditionalTypes.h"
+
 #define iTetZKeyCode			(6)
 #define iTetXKeyCode			(7)
 #define iTetSpacebarKeyCode		(49)
@@ -20,7 +23,21 @@
 #define iTetPKeyCode			(35)
 #define iTetSemicolonKeyCode	(41)
 
+@interface NSMutableDictionary (KeyBindingsPrivate)
+
++ (NSMutableDictionary*)keyConfigurationDictionary;
++ (NSMutableDictionary*)specialTargetsDictionary;
+
+@end
+
 @implementation NSMutableDictionary (KeyBindings)
+
++ (NSMutableDictionary*)currentKeyConfiguration
+{
+	NSArray* configs = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey];
+	NSUInteger configNum = [[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey];
+	return [configs objectAtIndex:configNum];
+}
 
 + (NSMutableArray*)defaultKeyConfigurations
 {
@@ -167,7 +184,7 @@
 	return nil;
 }
 
-NSString* const iTetKeyConfigurationNameKey = @"name";
+NSString* const iTetKeyConfigurationNameKey = @"keyConfigurationName";
 
 - (NSString*)configurationName
 {

@@ -12,8 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="477"/>
 			<integer value="29"/>
+			<integer value="573"/>
+			<integer value="477"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2885,7 +2886,7 @@
 				<bool key="NSAutomaticallyRearrangesObjects">YES</bool>
 			</object>
 			<object class="NSScrollView" id="530930803">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3099,6 +3100,7 @@
 					<reference ref="1027030428"/>
 				</object>
 				<string key="NSFrameSize">{608, 261}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="539964874"/>
 				<int key="NSsFlags">50</int>
 				<reference key="NSVScroller" ref="886207654"/>
@@ -3117,13 +3119,16 @@
 					<string>serverName</string>
 					<string>protocol</string>
 				</object>
-				<bool key="NSEditable">YES</bool>
+				<string key="NSObjectClassName">iTetServerInfo</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
 				<bool key="NSAvoidsEmptySelection">YES</bool>
 				<bool key="NSPreservesSelection">YES</bool>
 				<bool key="NSSelectsInsertedObjects">YES</bool>
 				<bool key="NSFilterRestrictsInsertion">YES</bool>
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
+			</object>
+			<object class="NSUserDefaultsController" id="538096115">
+				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -4704,22 +4709,6 @@
 					<int key="connectionID">1441</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: prefs.serverList</string>
-						<reference key="source" ref="541646725"/>
-						<reference key="destination" ref="547177939"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="541646725"/>
-							<reference key="NSDestination" ref="547177939"/>
-							<string key="NSLabel">contentArray: prefs.serverList</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">prefs.serverList</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1442</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="1048072440"/>
@@ -5424,6 +5413,35 @@
 						<reference key="destination" ref="964681874"/>
 					</object>
 					<int key="connectionID">1655</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: values.serversList</string>
+						<reference key="source" ref="541646725"/>
+						<reference key="destination" ref="538096115"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="541646725"/>
+							<reference key="NSDestination" ref="538096115"/>
+							<string key="NSLabel">contentArray: values.serversList</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">values.serversList</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSConditionallySetsEditable</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<boolean value="NO"/>
+									<string>NSKeyedUnarchiveFromData</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1663</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7106,6 +7124,11 @@
 						<reference key="object" ref="1026986383"/>
 						<reference key="parent" ref="1013488054"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1660</int>
+						<reference key="object" ref="538096115"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -7202,6 +7225,7 @@
 					<string>1618.IBPluginDependency</string>
 					<string>1647.IBPluginDependency</string>
 					<string>1649.IBPluginDependency</string>
+					<string>1660.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>19.ImportedFromIB2</string>
 					<string>197.IBPluginDependency</string>
@@ -7494,6 +7518,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -7646,7 +7671,7 @@
 							<string key="accessibilityValue">Server List</string>
 						</object>
 					</object>
-					<string>{{520, 595}, {608, 261}}</string>
+					<string>{{385, 260}, {608, 261}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -7723,7 +7748,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1655</int>
+			<int key="maxID">1663</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -8659,6 +8684,14 @@
 					<string key="className">NSToolbarItem</string>
 					<string key="superclassName">NSObject</string>
 					<reference key="sourceIdentifier" ref="427330080"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSUserDefaultsController</string>
+					<string key="superclassName">NSController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">AppKit.framework/Headers/NSUserDefaultsController.h</string>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSView</string>

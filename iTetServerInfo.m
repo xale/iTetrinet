@@ -217,6 +217,24 @@ bail:
 }
 
 #pragma mark -
+#pragma mark Comparators
+
+- (BOOL)isEqual:(id)otherObject
+{
+	if ([otherObject isKindOfClass:[self class]])
+	{
+		iTetServerInfo* otherServer = (iTetServerInfo*)otherObject;
+		return ([serverName isEqualToString:[otherServer serverName]] &&
+				[address isEqualToString:[otherServer address]] &&
+				[nickname isEqualToString:[otherServer nickname]] &&
+				[teamName isEqualToString:[otherServer teamName]] &&
+				(protocol == [otherServer protocol]));
+	}
+	
+	return NO;
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize serverName;
@@ -227,9 +245,7 @@ bail:
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat:
-			@"iTetServerInfo; serverName: %@; address: %@; nickname: %@; playerTeam: %@",
-			serverName, address, nickname, teamName];
+	return [NSString stringWithFormat:@"iTetServerInfo; serverName: %@; address: %@; nickname: %@; playerTeam: %@", serverName, address, nickname, teamName];
 }
 
 @end

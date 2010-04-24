@@ -7,11 +7,37 @@
 
 #import "iTetTheme.h"
 #import "iTetThemesSupportDirectory.h"
+
 #import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
+#import "iTetUserDefaults.h"
+#import "NSUserDefaults+AdditionalTypes.h"
+
+@interface iTetTheme (Private)
+
+- (BOOL)parseThemeFile;
+- (NSRange)rangeOfSection:(NSString*)sectionName
+			  inThemeFile:(NSString*)themeFileContents;
+- (void)loadImages;
+- (void)createPreview;
+
+@end
+
+
 @implementation iTetTheme
+
++ (iTetTheme*)currentTheme
+{
+	NSArray* themes = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesListPrefKey];
+	NSUInteger themeNumber = [[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetCurrentThemeNumberPrefKey] firstIndex];
+	
+	if (themeNumber == NSNotFound)
+		return [themes objectAtIndex:0];
+	
+	return [themes objectAtIndex:themeNumber];
+}
 
 + (NSArray*)defaultThemes
 {

@@ -26,16 +26,12 @@
 	NSImage* preview;
 }
 
++ (iTetTheme*)currentTheme;
 + (NSArray*)defaultThemes;
 + (id)defaultTheme;
 + (id)themeFromThemeFile:(NSString*)path;
 
 - (id)initWithThemeFile:(NSString*)path;
-- (BOOL)parseThemeFile;
-- (NSRange)rangeOfSection:(NSString*)sectionName
-			  inThemeFile:(NSString*)themeFileContents;
-- (void)loadImages;
-- (void)createPreview;
 
 - (void)copyFiles;
 - (void)deleteFiles;
