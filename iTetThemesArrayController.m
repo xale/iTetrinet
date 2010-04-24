@@ -34,12 +34,12 @@
 	[super addObject:object];
 }
 
-- (void)removeObject:(id)object
+- (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index
 {
-	iTetTheme* theme = (iTetTheme*)object;
+	iTetTheme* theme = [[self arrangedObjects] objectAtIndex:index];
 	[theme deleteFiles];
 	
-	[super removeObject:object];
+	[super removeObjectAtArrangedObjectIndex:index];
 }
 
 - (BOOL)canRemove
