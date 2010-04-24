@@ -128,7 +128,7 @@
 											</object>
 										</object>
 										<double key="NSRowHeight">250</double>
-										<int key="NSTvFlags">-1035993088</int>
+										<int key="NSTvFlags">37748736</int>
 										<reference key="NSDelegate"/>
 										<reference key="NSDataSource"/>
 										<int key="NSGridStyleMask">2</int>
@@ -926,7 +926,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{241, 436}, {600, 600}}</string>
+					<string>{{241, 256}, {600, 600}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{628, 654}</string>
 					<string>{{217, 442}, {480, 272}}</string>

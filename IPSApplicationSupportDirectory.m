@@ -54,15 +54,16 @@ NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 	fullPath = [fullPath stringByAppendingPathComponent:appName];
 	
 	// Check if the path already exists
-	if ([[self fileManager] fileExistsAtPath:fullPath])
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	if ([fileManager fileExistsAtPath:fullPath])
 		return fullPath;
 	
 	// Attempt to create the directory
 	NSError* creationError;
-	BOOL createdSuccessfully = [[self fileManager] createDirectoryAtPath:fullPath
-											 withIntermediateDirectories:YES
-															  attributes:nil
-																   error:&creationError];
+	BOOL createdSuccessfully = [fileManager createDirectoryAtPath:fullPath
+									  withIntermediateDirectories:YES
+													   attributes:nil
+															error:&creationError];
 	
 	// If the directory could not be created, return nil
 	if (!createdSuccessfully)
@@ -98,22 +99,6 @@ NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 		return nil;
 	
 	return [paths objectAtIndex:0];
-}
-
-#pragma mark -
-#pragma mark File Manager
-
-+ (NSFileManager*)fileManager
-{
-	@synchronized(self)
-	{
-		if (supportFileManager == nil)
-		{
-			supportFileManager = [[NSFileManager alloc] init];
-		}
-	}
-	
-	return supportFileManager;
 }
 
 @end

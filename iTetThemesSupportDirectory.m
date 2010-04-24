@@ -55,7 +55,8 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 	fullPath = [fullPath stringByAppendingPathComponent:themeName];
 	
 	// If the path exists, return immediately
-	if ([[self fileManager] fileExistsAtPath:fullPath])
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	if ([fileManager fileExistsAtPath:fullPath])
 		return fullPath;
 	
 	// If we have been asked not to create non-existent directories, return nil
@@ -64,10 +65,10 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 	
 	// Attempt to create the subdirectory
 	NSError* creationError;
-	BOOL createdSuccessfully = [[self fileManager] createDirectoryAtPath:fullPath
-											 withIntermediateDirectories:YES
-															  attributes:nil
-																   error:&creationError];
+	BOOL createdSuccessfully = [fileManager createDirectoryAtPath:fullPath
+									  withIntermediateDirectories:YES
+													   attributes:nil
+															error:&creationError];
 	
 	// If the directory could not be created, return nil
 	if (!createdSuccessfully)
@@ -94,11 +95,6 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 	
 	// Return the path to the created directory
 	return fullPath;
-}
-
-+ (NSFileManager*)fileManager
-{
-	return [IPSApplicationSupportDirectory fileManager];
 }
 
 @end

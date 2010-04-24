@@ -391,7 +391,8 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
 	// Copy the theme file to the support directory
-	NSFileManager* fileManager = [iTetThemesSupportDirectory fileManager];
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	[fileManager setDelegate:self];
 	BOOL copySuccessful = [fileManager copyItemAtPath:[self themeFilePath]
 											   toPath:themeDestPath
 												error:&error];
@@ -436,7 +437,7 @@ abort:
 		return;
 	
 	// Attempt to delete the directory and its contents
-	NSFileManager* fileManager = [iTetThemesSupportDirectory fileManager];
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
 	NSError* error;
 	BOOL deleteSuccessful = [fileManager removeItemAtPath:directoryPath
 													error:&error];
@@ -447,6 +448,18 @@ abort:
 	
 	// Remove theme from cache
 	[[iTetTheme themeCache] removeObjectForKey:[self themeFilePath]];
+}
+
+- (BOOL)fileManager:(NSFileManager*)fileManager
+shouldProceedAfterError:(NSError*)error
+  copyingItemAtPath:(NSString*)srcPath
+			 toPath:(NSString*)dstPath
+{
+	// Proceed with copying if the file exists, otherwise abort
+	if (([error domain] == NSPOSIXErrorDomain) && ([error code] == EEXIST))
+		return YES;
+	
+	return NO;
 }
 
 #pragma mark -

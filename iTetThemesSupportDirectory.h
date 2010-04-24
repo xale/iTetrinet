@@ -14,6 +14,4 @@
 						  createIfNecessary:(BOOL)create
 									  error:(NSError**)error;
 
-+ (NSFileManager*)fileManager;
-
 @end
