@@ -16,28 +16,28 @@ typedef enum
 @interface iTetServerInfo : NSObject <NSCoding>
 {
 	NSString* serverName;
-	NSString* address;
-	NSString* nickname;
-	NSString* teamName;
+	NSString* serverAddress;
+	NSString* playerNickname;
+	NSString* playerTeamName;
 	iTetProtocolType protocol;
 }
 
 + (NSArray*)defaultServers;
 + (id)serverInfoWithName:(NSString*)name
 				 address:(NSString*)addr
-				nickname:(NSString*)nick
-					team:(NSString*)team
+		  playerNickname:(NSString*)nick
+		  playerTeamName:(NSString*)team
 				protocol:(iTetProtocolType)p;
 - (id)initWithName:(NSString*)name
 		   address:(NSString*)addr
-		  nickname:(NSString*)nick
-			  team:(NSString*)team
+	playerNickname:(NSString*)nick
+	playerTeamName:(NSString*)team
 		  protocol:(iTetProtocolType)p;
 
 @property (readwrite, copy) NSString* serverName;
-@property (readwrite, copy) NSString* address;
-@property (readwrite, copy) NSString* nickname;
-@property (readwrite, copy) NSString* teamName;
+@property (readwrite, copy) NSString* serverAddress;
+@property (readwrite, copy) NSString* playerNickname;
+@property (readwrite, copy) NSString* playerTeamName;
 @property (readwrite, assign) iTetProtocolType protocol;
 
 @end
