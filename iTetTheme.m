@@ -103,9 +103,9 @@ NSArray* defaultThemes = nil;
 
 - (id)init
 {	
-	// Read the theme data from the default theme file
-	return [self initWithThemeFile:[[[NSBundle mainBundle] pathForResource:@"theme"
-																	ofType:@"cfg"] retain]];
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
 }
 
 - (void)dealloc
