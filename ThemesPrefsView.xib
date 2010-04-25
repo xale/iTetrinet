@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -389,10 +389,10 @@
 			<object class="NSArrayController" id="866817502">
 				<object class="NSMutableArray" key="NSDeclaredKeys">
 					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>themeName</string>
+					<string>themeAuthor</string>
+					<string>themeDescription</string>
 					<string>preview</string>
-					<string>name</string>
-					<string>author</string>
-					<string>description</string>
 				</object>
 				<string key="NSObjectClassName">iTetTheme</string>
 				<object class="_NSManagedProxy" key="_NSManagedProxy"/>
@@ -503,62 +503,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.name</string>
-						<reference key="source" ref="185011703"/>
-						<reference key="destination" ref="866817502"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="185011703"/>
-							<reference key="NSDestination" ref="866817502"/>
-							<string key="NSLabel">value: selection.name</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.name</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">94</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.author</string>
-						<reference key="source" ref="829790859"/>
-						<reference key="destination" ref="866817502"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="829790859"/>
-							<reference key="NSDestination" ref="866817502"/>
-							<string key="NSLabel">value: selection.author</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.author</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">97</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.description</string>
-						<reference key="source" ref="633024422"/>
-						<reference key="destination" ref="866817502"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="633024422"/>
-							<reference key="NSDestination" ref="866817502"/>
-							<string key="NSLabel">value: selection.description</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.description</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
-								<boolean value="NO" key="NS.object.0"/>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">99</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">content: arrangedObjects</string>
 						<reference key="source" ref="732628275"/>
 						<reference key="destination" ref="866817502"/>
@@ -640,6 +584,66 @@
 						</object>
 					</object>
 					<int key="connectionID">105</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.themeName</string>
+						<reference key="source" ref="185011703"/>
+						<reference key="destination" ref="866817502"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="185011703"/>
+							<reference key="NSDestination" ref="866817502"/>
+							<string key="NSLabel">value: selection.themeName</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.themeName</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">106</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.themeDescription</string>
+						<reference key="source" ref="633024422"/>
+						<reference key="destination" ref="866817502"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="633024422"/>
+							<reference key="NSDestination" ref="866817502"/>
+							<string key="NSLabel">value: selection.themeDescription</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.themeDescription</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">108</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: selection.themeAuthor</string>
+						<reference key="source" ref="829790859"/>
+						<reference key="destination" ref="866817502"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="829790859"/>
+							<reference key="NSDestination" ref="866817502"/>
+							<string key="NSLabel">value: selection.themeAuthor</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">selection.themeAuthor</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSAllowsEditingMultipleValuesSelection</string>
+								<boolean value="NO" key="NS.object.0"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">109</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -976,7 +980,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">105</int>
+			<int key="maxID">109</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

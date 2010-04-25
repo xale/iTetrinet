@@ -52,7 +52,8 @@ NSArray* defaultThemes = nil;
 		if (defaultThemes == nil)
 		{
 			defaultThemes = [[NSArray alloc] initWithObjects:
-							 [self defaultTheme],
+							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme"
+																					  ofType:@"cfg"]],
 							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
 																					  ofType:@"cfg"]],
 							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
@@ -74,7 +75,7 @@ NSArray* defaultThemes = nil;
 
 + (id)defaultTheme
 {
-	return [[[self alloc] init] autorelease];
+	return [[self defaultThemes] objectAtIndex:0];
 }
 
 + (id)themeFromThemeFile:(NSString*)path
@@ -112,9 +113,9 @@ NSArray* defaultThemes = nil;
 	[themeFilePath release];
 	[imageFilePath release];
 	
-	[name release];
-	[author release];
-	[description release];
+	[themeName release];
+	[themeAuthor release];
+	[themeDescription release];
 	
 	[background release];
 	[cellImages release];
@@ -173,25 +174,25 @@ NSArray* defaultThemes = nil;
 	dataRange = [self rangeOfSection:@"name="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		name = [[themeFile substringWithRange:dataRange] retain];
+		themeName = [[themeFile substringWithRange:dataRange] retain];
 	else
-		name = [[NSString alloc] initWithString:@"Unnamed Theme"];
+		themeName = [[NSString alloc] initWithString:@"Unnamed Theme"];
 	
 	// Author
 	dataRange = [self rangeOfSection:@"author="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		author = [[themeFile substringWithRange:dataRange] retain];
+		themeAuthor = [[themeFile substringWithRange:dataRange] retain];
 	else
-		author = [[NSString alloc] initWithString:@"Unknown"];
+		themeAuthor = [[NSString alloc] initWithString:@"Unknown"];
 	
 	// Description
 	dataRange = [self rangeOfSection:@"description="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		description = [[themeFile substringWithRange:dataRange] retain];
+		themeDescription = [[themeFile substringWithRange:dataRange] retain];
 	else
-		description = [[NSString alloc] initWithString:@"No description provided."];
+		themeDescription = [[NSString alloc] initWithString:@"No description provided."];
 	
 	return YES;
 }
@@ -378,7 +379,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 {
 	// Get the path to a subdirectory of the Application Support directory to store this theme
 	NSError* error = nil;
-	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self themeName]
 																	   createIfNecessary:YES
 																				   error:&error];
 	
@@ -423,14 +424,14 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 abort:
 	if (error != nil)
 	{
-		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self name], [error localizedDescription]);
+		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self themeName], [error localizedDescription]);
 	}
 }
 
 - (void)deleteFiles
 {
 	// Locate the theme's subdirectory of this user's Application Support directory
-	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self name]
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self themeName]
 																	   createIfNecessary:NO
 																				   error:NULL];
 	if (directoryPath == nil)
@@ -443,7 +444,7 @@ abort:
 													error:&error];
 	if (!deleteSuccessful)
 	{
-		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self name], [error localizedDescription]);
+		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self themeName], [error localizedDescription]);
 	}
 	
 	// Remove theme from cache
@@ -487,7 +488,7 @@ shouldProceedAfterError:(NSError*)error
 	{
 		iTetTheme* otherTheme = (iTetTheme*)other;
 		
-		if ([[otherTheme name] isEqualToString:[self name]])
+		if ([[otherTheme themeName] isEqualToString:[self themeName]])
 			return YES;
 	}
 	
@@ -496,7 +497,7 @@ shouldProceedAfterError:(NSError*)error
 
 - (NSUInteger)hash
 {
-	return [name hash];
+	return [themeName hash];
 }
 
 #pragma mark -
@@ -505,9 +506,9 @@ shouldProceedAfterError:(NSError*)error
 @synthesize themeFilePath;
 @synthesize imageFilePath;
 
-@synthesize name;
-@synthesize author;
-@synthesize description;
+@synthesize themeName;
+@synthesize themeAuthor;
+@synthesize themeDescription;
 
 @synthesize background;
 @synthesize cellSize;
@@ -531,5 +532,10 @@ shouldProceedAfterError:(NSError*)error
 }
 
 @synthesize preview;
+
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"%@: %@", [super description], themeName];
+}
 
 @end

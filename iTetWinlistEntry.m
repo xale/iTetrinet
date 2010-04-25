@@ -9,29 +9,29 @@
 
 @implementation iTetWinlistEntry
 
-+ (id)playerEntryWithName:(NSString *)entryName
-					score:(NSInteger)entryScore
++ (id)playerEntryWithName:(NSString *)name
+					score:(NSInteger)score
 {
-	return [[[self alloc] initWithName:entryName
-								 score:entryScore
+	return [[[self alloc] initWithName:name
+								 score:score
 								isTeam:NO] autorelease];
 }
 
-+ (id)teamEntryWithName:(NSString*)entryName
-				  score:(NSInteger)entryScore
++ (id)teamEntryWithName:(NSString*)name
+				  score:(NSInteger)score
 {
-	return [[[self alloc] initWithName:entryName
-								 score:entryScore
+	return [[[self alloc] initWithName:name
+								 score:score
 								isTeam:YES] autorelease];
 }
 
-- (id)initWithName:(NSString*)entryName
-			 score:(NSInteger)entryScore
+- (id)initWithName:(NSString*)name
+			 score:(NSInteger)score
 			isTeam:(BOOL)isTeam
 {
-	name = [entryName copy];
-	score = entryScore;
-	team = isTeam;
+	entryName = [name copy];
+	entryScore = score;
+	teamEntry = isTeam;
 	
 	return self;
 }
@@ -39,8 +39,8 @@
 #pragma mark -
 #pragma mark Accessors
 
-@synthesize name;
-@synthesize score;
-@synthesize team;
+@synthesize entryName;
+@synthesize entryScore;
+@synthesize teamEntry;
 
 @end

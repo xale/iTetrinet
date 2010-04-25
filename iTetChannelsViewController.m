@@ -94,7 +94,7 @@
 	serverSupportsQueries = YES;
 	
 	// Attempt to open a Query-protocol connection to the server
-	[querySocket connectToHost:[currentServer address]
+	[querySocket connectToHost:[currentServer serverAddress]
 						onPort:iTetQueryNetworkPort
 						 error:NULL];
 	
@@ -125,7 +125,7 @@
 	// If we have been disconnected since the last query, (by a read timeout on the server's end, for instance) reconnect
 	if (![querySocket isConnected])
 	{
-		[querySocket connectToHost:[currentServer address]
+		[querySocket connectToHost:[currentServer serverAddress]
 							onPort:iTetQueryNetworkPort
 							 error:NULL];
 		
@@ -168,7 +168,7 @@
 	// If we have been disconnected since the last query, reconnect
 	if (![querySocket isConnected])
 	{
-		[querySocket connectToHost:[currentServer address]
+		[querySocket connectToHost:[currentServer serverAddress]
 							onPort:iTetQueryNetworkPort
 							 error:NULL];
 		

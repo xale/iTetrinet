@@ -227,7 +227,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Attempt to open a connection to the server
 	NSError* error;
-	BOOL connectionSuccessful = [gameSocket connectToHost:[currentServer address]
+	BOOL connectionSuccessful = [gameSocket connectToHost:[currentServer serverAddress]
 												   onPort:iTetGameNetworkPort
 													error:&error];
 	
@@ -248,7 +248,7 @@ didConnectToHost:(NSString*)hostname
 	
 	// Create and send the server login message
 	[self sendMessage:[iTetLoginMessage messageWithProtocol:[currentServer protocol]
-												   nickname:[currentServer nickname]
+												   nickname:[currentServer playerNickname]
 													address:hostname]];
 	
 	// Change the connection state
@@ -391,8 +391,8 @@ willDisconnectWithError:(NSError*)error
 		case playerNumberMessage:
 			// Set the local player's number
 			[playersController setLocalPlayerNumber:[(iTetPlayerNumberMessage*)message playerNumber]
-										   nickname:[currentServer nickname]
-										   teamName:[currentServer teamName]];
+										   nickname:[currentServer playerNickname]
+										   teamName:[currentServer playerTeamName]];
 			
 			[self sendMessage:[iTetPlayerTeamMessage messageForPlayer:[playersController localPlayer]]];
 			
@@ -695,7 +695,7 @@ willDisconnectWithError:(NSError*)error
 
 - (NSString*)currentServerAddress
 {
-	return [currentServer address];
+	return [currentServer serverAddress];
 }
 
 NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
@@ -736,7 +736,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			[connectionMenuItem setKeyEquivalent:@"w"];
 			
 			// Change the connection status label
-			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [currentServer address]]];
+			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [currentServer serverAddress]]];
 			
 			// Reveal and start the progress indicator
 			[connectionProgressIndicator setHidden:NO];
