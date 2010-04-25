@@ -15,9 +15,9 @@
 	NSString* themeFilePath;
 	NSString* imageFilePath;
 	
-	NSString* name;
-	NSString* author;
-	NSString* description;
+	NSString* themeName;
+	NSString* themeAuthor;
+	NSString* themeDescription;
 	
 	NSImage* background;
 	NSSize cellSize;
@@ -40,9 +40,9 @@
 @property (readonly) NSString* themeFilePath;
 @property (readonly) NSString* imageFilePath;
 
-@property (readonly) NSString* name;
-@property (readonly) NSString* author;
-@property (readonly) NSString* description;
+@property (readonly) NSString* themeName;
+@property (readonly) NSString* themeAuthor;
+@property (readonly) NSString* themeDescription;
 
 @property (readonly) NSImage* background;
 @property (readonly) NSSize cellSize;

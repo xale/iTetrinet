@@ -65,9 +65,9 @@
 	[themeFilePath release];
 	[imageFilePath release];
 	
-	[name release];
-	[author release];
-	[description release];
+	[themeName release];
+	[themeAuthor release];
+	[themeDescription release];
 	
 	[background release];
 	[cellImages release];
@@ -126,25 +126,25 @@
 	dataRange = [self rangeOfSection:@"name="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		name = [[themeFile substringWithRange:dataRange] retain];
+		themeName = [[themeFile substringWithRange:dataRange] retain];
 	else
-		name = [[NSString alloc] initWithString:@"Unnamed Theme"];
+		themeName = [[NSString alloc] initWithString:@"Unnamed Theme"];
 	
 	// Author
 	dataRange = [self rangeOfSection:@"author="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		author = [[themeFile substringWithRange:dataRange] retain];
+		themeAuthor = [[themeFile substringWithRange:dataRange] retain];
 	else
-		author = [[NSString alloc] initWithString:@"Unknown"];
+		themeAuthor = [[NSString alloc] initWithString:@"Unknown"];
 	
 	// Description
 	dataRange = [self rangeOfSection:@"description="
 						 inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
-		description = [[themeFile substringWithRange:dataRange] retain];
+		themeDescription = [[themeFile substringWithRange:dataRange] retain];
 	else
-		description = [[NSString alloc] initWithString:@"No description provided."];
+		themeDescription = [[NSString alloc] initWithString:@"No description provided."];
 	
 	return YES;
 }
@@ -335,7 +335,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 - (NSUInteger)hash
 {
-	return [name hash];
+	return [themeName hash];
 }
 
 #pragma mark -
@@ -344,9 +344,9 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 @synthesize themeFilePath;
 @synthesize imageFilePath;
 
-@synthesize name;
-@synthesize author;
-@synthesize description;
+@synthesize themeName;
+@synthesize themeAuthor;
+@synthesize themeDescription;
 
 @synthesize background;
 @synthesize cellSize;
@@ -370,5 +370,10 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 }
 
 @synthesize preview;
+
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"%@: %@", [super description], themeName];
+}
 
 @end
