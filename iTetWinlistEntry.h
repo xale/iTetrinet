@@ -9,21 +9,21 @@
 
 @interface iTetWinlistEntry : NSObject
 {
-	NSString* name;
-	NSInteger score;
-	BOOL team;
+	NSString* entryName;
+	NSInteger entryScore;
+	BOOL teamEntry;
 }
 
-+ (id)playerEntryWithName:(NSString*)entryName
-					score:(NSInteger)entryScore;
-+ (id)teamEntryWithName:(NSString*)entryName
-				  score:(NSInteger)entryScore;
-- (id)initWithName:(NSString*)entryName
-			 score:(NSInteger)entryScore
++ (id)playerEntryWithName:(NSString*)name
+					score:(NSInteger)score;
++ (id)teamEntryWithName:(NSString*)name
+				  score:(NSInteger)score;
+- (id)initWithName:(NSString*)name
+			 score:(NSInteger)score
 			isTeam:(BOOL)isTeam;
 
-@property (readonly) NSString* name;
-@property (readonly) NSInteger score;
-@property (readonly, getter=isTeam) BOOL team;
+@property (readonly) NSString* entryName;
+@property (readonly) NSInteger entryScore;
+@property (readonly, getter=isTeamEntry) BOOL teamEntry;
 
 @end
