@@ -11,7 +11,7 @@
 #import "iTetKeyNamePair.h"
 
 #import "iTetUserDefaults.h"
-#import "NSDictionary+KeyBindings.h"
+#import "iTetKeyConfiguration.h"
 #import "NSUserDefaults+AdditionalTypes.h"
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
@@ -22,11 +22,10 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 
 #define KEY_CONFIGS			[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey]
 #define CURRENT_CONFIG_NUM	[[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey]
-#define CURRENT_KEY_CONFIG	[KEY_CONFIGS objectAtIndex:CURRENT_CONFIG_NUM]
 
 @interface iTetKeyboardViewController (Private)
 
-- (void)insertConfiguration:(NSMutableDictionary*)config
+- (void)insertConfiguration:(iTetKeyConfiguration*)config
 		 inPopUpMenuAtIndex:(NSUInteger)index
 				  tagNumber:(NSUInteger)tag;
 - (void)displayConfigurationNumber:(NSUInteger)configNum;
@@ -202,7 +201,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 - (IBAction)deleteConfiguration:(id)sender
 {
 	// Get the current configuration name
-	NSString* configName = [CURRENT_KEY_CONFIG configurationName];
+	NSString* configName = [[iTetKeyConfiguration currentKeyConfiguration] configurationName];
 	
 	// Ask the user for confirmation via an alert
 	NSAlert* alert = [[NSAlert alloc] init];
@@ -309,7 +308,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
+		[configurationPopUpButton selectItemWithTitle:iTetUnsavedConfigurationPlaceholderName];
 		return;
 	}
 	
@@ -373,7 +372,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	
 	// Check for duplicate configuration name
 	NSArray* configs = KEY_CONFIGS;
-	NSMutableDictionary* config;
+	iTetKeyConfiguration* config;
 	NSUInteger numConfigs = [configs count];
 	for (NSUInteger i = 0; i < numConfigs; i++)
 	{
@@ -401,7 +400,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	}
 	
 	// Make a copy of the unsaved configuration
-	NSMutableDictionary* newConfig = [unsavedConfiguration mutableCopy];
+	iTetKeyConfiguration* newConfig = [[unsavedConfiguration copy] autorelease];
 	
 	// Set the configuration name
 	[newConfig setConfigurationName:newConfigName];
@@ -498,7 +497,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 #pragma mark -
 #pragma mark Configurations
 
-- (void)insertConfiguration:(NSMutableDictionary*)config
+- (void)insertConfiguration:(iTetKeyConfiguration*)config
 		 inPopUpMenuAtIndex:(NSUInteger)index
 				  tagNumber:(NSUInteger)tag
 {
@@ -521,9 +520,9 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 													   forKey:iTetCurrentKeyConfigNumberPrefKey];
 	
 	// Set the active keys in the key views
-	NSMutableDictionary* configToDisplay = [KEY_CONFIGS objectAtIndex:configNum];
+	iTetKeyConfiguration* configToDisplay = [KEY_CONFIGS objectAtIndex:configNum];
 	for (iTetKeyView* keyView in keyViews)
-		[keyView setRepresentedKey:[configToDisplay keyForAction:[keyView associatedAction]]];
+		[keyView setRepresentedKey:[configToDisplay keyBindingForAction:[keyView associatedAction]]];
 	
 	// Select the configuration in the pop-up menu
 	[configurationPopUpButton selectItemWithTag:configNum];
@@ -595,11 +594,11 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 	iTetGameAction boundAction;
 	if (unsavedConfiguration != nil)
 	{
-		boundAction = [unsavedConfiguration actionForKey:key];
+		boundAction = [unsavedConfiguration actionForKeyBinding:key];
 	}
 	else
 	{
-		boundAction = [CURRENT_KEY_CONFIG actionForKey:key];
+		boundAction = [[iTetKeyConfiguration currentKeyConfiguration] actionForKeyBinding:key];
 	}
 	
 	// If the action is already bound, disallow the binding
@@ -627,7 +626,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	if (unsavedConfiguration == nil)
 	{
 		// Copy the current configuration
-		unsavedConfiguration = [CURRENT_KEY_CONFIG mutableCopy];
+		unsavedConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] copy];
 		
 		// Change the copy's name
 		[unsavedConfiguration setConfigurationName:iTetUnsavedConfigurationPlaceholderName];
@@ -644,7 +643,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	
 	// Change the key in the unsaved configuration
 	[unsavedConfiguration setAction:[keyView associatedAction]
-							 forKey:key];
+					  forKeyBinding:key];
 	
 	// Clear the text field
 	[keyDescriptionField setStringValue:@""];

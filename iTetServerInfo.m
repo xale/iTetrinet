@@ -7,6 +7,7 @@
 
 #import "iTetServerInfo.h"
 #import "iTetNetworkController.h"
+#import "iTetUserDefaults.h"
 
 @interface iTetServerInfo (Private)
 
@@ -14,8 +15,18 @@
 
 @end
 
-
 @implementation iTetServerInfo
+
++ (void)initialize
+{
+	if (self == [iTetServerInfo class])
+	{
+		NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
+					 forKey:iTetServersListPrefKey];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+	}
+}
 
 + (NSArray*)defaultServers
 {

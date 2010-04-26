@@ -34,15 +34,28 @@ NSArray* defaultThemes = nil;
 
 @implementation iTetTheme
 
++ (void)initialize
+{
+	if (self == [iTetTheme class])
+	{
+		NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemes]]
+					 forKey:iTetThemesListPrefKey];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSIndexSet indexSetWithIndex:0]]
+					 forKey:iTetThemesSelectionPrefKey];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+	}
+}
+
 + (iTetTheme*)currentTheme
 {
 	NSArray* themes = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesListPrefKey];
-	NSUInteger themeNumber = [[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetCurrentThemeNumberPrefKey] firstIndex];
+	NSIndexSet* themeSelection = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesSelectionPrefKey];
 	
-	if (themeNumber == NSNotFound)
-		return [themes objectAtIndex:0];
+	if ((themes == nil) || (themeSelection == nil) || ([themeSelection firstIndex] == NSNotFound))
+		return [self defaultTheme];
 	
-	return [themes objectAtIndex:themeNumber];
+	return [themes objectAtIndex:[themeSelection firstIndex]];
 }
 
 + (NSArray*)defaultThemes
@@ -92,7 +105,7 @@ NSArray* defaultThemes = nil;
 	if (![self parseThemeFile])
 	{
 		[self release];
-		return [NSNull null];
+		return nil;
 	}
 	
 	// Load and clip the images from the sheet

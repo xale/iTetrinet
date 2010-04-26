@@ -44,8 +44,17 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 @end
 
-
 @implementation iTetNetworkController
+
++ (void)initialize
+{
+	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+	[defaults setObject:[NSNumber numberWithDouble:5.0]
+				 forKey:iTetConnectionTimeoutPrefKey];
+	[defaults setObject:[NSNumber numberWithBool:YES]
+				 forKey:iTetAutoSwitchChatPrefKey];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
 
 - (id)init
 {

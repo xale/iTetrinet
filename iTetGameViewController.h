@@ -20,7 +20,7 @@
 @class iTetPlayer;
 @class iTetServerInfo;
 @class iTetGameRules;
-@class iTetKeyNamePair;
+@class iTetKeyConfiguration;
 
 typedef enum
 {
@@ -72,7 +72,7 @@ typedef enum
 	iTetGameplayState gameplayState;
 	
 	// Current key bindings
-	NSDictionary* keyConfiguration;
+	iTetKeyConfiguration* currentKeyConfiguration;
 	
 	// Data stored when game is paused
 	NSTimeInterval timeUntilNextTimerFire;

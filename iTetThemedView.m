@@ -20,7 +20,7 @@
 	
 	// Register as an observer for changes to the theme
 	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
-															  forKeyPath:[@"values." stringByAppendingString:iTetCurrentThemeNumberPrefKey]
+															  forKeyPath:[@"values." stringByAppendingString:iTetThemesSelectionPrefKey]
 																 options:0
 																 context:NULL];
 	
@@ -31,7 +31,7 @@
 {
 	// De-register for notifications
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
-																 forKeyPath:[@"values." stringByAppendingString:iTetCurrentThemeNumberPrefKey]];
+																 forKeyPath:[@"values." stringByAppendingString:iTetThemesSelectionPrefKey]];
 	
 	// Release the theme
 	[theme release];

@@ -27,7 +27,7 @@
 #import "IPSScalableLevelIndicator.h"
 
 #import "iTetKeyActions.h"
-#import "NSDictionary+KeyBindings.h"
+#import "iTetKeyConfiguration.h"
 
 #import "iTetTextAttributes.h"
 
@@ -52,7 +52,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
 
-- (void)setKeyConfiguration:(NSDictionary*)config;
+- (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config;
 
 @end
 
@@ -64,7 +64,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	gameplayState = gameNotPlaying;
 	
 	// Load the default key bindings
-	keyConfiguration = [[NSDictionary currentKeyConfiguration] retain];
+	currentKeyConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] retain];
 	
 	// Register for notifications of changes to the key bindings
 	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
@@ -161,7 +161,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
 																 forKeyPath:[@"values." stringByAppendingString:iTetCurrentKeyConfigNumberPrefKey]];
 	
-	[keyConfiguration release];
+	[currentKeyConfiguration release];
 	[currentGameRules release];
 	
 	[blockTimer invalidate];
@@ -465,7 +465,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 					   context:(void *)context
 {
 	// Change to themes list; update the current theme
-	[self setKeyConfiguration:[NSDictionary currentKeyConfiguration]];
+	[self setCurrentKeyConfiguration:[iTetKeyConfiguration currentKeyConfiguration]];
 }
 
 #pragma mark -
@@ -769,7 +769,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
   onLocalFieldView:(iTetLocalFieldView*)fieldView
 {
 	// Determine whether the pressed key is bound to a game action
-	iTetGameAction action = [keyConfiguration actionForKey:key];
+	iTetGameAction action = [currentKeyConfiguration actionForKeyBinding:key];
 	
 	// If the key is bound to 'game chat,' move first responder to the chat field
 	if (action == gameChat)
@@ -1218,11 +1218,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	return ([self gameplayState] == gamePlaying) || ([self gameplayState] == gamePaused);
 }
 
-- (void)setKeyConfiguration:(NSDictionary*)config
+- (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config
 {
 	[config retain];
-	[keyConfiguration release];
-	keyConfiguration = config;
+	[currentKeyConfiguration release];
+	currentKeyConfiguration = config;
 }
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key

@@ -10,9 +10,6 @@
 #import "iTetPlayersController.h"
 
 #import "iTetLocalPlayer.h"
-#import "iTetServerInfo.h"
-#import "iTetTheme.h"
-#import "NSDictionary+KeyBindings.h"
 
 #import "iTetUserDefaults.h"
 #import "iTetPreferencesWindowController.h"
@@ -49,24 +46,6 @@
 	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetWinlistEntryTypeImageTransformerName];
-	
-	// Create and register a "factory settings" defaults dictionary
-	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
-	[defaults setObject:[NSNumber numberWithDouble:5.0]
-				 forKey:iTetConnectionTimeoutPrefKey];
-	[defaults setObject:[NSNumber numberWithBool:YES]
-				 forKey:iTetAutoSwitchChatPrefKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
-				 forKey:iTetServersListPrefKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemes]]
-				 forKey:iTetThemesListPrefKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSIndexSet indexSetWithIndex:0]]
-				 forKey:iTetCurrentThemeNumberPrefKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary defaultKeyConfigurations]]
-				 forKey:iTetKeyConfigsListPrefKey];
-	[defaults setObject:[NSNumber numberWithUnsignedInt:0]
-				 forKey:iTetCurrentKeyConfigNumberPrefKey];
-	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 	
 	// Seed random number generator
 	srandom(time(NULL));

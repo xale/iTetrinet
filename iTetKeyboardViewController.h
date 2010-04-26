@@ -9,7 +9,7 @@
 #import "iTetPreferencesViewController.h"
 
 @class iTetKeyView;
-@class iTetKeyNamePair;
+@class iTetKeyConfiguration;
 
 @interface iTetKeyboardViewController : iTetPreferencesViewController
 {
@@ -38,7 +38,7 @@
 	IBOutlet NSTextField* configurationNameField;
 	IBOutlet NSButton* saveButton;
 	
-	NSMutableDictionary* unsavedConfiguration;
+	iTetKeyConfiguration* unsavedConfiguration;
 }
 
 - (IBAction)changeConfiguration:(id)sender;
