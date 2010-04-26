@@ -733,7 +733,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			[connectionButton setLabel:@"Cancel Connection"];
 			[connectionButton setImage:[NSImage imageNamed:@"Cancel Red Button"]];
 			[connectionMenuItem setTitle:@"Cancel Connection in Progress"];
-			[connectionMenuItem setKeyEquivalent:@"w"];
+			[connectionMenuItem setKeyEquivalent:@"d"];
 			
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetServerConnectionInfoFormat, [currentServer serverAddress]]];
@@ -778,7 +778,7 @@ NSString* const iTetServerConnectionInfoFormat = @"Connecting to server %@...";
 			[connectionButton setLabel:@"Disconnect"];
 			[connectionButton setImage:[NSImage imageNamed:@"Eject Blue Button"]];
 			[connectionMenuItem setTitle:@"Disconnect from Server"];
-			[connectionMenuItem setKeyEquivalent:@"w"];
+			[connectionMenuItem setKeyEquivalent:@"d"];
 			
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:@"Connected"];
