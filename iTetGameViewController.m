@@ -684,10 +684,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case switchField:
 			// If the local player is the target, copy the sender's field
 			if ([target isLocalPlayer])
-				[LOCALPLAYER setField:[[sender field] copy]];
+				[LOCALPLAYER setField:[[[sender field] copy] autorelease]];
 			// If the local player is the sender, copy the target's field
 			else
-				[LOCALPLAYER setField:[[target field] copy]];
+				[LOCALPLAYER setField:[[[target field] copy] autorelease]];
 			
 			// Safety check: ensure the top rows of the swapped field are clear (prevents the switchfield from being an insta-kill)
 			[[LOCALPLAYER field] shiftClearTopRows];

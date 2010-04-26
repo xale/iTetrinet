@@ -54,7 +54,7 @@ NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 	fullPath = [fullPath stringByAppendingPathComponent:appName];
 	
 	// Check if the path already exists
-	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
 	if ([fileManager fileExistsAtPath:fullPath])
 		return fullPath;
 	

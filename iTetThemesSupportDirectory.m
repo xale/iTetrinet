@@ -55,7 +55,7 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 	fullPath = [fullPath stringByAppendingPathComponent:themeName];
 	
 	// If the path exists, return immediately
-	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
 	if ([fileManager fileExistsAtPath:fullPath])
 		return fullPath;
 	

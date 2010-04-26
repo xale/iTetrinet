@@ -90,7 +90,10 @@ NSArray* defaultThemes = nil;
 	
 	// Attempt to read data from the theme file
 	if (![self parseThemeFile])
+	{
+		[self release];
 		return [NSNull null];
+	}
 	
 	// Load and clip the images from the sheet
 	[self loadImages];
@@ -438,7 +441,7 @@ abort:
 		return;
 	
 	// Attempt to delete the directory and its contents
-	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
 	NSError* error;
 	BOOL deleteSuccessful = [fileManager removeItemAtPath:directoryPath
 													error:&error];
