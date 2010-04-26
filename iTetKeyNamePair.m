@@ -21,17 +21,17 @@
 	return [[[self alloc] initWithKeyEvent:event] autorelease];
 }
 
-+ (id)keyNamePairForKeyCode:(NSInteger)code
-					   name:(NSString*)name
++ (id)keyNamePairWithKeyCode:(NSInteger)code
+						name:(NSString*)name
 {
-	return [self keyNamePairForKeyCode:code
-								  name:name
-							 numpadKey:NO];
+	return [self keyNamePairWithKeyCode:code
+								   name:name
+							  numpadKey:NO];
 }
 
-+ (id)keyNamePairForKeyCode:(NSInteger)code
-					   name:(NSString*)name
-				  numpadKey:(BOOL)isOnNumpad
++ (id)keyNamePairWithKeyCode:(NSInteger)code
+						name:(NSString*)name
+				   numpadKey:(BOOL)isOnNumpad
 {
 	return [[[self alloc] initWithKeyCode:code
 									 name:name
