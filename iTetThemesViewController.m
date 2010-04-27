@@ -9,6 +9,9 @@
 #import "iTetThemesArrayController.h"
 #import "iTetTheme.h"
 
+#import "iTetUserDefaults.h"
+#import "NSUserDefaults+AdditionalTypes.h"
+
 @interface iTetThemesViewController (Private)
 
 - (void)addThemeToThemesArrayController:(iTetTheme*)theme;
@@ -24,7 +27,33 @@
 	
 	[self setTitle:@"Themes"];
 	
+	// Make note of the currently selected index in user defaults
+	initialThemeSelection = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesSelectionPrefKey];
+	if ([initialThemeSelection count] == 1)
+		[initialThemeSelection retain];
+	else
+		initialThemeSelection = [[NSIndexSet alloc] initWithIndex:0];
+	
 	return self;
+}
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+	
+	// Re-select the saved selection indexes
+	[themesTableView selectRowIndexes:initialThemeSelection
+				 byExtendingSelection:NO];
+	
+	// Scroll the tableview to show the selection
+	[themesTableView scrollRowToVisible:[initialThemeSelection firstIndex]];
+}
+
+- (void)dealloc
+{
+	[initialThemeSelection release];
+	
+	[super dealloc];
 }
 
 #pragma mark -

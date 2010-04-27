@@ -14,6 +14,7 @@
 {
 	IBOutlet iTetThemesArrayController* themesArrayController;
 	IBOutlet NSTableView* themesTableView;
+	NSIndexSet* initialThemeSelection;
 }
 
 - (IBAction)addTheme:(id)sender;

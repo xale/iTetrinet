@@ -573,6 +573,8 @@
 				6AEFEEC511207D51006A89CA /* iTetWinlistEntry.h */,
 				6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */,
 				6AE061A3116EB19C00B59BFD /* iTetGameplayState.h */,
+				6ADEE88F1181DCD10087FE8C /* iTetUserDefaults.h */,
+				6ADEE8901181DCD10087FE8C /* iTetUserDefaults.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -622,8 +624,6 @@
 				6A96B5F9100992F1003D353E /* iTetNetworkController.m */,
 				6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */,
 				6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */,
-				6ADEE88F1181DCD10087FE8C /* iTetUserDefaults.h */,
-				6ADEE8901181DCD10087FE8C /* iTetUserDefaults.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

@@ -52,7 +52,7 @@ NSArray* defaultThemes = nil;
 	NSArray* themes = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesListPrefKey];
 	NSIndexSet* themeSelection = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesSelectionPrefKey];
 	
-	if (([themeSelection firstIndex] == NSNotFound) || ([themes objectAtIndex:[themeSelection firstIndex]] == [NSNull null]))
+	if (([themeSelection count] == 0) || ([themes objectAtIndex:[themeSelection firstIndex]] == [NSNull null]))
 		return [self defaultTheme];
 	
 	return [themes objectAtIndex:[themeSelection firstIndex]];
