@@ -11,6 +11,6 @@ NSString* const iTetConnectionTimeoutPrefKey =		@"connectionTimeout";
 NSString* const iTetAutoSwitchChatPrefKey =			@"autoSwitchChat";
 NSString* const iTetServersListPrefKey =			@"serversList";
 NSString* const iTetThemesListPrefKey =				@"themesList";
-NSString* const iTetThemesSelectionPrefKey =		@"currentThemeNumber";
+NSString* const iTetThemesSelectionPrefKey =		@"themesSelection";
 NSString* const iTetKeyConfigsListPrefKey =			@"keyConfigsList";
 NSString* const iTetCurrentKeyConfigNumberPrefKey =	@"currentKeyConfigNumber";

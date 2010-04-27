@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="3"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -402,6 +402,10 @@
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
 			</object>
 			<object class="NSUserDefaultsController" id="556159892">
+				<object class="NSMutableArray" key="NSDeclaredKeys">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>themesSelection</string>
+				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -536,26 +540,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">selectionIndexes: values.currentThemeNumber</string>
-						<reference key="source" ref="866817502"/>
-						<reference key="destination" ref="556159892"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="866817502"/>
-							<reference key="NSDestination" ref="556159892"/>
-							<string key="NSLabel">selectionIndexes: values.currentThemeNumber</string>
-							<string key="NSBinding">selectionIndexes</string>
-							<string key="NSKeyPath">values.currentThemeNumber</string>
-							<object class="NSDictionary" key="NSOptions">
-								<string key="NS.key.0">NSValueTransformerName</string>
-								<string key="NS.object.0">NSKeyedUnarchiveFromData</string>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">103</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">contentArray: values.themesList</string>
 						<reference key="source" ref="866817502"/>
 						<reference key="destination" ref="556159892"/>
@@ -644,6 +628,26 @@
 						</object>
 					</object>
 					<int key="connectionID">109</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">selectionIndexes: values.themesSelection</string>
+						<reference key="source" ref="866817502"/>
+						<reference key="destination" ref="556159892"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="866817502"/>
+							<reference key="NSDestination" ref="556159892"/>
+							<string key="NSLabel">selectionIndexes: values.themesSelection</string>
+							<string key="NSBinding">selectionIndexes</string>
+							<string key="NSKeyPath">values.themesSelection</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSKeyedUnarchiveFromData</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">110</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -980,7 +984,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">109</int>
+			<int key="maxID">110</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
