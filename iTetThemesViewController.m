@@ -127,6 +127,12 @@
 	
 	// Add the new theme to the list
 	[themesArrayController addObject:newTheme];
+	
+	// Select and show the new theme
+	NSUInteger lastIndex = ([[themesArrayController arrangedObjects] count] - 1);
+	[themesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:lastIndex]
+				 byExtendingSelection:NO];
+	[themesTableView scrollRowToVisible:lastIndex];
 }
 
 #pragma mark -

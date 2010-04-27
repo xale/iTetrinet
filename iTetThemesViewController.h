@@ -13,6 +13,7 @@
 @interface iTetThemesViewController : iTetPreferencesViewController
 {
 	IBOutlet iTetThemesArrayController* themesArrayController;
+	IBOutlet NSTableView* themesTableView;
 }
 
 - (IBAction)addTheme:(id)sender;
