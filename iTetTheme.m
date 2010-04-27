@@ -52,7 +52,7 @@ NSArray* defaultThemes = nil;
 	NSArray* themes = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesListPrefKey];
 	NSIndexSet* themeSelection = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesSelectionPrefKey];
 	
-	if ((themes == nil) || (themeSelection == nil) || ([themeSelection firstIndex] == NSNotFound))
+	if (([themeSelection firstIndex] == NSNotFound) || ([themes objectAtIndex:[themeSelection firstIndex]] == [NSNull null]))
 		return [self defaultTheme];
 	
 	return [themes objectAtIndex:[themeSelection firstIndex]];
@@ -105,7 +105,7 @@ NSArray* defaultThemes = nil;
 	if (![self parseThemeFile])
 	{
 		[self release];
-		return nil;
+		return [NSNull null];
 	}
 	
 	// Load and clip the images from the sheet

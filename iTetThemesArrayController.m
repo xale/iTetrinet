@@ -10,6 +10,22 @@
 
 @implementation iTetThemesArrayController
 
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+	
+	// Search the theme list for any themes that failed to load
+	NSMutableIndexSet* failedIndexes = [NSMutableIndexSet indexSet];
+	for (NSUInteger index = 0; index < [[self arrangedObjects] count]; index++)
+	{
+		if ([[self arrangedObjects] objectAtIndex:index] == [NSNull null])
+			[failedIndexes addIndex:index];
+	}
+	
+	// Clean out failed themes
+	[self removeObjectsAtArrangedObjectIndexes:failedIndexes];
+}
+
 #pragma mark -
 #pragma mark Accessors/Properties
 
@@ -28,16 +44,23 @@
 
 - (void)addObject:(id)object
 {
-	iTetTheme* theme = (iTetTheme*)object;
-	[theme copyFiles];
+	if ([object isKindOfClass:[iTetTheme class]])
+	{
+		iTetTheme* addedTheme = (iTetTheme*)object;
+		[addedTheme copyFiles];
+	}
 	
 	[super addObject:object];
 }
 
 - (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index
 {
-	iTetTheme* theme = [[self arrangedObjects] objectAtIndex:index];
-	[theme deleteFiles];
+	id objectToRemove = [[self arrangedObjects] objectAtIndex:index];
+	if ([objectToRemove isKindOfClass:[iTetTheme class]])
+	{
+		iTetTheme* themeToRemove = (iTetTheme*)objectToRemove;
+		[themeToRemove deleteFiles];
+	}
 	
 	[super removeObjectAtArrangedObjectIndex:index];
 }
