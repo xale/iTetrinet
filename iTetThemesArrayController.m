@@ -7,7 +7,6 @@
 
 #import "iTetThemesArrayController.h"
 #import "iTetTheme.h"
-#import "iTetPreferencesController.h"
 
 @implementation iTetThemesArrayController
 
@@ -27,6 +26,22 @@
 	return [selection objectAtIndex:0];
 }
 
+- (void)addObject:(id)object
+{
+	iTetTheme* theme = (iTetTheme*)object;
+	[theme copyFiles];
+	
+	[super addObject:object];
+}
+
+- (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index
+{
+	iTetTheme* theme = [[self arrangedObjects] objectAtIndex:index];
+	[theme deleteFiles];
+	
+	[super removeObjectAtArrangedObjectIndex:index];
+}
+
 - (BOOL)canRemove
 {
 	// Get the selected theme
@@ -36,8 +51,8 @@
 	if (selection == nil)
 		return NO;
 	
-	// Check that the default theme is not selected
-	if ([selection isEqual:[iTetTheme defaultTheme]])
+	// Check that the selected theme is not one of the default themes
+	if ([[iTetTheme defaultThemes] containsObject:selection])
 		return NO;
 	
 	return YES;

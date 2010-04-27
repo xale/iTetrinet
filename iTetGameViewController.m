@@ -9,7 +9,7 @@
 
 #import "iTetWindowController.h"
 #import "iTetPlayersController.h"
-#import "iTetPreferencesController.h"
+#import "iTetUserDefaults.h"
 
 #import "iTetNetworkController.h"
 #import "iTetOutgoingMessages.h"
@@ -27,7 +27,7 @@
 #import "IPSScalableLevelIndicator.h"
 
 #import "iTetKeyActions.h"
-#import "NSMutableDictionary+KeyBindings.h"
+#import "iTetKeyConfiguration.h"
 
 #import "iTetTextAttributes.h"
 
@@ -52,6 +52,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
 
+- (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config;
+
 @end
 
 
@@ -61,12 +63,21 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 {
 	gameplayState = gameNotPlaying;
 	
+	// Load the default key bindings
+	currentKeyConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] retain];
+	
+	// Register for notifications of changes to the key bindings
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+															  forKeyPath:[@"values." stringByAppendingString:iTetCurrentKeyConfigNumberPrefKey]
+																 options:0
+																 context:NULL];
+	
 	return self;
 }
 
 - (void)awakeFromNib
 {
-	// Bind the game views to the app controller
+	// Bind the game views to the app controller, and all views to the current theme
 	// Local field view (field and falling block)
 	[localFieldView bind:@"field"
 				toObject:playersController
@@ -146,6 +157,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)dealloc
 {
+	// De-register for notifications
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
+																 forKeyPath:[@"values." stringByAppendingString:iTetCurrentKeyConfigNumberPrefKey]];
+	
+	[currentKeyConfiguration release];
 	[currentGameRules release];
 	
 	[blockTimer invalidate];
@@ -441,6 +457,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 }
 
 #pragma mark -
+#pragma mark Key Binding Key/Value Observation
+
+- (void)observeValueForKeyPath:(NSString*)keyPath
+					  ofObject:(id)object
+						change:(NSDictionary*)change
+					   context:(void *)context
+{
+	// Change to themes list; update the current theme
+	[self setCurrentKeyConfiguration:[iTetKeyConfiguration currentKeyConfiguration]];
+}
+
+#pragma mark -
 #pragma mark Gameplay Events
 
 - (void)moveCurrentBlockDown
@@ -656,10 +684,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case switchField:
 			// If the local player is the target, copy the sender's field
 			if ([target isLocalPlayer])
-				[LOCALPLAYER setField:[[sender field] copy]];
+				[LOCALPLAYER setField:[[[sender field] copy] autorelease]];
 			// If the local player is the sender, copy the target's field
 			else
-				[LOCALPLAYER setField:[[target field] copy]];
+				[LOCALPLAYER setField:[[[target field] copy] autorelease]];
 			
 			// Safety check: ensure the top rows of the swapped field are clear (prevents the switchfield from being an insta-kill)
 			[[LOCALPLAYER field] shiftClearTopRows];
@@ -741,8 +769,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
   onLocalFieldView:(iTetLocalFieldView*)fieldView
 {
 	// Determine whether the pressed key is bound to a game action
-	NSMutableDictionary* keyConfig = [[iTetPreferencesController preferencesController] currentKeyConfiguration];
-	iTetGameAction action = [keyConfig actionForKey:key];
+	iTetGameAction action = [currentKeyConfiguration actionForKeyBinding:key];
 	
 	// If the key is bound to 'game chat,' move first responder to the chat field
 	if (action == gameChat)
@@ -1189,6 +1216,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 - (BOOL)gameInProgress
 {
 	return ([self gameplayState] == gamePlaying) || ([self gameplayState] == gamePaused);
+}
+
+- (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config
+{
+	[config retain];
+	[currentKeyConfiguration release];
+	currentKeyConfiguration = config;
 }
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key

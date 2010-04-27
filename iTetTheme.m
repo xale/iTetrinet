@@ -6,28 +6,89 @@
 //
 
 #import "iTetTheme.h"
+#import "iTetThemesSupportDirectory.h"
+
 #import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecials.h"
 
+#import "iTetUserDefaults.h"
+#import "NSUserDefaults+AdditionalTypes.h"
+
+#import "NSMutableDictionary+CacheDictionary.h"
+
+NSMutableDictionary* themeCache = nil;
+NSArray* defaultThemes = nil;
+
+@interface iTetTheme (Private)
+
+- (BOOL)parseThemeFile;
+- (NSRange)rangeOfSection:(NSString*)sectionName
+			  inThemeFile:(NSString*)themeFileContents;
+- (void)loadImages;
+- (void)createPreview;
+
++ (NSMutableDictionary*)themeCache;
+
+@end
+
 @implementation iTetTheme
 
-+ (NSArray*)defaultThemeList
++ (void)initialize
 {
-	return [NSArray arrayWithObjects:
-			[self defaultTheme],
-			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
-																	 ofType:@"cfg"]],
-			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
-																	 ofType:@"cfg"]],
-			[self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
-																	 ofType:@"cfg"]],
-			nil];
+	if (self == [iTetTheme class])
+	{
+		NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetTheme defaultThemes]]
+					 forKey:iTetThemesListPrefKey];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[NSIndexSet indexSetWithIndex:0]]
+					 forKey:iTetThemesSelectionPrefKey];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+	}
+}
+
++ (iTetTheme*)currentTheme
+{
+	NSArray* themes = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesListPrefKey];
+	NSIndexSet* themeSelection = [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetThemesSelectionPrefKey];
+	
+	if ((themes == nil) || (themeSelection == nil) || ([themeSelection firstIndex] == NSNotFound))
+		return [self defaultTheme];
+	
+	return [themes objectAtIndex:[themeSelection firstIndex]];
+}
+
++ (NSArray*)defaultThemes
+{
+	@synchronized(self)
+	{
+		if (defaultThemes == nil)
+		{
+			defaultThemes = [[NSArray alloc] initWithObjects:
+							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme"
+																					  ofType:@"cfg"]],
+							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
+																					  ofType:@"cfg"]],
+							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
+																					  ofType:@"cfg"]],
+							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
+																					  ofType:@"cfg"]],
+							 nil];
+			
+			for (iTetTheme* theme in defaultThemes)
+			{
+				[[iTetTheme themeCache] setObject:theme
+										   forKey:[theme themeFilePath]];
+			}
+		}
+	}
+	
+	return defaultThemes;
 }
 
 + (id)defaultTheme
 {
-	return [[[self alloc] init] autorelease];
+	return [[self defaultThemes] objectAtIndex:0];
 }
 
 + (id)themeFromThemeFile:(NSString*)path
@@ -42,7 +103,10 @@
 	
 	// Attempt to read data from the theme file
 	if (![self parseThemeFile])
+	{
+		[self release];
 		return nil;
+	}
 	
 	// Load and clip the images from the sheet
 	[self loadImages];
@@ -55,9 +119,9 @@
 
 - (id)init
 {	
-	// Read the theme data from the default theme file
-	return [self initWithThemeFile:[[[NSBundle mainBundle] pathForResource:@"theme"
-																	ofType:@"cfg"] retain]];
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
 }
 
 - (void)dealloc
@@ -231,12 +295,8 @@
 	}
 	
 	// Fill the cell and special arrays with the images clipped from the sheet
-	[cellImages release];
-	cellImages = [[NSArray alloc] initWithArray:
-				  [cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
-	[specialImages release];
-	specialImages = [[NSArray alloc] initWithArray:
-					 [cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+	cellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
 #define PREVIEW_HEIGHT (225)
@@ -313,8 +373,126 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
+	// Load the path to the theme file
+	NSString* path = [decoder decodeObjectForKey:iTetThemeFilePathKey];
+	
+	// Check if this theme is cached
+	iTetTheme* cachedTheme = [[iTetTheme themeCache] objectForKey:path];
+	if (cachedTheme != nil)
+	{
+		[self release];
+		return [cachedTheme retain];
+	}
+	
 	// Attempt to create the theme from the file at the encoded path
-	return [self initWithThemeFile:[decoder decodeObjectForKey:iTetThemeFilePathKey]];
+	return [self initWithThemeFile:path];
+}
+
+#pragma mark -
+#pragma mark File Organization
+
+- (void)copyFiles
+{
+	// Get the path to a subdirectory of the Application Support directory to store this theme
+	NSError* error = nil;
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self themeName]
+																	   createIfNecessary:YES
+																				   error:&error];
+	
+	// Check for errors
+	if (directoryPath == nil)
+		goto abort;
+	
+	// Append the theme and image filenames to the directory path
+	NSString* themeDestPath = [directoryPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
+	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
+	
+	// Copy the theme file to the support directory
+	NSFileManager* fileManager = [[NSFileManager alloc] init];
+	[fileManager setDelegate:self];
+	BOOL copySuccessful = [fileManager copyItemAtPath:[self themeFilePath]
+											   toPath:themeDestPath
+												error:&error];
+	if (!copySuccessful)
+		goto abort;
+	
+	// Copy the image file
+	copySuccessful = [fileManager copyItemAtPath:[self imageFilePath]
+										  toPath:imageDestPath
+										   error:&error];
+	if (!copySuccessful)
+		goto abort;
+	
+	// Update the theme and image file paths to reflect the copied files
+	[self willChangeValueForKey:@"themeFilePath"];
+	[themeFilePath release];
+	themeFilePath = [themeDestPath retain];
+	[self didChangeValueForKey:@"themeFilePath"];
+	[self willChangeValueForKey:@"imageFilePath"];
+	[imageFilePath release];
+	imageFilePath = [imageDestPath retain];
+	[self didChangeValueForKey:@"imageFilePath"];
+	
+	// Add theme to cache
+	[[iTetTheme themeCache] setObject:self
+							   forKey:[self themeFilePath]];
+	
+abort:
+	if (error != nil)
+	{
+		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self themeName], [error localizedDescription]);
+	}
+}
+
+- (void)deleteFiles
+{
+	// Locate the theme's subdirectory of this user's Application Support directory
+	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self themeName]
+																	   createIfNecessary:NO
+																				   error:NULL];
+	if (directoryPath == nil)
+		return;
+	
+	// Attempt to delete the directory and its contents
+	NSFileManager* fileManager = [[[NSFileManager alloc] init] autorelease];
+	NSError* error;
+	BOOL deleteSuccessful = [fileManager removeItemAtPath:directoryPath
+													error:&error];
+	if (!deleteSuccessful)
+	{
+		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self themeName], [error localizedDescription]);
+	}
+	
+	// Remove theme from cache
+	[[iTetTheme themeCache] removeObjectForKey:[self themeFilePath]];
+}
+
+- (BOOL)fileManager:(NSFileManager*)fileManager
+shouldProceedAfterError:(NSError*)error
+  copyingItemAtPath:(NSString*)srcPath
+			 toPath:(NSString*)dstPath
+{
+	// Proceed with copying if the file exists, otherwise abort
+	if (([error domain] == NSPOSIXErrorDomain) && ([error code] == EEXIST))
+		return YES;
+	
+	return NO;
+}
+
+#pragma mark -
+#pragma mark Theme Cache
+
++ (NSMutableDictionary*)themeCache
+{
+	@synchronized(self)
+	{
+		if (themeCache == nil)
+		{
+			themeCache = [NSMutableDictionary cacheDictionary];
+		}
+	}
+	
+	return themeCache;
 }
 
 #pragma mark -
@@ -326,7 +504,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	{
 		iTetTheme* otherTheme = (iTetTheme*)other;
 		
-		if ([otherTheme hash] == [self hash])
+		if ([[otherTheme themeName] isEqualToString:[self themeName]])
 			return YES;
 	}
 	

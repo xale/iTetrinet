@@ -6,20 +6,41 @@
 //
 
 #import "NSImage+KeyImageCache.h"
-#import "IPSCacheDictionary.h"
+#import "NSMutableDictionary+CacheDictionary.h"
+
+NSMutableDictionary* keyImageCache = nil;
+
+@interface NSImage (KeyImageCachePrivate)
+
++ (NSMutableDictionary*)keyImageChache;
+
+@end
 
 @implementation NSImage (KeyImageCache)
 
 + (void)setImage:(NSImage*)image
 		  forKey:(iTetKeyNamePair*)key
 {
-	[[NSMutableDictionary cacheDictionary] setObject:image
-											  forKey:key];
+	[[self keyImageChache] setObject:image
+							  forKey:key];
 }
 
 + (NSImage*)imageForKey:(iTetKeyNamePair*)key
 {
-	return [[NSMutableDictionary cacheDictionary] objectForKey:key];
+	return [[self keyImageChache] objectForKey:key];
+}
+
++ (NSMutableDictionary*)keyImageChache
+{
+	@synchronized(self)
+	{
+		if (keyImageCache == nil)
+		{
+			keyImageCache = [NSMutableDictionary cacheDictionary];
+		}
+	}
+	
+	return keyImageCache;
 }
 
 @end

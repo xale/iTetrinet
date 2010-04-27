@@ -6,10 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetPreferencesController.h"
 #import "iTetPreferencesWindowController.h"
-
-#define PREFS [iTetPreferencesController preferencesController]
 
 @interface iTetPreferencesViewController : NSViewController
 
@@ -20,7 +17,5 @@
 - (BOOL)windowShouldClose:(id)window;
 - (void)viewWillBeRemoved:(id)sender;
 - (void)viewWasSwappedIn:(id)sender;
-
-@property (readonly) iTetPreferencesController* prefs;
 
 @end

@@ -38,7 +38,7 @@
 	[serversArrayController rearrangeObjects];
 	
 	// Find the index of the new server info object in the sorted array
-	NSUInteger row = [[serversArrayController arrangedObjects] indexOfObjectIdenticalTo:server];
+	NSUInteger row = [[serversArrayController arrangedObjects] indexOfObject:server];
 	
 	// Begin editing the new server info object
 	[serversTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:row]

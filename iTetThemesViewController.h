@@ -16,6 +16,5 @@
 }
 
 - (IBAction)addTheme:(id)sender;
-- (IBAction)chooseTheme:(id)sender;
 
 @end

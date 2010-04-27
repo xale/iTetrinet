@@ -38,11 +38,11 @@ extern NSString* const iTetCommandKeyPlaceholderString;
 }
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
-+ (id)keyNamePairForKeyCode:(NSInteger)code
-					   name:(NSString*)name;
-+ (id)keyNamePairForKeyCode:(NSInteger)code
-					   name:(NSString*)name
-				  numpadKey:(BOOL)isOnNumpad;
++ (id)keyNamePairWithKeyCode:(NSInteger)code
+						name:(NSString*)name;
++ (id)keyNamePairWithKeyCode:(NSInteger)code
+						name:(NSString*)name
+				   numpadKey:(BOOL)isOnNumpad;
 
 - (id)initWithKeyEvent:(NSEvent*)event;
 - (id)initWithKeyCode:(NSInteger)code

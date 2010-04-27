@@ -7,6 +7,7 @@
 
 #import "iTetServerInfo.h"
 #import "iTetNetworkController.h"
+#import "iTetUserDefaults.h"
 
 @interface iTetServerInfo (Private)
 
@@ -14,8 +15,18 @@
 
 @end
 
-
 @implementation iTetServerInfo
+
++ (void)initialize
+{
+	if (self == [iTetServerInfo class])
+	{
+		NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
+					 forKey:iTetServersListPrefKey];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+	}
+}
 
 + (NSArray*)defaultServers
 {
@@ -214,6 +225,24 @@ bail:
 	inputString = [nameTokens componentsJoinedByString:@"_"];
 	
 	return inputString;
+}
+
+#pragma mark -
+#pragma mark Comparators
+
+- (BOOL)isEqual:(id)otherObject
+{
+	if ([otherObject isKindOfClass:[self class]])
+	{
+		iTetServerInfo* otherServer = (iTetServerInfo*)otherObject;
+		return ([serverName isEqualToString:[otherServer serverName]] &&
+				[serverAddress isEqualToString:[otherServer serverAddress]] &&
+				[playerNickname isEqualToString:[otherServer playerNickname]] &&
+				[playerTeamName isEqualToString:[otherServer playerTeamName]] &&
+				(protocol == [otherServer protocol]));
+	}
+	
+	return NO;
 }
 
 #pragma mark -

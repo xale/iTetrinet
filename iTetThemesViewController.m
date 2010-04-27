@@ -58,14 +58,14 @@
 	
 	// Attempt to create the theme from the selected file
 	iTetTheme* newTheme = [iTetTheme themeFromThemeFile:themeFile];
-	if (newTheme == nil)
+	if ((id)newTheme == [NSNull null])
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
 		
 		// Configure with the error message
 		[alert setMessageText:@"Could not load theme"];
-		[alert setInformativeText:[NSString stringWithFormat:@"Unable to load a theme from the file %@. Check that the file is a valid theme file, and that the image specified by \'Blocks=\' in the theme file is in the same directory as the file.", themeFile]];
+		[alert setInformativeText:[NSString stringWithFormat:@"Unable to load a theme from the file '%@'. Check that the file is a valid theme file, and that the image specified by 'Blocks=' in the theme file is in the same directory as the file.", themeFile]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
@@ -80,14 +80,14 @@
 	}
 	
 	// Check if the theme is a duplicate of the default theme
-	if ([newTheme isEqual:[iTetTheme defaultTheme]])
+	if ([[iTetTheme defaultThemes] containsObject:newTheme])
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
 		
 		// Configure with the error message
 		[alert setMessageText:@"Duplicate theme"];
-		[alert setInformativeText:[NSString stringWithFormat:@"The theme \'%@\' appears to be a duplicate of the default iTetrinet theme. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after \'Name=\'.)", [newTheme themeName]]];
+		[alert setInformativeText:[NSString stringWithFormat:@"The theme '%@' appears to be a duplicate of one of the default iTetrinet themes. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using your text editor of choice, and change the text after 'Name=')", [newTheme themeName]]];
 		[alert addButtonWithTitle:@"Okay"];
 		
 		// Dismiss the old sheet
@@ -102,7 +102,7 @@
 	}
 	
 	// Check for other duplicate themes
-	NSArray* themeList = [[iTetPreferencesController preferencesController] themeList];
+	NSArray* themeList = [themesArrayController content];
 	if ([themeList containsObject:newTheme])
 	{
 		// Create an alert
@@ -110,7 +110,7 @@
 		
 		// Configure with the error message
 		[alert setMessageText:@"Duplicate theme"];
-		[alert setInformativeText:[NSString stringWithFormat:@"A theme named \'%@\' is already installed. Would you like the replace the existing theme with the new one?", [newTheme themeName]]];
+		[alert setInformativeText:[NSString stringWithFormat:@"A theme named '%@' is already installed. Would you like the replace the existing theme with the new one?", [newTheme themeName]]];
 		[alert addButtonWithTitle:@"Replace"];
 		[alert addButtonWithTitle:@"Cancel"];
 		
@@ -127,14 +127,6 @@
 	
 	// Add the new theme to the list
 	[themesArrayController addObject:newTheme];
-	
-	// FIXME: copy theme to Application Support directory
-}
-
-- (IBAction)chooseTheme:(id)sender
-{
-	// Change the current theme
-	[PREFS setCurrentTheme:[themesArrayController selectedTheme]];
 }
 
 #pragma mark -
@@ -156,9 +148,7 @@
 	
 	// If the user pressed "cancel", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
-	{
 		return;
-	}
 	
 	// If the user chose to replace the existing theme, remove it
 	// (Themes are compared by name, so this will remove the old theme)

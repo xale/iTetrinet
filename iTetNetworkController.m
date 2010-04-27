@@ -12,7 +12,7 @@
 #import "iTetChatViewController.h"
 #import "iTetChannelsViewController.h"
 #import "iTetWinlistViewController.h"
-#import "iTetPreferencesController.h"
+#import "iTetUserDefaults.h"
 
 #import "AsyncSocket.h"
 #import "iTetServerInfo.h"
@@ -44,8 +44,17 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 @end
 
-
 @implementation iTetNetworkController
+
++ (void)initialize
+{
+	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+	[defaults setObject:[NSNumber numberWithDouble:5.0]
+				 forKey:iTetConnectionTimeoutPrefKey];
+	[defaults setObject:[NSNumber numberWithBool:YES]
+				 forKey:iTetAutoSwitchChatPrefKey];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
 
 - (id)init
 {
@@ -365,7 +374,7 @@ willDisconnectWithError:(NSError*)error
 		{
 			// Create an error
 			NSDictionary* info = [NSDictionary dictionaryWithObject:[(iTetNoConnectingMessage*)message reason]
-															 forKey:@"errorMessage"];
+															 forKey:NSLocalizedFailureReasonErrorKey];
 			NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
 												 code:iTetNoConnectingError
 											 userInfo:info];
@@ -560,7 +569,7 @@ willDisconnectWithError:(NSError*)error
 			[gameController endGame];
 			
 			// If the user wants us to, automatically switch to the chat tab
-			if ([[iTetPreferencesController preferencesController] autoSwitchChat])
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatPrefKey])
 				[windowController switchToChatTab:self];
 			
 			// Refresh the channel list
@@ -656,7 +665,7 @@ willDisconnectWithError:(NSError*)error
 		{
 			case iTetNoConnectingError:
 				[errorText appendString:@"Server login failed. Reason:\n"];
-				[errorText appendString:[[error userInfo] objectForKey:@"errorMessage"]];
+				[errorText appendString:[[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey]];
 				break;
 			default:
 				[errorText appendString:@"An unknown error occurred.\n"];

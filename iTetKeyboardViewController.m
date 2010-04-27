@@ -6,13 +6,38 @@
 //
 
 #import "iTetKeyboardViewController.h"
+
 #import "iTetKeyView.h"
 #import "iTetKeyNamePair.h"
-#import "NSMutableDictionary+KeyBindings.h"
 
-NSString* const iTetOriginalSenderInfoKey =	@"originalSender";
-NSString* const iTetNewControllerInfoKey =	@"newController";
-NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
+#import "iTetUserDefaults.h"
+#import "iTetKeyConfiguration.h"
+#import "NSUserDefaults+AdditionalTypes.h"
+
+NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
+NSString* const iTetNewControllerInfoKey =					@"newController";
+NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
+
+NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuration";
+
+#define KEY_CONFIGS			[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey]
+#define CURRENT_CONFIG_NUM	[[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey]
+
+@interface iTetKeyboardViewController (Private)
+
+- (void)insertConfiguration:(iTetKeyConfiguration*)config
+		 inPopUpMenuAtIndex:(NSUInteger)index
+				  tagNumber:(NSUInteger)tag;
+- (void)displayConfigurationNumber:(NSUInteger)configNum;
+- (void)clearUnsavedConfiguration;
+
+- (void)startObservingKeyView:(iTetKeyView*)keyView;
+- (void)stopObservingKeyView:(iTetKeyView*)keyView;
+
+- (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView;
+
+@end
+
 
 @implementation iTetKeyboardViewController
 
@@ -74,13 +99,13 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 		[self startObservingKeyView:keyView];
 	
 	// Fill the pop-up menu with the available keyboard configurations
-	NSArray* configurations = [PREFS keyConfigurations];
+	NSArray* configurations = KEY_CONFIGS;
 	NSUInteger numConfigs = [configurations count];
-	for (NSUInteger i = 0; i < numConfigs; i++)
+	for (NSUInteger index = 0; index < numConfigs; index++)
 	{
-		[self insertConfiguration:[configurations objectAtIndex:i]
-			   inPopUpMenuAtIndex:i
-						tagNumber:i];
+		[self insertConfiguration:[configurations objectAtIndex:index]
+			   inPopUpMenuAtIndex:index
+						tagNumber:index];
 	}
 	
 	// Add a separator menu item to the pop-up menu
@@ -103,8 +128,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	[menuItem release];
 	
 	// Display the active configuration in the key views
-	NSUInteger currentConfigNum = [PREFS currentKeyConfigurationNumber];
-	[self displayConfigurationNumber:currentConfigNum];
+	[self displayConfigurationNumber:CURRENT_CONFIG_NUM];
 	
 	// Clear the description text
 	[keyDescriptionField setStringValue:@""];
@@ -177,7 +201,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (IBAction)deleteConfiguration:(id)sender
 {
 	// Get the current configuration name
-	NSString* configName = [[PREFS currentKeyConfiguration] configurationName];
+	NSString* configName = [[iTetKeyConfiguration currentKeyConfiguration] configurationName];
 	
 	// Ask the user for confirmation via an alert
 	NSAlert* alert = [[NSAlert alloc] init];
@@ -265,7 +289,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (void)viewWasSwappedIn:(id)sender
 {
 	// Display the active configuration
-	[self displayConfigurationNumber:[PREFS currentKeyConfigurationNumber]];
+	[self displayConfigurationNumber:CURRENT_CONFIG_NUM];
 }
 
 #pragma mark -
@@ -284,7 +308,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		[configurationPopUpButton selectItemWithTitle:[unsavedConfiguration configurationName]];
+		[configurationPopUpButton selectItemWithTitle:iTetUnsavedConfigurationPlaceholderName];
 		return;
 	}
 	
@@ -347,8 +371,8 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	NSString* newConfigName = [configurationNameField stringValue];
 	
 	// Check for duplicate configuration name
-	NSArray* configs = [PREFS keyConfigurations];
-	NSMutableDictionary* config;
+	NSArray* configs = KEY_CONFIGS;
+	iTetKeyConfiguration* config;
 	NSUInteger numConfigs = [configs count];
 	for (NSUInteger i = 0; i < numConfigs; i++)
 	{
@@ -376,7 +400,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	}
 	
 	// Make a copy of the unsaved configuration
-	NSMutableDictionary* newConfig = [unsavedConfiguration mutableCopy];
+	iTetKeyConfiguration* newConfig = [[unsavedConfiguration copy] autorelease];
 	
 	// Set the configuration name
 	[newConfig setConfigurationName:newConfigName];
@@ -385,18 +409,20 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	[self clearUnsavedConfiguration];
 	
 	// Add the new configuration to the list
-	[PREFS addKeyConfiguration:newConfig];
+	NSArray* newConfigs = [configs arrayByAddingObject:newConfig];
+	[[NSUserDefaults standardUserDefaults] archiveAndSetObject:newConfigs
+														forKey:iTetKeyConfigsListPrefKey];
 	
 	// Get the index of the new configuration
-	NSUInteger i = [[PREFS keyConfigurations] count] - 1;
+	NSUInteger index = [newConfigs indexOfObject:newConfig];
 	
 	// Add the new configuration name to the pop-up menu
 	[self insertConfiguration:newConfig
-		   inPopUpMenuAtIndex:i
-					tagNumber:i];
+		   inPopUpMenuAtIndex:index
+					tagNumber:index];
 	
 	// Select the configuration
-	[self displayConfigurationNumber:i];
+	[self displayConfigurationNumber:index];
 	
 	// Order out the sheet
 	[sheet orderOut:self];
@@ -404,10 +430,10 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 
 - (void)duplicateConfigAlertEnded:(NSAlert*)alert
 					   returnCode:(NSInteger)returnCode
-				   indexToReplace:(NSNumber*)index
+				   indexToReplace:(NSNumber*)indexToReplace
 {
 	// Balance retain
-	[index autorelease];
+	[indexToReplace autorelease];
 	
 	// If the user pressed "cancel", do nothing
 	if (returnCode == NSAlertSecondButtonReturn)
@@ -420,45 +446,46 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 	
 	// If the user pressed "replace", replace the existing configuration
 	// Get the index of the configuration to replace
-	NSUInteger i = [index unsignedIntegerValue];
-	
-	// Make a copy of the unsaved configuration
-	NSMutableDictionary* newConfig = [[unsavedConfiguration mutableCopy] autorelease];
+	NSUInteger index = [indexToReplace unsignedIntegerValue];
 	
 	// Set the configuration name (same as the config we are replacing)
-	[newConfig setConfigurationName:[[[PREFS keyConfigurations] objectAtIndex:i] configurationName]];
+	NSMutableArray* configs = [NSMutableArray arrayWithArray:KEY_CONFIGS];
+	[unsavedConfiguration setConfigurationName:[[configs objectAtIndex:index] configurationName]];
+	
+	// Replace the old configuration with the new
+	[configs replaceObjectAtIndex:index
+					   withObject:unsavedConfiguration];
 	
 	// Clear the unsaved configuration
 	[self clearUnsavedConfiguration];
 	
-	// Replace the configuration
-	[PREFS replaceKeyConfigurationAtIndex:i
-					 withKeyConfiguration:newConfig];
-	
 	// Do not add the configuration name to the pop-up button, should already be present
 	
 	// Select the configuration
-	[self displayConfigurationNumber:i];
+	[self displayConfigurationNumber:index];
 }
 
 - (void)deleteConfigAlertDidEnd:(NSAlert*)alert
 					 returnCode:(NSInteger)returnCode
 					contextInfo:(void*)context
 {
-	NSUInteger configNum = [PREFS currentKeyConfigurationNumber];
+	NSUInteger configNum = CURRENT_CONFIG_NUM;
 	NSMenu* menu = [configurationPopUpButton menu];
 	
 	// If the user pressed "cancel", do not delete
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		// Select the current config in the pop-up menu
+		// De-select the "delete configuration" item in the pop-up menu
 		[configurationPopUpButton selectItemWithTag:configNum];
 		
 		return;
 	}
 	
 	// Delete the currently selected configuration from the list of configurations
-	[PREFS removeKeyConfigurationAtIndex:configNum];
+	NSMutableArray* configs = [NSMutableArray arrayWithArray:KEY_CONFIGS];
+	[configs removeObjectAtIndex:configNum];
+	[[NSUserDefaults standardUserDefaults] archiveAndSetObject:configs
+														forKey:iTetKeyConfigsListPrefKey];
 	
 	// Remove the configuration name from the pop-up menu
 	[menu removeItem:[menu itemWithTag:configNum]];
@@ -470,7 +497,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 #pragma mark -
 #pragma mark Configurations
 
-- (void)insertConfiguration:(NSMutableDictionary*)config
+- (void)insertConfiguration:(iTetKeyConfiguration*)config
 		 inPopUpMenuAtIndex:(NSUInteger)index
 				  tagNumber:(NSUInteger)tag
 {
@@ -489,12 +516,13 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 - (void)displayConfigurationNumber:(NSUInteger)configNum
 {
 	// Set the new active configuration
-	[PREFS setCurrentKeyConfigurationNumber:configNum];
+	[[NSUserDefaults standardUserDefaults] setUnsignedInteger:configNum 
+													   forKey:iTetCurrentKeyConfigNumberPrefKey];
 	
 	// Set the active keys in the key views
-	NSMutableDictionary* currentConfig = [self keyConfigNumber:configNum];
+	iTetKeyConfiguration* configToDisplay = [KEY_CONFIGS objectAtIndex:configNum];
 	for (iTetKeyView* keyView in keyViews)
-		[keyView setRepresentedKey:[currentConfig keyForAction:[keyView associatedAction]]];
+		[keyView setRepresentedKey:[configToDisplay keyBindingForAction:[keyView associatedAction]]];
 	
 	// Select the configuration in the pop-up menu
 	[configurationPopUpButton selectItemWithTag:configNum];
@@ -504,7 +532,7 @@ NSString* const iTetWindowToCloseInfoKey =	@"windowToClose";
 {
 	// Remove the unsaved configuration from the pop-up menu
 	NSMenu* menu = [configurationPopUpButton menu];
-	[menu removeItem:[menu itemWithTitle:[unsavedConfiguration configurationName]]];
+	[menu removeItem:[menu itemWithTitle:iTetUnsavedConfigurationPlaceholderName]];
 	
 	// Delete the configuration
 	[unsavedConfiguration release];
@@ -566,12 +594,11 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 	iTetGameAction boundAction;
 	if (unsavedConfiguration != nil)
 	{
-		boundAction = [unsavedConfiguration actionForKey:key];
+		boundAction = [unsavedConfiguration actionForKeyBinding:key];
 	}
 	else
 	{
-		NSMutableDictionary* currentConfig = [PREFS currentKeyConfiguration];
-		boundAction = [currentConfig actionForKey:key];
+		boundAction = [[iTetKeyConfiguration currentKeyConfiguration] actionForKeyBinding:key];
 	}
 	
 	// If the action is already bound, disallow the binding
@@ -583,7 +610,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 			NSBeep();
 			
 			// Place a warning in the text field
-			[keyDescriptionField setStringValue:[NSString stringWithFormat:@"\'%@\' is already bound to \"%@\"", [key printedName], iTetNameForAction(boundAction)]];
+			[keyDescriptionField setStringValue:[NSString stringWithFormat:@"'%@' is already bound to '%@'", [key printedName], iTetNameForAction(boundAction)]];
 		}
 		
 		return NO;
@@ -599,13 +626,13 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	if (unsavedConfiguration == nil)
 	{
 		// Copy the current configuration
-		unsavedConfiguration = [[PREFS currentKeyConfiguration] mutableCopy];
+		unsavedConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] copy];
 		
 		// Change the copy's name
-		[unsavedConfiguration setConfigurationName:@"Custom"];
+		[unsavedConfiguration setConfigurationName:iTetUnsavedConfigurationPlaceholderName];
 		
 		// Add the configuration to the pop-up menu
-		NSUInteger newConfigNum = [[PREFS keyConfigurations] count];
+		NSUInteger newConfigNum = [KEY_CONFIGS count];
 		[self insertConfiguration:unsavedConfiguration
 			   inPopUpMenuAtIndex:newConfigNum
 						tagNumber:newConfigNum];
@@ -616,7 +643,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 	
 	// Change the key in the unsaved configuration
 	[unsavedConfiguration setAction:[keyView associatedAction]
-							 forKey:key];
+					  forKeyBinding:key];
 	
 	// Clear the text field
 	[keyDescriptionField setStringValue:@""];
@@ -646,7 +673,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 		if (unsavedConfiguration != nil)
 			return NO;
 		
-		if ([[PREFS keyConfigurations] count] <= 1)
+		if ([KEY_CONFIGS count] <= 1)
 			return NO;
 		
 		return YES;
@@ -663,11 +690,6 @@ NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to \'%@\'";
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView
 {
 	[keyDescriptionField setStringValue:[NSString stringWithFormat:iTetKeyDescriptionFormat, iTetNameForAction([keyView associatedAction])]];
-}
-
-- (NSMutableDictionary*)keyConfigNumber:(NSUInteger)configNum
-{	
-	return [[PREFS keyConfigurations] objectAtIndex:configNum];
 }
 
 @end

@@ -11,7 +11,7 @@
 
 #import "iTetLocalPlayer.h"
 
-#import "iTetPreferencesController.h"
+#import "iTetUserDefaults.h"
 #import "iTetPreferencesWindowController.h"
 
 #import "iTetCurrentChannelImageTransformer.h"
@@ -206,10 +206,5 @@ NSString* const iTetWinlistViewTabIdentifier =	@"winlist";
 
 @synthesize window;
 @synthesize tabView;
-
-- (iTetPreferencesController*)prefs
-{
-	return [iTetPreferencesController preferencesController];
-}
 
 @end

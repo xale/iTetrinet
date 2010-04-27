@@ -9,7 +9,6 @@
 
 @class iTetNetworkController;
 @class iTetPlayersController;
-@class iTetPreferencesController;
 @class iTetPreferencesWindowController;
 
 extern NSString* const iTetWindowControllerSelectedTabViewItemDidChangeNotification;
@@ -46,6 +45,5 @@ extern NSString* const iTetWinlistViewTabIdentifier;
 
 @property (readonly) NSWindow* window;
 @property (readonly) NSTabView* tabView;
-@property (readonly) iTetPreferencesController* prefs;
 
 @end

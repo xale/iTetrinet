@@ -6,7 +6,7 @@
 //
 
 #import "iTetThemedView.h"
-#import "iTetPreferencesController.h"
+#import "iTetUserDefaults.h"
 
 @implementation iTetThemedView
 
@@ -15,14 +15,14 @@
 	if (![super initWithFrame:frame])
 		return nil;
 	
-	// Set the initial theme from the preferences controller
-	theme = [[[iTetPreferencesController preferencesController] currentTheme] retain];
+	// Set the initial theme from user defaults
+	theme = [[iTetTheme currentTheme] retain];
 	
 	// Register as an observer for changes to the theme
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(currentThemeChanged:)
-												 name:iTetCurrentThemeDidChangeNotification
-											   object:nil];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+															  forKeyPath:[@"values." stringByAppendingString:iTetThemesSelectionPrefKey]
+																 options:0
+																 context:NULL];
 	
 	return self;
 }
@@ -30,7 +30,8 @@
 - (void)dealloc
 {
 	// De-register for notifications
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
+																 forKeyPath:[@"values." stringByAppendingString:iTetThemesSelectionPrefKey]];
 	
 	// Release the theme
 	[theme release];
@@ -39,11 +40,15 @@
 }
 
 #pragma mark -
-#pragma mark Theme Change Notification
+#pragma mark Theme Change Key/Value Observation
 
-- (void)currentThemeChanged:(NSNotification*)notification
+- (void)observeValueForKeyPath:(NSString*)keyPath
+					  ofObject:(id)object
+						change:(NSDictionary*)change
+					   context:(void *)context
 {
-	[self setTheme:[[iTetPreferencesController preferencesController] currentTheme]];
+	// Change to themes list; update the current theme
+	[self setTheme:[iTetTheme currentTheme]];
 }
 
 #pragma mark -
@@ -57,11 +62,9 @@
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	[self willChangeValueForKey:@"theme"];
 	[newTheme retain];
 	[theme release];
 	theme = newTheme;
-	[self didChangeValueForKey:@"theme"];
 	
 	[self setNeedsDisplay:YES];
 }
