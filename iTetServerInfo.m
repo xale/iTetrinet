@@ -17,17 +17,6 @@
 
 @implementation iTetServerInfo
 
-+ (void)initialize
-{
-	if (self == [iTetServerInfo class])
-	{
-		NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
-		[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
-					 forKey:iTetServersListPrefKey];
-		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-	}
-}
-
 + (NSArray*)defaultServers
 {
 	return [NSArray arrayWithObjects:

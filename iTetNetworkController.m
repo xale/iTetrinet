@@ -53,6 +53,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 				 forKey:iTetConnectionTimeoutPrefKey];
 	[defaults setObject:[NSNumber numberWithBool:YES]
 				 forKey:iTetAutoSwitchChatPrefKey];
+	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
+				 forKey:iTetServersListPrefKey];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
 
