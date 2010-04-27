@@ -53,6 +53,17 @@
 	[super addObject:object];
 }
 
+- (void)removeObject:(id)object
+{
+	if ([object isKindOfClass:[iTetTheme class]])
+	{
+		iTetTheme* themeToRemove = (iTetTheme*)object;
+		[themeToRemove deleteFiles];
+	}
+	
+	[super removeObject:object];
+}
+
 - (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index
 {
 	id objectToRemove = [[self arrangedObjects] objectAtIndex:index];

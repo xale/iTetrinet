@@ -16,6 +16,7 @@
 
 // Overrides
 - (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 - (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index;
 - (BOOL)canRemove;
 
