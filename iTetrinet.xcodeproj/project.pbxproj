@@ -42,6 +42,11 @@
 		6A5F2688111CC9AC00DD63DA /* Minus Red Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A5F2687111CC9AC00DD63DA /* Minus Red Button.png */; };
 		6A612AFB11721BF3008B9EE2 /* iTetJoinChannelMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A612AFA11721BF3008B9EE2 /* iTetJoinChannelMessage.m */; };
 		6A6957EA1121214C00B01FB6 /* NSColor+Comparisons.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */; };
+		6A734F30118B0DE5005E2776 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F2F118B0DE5005E2776 /* PreferencesWindow.xib */; };
+		6A734F32118B0DE5005E2776 /* GeneralPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F31118B0DE5005E2776 /* GeneralPrefsView.xib */; };
+		6A734F34118B0DE5005E2776 /* ThemesPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F33118B0DE5005E2776 /* ThemesPrefsView.xib */; };
+		6A734F36118B0DE5005E2776 /* ServersPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F35118B0DE5005E2776 /* ServersPrefsView.xib */; };
+		6A734F38118B0DE5005E2776 /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */; };
 		6A739808106AB12600F51BF5 /* iTetGameRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A739807106AB12600F51BF5 /* iTetGameRules.m */; };
 		6A772C4C1020014200AAA2B8 /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A772C4B1020014200AAA2B8 /* iTetThemesArrayController.m */; };
 		6A7997E8114074D8005C3093 /* iTetNewGameMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7997E7114074D8005C3093 /* iTetNewGameMessage.m */; };
@@ -73,10 +78,6 @@
 		6AB76D5B101D145000734661 /* iTetPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D55101D145000734661 /* iTetPreferencesWindowController.m */; };
 		6AB76D5C101D145000734661 /* iTetServersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D57101D145000734661 /* iTetServersViewController.m */; };
 		6AB76D5D101D145000734661 /* iTetThemesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D59101D145000734661 /* iTetThemesViewController.m */; };
-		6AB76D6F101D150000734661 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76D6E101D150000734661 /* PreferencesWindow.xib */; };
-		6AB76DAE101D178800734661 /* GeneralPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DAD101D178800734661 /* GeneralPrefsView.xib */; };
-		6AB76DB1101D17AE00734661 /* ThemesPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DB0101D17AE00734661 /* ThemesPrefsView.xib */; };
-		6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */; };
 		6AC2397C1044A5D0006D3C83 /* iTetProtocolTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */; };
 		6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */; };
 		6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653D10CDB86B005B98E1 /* Play Blue Button.png */; };
@@ -103,7 +104,6 @@
 		6AE061DE116EB4DB00B59BFD /* Arrow Key.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AE061DD116EB4DB00B59BFD /* Arrow Key.png */; };
 		6AE8192E116CDFC4006BEF0A /* iTetChannelListQueryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE8192D116CDFC4006BEF0A /* iTetChannelListQueryMessage.m */; };
 		6AEB7F7C10891D7C00A8BCFD /* iTetKeyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */; };
-		6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */; };
 		6AEB7F851089218C00A8BCFD /* iTetKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEB7F831089218C00A8BCFD /* iTetKeyboardViewController.m */; };
 		6AEBBF1B113F1C8F003C997B /* iTetPlayerLeaveMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBBF1A113F1C8F003C997B /* iTetPlayerLeaveMessage.m */; };
 		6AEBBF1E113F1DD8003C997B /* iTetPlayerTeamMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AEBBF1D113F1DD8003C997B /* iTetPlayerTeamMessage.m */; };
@@ -253,10 +253,10 @@
 		6AB76D57101D145000734661 /* iTetServersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetServersViewController.m; sourceTree = "<group>"; };
 		6AB76D58101D145000734661 /* iTetThemesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesViewController.h; sourceTree = "<group>"; };
 		6AB76D59101D145000734661 /* iTetThemesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesViewController.m; sourceTree = "<group>"; };
-		6AB76D6E101D150000734661 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
-		6AB76DAD101D178800734661 /* GeneralPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralPrefsView.xib; sourceTree = "<group>"; };
-		6AB76DB0101D17AE00734661 /* ThemesPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ThemesPrefsView.xib; sourceTree = "<group>"; };
-		6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServersPrefsView.xib; sourceTree = "<group>"; };
+		6AB76D6E101D150000734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
+		6AB76DAD101D178800734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GeneralPrefsView.xib; sourceTree = "<group>"; };
+		6AB76DB0101D17AE00734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ThemesPrefsView.xib; sourceTree = "<group>"; };
+		6AB76DB6101D17EE00734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ServersPrefsView.xib; sourceTree = "<group>"; };
 		6AC2397A1044A5D0006D3C83 /* iTetProtocolTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetProtocolTransformer.h; sourceTree = "<group>"; };
 		6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetProtocolTransformer.m; sourceTree = "<group>"; };
 		6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause Blue Button.png"; sourceTree = "<group>"; };
@@ -305,7 +305,7 @@
 		6AE8192D116CDFC4006BEF0A /* iTetChannelListQueryMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelListQueryMessage.m; sourceTree = "<group>"; };
 		6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyView.h; sourceTree = "<group>"; };
 		6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyView.m; sourceTree = "<group>"; };
-		6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyboardPrefsView.xib; sourceTree = "<group>"; };
+		6AEB7F7F10891E4000A8BCFD /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/KeyboardPrefsView.xib; sourceTree = "<group>"; };
 		6AEB7F831089218C00A8BCFD /* iTetKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetKeyboardViewController.m; sourceTree = "<group>"; };
 		6AEB7F841089218C00A8BCFD /* iTetKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetKeyboardViewController.h; sourceTree = "<group>"; };
 		6AEBBF19113F1C8F003C997B /* iTetPlayerLeaveMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayerLeaveMessage.h; sourceTree = "<group>"; };
@@ -430,11 +430,11 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				6AB76D6E101D150000734661 /* PreferencesWindow.xib */,
-				6AB76DAD101D178800734661 /* GeneralPrefsView.xib */,
-				6AB76DB0101D17AE00734661 /* ThemesPrefsView.xib */,
-				6AB76DB6101D17EE00734661 /* ServersPrefsView.xib */,
-				6AEB7F7F10891E4000A8BCFD /* KeyboardPrefsView.xib */,
+				6A734F2F118B0DE5005E2776 /* PreferencesWindow.xib */,
+				6A734F31118B0DE5005E2776 /* GeneralPrefsView.xib */,
+				6A734F33118B0DE5005E2776 /* ThemesPrefsView.xib */,
+				6A734F35118B0DE5005E2776 /* ServersPrefsView.xib */,
+				6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -933,11 +933,11 @@
 				6A96B59410098FFD003D353E /* Play Green Button.png in Resources */,
 				6A96B59510098FFD003D353E /* Stop Red Button.png in Resources */,
 				6A96B59610098FFD003D353E /* theme.cfg in Resources */,
-				6AB76D6F101D150000734661 /* PreferencesWindow.xib in Resources */,
-				6AB76DAE101D178800734661 /* GeneralPrefsView.xib in Resources */,
-				6AB76DB1101D17AE00734661 /* ThemesPrefsView.xib in Resources */,
-				6AB76DB7101D17EE00734661 /* ServersPrefsView.xib in Resources */,
-				6AEB7F8010891E4000A8BCFD /* KeyboardPrefsView.xib in Resources */,
+				6A734F30118B0DE5005E2776 /* PreferencesWindow.xib in Resources */,
+				6A734F32118B0DE5005E2776 /* GeneralPrefsView.xib in Resources */,
+				6A734F34118B0DE5005E2776 /* ThemesPrefsView.xib in Resources */,
+				6A734F36118B0DE5005E2776 /* ServersPrefsView.xib in Resources */,
+				6A734F38118B0DE5005E2776 /* KeyboardPrefsView.xib in Resources */,
 				6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */,
 				6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */,
 				6A12A26910E4A03400EA67B7 /* iTetBlocks.png in Resources */,
@@ -1073,6 +1073,46 @@
 				1DDD58150DA1D0A300B32029 /* English */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		6A734F2F118B0DE5005E2776 /* PreferencesWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AB76D6E101D150000734661 /* English */,
+			);
+			name = PreferencesWindow.xib;
+			sourceTree = "<group>";
+		};
+		6A734F31118B0DE5005E2776 /* GeneralPrefsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AB76DAD101D178800734661 /* English */,
+			);
+			name = GeneralPrefsView.xib;
+			sourceTree = "<group>";
+		};
+		6A734F33118B0DE5005E2776 /* ThemesPrefsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AB76DB0101D17AE00734661 /* English */,
+			);
+			name = ThemesPrefsView.xib;
+			sourceTree = "<group>";
+		};
+		6A734F35118B0DE5005E2776 /* ServersPrefsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AB76DB6101D17EE00734661 /* English */,
+			);
+			name = ServersPrefsView.xib;
+			sourceTree = "<group>";
+		};
+		6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6AEB7F7F10891E4000A8BCFD /* English */,
+			);
+			name = KeyboardPrefsView.xib;
 			sourceTree = "<group>";
 		};
 		6A8EEEDF115439020050339E /* Credits.rtf */ = {
