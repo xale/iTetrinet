@@ -17,18 +17,23 @@
 
 @implementation iTetServerInfo
 
+#define iTetExampleTetriNETServerName	NSLocalizedStringFromTable(@"Example TetriNET Server", @"ServerInfo", @"Name for example TetriNET server")
+#define iTetExampleTetrifastServerName	NSLocalizedStringFromTable(@"Example Tetrifast Server", @"ServerInfo", @"Name for example Tetrifast server")
+#define iTetExampleServerAddress		NSLocalizedStringFromTable(@"www.example.com", @"ServerInfo", @"Example server address (need not be a valid address)")
+#define iTetExampleTeamName				NSLocalizedStringFromTable(@"MyTeam", @"ServerInfo", @"Example name for player's team (must not contain spaces)")
+
 + (NSArray*)defaultServers
 {
 	return [NSArray arrayWithObjects:
-			[iTetServerInfo serverInfoWithName:@"Example TetriNET Server"
-									   address:@"www.example.com"
+			[iTetServerInfo serverInfoWithName:iTetExampleTetriNETServerName
+									   address:iTetExampleServerAddress
 								playerNickname:NSUserName()
-								playerTeamName:@""
+								playerTeamName:iTetExampleTeamName
 									  protocol:tetrinetProtocol],
-			[iTetServerInfo serverInfoWithName:@"Example Tetrifast Server"
-									   address:@"www.example.com"
+			[iTetServerInfo serverInfoWithName:iTetExampleTetrifastServerName
+									   address:iTetExampleServerAddress
 								playerNickname:NSUserName()
-								playerTeamName:@""
+								playerTeamName:iTetExampleTeamName
 									  protocol:tetrifastProtocol],
 			nil];
 }
@@ -61,12 +66,14 @@
 	return self;
 }
 
+#define iTetUnnamedServerPlaceholderName	NSLocalizedStringFromTable(@"Unnamed Server", @"ServerInfo", @"Placeholder name for unnamed servers")
+
 - (id)init
 {	
-	return [self initWithName:@"Unnamed Server"
-					  address:@"www.example.com"
+	return [self initWithName:iTetUnnamedServerPlaceholderName
+					  address:iTetExampleServerAddress
 			   playerNickname:NSUserName()
-			   playerTeamName:@""
+			   playerTeamName:iTetExampleTeamName
 					 protocol:tetrinetProtocol];
 }
 
@@ -83,33 +90,33 @@
 #pragma mark -
 #pragma mark NSCoding Protocol
 
-NSString* const iTetServerInfoNameKey =				@"serverName";
-NSString* const iTetServerInfoAddressKey =			@"serverAddress";
-NSString* const iTetServerInfoPlayerNicknameKey =	@"playerNickname";
-NSString* const iTetServerInfoPlayerTeamNameKey =	@"playerTeamName";
-NSString* const iTetServerInfoProtocolKey =			@"protocol";
+NSString* const iTetServerInfoNameArchiverKey =				@"serverName";
+NSString* const iTetServerInfoAddressArchiverKey =			@"serverAddress";
+NSString* const iTetServerInfoPlayerNicknameArchiverKey =	@"playerNickname";
+NSString* const iTetServerInfoPlayerTeamNameArchiverKey =	@"playerTeamName";
+NSString* const iTetServerInfoProtocolArchiverKey =			@"protocol";
 
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
 	[encoder encodeObject:[self serverName]
-				   forKey:iTetServerInfoNameKey];
+				   forKey:iTetServerInfoNameArchiverKey];
 	[encoder encodeObject:[self serverAddress]
-				   forKey:iTetServerInfoAddressKey];
+				   forKey:iTetServerInfoAddressArchiverKey];
 	[encoder encodeObject:[self playerNickname]
-				   forKey:iTetServerInfoPlayerNicknameKey];
+				   forKey:iTetServerInfoPlayerNicknameArchiverKey];
 	[encoder encodeObject:[self playerTeamName]
-				   forKey:iTetServerInfoPlayerTeamNameKey];
+				   forKey:iTetServerInfoPlayerTeamNameArchiverKey];
 	[encoder encodeInt:[self protocol]
-				forKey:iTetServerInfoProtocolKey];
+				forKey:iTetServerInfoProtocolArchiverKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-	serverName = [[decoder decodeObjectForKey:iTetServerInfoNameKey] retain];
-	serverAddress = [[decoder decodeObjectForKey:iTetServerInfoAddressKey] retain];
-	playerNickname = [[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameKey] retain];
-	playerTeamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameKey] retain];
-	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolKey];
+	serverName = [[decoder decodeObjectForKey:iTetServerInfoNameArchiverKey] retain];
+	serverAddress = [[decoder decodeObjectForKey:iTetServerInfoAddressArchiverKey] retain];
+	playerNickname = [[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameArchiverKey] retain];
+	playerTeamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameArchiverKey] retain];
+	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolArchiverKey];
 	
 	return self;
 }
@@ -124,10 +131,12 @@ typedef enum
 	invalidTeamNameErrorCode
 } iTetInvalidNameErrorCode;
 
-NSString* const iTetServerReservedName =	@"SERVER";
+NSString* const iTetDefaultLocaleIdentifier =	@"en_US";
+NSString* const iTetDefaultServerReservedName =	@"SERVER";
+#define iTetLocalizedServerReservedName	NSLocalizedStringFromTable(@"SERVER", @"ServerInfo", @"The word 'SERVER' (as in the context of computer networks); used to prevent players from choosing this as their nickname")
 
-NSString* const iTetBlankNicknameErrorMessage =				@"You must provide a nickname.";
-NSString* const iTetReservedNicknameErrorMessageFormat =	@"The name '%@' is reserved; please choose another nickname.";
+#define iTetBlankNicknameErrorMessage	NSLocalizedStringFromTable(@"You must provide a nickname.", @"ServerInfo", @"Message displayed to users upon entering blank nickname")
+#define iTetReservedNicknameErrorMessageFormat	NSLocalizedStringFromTable(@"The name '%@' is reserved; please choose another nickname.", @"ServerInfo", @"Message displayed to users if they enter a nickname that cannot be used.")
 
 - (BOOL)validatePlayerNickname:(id*)newValue
 						 error:(NSError**)error
@@ -140,7 +149,7 @@ NSString* const iTetReservedNicknameErrorMessageFormat =	@"The name '%@' is rese
 	{
 		// No nickname specified
 		validName = NO;
-		errorMessage = [NSString stringWithString:iTetBlankNicknameErrorMessage];
+		errorMessage = iTetBlankNicknameErrorMessage;
 		goto bail;
 	}
 	
@@ -152,12 +161,19 @@ NSString* const iTetReservedNicknameErrorMessageFormat =	@"The name '%@' is rese
 	{
 		// Blank nickname
 		validName = NO;
-		errorMessage = [NSString stringWithString:iTetBlankNicknameErrorMessage];
+		errorMessage = iTetBlankNicknameErrorMessage;
 		goto bail;
 	}
 	
 	// Check that the player is not trying to spoof the server
-	if ([newNickname rangeOfString:iTetServerReservedName options:(NSAnchoredSearch | NSCaseInsensitiveSearch)].location != NSNotFound)
+	if (([newNickname rangeOfString:iTetDefaultServerReservedName
+							options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
+							  range:NSMakeRange(0, [iTetDefaultServerReservedName length])
+							 locale:[[[NSLocale alloc] initWithLocaleIdentifier:iTetDefaultLocaleIdentifier] autorelease]].location != NSNotFound) ||
+		([newNickname rangeOfString:iTetLocalizedServerReservedName
+							options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
+							  range:NSMakeRange(0, [iTetLocalizedServerReservedName length])
+							 locale:[NSLocale currentLocale]].location != NSNotFound))
 	{
 		// Reserved nickname
 		validName = NO;
