@@ -227,7 +227,7 @@ NSArray* defaultThemes = nil;
 	
 	// If the section was found, find the next newline after the section
 	NSRange dataRange;
-	dataRange.location = searchResult.location + searchResult.length;
+	dataRange.location = NSMaxRange(searchResult);
 	dataRange.length = [themeFile length] - dataRange.location;
 	searchResult = [themeFile rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]
 											  options:0

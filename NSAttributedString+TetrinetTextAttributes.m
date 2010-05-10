@@ -195,7 +195,7 @@
 		{
 			// Close the tag
 			[formattedMessage insertString:[NSString stringWithFormat:@"%c", [tag charValue]]
-								   atIndex:(attrRange.location + attrRange.length + charactersAdded)];
+								   atIndex:(NSMaxRange(attrRange) + charactersAdded)];
 			charactersAdded++;
 		}
 		
@@ -203,7 +203,7 @@
 		openTags = [NSMutableArray array];
 		
 		// Advance the index to the end of this attribute range
-		index = (attrRange.location + attrRange.length);
+		index = NSMaxRange(attrRange);
 	}
 	
 	// Return the formatted message as an NSData object
