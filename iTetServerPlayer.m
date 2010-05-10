@@ -7,13 +7,13 @@
 
 #import "iTetServerPlayer.h"
 
-NSString* const iTetServerPlayerNamePlaceholder = @"SERVER";
+#define iTetServerPlayerName	NSLocalizedStringFromTable(@"SERVER", @"Players", @"The placeholder name for messages sent by the server, (as opposed to one of the players) used in the chat views and game actions list")
 
 @implementation iTetServerPlayer
 
 - (id)init
 {
-	nickname = [[NSString alloc] initWithString:iTetServerPlayerNamePlaceholder];
+	nickname = [[NSString alloc] initWithString:iTetServerPlayerName];
 	playerNumber = 0;
 	teamName = nil;
 	playing = NO;

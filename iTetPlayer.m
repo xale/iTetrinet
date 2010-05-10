@@ -48,8 +48,10 @@
 {
 	return [self initWithNickname:nick
 						   number:number
-						 teamName:@""];
+						 teamName:[NSString string]];
 }
+
+#define iTetUnnamedPlayerPlaceholderName	NSLocalizedStringFromTable(@"Unnamed Player", @"Players", @"Name given to a player with no explicitly-defined name; should be used only extremely rarely, if at all")
 
 + (id)playerWithNumber:(NSInteger)number
 {
@@ -57,7 +59,7 @@
 }
 - (id)initWithNumber:(NSInteger)number
 {
-	return [self initWithNickname:@"Unnamed Player"
+	return [self initWithNickname:iTetUnnamedPlayerPlaceholderName
 						   number:number];
 }
 
