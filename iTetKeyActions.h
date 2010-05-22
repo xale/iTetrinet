@@ -29,21 +29,4 @@ typedef enum
 	gameChat
 } iTetGameAction;
 
-extern NSString* const iTetMovePieceLeftActionName;
-extern NSString* const iTetMovePieceRightActionName;
-extern NSString* const iTetRotatePieceCounterclockwiseActionName;
-extern NSString* const iTetRotatePieceClockwiseActionName;
-extern NSString* const iTetMovePieceDownActionName;
-extern NSString* const iTetDropPieceActionName;
-extern NSString* const iTetDiscardSpecialActionName;
-extern NSString* const iTetSelfSpecialActionName;
-extern NSString* const iTetSpecialPlayer1ActionName;
-extern NSString* const iTetSpecialPlayer2ActionName;
-extern NSString* const iTetSpecialPlayer3ActionName;
-extern NSString* const iTetSpecialPlayer4ActionName;
-extern NSString* const iTetSpecialPlayer5ActionName;
-extern NSString* const iTetSpecialPlayer6ActionName;
-extern NSString* const iTetGameChatActionName;
-extern NSString* const iTetNoActionName;
-
 NSString* iTetNameForAction(iTetGameAction action);

@@ -7,22 +7,22 @@
 
 #import "iTetKeyActions.h"
 
-NSString* const iTetMovePieceLeftActionName =				@"Move Piece Left";
-NSString* const iTetMovePieceRightActionName =				@"Move Piece Right";
-NSString* const iTetRotatePieceCounterclockwiseActionName =	@"Rotate Piece Counterclockwise";
-NSString* const iTetRotatePieceClockwiseActionName =		@"Rotate Piece Clockwise";
-NSString* const iTetMovePieceDownActionName =				@"Move Piece Down";
-NSString* const iTetDropPieceActionName =					@"Drop Piece";
-NSString* const iTetDiscardSpecialActionName =				@"Discard Special";
-NSString* const iTetSelfSpecialActionName =					@"Use Special on Self";
-NSString* const iTetSpecialPlayer1ActionName =				@"Use Special on Player 1";
-NSString* const iTetSpecialPlayer2ActionName =				@"Use Special on Player 2";
-NSString* const iTetSpecialPlayer3ActionName =				@"Use Special on Player 3";
-NSString* const iTetSpecialPlayer4ActionName =				@"Use Special on Player 4";
-NSString* const iTetSpecialPlayer5ActionName =				@"Use Special on Player 5";
-NSString* const iTetSpecialPlayer6ActionName =				@"Use Special on Player 6";
-NSString* const iTetGameChatActionName =					@"Game Chat";
-NSString* const iTetNoActionName =							@"No Action";
+#define iTetMovePieceLeftActionName					NSLocalizedStringFromTable(@"Move Piece Left", @"KeyActions", @"Description of action to move the current falling piece to the left")
+#define iTetMovePieceRightActionName				NSLocalizedStringFromTable(@"Move Piece Right", @"KeyActions", @"Description of action to move the current falling piece to the right")
+#define iTetRotatePieceCounterclockwiseActionName	NSLocalizedStringFromTable(@"Rotate Piece Counterclockwise", @"KeyActions", @"Description of action to rotate the current falling piece counterclockwise")
+#define iTetRotatePieceClockwiseActionName			NSLocalizedStringFromTable(@"Rotate Piece Clockwise", @"KeyActions", @"Description of action to rotate the current falling piece clockwise")
+#define iTetMovePieceDownActionName					NSLocalizedStringFromTable(@"Move Piece Down", @"KeyActions", @"Description of action to move the current falling piece down by one line")
+#define iTetDropPieceActionName						NSLocalizedStringFromTable(@"Drop Piece", @"KeyActions", @"Description of action to drop the current falling piece until it hits another piece or the bottom of the field")
+#define iTetDiscardSpecialActionName				NSLocalizedStringFromTable(@"Discard Special", @"KeyActions", @"Description of action to discard (without using) the next special in the specials queue")
+#define iTetSelfSpecialActionName					NSLocalizedStringFromTable(@"Use Special on Self", @"KeyActions", @"Description of action to use the next special in the specials queue on yourself")
+#define iTetSpecialPlayer1ActionName				NSLocalizedStringFromTable(@"Use Special on Player 1", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 1")
+#define iTetSpecialPlayer2ActionName				NSLocalizedStringFromTable(@"Use Special on Player 2", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 2")
+#define iTetSpecialPlayer3ActionName				NSLocalizedStringFromTable(@"Use Special on Player 3", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 3")
+#define iTetSpecialPlayer4ActionName				NSLocalizedStringFromTable(@"Use Special on Player 4", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 4")
+#define iTetSpecialPlayer5ActionName				NSLocalizedStringFromTable(@"Use Special on Player 5", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 5")
+#define iTetSpecialPlayer6ActionName				NSLocalizedStringFromTable(@"Use Special on Player 6", @"KeyActions", @"Description of action to use the next special in the specials queue on player number 6")
+#define iTetGameChatActionName						NSLocalizedStringFromTable(@"Game Chat", @"KeyActions", @"Description of action that allows the user to start typing a chat message")
+#define iTetNoActionName							NSLocalizedStringFromTable(@"No Action", @"KeyActions", @"Placeholder description for unknown or invalid actions")
 
 NSString* iTetNameForAction(iTetGameAction action)
 {
