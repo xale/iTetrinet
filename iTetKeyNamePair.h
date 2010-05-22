@@ -7,28 +7,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define iTetSpacebarPlaceholderString	NSLocalizedStringFromTable(@"space", @"KeyNames", @"Name of the spacebar key, in lowercase")
+
 #define iTetLeftArrowKeyCode	(123)
 #define iTetRightArrowKeyCode	(124)
 #define iTetDownArrowKeyCode	(125)
 #define iTetUpArrowKeyCode		(126)
 
-extern NSString* const iTetEscapeKeyPlaceholderString;
-extern NSString* const iTetSpacebarPlaceholderString;
-extern NSString* const iTetTabKeyPlaceholderString;
-extern NSString* const iTetReturnKeyPlaceholderString;
-extern NSString* const iTetEnterKeyPlaceholderString;
-extern NSString* const iTetDeleteKeyPlaceholderString;
-
 extern NSString* const iTetLeftArrowKeyPlaceholderString;
 extern NSString* const iTetRightArrowKeyPlaceholderString;
 extern NSString* const iTetUpArrowKeyPlaceholderString;
 extern NSString* const iTetDownArrowKeyPlaceholderString;
-
-extern NSString* const iTetUnknownModifierPlaceholderString;
-extern NSString* const iTetShiftKeyPlaceholderString;
-extern NSString* const iTetControlKeyPlaceholderString;
-extern NSString* const iTetAltOptionKeyPlaceholderString;
-extern NSString* const iTetCommandKeyPlaceholderString;
 
 @interface iTetKeyNamePair : NSObject <NSCoding, NSCopying>
 {
