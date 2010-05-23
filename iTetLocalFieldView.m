@@ -107,8 +107,6 @@
 
 - (void)setBlock:(iTetBlock*)newBlock
 {
-	[self willChangeValueForKey:@"block"];
-	
 	// Stop observing the old block
 	[block removeObserver:self forKeyPath:@"rowPos"];
 	[block removeObserver:self forKeyPath:@"colPos"];
@@ -123,8 +121,6 @@
 	[block addObserver:self forKeyPath:@"rowPos" options:0 context:NULL];
 	[block addObserver:self forKeyPath:@"colPos" options:0 context:NULL];
 	[block addObserver:self forKeyPath:@"orientation" options:0 context:NULL];
-	
-	[self didChangeValueForKey:@"block"];
 	
 	[self setNeedsDisplay:YES];
 }

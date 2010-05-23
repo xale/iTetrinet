@@ -111,11 +111,9 @@
 }
 
 - (void)setSpecials:(NSArray*)newSpecials
-{	
-	[self willChangeValueForKey:@"specials"];
+{
 	[specials autorelease];
 	specials = [newSpecials copy];
-	[self didChangeValueForKey:@"specials"];
 	
 	[self setNeedsDisplay:YES];
 }
@@ -123,20 +121,10 @@
 
 - (void)setCapacity:(NSInteger)newCapacity
 {
-	[self willChangeValueForKey:@"capacity"];
 	capacity = newCapacity;
-	[self didChangeValueForKey:@"capacity"];
 	
 	[self setNeedsDisplay:YES];
 }
 @synthesize capacity;
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
-{
-	if ([key isEqualToString:@"specials"] || [key isEqualToString:@"capacity"])
-		return NO;
-	
-	return [super automaticallyNotifiesObserversForKey:key];
-}
 
 @end
