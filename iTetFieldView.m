@@ -126,10 +126,9 @@
 
 - (void)setField:(iTetField*)newField
 {
-	[self willChangeValueForKey:@"field"];
-	
 	// Stop observing the old field
-	[field removeObserver:self forKeyPath:@"contents"];
+	[field removeObserver:self
+			   forKeyPath:@"contents"];
 	
 	// Swap in new field
 	[newField retain];
@@ -137,9 +136,10 @@
 	field = newField;
 	
 	// Start observing the new field
-	[field addObserver:self forKeyPath:@"contents" options:0 context:NULL];
-	
-	[self didChangeValueForKey:@"field"];
+	[field addObserver:self
+			forKeyPath:@"contents"
+			   options:0
+			   context:NULL];
 	
 	[self setNeedsDisplay:YES];
 }

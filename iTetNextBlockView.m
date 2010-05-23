@@ -57,10 +57,8 @@
 
 - (void)setBlock:(iTetBlock*)newBlock
 {
-	[self willChangeValueForKey:@"block"];
 	[block autorelease];
 	block = [newBlock copy];
-	[self didChangeValueForKey:@"block"];
 	
 	[self setNeedsDisplay:YES];
 }
