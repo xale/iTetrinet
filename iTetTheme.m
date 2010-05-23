@@ -144,6 +144,10 @@ NSArray* defaultThemes = nil;
 #pragma mark -
 #pragma mark Initialization
 
+#define iTetUnnamedThemePlaceholderName			NSLocalizedStringFromTable(@"Unnamed Theme", @"Themes", @"Placeholder name for themes loaded from a file that does not specify a name for the theme")
+#define iTetUnknownThemeAuthorPlaceholderName	NSLocalizedStringFromTable(@"Unknown", @"Themes", @"Placeholder for a theme loaded from a file that does not specify the theme's author")
+#define iTetBlankThemeDescriptionPlaceholder	NSLocalizedStringFromTable(@"No description provided.", @"Themes", @"Placeholder for a theme loaded from a file that does not provide a description of the theme")
+
 - (BOOL)parseThemeFile
 {
 	// Attempt to read the contents of the file
@@ -192,7 +196,7 @@ NSArray* defaultThemes = nil;
 	if (dataRange.location != NSNotFound)
 		themeName = [[themeFile substringWithRange:dataRange] retain];
 	else
-		themeName = [[NSString alloc] initWithString:@"Unnamed Theme"];
+		themeName = [[NSString alloc] initWithString:iTetUnnamedThemePlaceholderName];
 	
 	// Author
 	dataRange = [self rangeOfSection:@"author="
@@ -200,7 +204,7 @@ NSArray* defaultThemes = nil;
 	if (dataRange.location != NSNotFound)
 		themeAuthor = [[themeFile substringWithRange:dataRange] retain];
 	else
-		themeAuthor = [[NSString alloc] initWithString:@"Unknown"];
+		themeAuthor = [[NSString alloc] initWithString:iTetUnknownThemeAuthorPlaceholderName];
 	
 	// Description
 	dataRange = [self rangeOfSection:@"description="
@@ -208,7 +212,7 @@ NSArray* defaultThemes = nil;
 	if (dataRange.location != NSNotFound)
 		themeDescription = [[themeFile substringWithRange:dataRange] retain];
 	else
-		themeDescription = [[NSString alloc] initWithString:@"No description provided."];
+		themeDescription = [[NSString alloc] initWithString:iTetBlankThemeDescriptionPlaceholder];
 	
 	return YES;
 }
