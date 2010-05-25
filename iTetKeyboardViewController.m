@@ -14,11 +14,14 @@
 #import "iTetKeyConfiguration.h"
 #import "NSUserDefaults+AdditionalTypes.h"
 
+#import "iTetCommonLocalizations.h"
+
+#define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"Preferences", @"Title of 'keyboard configuration' preferences pane")
+#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"Preferences", @"Placeholder name for keyboard configurations that have yet to be saved with a configuration name")
+
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
 NSString* const iTetNewControllerInfoKey =					@"newController";
 NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
-
-NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuration";
 
 #define KEY_CONFIGS			[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey]
 #define CURRENT_CONFIG_NUM	[[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey]
@@ -38,7 +41,6 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 
 @end
 
-
 @implementation iTetKeyboardViewController
 
 + (id)viewController
@@ -51,10 +53,13 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	if (![super initWithNibName:@"KeyboardPrefsView" bundle:nil])
 		return nil;
 	
-	[self setTitle:@"Keyboard Controls"];
+	[self setTitle:iTetKeyboardPreferencesViewName];
 	
 	return self;
 }
+
+#define iTetSaveKeyboardConfigurationMenuTitle		NSLocalizedStringFromTable(@"Save Configuration...", @"Preferences", @"Title of menu item used to save the active keyboard configurations")
+#define iTetDeleteKeyboardConfigurationMenuTitle	NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of menu item used to delete the active keyboard configuration")
 
 - (void)awakeFromNib
 {
@@ -112,7 +117,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	[[configurationPopUpButton menu] addItem:[NSMenuItem separatorItem]];
 	
 	// Add the "save configuration" menu item
-	NSMenuItem* menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Save Configuration..."
+	NSMenuItem* menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetSaveKeyboardConfigurationMenuTitle
 																				action:@selector(saveConfiguration:)
 																		 keyEquivalent:@""];
 	[menuItem setTarget:self];
@@ -120,7 +125,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	[menuItem release];
 	
 	// Add the "delete configuration" menu item
-	menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Delete Configuration"
+	menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetDeleteKeyboardConfigurationMenuTitle
 																	action:@selector(deleteConfiguration:)
 															 keyEquivalent:@""];
 	[menuItem setTarget:self];
@@ -152,6 +157,11 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 #pragma mark -
 #pragma mark Interface Actions
 
+#define iTetUnsavedKeyboardConfigurationAlertTitle						NSLocalizedStringFromTable(@"Unsaved Configuration", @"Preferences", @"Title of the alert displayed when the user attempts to change keyboard configurations or dismiss the view while the active configuration is unsaved")
+#define iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?", @"Preferences", @"Informative text explaining the alert when the user attempts to change keyboard configurations while the active configuration is unsaved")
+#define iTetSaveKeyboardConfigurationButtonTitle						NSLocalizedStringFromTable(@"Save Configuration", @"Preferences", @"Title of button displayed on the 'change keyboard configuration or dismiss view with unsaved configuration' alert that allows the user to save the unsaved configuration")
+#define iTetChangeWithoutSavingKeyboardConfigurationButtonTitle			NSLocalizedStringFromTable(@"Change without Saving", @"Preferences", @"Title of button displayed on the 'change keyboard configuration with unsaved configuration' alert that allows the user to switch configurations without saving")
+
 - (IBAction)changeConfiguration:(id)sender
 {
 	// Check if we have an unsaved configuration
@@ -159,11 +169,11 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	{
 		// Create an alert
 		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText:@"Unsaved Configuration"];
-		[alert setInformativeText:@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?"];
-		[alert addButtonWithTitle:@"Save Configuration"];
-		[alert addButtonWithTitle:@"Cancel"];
-		[alert addButtonWithTitle:@"Change without Saving"];
+		[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
+		[alert setInformativeText:iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText];
+		[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
+		[alert addButtonWithTitle:iTetCancelButtonTitle];
+		[alert addButtonWithTitle:iTetChangeWithoutSavingKeyboardConfigurationButtonTitle];
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:sender
@@ -198,6 +208,9 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	     returnCode:[sender tag]];
 }
 
+#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of alert displayed to confirm the deletion of a keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"Preferences", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
+
 - (IBAction)deleteConfiguration:(id)sender
 {
 	// Get the current configuration name
@@ -205,10 +218,10 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	
 	// Ask the user for confirmation via an alert
 	NSAlert* alert = [[NSAlert alloc] init];
-	[alert setMessageText:@"Delete Configuration"];
-	[alert setInformativeText:[NSString stringWithFormat:@"Are you sure you want to delete the configuration named \"%@\"?", configName]];
-	[alert addButtonWithTitle:@"Delete"];
-	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:iTetDeleteKeyboardConfigurationAlertTitle];
+	[alert setInformativeText:[NSString stringWithFormat:iTetDeleteKeyboardConfigurationAlertTitle, configName]];
+	[alert addButtonWithTitle:iTetDeleteButtonTitle];
+	[alert addButtonWithTitle:iTetCancelButtonTitle];
 	
 	// Run the alert as a sheet
 	[alert beginSheetModalForWindow:[[self view] window]
@@ -220,6 +233,8 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 #pragma mark -
 #pragma mark View Swapping/Closing
 
+#define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"Preferences", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
+
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 				byWindowController:(iTetPreferencesWindowController*)sender
 {
@@ -227,11 +242,11 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	{
 		// Create an "unsaved configuration" alert
 		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText:@"Unsaved Configuration"];
-		[alert setInformativeText:@"Your current key configuration is unsaved. Do you  wish to save the configuration?"];
-		[alert addButtonWithTitle:@"Save Configuration"];
-		[alert addButtonWithTitle:@"Cancel"];
-		[alert addButtonWithTitle:@"Don't Save"];
+		[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
+		[alert setInformativeText:iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText];
+		[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
+		[alert addButtonWithTitle:iTetCancelButtonTitle];
+		[alert addButtonWithTitle:iTetDoNotSaveButtonTitle];
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -257,11 +272,11 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	{
 		// Create an "unsaved configuration" alert
 		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText:@"Unsaved Configuration"];
-		[alert setInformativeText:@"Your current key configuration is unsaved. Do you  wish to save the configuration?"];
-		[alert addButtonWithTitle:@"Save Configuration"];
-		[alert addButtonWithTitle:@"Cancel"];
-		[alert addButtonWithTitle:@"Don't Save"];
+		[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
+		[alert setInformativeText:iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText];
+		[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
+		[alert addButtonWithTitle:iTetCancelButtonTitle];
+		[alert addButtonWithTitle:iTetDoNotSaveButtonTitle];
 		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:window
@@ -308,7 +323,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		[configurationPopUpButton selectItemWithTitle:iTetUnsavedConfigurationPlaceholderName];
+		[configurationPopUpButton selectItemWithTitle:iTetUnsavedKeyboardConfigurationPlaceholderName];
 		return;
 	}
 	
@@ -383,7 +398,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 			// Create a new alert
 			NSAlert* alert = [[NSAlert alloc] init];
 			[alert setMessageText:@"Duplicate Configuration"];
-			[alert setInformativeText:[NSString stringWithFormat:@"A keyboard configuration already exists with the name \"%@\". Would you like to replace it?", newConfigName]];
+			[alert setInformativeText:[NSString stringWithFormat:@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", newConfigName]];
 			[alert addButtonWithTitle:@"Replace"];
 			[alert addButtonWithTitle:@"Cancel"];
 			
@@ -532,7 +547,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 {
 	// Remove the unsaved configuration from the pop-up menu
 	NSMenu* menu = [configurationPopUpButton menu];
-	[menu removeItem:[menu itemWithTitle:iTetUnsavedConfigurationPlaceholderName]];
+	[menu removeItem:[menu itemWithTitle:iTetUnsavedKeyboardConfigurationPlaceholderName]];
 	
 	// Delete the configuration
 	[unsavedConfiguration release];
@@ -577,7 +592,7 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	else
 	{
 		// Key view is no longer highlighted: if the description text currently contains the key's description, clear the text
-		// FIXME: kinda hacky
+		// FIXME: hacky, and completely internationalization-unsafe
 		NSString* desc = [keyDescriptionField stringValue];
 		if (([desc length] > 0) && ([desc characterAtIndex:0] == 'P'))
 			[keyDescriptionField setStringValue:@""];
@@ -629,7 +644,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 		unsavedConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] copy];
 		
 		// Change the copy's name
-		[unsavedConfiguration setConfigurationName:iTetUnsavedConfigurationPlaceholderName];
+		[unsavedConfiguration setConfigurationName:iTetUnsavedKeyboardConfigurationPlaceholderName];
 		
 		// Add the configuration to the pop-up menu
 		NSUInteger newConfigNum = [KEY_CONFIGS count];
@@ -685,7 +700,7 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 #pragma mark -
 #pragma mark Accessors
 
-NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to \'%@\'";
+NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to '%@'";
 
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView
 {
