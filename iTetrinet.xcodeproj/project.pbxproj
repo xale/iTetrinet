@@ -162,6 +162,7 @@
 		6A127B7D1148AB1900747A7C /* iTetIncomingMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetIncomingMessages.h; sourceTree = "<group>"; };
 		6A127B7E1148AB4C00747A7C /* iTetOutgoingMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetOutgoingMessages.h; sourceTree = "<group>"; };
 		6A12A26610E4A03400EA67B7 /* iTetBlocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks.png; sourceTree = "<group>"; };
+		6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetCommonLocalizations.h; sourceTree = "<group>"; };
 		6A1851A510E7394000A29E0F /* iTetBlocks_White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_White.png; sourceTree = "<group>"; };
 		6A1851A610E7394000A29E0F /* theme_white.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_white.cfg; sourceTree = "<group>"; };
 		6A268690114F0EC5007B1420 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
@@ -878,6 +879,7 @@
 				6A26868F114F0EB5007B1420 /* AsyncSocket */,
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
 				6AEBBF18113F1C1D003C997B /* Utility Categories */,
+				6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */,
 			);
 			name = Miscellaneous;
 			sourceTree = "<group>";
