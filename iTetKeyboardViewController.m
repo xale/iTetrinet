@@ -208,7 +208,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	     returnCode:[sender tag]];
 }
 
-#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of alert displayed to confirm the deletion of a keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of the alert displayed to confirm the deletion of a keyboard configuration")
 #define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"Preferences", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
 
 - (IBAction)deleteConfiguration:(id)sender
@@ -366,6 +366,9 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	[self saveConfiguration:self];
 }
 
+#define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Configuration", @"Preferences", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")
+#define iTetReplaceKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", @"Preferences", @"Informative text asking the user whether he or she would like to overwrite an existing keyboard configuration of the same name, or cancel saving")
+
 - (void)saveSheetDidEnd:(NSWindow*)sheet
 			 returnCode:(NSInteger)returnCode
 			contextInfo:(void*)context
@@ -388,8 +391,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	// Check for duplicate configuration name
 	NSArray* configs = KEY_CONFIGS;
 	iTetKeyConfiguration* config;
-	NSUInteger numConfigs = [configs count];
-	for (NSUInteger i = 0; i < numConfigs; i++)
+	for (NSUInteger i = 0; i < [configs count]; i++)
 	{
 		config = [configs objectAtIndex:i];
 		
@@ -397,10 +399,10 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 		{	
 			// Create a new alert
 			NSAlert* alert = [[NSAlert alloc] init];
-			[alert setMessageText:@"Duplicate Configuration"];
-			[alert setInformativeText:[NSString stringWithFormat:@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", newConfigName]];
-			[alert addButtonWithTitle:@"Replace"];
-			[alert addButtonWithTitle:@"Cancel"];
+			[alert setMessageText:iTetReplaceKeyboardConfigurationAlertTitle];
+			[alert setInformativeText:[NSString stringWithFormat:iTetReplaceKeyboardConfigurationAlertInformativeText, newConfigName]];
+			[alert addButtonWithTitle:iTetReplaceButtonTitle];
+			[alert addButtonWithTitle:iTetCancelButtonTitle];
 			
 			// Order out the old sheet
 			[sheet orderOut:self];

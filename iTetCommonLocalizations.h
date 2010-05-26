@@ -7,4 +7,5 @@
 
 #define iTetCancelButtonTitle		NSLocalizedStringFromTable(@"Cancel", @"Common", @"Title of 'cancel' button for general alert dialogs")
 #define iTetDeleteButtonTitle		NSLocalizedStringFromTable(@"Delete", @"Common", @"Title of 'delete' button on 'confirm deletion?' alert dialogs")
-#define iTetDoNotSaveButtonTitle	NSLocalizedStringFromTable(@"Don't Save", @"Common", @"Title of 'don't save' button on 'confirm quit without saving' alert dialogs")
+#define iTetDoNotSaveButtonTitle	NSLocalizedStringFromTable(@"Don't Save", @"Common", @"Title of 'don't save' button on 'confirm quit without saving?' alert dialogs")
+#define iTetReplaceButtonTitle		NSLocalizedStringFromTable(@"Replace", @"Common", @"Title of 'replace' button on 'replace existing item?' alert dialogs")
