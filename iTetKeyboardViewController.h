@@ -39,6 +39,8 @@
 	IBOutlet NSButton* saveButton;
 	
 	iTetKeyConfiguration* unsavedConfiguration;
+	
+	BOOL displayingPrompt;
 }
 
 - (IBAction)changeConfiguration:(id)sender;

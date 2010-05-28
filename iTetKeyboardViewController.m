@@ -18,6 +18,7 @@
 
 #define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"Preferences", @"Title of 'keyboard configuration' preferences pane")
 #define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"Preferences", @"Placeholder name for keyboard configurations that have yet to be saved with a configuration name")
+#define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"Preferences", @"Format for the prompt for the user to bind a new key to a specified action")
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
 NSString* const iTetNewControllerInfoKey =					@"newController";
@@ -136,7 +137,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	[self displayConfigurationNumber:CURRENT_CONFIG_NUM];
 	
 	// Clear the description text
-	[keyDescriptionField setStringValue:@""];
+	[keyDescriptionField setStringValue:[NSString string]];
+	displayingPrompt = NO;
 }
 
 - (void)dealloc
@@ -593,11 +595,12 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	}
 	else
 	{
-		// Key view is no longer highlighted: if the description text currently contains the key's description, clear the text
-		// FIXME: hacky, and completely internationalization-unsafe
-		NSString* desc = [keyDescriptionField stringValue];
-		if (([desc length] > 0) && ([desc characterAtIndex:0] == 'P'))
-			[keyDescriptionField setStringValue:@""];
+		// Key view is no longer highlighted: if the description text currently contains a message prompting the user to press a key, clear the text
+		if (displayingPrompt)
+		{
+			[keyDescriptionField setStringValue:[NSString string]];
+			displayingPrompt = NO;
+		}
 	}
 }
 
@@ -628,6 +631,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 			
 			// Place a warning in the text field
 			[keyDescriptionField setStringValue:[NSString stringWithFormat:@"'%@' is already bound to '%@'", [key printedName], iTetNameForAction(boundAction)]];
+			displayingPrompt = NO;
 		}
 		
 		return NO;
@@ -663,7 +667,8 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 					  forKeyBinding:key];
 	
 	// Clear the text field
-	[keyDescriptionField setStringValue:@""];
+	[keyDescriptionField setStringValue:[NSString string]];
+	displayingPrompt = NO;
 }
 
 #pragma mark -
@@ -702,11 +707,10 @@ didSetRepresentedKey:(iTetKeyNamePair*)key
 #pragma mark -
 #pragma mark Accessors
 
-NSString* const iTetKeyDescriptionFormat = @"Press a key to bind to '%@'";
-
 - (void)setKeyDescriptionForKeyView:(iTetKeyView*)keyView
 {
 	[keyDescriptionField setStringValue:[NSString stringWithFormat:iTetKeyDescriptionFormat, iTetNameForAction([keyView associatedAction])]];
+	displayingPrompt = YES;
 }
 
 @end
