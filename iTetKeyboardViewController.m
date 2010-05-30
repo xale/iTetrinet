@@ -17,7 +17,7 @@
 #import "iTetCommonLocalizations.h"
 
 #define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"Preferences", @"Title of 'keyboard configuration' preferences pane")
-#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Keyboard Configuration", @"Preferences", @"Placeholder name for keyboard configurations that have yet to be saved with a configuration name")
+#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"KeyConfigurations", @"Placeholder name for copied keyboard configurations that have yet to be saved with a unique name")
 #define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"Preferences", @"Format for the prompt for the user to bind a new key to a specified action")
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
