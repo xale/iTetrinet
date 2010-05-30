@@ -17,7 +17,7 @@
 #import "iTetCommonLocalizations.h"
 
 #define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"Preferences", @"Title of 'keyboard configuration' preferences pane")
-#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"Preferences", @"Placeholder name for keyboard configurations that have yet to be saved with a configuration name")
+#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Keyboard Configuration", @"Preferences", @"Placeholder name for keyboard configurations that have yet to be saved with a configuration name")
 #define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"Preferences", @"Format for the prompt for the user to bind a new key to a specified action")
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
@@ -59,8 +59,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	return self;
 }
 
-#define iTetSaveKeyboardConfigurationMenuTitle		NSLocalizedStringFromTable(@"Save Configuration...", @"Preferences", @"Title of menu item used to save the active keyboard configurations")
-#define iTetDeleteKeyboardConfigurationMenuTitle	NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of menu item used to delete the active keyboard configuration")
+#define iTetSaveKeyboardConfigurationMenuTitle		NSLocalizedStringFromTable(@"Save Current Configuration...", @"Preferences", @"Title of menu item used to save the active keyboard configurations")
+#define iTetDeleteKeyboardConfigurationMenuTitle	NSLocalizedStringFromTable(@"Delete Current Configuration", @"Preferences", @"Title of menu item used to delete the active keyboard configuration")
 
 - (void)awakeFromNib
 {
