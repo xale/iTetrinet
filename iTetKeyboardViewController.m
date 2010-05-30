@@ -163,10 +163,10 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark Interface Actions
 
-#define iTetUnsavedKeyboardConfigurationAlertTitle						NSLocalizedStringFromTable(@"Unsaved Configuration", @"Preferences", @"Title of the alert displayed when the user attempts to change keyboard configurations or dismiss the view while the active configuration is unsaved")
-#define iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?", @"Preferences", @"Informative text explaining the alert when the user attempts to change keyboard configurations while the active configuration is unsaved")
-#define iTetSaveKeyboardConfigurationButtonTitle						NSLocalizedStringFromTable(@"Save Configuration", @"Preferences", @"Title of button displayed on the 'change keyboard configuration or dismiss view with unsaved configuration' alert that allows the user to save the unsaved configuration")
-#define iTetChangeWithoutSavingKeyboardConfigurationButtonTitle			NSLocalizedStringFromTable(@"Change without Saving", @"Preferences", @"Title of button displayed on the 'change keyboard configuration with unsaved configuration' alert that allows the user to switch configurations without saving")
+#define iTetUnsavedKeyboardConfigurationAlertTitle						NSLocalizedStringFromTable(@"Unsaved Configuration", @"Alerts", @"Title of the alert displayed when the user attempts to change keyboard configurations or dismiss the view while the active configuration is unsaved")
+#define iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?", @"Alerts", @"Informative text explaining the alert when the user attempts to change keyboard configurations while the active configuration is unsaved")
+#define iTetSaveKeyboardConfigurationButtonTitle						NSLocalizedStringFromTable(@"Save Configuration", @"Alerts", @"Title of button displayed on the 'change keyboard configuration or dismiss view with unsaved configuration' alert that allows the user to save the unsaved configuration")
+#define iTetChangeWithoutSavingKeyboardConfigurationButtonTitle			NSLocalizedStringFromTable(@"Change without Saving", @"Alerts", @"Title of button displayed on the 'change keyboard configuration with unsaved configuration' alert that allows the user to switch configurations without saving")
 
 - (IBAction)changeConfiguration:(id)sender
 {
@@ -214,8 +214,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	     returnCode:[sender tag]];
 }
 
-#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Preferences", @"Title of the alert displayed to confirm the deletion of a keyboard configuration")
-#define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"Preferences", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Alerts", @"Title of the alert displayed to confirm the deletion of a keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"Alerts", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
 
 - (IBAction)deleteConfiguration:(id)sender
 {
@@ -239,7 +239,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark View Swapping/Closing
 
-#define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"Preferences", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
+#define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"Alerts", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 				byWindowController:(iTetPreferencesWindowController*)sender
@@ -372,8 +372,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	[self saveConfiguration:self];
 }
 
-#define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Configuration", @"Preferences", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")
-#define iTetReplaceKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", @"Preferences", @"Informative text asking the user whether he or she would like to overwrite an existing keyboard configuration of the same name, or cancel saving")
+#define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Configuration", @"Alerts", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")
+#define iTetReplaceKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", @"Alerts", @"Informative text asking the user whether he or she would like to overwrite an existing keyboard configuration of the same name, or cancel saving")
 
 - (void)saveSheetDidEnd:(NSWindow*)sheet
 			 returnCode:(NSInteger)returnCode
