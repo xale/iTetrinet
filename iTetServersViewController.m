@@ -8,6 +8,8 @@
 #import "iTetServersViewController.h"
 #import "iTetServerInfo.h"
 
+#define iTetServersPreferencesViewName	NSLocalizedStringFromTable(@"Servers List", @"Preferences", @"Title of the 'servers' preferences pane")
+
 @implementation iTetServersViewController
 
 - (id)init
@@ -15,7 +17,7 @@
 	if (![super initWithNibName:@"ServersPrefsView" bundle:nil])
 		return nil;
 	
-	[self setTitle:@"Servers List"];
+	[self setTitle:iTetServersPreferencesViewName];
 	
 	return self;
 }
