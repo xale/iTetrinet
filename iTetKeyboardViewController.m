@@ -102,7 +102,9 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	
 	// Register for notifications when a key view changes highlight state
 	for (iTetKeyView* keyView in keyViews)
+	{
 		[self startObservingKeyView:keyView];
+	}
 	
 	// Fill the pop-up menu with the available keyboard configurations
 	NSArray* configurations = KEY_CONFIGS;
@@ -148,7 +150,9 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	
 	// Stop observing key view highlight states
 	for (iTetKeyView* keyView in keyViews)
+	{
 		[self stopObservingKeyView:keyView];
+	}
 	
 	// Release the array of key views
 	[keyViews release];
@@ -607,6 +611,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark iTetKeyView Delegate Methods
 
+#define iTetKeyAlreadyBoundMessage	NSLocalizedStringFromTable(@"'%@' is already bound to '%@'", @"Preferences", @"Message displayed on the keyboard preferences pane when a user attempts to bind a key that is already bound to another action")
+
 - (BOOL)keyView:(iTetKeyView*)keyView
 shouldSetRepresentedKey:(iTetKeyNamePair*)key
 {
@@ -630,7 +636,7 @@ shouldSetRepresentedKey:(iTetKeyNamePair*)key
 			NSBeep();
 			
 			// Place a warning in the text field
-			[keyDescriptionField setStringValue:[NSString stringWithFormat:@"'%@' is already bound to '%@'", [key printedName], iTetNameForAction(boundAction)]];
+			[keyDescriptionField setStringValue:[NSString stringWithFormat:iTetKeyAlreadyBoundMessage, [key printedName], iTetNameForAction(boundAction)]];
 			displayingPrompt = NO;
 		}
 		
