@@ -20,6 +20,8 @@
 #import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
 
+#import "iTetCommonLocalizations.h"
+
 @implementation iTetWindowController
 
 + (void)initialize
@@ -70,10 +72,8 @@
 #pragma mark -
 #pragma mark NSApplication Delegate Methods
 
-#define iTetQuitWithGameInProgressAlertTitle			NSLocalizedStringFromTable(@"Game in Progress", @"Alerts", @"Title of alert displayed when the user attempts to close the application while participating in a game")
 #define iTetQuitWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to quit?", @"Alerts", @"Informative text on alert displayed when the user attempts to close the application while participating in a game")
 #define iTetQuitWithGameInProgressConfirmButtonTitle	NSLocalizedStringFromTable(@"Quit Anyway", @"Alerts", @"Title of button on 'quit with game in progress?' alert that allows the user to close the application")
-#define iTetQuitWithGameInProgressCancelButtonTitle		NSLocalizedStringFromTable(@"Continue Playing", @"Alerts", @"Title of button on 'quit with game in progress?' alert that allows the the user to cancel closing and continue playing the game")
 
 #define iTetQuitWithConnectionOpenAlertTitle			NSLocalizedStringFromTable(@"Open Connection", @"Alerts", @"Title of alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
 #define iTetQuitWithConnectionOpenAlertInformativeText	NSLocalizedStringFromTable(@"You are currently connected to the server '%@'. Are you sure you want to quit?", @"Alerts", @"Informative text on alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
@@ -91,10 +91,10 @@
 		// Check if there is a game in progress
 		if ([[playersController localPlayer] isPlaying])
 		{
-			[alert setMessageText:iTetQuitWithGameInProgressAlertTitle];
+			[alert setMessageText:iTetGameInProgressAlertTitle];
 			[alert setInformativeText:iTetQuitWithGameInProgressAlertInformativeText];
 			[alert addButtonWithTitle:iTetQuitWithGameInProgressConfirmButtonTitle];
-			[alert addButtonWithTitle:iTetQuitWithGameInProgressCancelButtonTitle];
+			[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
 		}
 		else
 		{

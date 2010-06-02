@@ -26,6 +26,8 @@
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
 
+#import "iTetCommonLocalizations.h"
+
 #ifdef _ITETRINET_DEBUG
 #import "NSString+MessageData.h"
 #import "iTetTextAttributes.h"
@@ -80,6 +82,14 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #pragma mark -
 #pragma mark Interface Actions
 
+#define iTetDisconnectWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to disconnect from the server?", @"Alerts", @"Informative text on alert displayed when the user attempts to disconnect from a server while participating in a game")
+#define iTetDisconnectWithGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit and Disconnect", @"Alerts", @"Title of button on 'disconnect with game in progress?' alert that allows the user to stop playing and disconnect")
+
+#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"Connect to Server", @"Alerts", @"Title of 'connect to server' alert dialog")
+#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"Select a server to connect to:", @"Alerts", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
+#define iTetConnectToServerConnectButtonTitle	NSLocalizedStringFromTable(@"Connect", @"Alerts", @"Button on 'connect to server' alert dialog that confirms and connects to the user's selected server")
+#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"Edit Server List...", @"Alerts", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
+
 - (IBAction)openCloseConnection:(id)sender
 {
 	switch ([self connectionState])
@@ -92,10 +102,10 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			{
 				// Create an alert
 				NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-				[alert setMessageText:@"Game in Progress"];
-				[alert setInformativeText:@"A game is currently in progress. Are you sure you want to disconnect from the server?"];
-				[alert addButtonWithTitle:@"Disconnect"];
-				[alert addButtonWithTitle:@"Continue Playing"];
+				[alert setMessageText:iTetGameInProgressAlertTitle];
+				[alert setInformativeText:iTetDisconnectWithGameInProgressAlertInformativeText];
+				[alert addButtonWithTitle:iTetDisconnectWithGameInProgressConfirmButtonTitle];
+				[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
 				
 				// Run the alert as a sheet
 				[alert beginSheetModalForWindow:[windowController window]
@@ -131,11 +141,11 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		{
 			// Create an alert for the server selection dialog
 			NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
-			[dialog setMessageText:@"Connect to Server"];
-			[dialog setInformativeText:@"Select a server to connect to:"];
-			[dialog addButtonWithTitle:@"Connect"];
-			[dialog addButtonWithTitle:@"Cancel"];
-			[dialog addButtonWithTitle:@"Edit Server List..."];
+			[dialog setMessageText:iTetConnectToServerAlertTitle];
+			[dialog setInformativeText:iTetConnectToServerAlertInformativeText];
+			[dialog addButtonWithTitle:iTetConnectToServerConnectButtonTitle];
+			[dialog addButtonWithTitle:iTetCancelButtonTitle];
+			[dialog addButtonWithTitle:iTetEditServerListButtonTitle];
 			
 			// Add the server selection view as the dialog's accessory
 			[dialog setAccessoryView:serverListView];
@@ -365,6 +375,9 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
+#define iTetPlayerJoinedEventStatusMessage	NSLocalizedStringFromTable(@"%@ has joined the channel", @"Events", @"Status message displayed to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessage	NSLocalizedStringFromTable(@"%@ has left the channel", @"Events", @"Status message displayed to the chat view when a player leaves the channel")
+
 - (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message
 {
 	// Determine the nature of the message
@@ -430,7 +443,7 @@ willDisconnectWithError:(NSError*)error
 										  nickname:[joinMessage nickname]];
 			
 			// Add a status message to the chat view
-			[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has joined the channel", [joinMessage nickname]]];
+			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessage, [joinMessage nickname]]];
 			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];
@@ -446,7 +459,7 @@ willDisconnectWithError:(NSError*)error
 			
 			// If the player number is not the local player's, add a status message to the chat view
 			if (![player isLocalPlayer])
-				[chatController appendStatusMessage:[NSString stringWithFormat:@"Player %@ has left the channel", [player nickname]]];
+				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessage, [player nickname]]];
 			
 			// Remove the player from the game
 			[playersController removePlayerNumber:[player playerNumber]];
