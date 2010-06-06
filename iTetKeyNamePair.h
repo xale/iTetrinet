@@ -7,7 +7,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define iTetSpacebarPlaceholderString	NSLocalizedStringFromTable(@"space", @"KeyNames", @"Name of the spacebar key, in lowercase")
+#define iTetSpacebarPlaceholderString	NSLocalizedStringFromTable(@"space", @"Keyboard", @"Name of the spacebar key, in lowercase")
 
 #define iTetLeftArrowKeyCode	(123)
 #define iTetRightArrowKeyCode	(124)

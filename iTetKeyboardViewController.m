@@ -16,9 +16,9 @@
 
 #import "iTetCommonLocalizations.h"
 
-#define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"Preferences", @"Title of 'keyboard configuration' preferences pane")
-#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"KeyConfigurations", @"Placeholder name for copied keyboard configurations that have yet to be saved with a unique name")
-#define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"Preferences", @"Format for the prompt for the user to bind a new key to a specified action")
+#define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"KeyboardPrefsViewController", @"Title of 'keyboard configuration' preferences pane")
+#define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"Keyboard", @"Placeholder name for copied keyboard configurations that have yet to be saved with a unique name")
+#define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"KeyboardPrefsViewController", @"Format for the prompt for the user to bind a new key to a specified action")
 
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
 NSString* const iTetNewControllerInfoKey =					@"newController";
@@ -59,8 +59,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	return self;
 }
 
-#define iTetSaveKeyboardConfigurationMenuTitle		NSLocalizedStringFromTable(@"Save Current Configuration...", @"Preferences", @"Title of menu item used to save the active keyboard configurations")
-#define iTetDeleteKeyboardConfigurationMenuTitle	NSLocalizedStringFromTable(@"Delete Current Configuration", @"Preferences", @"Title of menu item used to delete the active keyboard configuration")
+#define iTetSaveKeyboardConfigurationMenuTitle		NSLocalizedStringFromTable(@"Save Current Configuration...", @"KeyboardPrefsViewController", @"Title of menu item used to save the active keyboard configurations")
+#define iTetDeleteKeyboardConfigurationMenuTitle	NSLocalizedStringFromTable(@"Delete Current Configuration", @"KeyboardPrefsViewController", @"Title of menu item used to delete the active keyboard configuration")
 
 - (void)awakeFromNib
 {
@@ -163,10 +163,10 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark Interface Actions
 
-#define iTetUnsavedKeyboardConfigurationAlertTitle						NSLocalizedStringFromTable(@"Unsaved Configuration", @"Alerts", @"Title of the alert displayed when the user attempts to change keyboard configurations or dismiss the view while the active configuration is unsaved")
-#define iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?", @"Alerts", @"Informative text explaining the alert when the user attempts to change keyboard configurations while the active configuration is unsaved")
-#define iTetSaveKeyboardConfigurationButtonTitle						NSLocalizedStringFromTable(@"Save Configuration", @"Alerts", @"Title of button displayed on the 'change keyboard configuration or dismiss view with unsaved configuration' alert that allows the user to save the unsaved configuration")
-#define iTetChangeWithoutSavingKeyboardConfigurationButtonTitle			NSLocalizedStringFromTable(@"Change without Saving", @"Alerts", @"Title of button displayed on the 'change keyboard configuration with unsaved configuration' alert that allows the user to switch configurations without saving")
+#define iTetUnsavedKeyboardConfigurationAlertTitle						NSLocalizedStringFromTable(@"Unsaved Configuration", @"KeyboardPrefsViewController", @"Title of the alert displayed when the user attempts to change keyboard configurations or dismiss the view while the active configuration is unsaved")
+#define iTetChangeWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?", @"KeyboardPrefsViewController", @"Informative text explaining the alert when the user attempts to change keyboard configurations while the active configuration is unsaved")
+#define iTetSaveKeyboardConfigurationButtonTitle						NSLocalizedStringFromTable(@"Save Configuration", @"KeyboardPrefsViewController", @"Title of button displayed on the 'change keyboard configuration or dismiss view with unsaved configuration' alert that allows the user to save the unsaved configuration")
+#define iTetChangeWithoutSavingKeyboardConfigurationButtonTitle			NSLocalizedStringFromTable(@"Change without Saving", @"KeyboardPrefsViewController", @"Title of button displayed on the 'change keyboard configuration with unsaved configuration' alert that allows the user to switch configurations without saving")
 
 - (IBAction)changeConfiguration:(id)sender
 {
@@ -214,8 +214,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	     returnCode:[sender tag]];
 }
 
-#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"Alerts", @"Title of the alert displayed to confirm the deletion of a keyboard configuration")
-#define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"Alerts", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertTitle			NSLocalizedStringFromTable(@"Delete Configuration", @"KeyboardPrefsViewController", @"Title of the alert displayed to confirm the deletion of a keyboard configuration")
+#define iTetDeleteKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to delete the configuration named '%@'?", @"KeyboardPrefsViewController", @"Informative text asking the user for confirmation to delete a specified keyboard configuration")
 
 - (IBAction)deleteConfiguration:(id)sender
 {
@@ -239,7 +239,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark View Swapping/Closing
 
-#define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"Alerts", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
+#define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"KeyboardPrefsViewController", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
 
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 				byWindowController:(iTetPreferencesWindowController*)sender
@@ -372,8 +372,8 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	[self saveConfiguration:self];
 }
 
-#define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Configuration", @"Alerts", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")
-#define iTetReplaceKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", @"Alerts", @"Informative text asking the user whether he or she would like to overwrite an existing keyboard configuration of the same name, or cancel saving")
+#define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Configuration", @"KeyboardPrefsViewController", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")
+#define iTetReplaceKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"A keyboard configuration already exists with the name '%@'. Would you like to replace it?", @"KeyboardPrefsViewController", @"Informative text asking the user whether he or she would like to overwrite an existing keyboard configuration of the same name, or cancel saving")
 
 - (void)saveSheetDidEnd:(NSWindow*)sheet
 			 returnCode:(NSInteger)returnCode
@@ -611,7 +611,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 #pragma mark -
 #pragma mark iTetKeyView Delegate Methods
 
-#define iTetKeyAlreadyBoundMessage	NSLocalizedStringFromTable(@"'%@' is already bound to '%@'", @"Preferences", @"Message displayed on the keyboard preferences pane when a user attempts to bind a key that is already bound to another action")
+#define iTetKeyAlreadyBoundMessage	NSLocalizedStringFromTable(@"'%@' is already bound to '%@'", @"KeyboardPrefsViewController", @"Message displayed on the keyboard preferences pane when a user attempts to bind a key that is already bound to another action")
 
 - (BOOL)keyView:(iTetKeyView*)keyView
 shouldSetRepresentedKey:(iTetKeyNamePair*)key

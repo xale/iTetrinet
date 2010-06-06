@@ -84,11 +84,11 @@
 
 #define EscapeKeyCode	(53)
 
-#define iTetEscapeKeyPlaceholderString	NSLocalizedStringFromTable(@"esc", @"KeyNames", @"Letters appearing on or abbreviation representing the escape key on the keyboard")
-#define iTetTabKeyPlaceholderString		NSLocalizedStringFromTable(@"tab", @"KeyNames", @"Name of the 'tab' key, in lowercase")
-#define iTetReturnKeyPlaceholderString	NSLocalizedStringFromTable(@"return", @"KeyNames", @"Name of the 'return' key, in lowercase")
-#define iTetEnterKeyPlaceholderString	NSLocalizedStringFromTable(@"enter", @"KeyNames", @"Name of the 'enter' key, in lowercase")
-#define iTetDeleteKeyPlaceholderString	NSLocalizedStringFromTable(@"delete", @"KeyNames", @"Name of the 'delete' key, in lowercase")
+#define iTetEscapeKeyPlaceholderString	NSLocalizedStringFromTable(@"esc", @"Keyboard", @"Letters appearing on or abbreviation representing the escape key on the keyboard")
+#define iTetTabKeyPlaceholderString		NSLocalizedStringFromTable(@"tab", @"Keyboard", @"Name of the 'tab' key, in lowercase")
+#define iTetReturnKeyPlaceholderString	NSLocalizedStringFromTable(@"return", @"Keyboard", @"Name of the 'return' key, in lowercase")
+#define iTetEnterKeyPlaceholderString	NSLocalizedStringFromTable(@"enter", @"Keyboard", @"Name of the 'enter' key, in lowercase")
+#define iTetDeleteKeyPlaceholderString	NSLocalizedStringFromTable(@"delete", @"Keyboard", @"Name of the 'delete' key, in lowercase")
 
 NSString* const iTetLeftArrowKeyPlaceholderString =		@"←";
 NSString* const iTetRightArrowKeyPlaceholderString =	@"→";
@@ -155,11 +155,11 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	return keyString;
 }
 
-#define iTetUnknownModifierPlaceholderString	NSLocalizedStringFromTable(@"(unknown)", @"KeyNames", @"Placeholder string for an unknown modifier key.")
-#define iTetShiftKeyPlaceholderString			NSLocalizedStringFromTable(@"shift", @"KeyNames", @"Name of the 'shift' modifier key, in lowercase")
-#define iTetControlKeyPlaceholderString			NSLocalizedStringFromTable(@"control", @"KeyNames", @"Name of the 'control' modifier key, in lowercase")
-#define iTetAltOptionKeyPlaceholderString		NSLocalizedStringFromTable(@"option", @"KeyNames", @"Name of the 'option' modifier key, in lowercase")
-#define iTetCommandKeyPlaceholderString			NSLocalizedStringFromTable(@"command", @"KeyNames", @"Name of the 'command' modifier key, in lowercase")
+#define iTetUnknownModifierPlaceholderString	NSLocalizedStringFromTable(@"(unknown)", @"Keyboard", @"Placeholder string for an unknown modifier key.")
+#define iTetShiftKeyPlaceholderString			NSLocalizedStringFromTable(@"shift", @"Keyboard", @"Name of the 'shift' modifier key, in lowercase")
+#define iTetControlKeyPlaceholderString			NSLocalizedStringFromTable(@"control", @"Keyboard", @"Name of the 'control' modifier key, in lowercase")
+#define iTetAltOptionKeyPlaceholderString		NSLocalizedStringFromTable(@"option", @"Keyboard", @"Name of the 'option' modifier key, in lowercase")
+#define iTetCommandKeyPlaceholderString			NSLocalizedStringFromTable(@"command", @"Keyboard", @"Name of the 'command' modifier key, in lowercase")
 
 - (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
 {

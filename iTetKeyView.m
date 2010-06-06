@@ -58,7 +58,7 @@
 }
 
 NSString* const iTetKeyFontName =	@"Helvetica";
-#define iTetNumpadKeyLabel			NSLocalizedStringFromTable(@"num", @"KeyNames", @"Short decorator for keys appearing on the numeric keypad (to differentiate them from identical keys elsewhere)")
+#define iTetNumpadKeyLabel			NSLocalizedStringFromTable(@"num", @"Keyboard", @"Short decorator for keys appearing on the numeric keypad (to differentiate them from identical keys elsewhere)")
 #define KEY_LINE_COLOR				[NSColor grayColor]
 #define KEY_FILL_COLOR				[NSColor whiteColor]
 #define KEY_FONT_SIZE				(22.0)
