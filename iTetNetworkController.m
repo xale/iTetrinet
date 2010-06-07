@@ -375,8 +375,8 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
-#define iTetPlayerJoinedEventStatusMessage	NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message displayed to the chat view when a player joins the channel")
-#define iTetPlayerLeftEventStatusMessage	NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message displayed to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedEventStatusMessage	NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessage	NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
 
 - (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message
 {
