@@ -206,6 +206,9 @@
 #pragma mark -
 #pragma mark IPSContextMenuTableView Delegate Methods
 
+#define iTetChannelRightClickActionsMenuTitle	NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
+#define iTetJoinChannelActionMenuItemTitle		NSLocalizedStringFromTable(@"Join Channel", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
+
 - (NSMenu*)tableView:(IPSContextMenuTableView*)tableView
 		menuForEvent:(NSEvent*)event
 {
@@ -214,11 +217,11 @@
 		return nil;
 	
 	// Create a menu
-	NSMenu* menu = [[[NSMenu allocWithZone:[NSMenu menuZone]] initWithTitle:@"Channel Actions"] autorelease];
+	NSMenu* menu = [[[NSMenu allocWithZone:[NSMenu menuZone]] initWithTitle:iTetChannelRightClickActionsMenuTitle] autorelease];
 	[menu setAutoenablesItems:NO];
 	
 	// Create "join channel" a menu item
-	NSMenuItem* menuItem = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:@"Join Channel"
+	NSMenuItem* menuItem = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetJoinChannelActionMenuItemTitle
 																				 action:@selector(switchToSelectedChannel:)
 																		  keyEquivalent:[NSString string]] autorelease];
 	[menuItem setTarget:self];
@@ -252,6 +255,8 @@
 	[self switchToChannelNamed:channelName];	
 }
 
+#define iTetSwitchedChannelStatusMessageFormat	NSLocalizedStringFromTable(@"Switching to channel '%@'", @"ChannelsViewController", @"Status message appended to the chat view when the user changes channels on the server to which he or she is connected")
+
 - (void)switchToChannelNamed:(NSString*)channelName
 {
 	// Check that the player is not already in this channel
@@ -259,7 +264,7 @@
 		return;
 	
 	// Append a status message to the chat view
-	[chatController appendStatusMessage:[NSString stringWithFormat:@"Switching to channel: %@", channelName]];
+	[chatController appendStatusMessage:[NSString stringWithFormat:iTetSwitchedChannelStatusMessageFormat, channelName]];
 	
 	// Send a "/join" message to the server
 	[networkController sendMessage:[iTetJoinChannelMessage messageWithChannelName:channelName
