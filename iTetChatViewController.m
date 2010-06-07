@@ -29,6 +29,9 @@
 #pragma mark -
 #pragma mark Interface Actions
 
+NSString* const iTetCommandMessagePrefix =	@"/";
+NSString* const iTetActionMessagePrefix =	@"/me ";
+
 - (IBAction)submitChatMessage:(id)sender
 {
 	// Check if there is a message to send
@@ -36,16 +39,17 @@
 	if ([messageContents length] == 0)
 		return;
 	
-	// Check if the string is an action
-	BOOL action = ([messageContents length] > 3) && [[[messageContents string] substringToIndex:3] isEqualToString:@"/me"];
+	// Check if the string is an emote
+	BOOL action = ([[[messageContents string] commonPrefixWithString:iTetActionMessagePrefix
+															 options:NSCaseInsensitiveSearch] length] == [iTetActionMessagePrefix length]);
 	
 	// Construct the message
 	iTetMessage<iTetOutgoingMessage>* message;
 	iTetPlayer* localPlayer = [playersController localPlayer];
 	if (action)
 	{
-		// Trim off the "/me "
-		messageContents = [messageContents attributedSubstringFromRange:NSMakeRange(4, [messageContents length] - 4)];
+		// Trim off the emote prefix
+		messageContents = [messageContents attributedSubstringFromRange:NSMakeRange([iTetActionMessagePrefix length], [messageContents length] - [iTetActionMessagePrefix length])];
 		
 		// Create the message
 		message = [iTetPlineActionMessage messageWithContents:messageContents
@@ -63,7 +67,7 @@
 	[networkController sendMessage:message];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
-	if (action || ([[messageContents string] characterAtIndex:0] != '/'))
+	if (action || ([[[messageContents string] commonPrefixWithString:iTetCommandMessagePrefix options:0] length] == 0))
 	{
 		[self appendChatLine:messageContents
 				  fromPlayer:localPlayer
@@ -96,6 +100,8 @@
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
 }
 
+NSString* const iTetActionMessageIndicator =	@"•";
+
 - (void)appendChatLine:(NSAttributedString*)line
 			fromPlayer:(iTetPlayer*)player
 				action:(BOOL)isAction
@@ -104,7 +110,7 @@
 	if (isAction)
 	{
 		// Begin the message line with a dot (to indicate an action)
-		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:@"•"] autorelease];
+		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:iTetActionMessageIndicator] autorelease];
 		
 		// Append the player's name (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];
@@ -144,7 +150,10 @@
 	NSFont* font = [NSFont fontWithName:@"Helvetica-Bold" size:12.0];
 	
 	// Create an attributed string with the message and the above attributes
-	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, statusMessageStyle, NSParagraphStyleAttributeName, nil];
+	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
+							  font, NSFontAttributeName,
+							  statusMessageStyle, NSParagraphStyleAttributeName,
+							  nil];
 	NSAttributedString* formattedMessage = [[[NSAttributedString alloc] initWithString:message
 																			attributes:attrDict] autorelease];
 	
