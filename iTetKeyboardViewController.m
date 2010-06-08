@@ -455,6 +455,8 @@ NSString* const iTetUnsavedConfigurationPlaceholderName =	@"Unsaved Configuratio
 	// Replace the old configuration with the new
 	[configs replaceObjectAtIndex:index
 					   withObject:unsavedConfiguration];
+	[[NSUserDefaults standardUserDefaults] archiveAndSetObject:configs
+														forKey:iTetKeyConfigsListPrefKey];
 	
 	// Clear the unsaved configuration
 	[self clearUnsavedConfiguration];
