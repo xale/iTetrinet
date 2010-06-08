@@ -401,7 +401,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 	{
 		config = [configs objectAtIndex:i];
 		
-		if ([[config configurationName] isEqualToString:newConfigName])
+		if ([[config configurationName] localizedCompare:newConfigName] == NSOrderedSame)
 		{	
 			// Create a new alert
 			NSAlert* alert = [[NSAlert alloc] init];

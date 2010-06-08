@@ -240,10 +240,10 @@ bail:
 	if ([otherObject isKindOfClass:[self class]])
 	{
 		iTetServerInfo* otherServer = (iTetServerInfo*)otherObject;
-		return ([serverName isEqualToString:[otherServer serverName]] &&
-				[serverAddress isEqualToString:[otherServer serverAddress]] &&
-				[playerNickname isEqualToString:[otherServer playerNickname]] &&
-				[playerTeamName isEqualToString:[otherServer playerTeamName]] &&
+		return (([serverName localizedCompare:[otherServer serverName]] == NSOrderedSame) &&
+				([serverAddress localizedCompare:[otherServer serverAddress]] == NSOrderedSame) &&
+				([playerNickname localizedCompare:[otherServer playerNickname]] == NSOrderedSame) &&
+				([playerTeamName localizedCompare:[otherServer playerTeamName]] == NSOrderedSame) &&
 				(protocol == [otherServer protocol]));
 	}
 	
