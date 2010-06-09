@@ -31,6 +31,8 @@
 
 #import "iTetTextAttributes.h"
 
+#import "iTetCommonLocalizations.h"
+
 #define LOCALPLAYER	[playersController localPlayer]
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
@@ -172,6 +174,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark -
 #pragma mark Interface Actions
 
+#define iTetEndGameAlertTitle			NSLocalizedStringFromTable(@"End Game in Progress?", @"GameViewController", @"Title of 'end game' confirmation alert, displayed when the user selects the 'end game' toolbar button or menu item")
+#define iTetEndGameAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to end the game in progress?", @"GameViewController", @"Informative text on 'end game' confirmation alert")
+#define iTetEndGameConfirmButtonTitle	NSLocalizedStringFromTable(@"End Game", @"GameViewController", @"Title of button on 'end game' confirmation alert that allows the user to confirm and end the game in progress")
+
 - (IBAction)startStopGame:(id)sender
 {	
 	// Check if a game is already in progress
@@ -180,10 +186,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// Confirm with user before ending game
 		// Create a confirmation dialog
 		NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
-		[dialog setMessageText:@"End Game in Progress?"];
-		[dialog setInformativeText:@"Are you sure you want to end the game in progress?"];
-		[dialog addButtonWithTitle:@"End Game"];
-		[dialog addButtonWithTitle:@"Continue Playing"];
+		[dialog setMessageText:iTetEndGameAlertTitle];
+		[dialog setInformativeText:iTetEndGameAlertInformativeText];
+		[dialog addButtonWithTitle:iTetEndGameConfirmButtonTitle];
+		[dialog addButtonWithTitle:iTetContinuePlayingButtonTitle];
 		
 		// Run the dialog as a window-modal sheet
 		[dialog beginSheetModalForWindow:[windowController window]
@@ -198,14 +204,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 }
 
+#define iTetForfeitGameAlertTitle			NSLocalizedStringFromTable(@"Forfeit Game?", @"GameViewController", @"Title of 'forfeit game' confirmation art, displayed when the user selects the 'forfeit game' toolbar button")
+#define iTetForfeitGameAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to forfeit this game?", @"GameViewController", @"Informative text on 'forfeit game' confirmation alert")
+#define iTetForfeitGameConfirmButtonTitle	NSLocalizedStringFromTable(@"Forfeit", @"GameViewController", @"Title of button on 'forfeit game' confirmation alert that allows the user to confirm and forfeit the game")
+
 - (IBAction)forfeitGame:(id)sender
 {
 	// Create a confirmation dialog
 	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
-	[dialog setMessageText:@"Forfeit Game?"];
-	[dialog setInformativeText:@"Are you sure you want to forfeit the current game?"];
-	[dialog addButtonWithTitle:@"Forfeit"];
-	[dialog addButtonWithTitle:@"Continue Playing"];
+	[dialog setMessageText:iTetForfeitGameAlertTitle];
+	[dialog setInformativeText:iTetForfeitGameAlertInformativeText];
+	[dialog addButtonWithTitle:iTetForfeitGameConfirmButtonTitle];
+	[dialog addButtonWithTitle:iTetContinuePlayingButtonTitle];
 	
 	// Run the dialog as a window-modal sheet
 	[dialog beginSheetModalForWindow:[windowController window]
@@ -966,12 +976,12 @@ doCommandBySelector:(SEL)command
 	}
 }
 
-NSString* const iTetSpecialEventDescriptionFormat =		@"%@ used on %@ by %@";
-NSString* const iTetLinesAddedEventDescriptionFormat =	@"%@ added to %@ by %@";
-NSString* const iTetOneLineAddedFormat =				@"1 Line";
-NSString* const iTetMultipleLinesAddedFormat =			@"%d Lines";
-NSString* const iTetServerSenderPlaceholderName =		@"Server";
-NSString* const iTetTargetAllPlaceholderName =			@"All";
+#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used; tokens in order are: special name, target player's name, sender player's name")
+#define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ added to %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
+#define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"1 Line", @"GameViewController", @"Token for event description messages describing a single line to be added to a player's field")
+#define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"%d Lines", @"GameViewController", @"Token format for event description messages describing multiple lines to be added to a player's field")
+#define iTetServerSenderPlaceholderName			NSLocalizedStringFromTable(@"Server", @"GameViewController", @"Placeholder string used in event description messages on the 'game actions' list when specials are used or lines are added by the server")
+#define iTetTargetAllPlaceholderName			NSLocalizedStringFromTable(@"All", @"GameViewController", @"Placeholder string used in event description messages on the 'game actions' list when a special is used on or lines are added to all players in the game")
 
 #define iTetEventBackgroundColorFraction	(0.15)
 
