@@ -1167,6 +1167,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 
 @synthesize currentGameRules;
 
+#define iTetNewGameMenuItemTitle	NSLocalizedStringFromTable(@"Begin New Game", @"GameViewController", @"Title of menu item used to start a new game")
+#define iTetNewGameButtonTitle		NSLocalizedStringFromTable(@"New Game", @"GameViewController", @"Title of toolbar button used to start a new game")
+
+#define iTetPauseGameMenuItemTitle	NSLocalizedStringFromTable(@"Pause Current Game", @"GameViewController", @"Title of menu item used to pause a game in progress")
+#define iTetPauseGameButtonTitle	NSLocalizedStringFromTable(@"Pause", @"GameViewController", @"Title of toolbar button used to pause a game in progress")
+
+#define iTetResumeGameMenuItemTitle	NSLocalizedStringFromTable(@"Resume Paused Game", @"GameViewController", @"Title of menu item used to resume a paused game")
+#define iTetResumeGameButtonTitle	NSLocalizedStringFromTable(@"Resume", @"GameViewController", @"Title of toolbar button used to resume a paused game")
+
+#define iTetEndGameMenuItemTitle	NSLocalizedStringFromTable(@"End Current Game...", @"GameViewController", @"Title of menu item used to end a game in progress")
+#define iTetEndGameButtonTitle		NSLocalizedStringFromTable(@"End Game", @"GameViewController", @"Title of toolbar button used to end a game in progress")
+
 - (void)setGameplayState:(iTetGameplayState)newState
 {
 	if (gameplayState == newState)
@@ -1176,16 +1188,16 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	{
 		case gameNotPlaying:
 			// Reset the "end game" menu and toolbar items
-			[gameMenuItem setTitle:@"New Game"];
+			[gameMenuItem setTitle:iTetNewGameMenuItemTitle];
 			[gameMenuItem setKeyEquivalent:@"n"];
-			[gameButton setLabel:@"New Game"];
+			[gameButton setLabel:iTetNewGameButtonTitle];
 			[gameButton setImage:[NSImage imageNamed:@"Play Green Button"]];
 			
 			// If the game was paused, reset the "resume" menu and toolbar items
 			if (gameplayState == gamePaused)
 			{
-				[pauseMenuItem setTitle:@"Pause Game"];
-				[pauseButton setLabel:@"Pause Game"];
+				[pauseMenuItem setTitle:iTetPauseGameMenuItemTitle];
+				[pauseButton setLabel:iTetPauseGameButtonTitle];
 				[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
 			}
 			
@@ -1193,24 +1205,24 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 		
 		case gamePaused:
 			// Change the "pause" toolbar and menu items to "resume" items
-			[pauseMenuItem setTitle:@"Resume Game"];
-			[pauseButton setLabel:@"Resume Game"];
+			[pauseMenuItem setTitle:iTetResumeGameMenuItemTitle];
+			[pauseButton setLabel:iTetResumeGameButtonTitle];
 			[pauseButton setImage:[NSImage imageNamed:@"Play Blue Button"]];
 			
 			break;
 			
 		case gamePlaying:
 			// Change the "new game" menu and toolbar items to "end game" items
-			[gameMenuItem setTitle:@"End Game..."];
+			[gameMenuItem setTitle:iTetEndGameMenuItemTitle];
 			[gameMenuItem setKeyEquivalent:@"e"];
-			[gameButton setLabel:@"End Game"];
+			[gameButton setLabel:iTetEndGameButtonTitle];
 			[gameButton setImage:[NSImage imageNamed:@"Stop Red Button"]];
 			
 			// If the game was paused, reset the "resume" menu and toolbar items
 			if (gameplayState == gamePaused)
 			{
-				[pauseMenuItem setTitle:@"Pause Game"];
-				[pauseButton setLabel:@"Pause Game"];
+				[pauseMenuItem setTitle:iTetPauseGameMenuItemTitle];
+				[pauseButton setLabel:iTetPauseGameButtonTitle];
 				[pauseButton setImage:[NSImage imageNamed:@"Pause Blue Button"]];
 			}
 			
