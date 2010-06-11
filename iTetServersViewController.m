@@ -8,7 +8,7 @@
 #import "iTetServersViewController.h"
 #import "iTetServerInfo.h"
 
-#define iTetServersPreferencesViewName	NSLocalizedStringFromTable(@"Servers List", @"ServersPrefsViewController", @"Title of the 'servers' preferences pane")
+#define iTetServersPreferencesViewName	NSLocalizedStringFromTable(@"Servers List", @"PreferencePanes", @"Title of the 'servers' preferences pane")
 
 @implementation iTetServersViewController
 

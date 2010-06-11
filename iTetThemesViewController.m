@@ -14,7 +14,7 @@
 
 #import "iTetCommonLocalizations.h"
 
-#define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"ThemesPrefsViewController", @"Title of the 'themes' preferences pane")
+#define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
 
 @interface iTetThemesViewController (Private)
 
