@@ -504,8 +504,8 @@
 				6A3DD0EA116E3A400047B881 /* iTetChannelsViewController.m */,
 				6ACC223D107D0CE7006768C0 /* iTetGameViewController.h */,
 				6ACC223E107D0CE7006768C0 /* iTetGameViewController.m */,
-				6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */,
 				6AEFEEBE11207BE6006A89CA /* iTetWinlistViewController.h */,
+				6AEFEEBF11207BE6006A89CA /* iTetWinlistViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

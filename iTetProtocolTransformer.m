@@ -22,9 +22,9 @@ NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 	return YES;
 }
 
-NSString* const tetrinetProtocolName =	@"Tetrinet";
-NSString* const tetrifastProtocolName =	@"Tetrifast";
-NSString* const unknownProtocolName =	@"Unknown Protocol";
+NSString* const iTetTetrinetProtocolName =	@"Tetrinet";
+NSString* const iTetTetrifastProtocolName =	@"Tetrifast";
+#define iTetUnknownProtocolName	NSLocalizedStringFromTable(@"Unknown Protocol", @"ServerInfo", @"Placeholder string for names of unfamiliar tetrinet protocols")
 
 - (id)transformedValue:(id)value
 {
@@ -39,13 +39,13 @@ NSString* const unknownProtocolName =	@"Unknown Protocol";
 	switch (protocol)
 	{
 		case tetrinetProtocol:
-			return tetrinetProtocolName;
+			return iTetTetrinetProtocolName;
 		case tetrifastProtocol:
-			return tetrifastProtocolName;
+			return iTetTetrifastProtocolName;
 	}
 	
 	// Unknown protocol (unlikely to happen)
-	return unknownProtocolName;
+	return iTetUnknownProtocolName;
 }
 
 - (id)reverseTransformedValue:(id)value
