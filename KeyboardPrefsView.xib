@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10C540</string>
-		<string key="IBDocument.InterfaceBuilderVersion">740</string>
-		<string key="IBDocument.AppKitVersion">1038.25</string>
-		<string key="IBDocument.HIToolboxVersion">458.00</string>
+		<string key="IBDocument.SystemVersion">10D573</string>
+		<string key="IBDocument.InterfaceBuilderVersion">762</string>
+		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.HIToolboxVersion">460.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">740</string>
+			<string key="NS.object.0">762</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -528,9 +528,9 @@
 			<object class="NSWindowTemplate" id="490652807">
 				<int key="NSWindowStyleMask">1</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{568, 565}, {273, 127}}</string>
+				<string key="NSWindowRect">{{568, 565}, {433, 127}}</string>
 				<int key="NSWTFlags">603980800</int>
-				<string key="NSWindowTitle">Window</string>
+				<string key="NSWindowTitle">Save Configuration</string>
 				<string key="NSWindowClass">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
@@ -542,7 +542,7 @@
 						<object class="NSButton" id="791402747">
 							<reference key="NSNextResponder" ref="690808988"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{95, 12}, {82, 32}}</string>
+							<string key="NSFrame">{{255, 12}, {82, 32}}</string>
 							<reference key="NSSuperview" ref="690808988"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="997265924">
@@ -562,7 +562,7 @@
 						<object class="NSButton" id="180568122">
 							<reference key="NSNextResponder" ref="690808988"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{177, 12}, {82, 32}}</string>
+							<string key="NSFrame">{{337, 12}, {82, 32}}</string>
 							<reference key="NSSuperview" ref="690808988"/>
 							<int key="NSTag">1</int>
 							<bool key="NSEnabled">YES</bool>
@@ -583,7 +583,7 @@
 						<object class="NSTextField" id="558622822">
 							<reference key="NSNextResponder" ref="690808988"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{20, 60}, {233, 22}}</string>
+							<string key="NSFrame">{{20, 60}, {393, 22}}</string>
 							<reference key="NSSuperview" ref="690808988"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="808582864">
@@ -605,7 +605,7 @@
 						<object class="NSTextField" id="1034957680">
 							<reference key="NSNextResponder" ref="690808988"/>
 							<int key="NSvFlags">266</int>
-							<string key="NSFrame">{{17, 90}, {239, 17}}</string>
+							<string key="NSFrame">{{17, 90}, {399, 17}}</string>
 							<reference key="NSSuperview" ref="690808988"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="830189161">
@@ -619,7 +619,7 @@
 							</object>
 						</object>
 					</object>
-					<string key="NSFrameSize">{273, 127}</string>
+					<string key="NSFrameSize">{433, 127}</string>
 					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
@@ -1377,8 +1377,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="558622822"/>
 							<reference ref="1034957680"/>
-							<reference ref="180568122"/>
 							<reference ref="791402747"/>
+							<reference ref="180568122"/>
 						</object>
 						<reference key="parent" ref="490652807"/>
 					</object>
@@ -1859,9 +1859,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{701, 527}, {273, 127}}</string>
+					<string>{{399, 528}, {433, 127}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{701, 527}, {273, 127}}</string>
+					<string>{{399, 528}, {433, 127}}</string>
 					<boolean value="NO"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1899,6 +1899,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">AsyncSocket.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">IPSContextMenuTableView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -2500,6 +2507,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
+		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1050" key="NS.object.0"/>
