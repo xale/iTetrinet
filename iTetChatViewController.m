@@ -43,8 +43,7 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 		return;
 	
 	// Check if the string is an emote
-	BOOL action = ([[[messageContents string] commonPrefixWithString:iTetActionMessagePrefix
-															 options:NSCaseInsensitiveSearch] length] == [iTetActionMessagePrefix length]);
+	BOOL action = [[messageContents string] hasPrefix:iTetActionMessagePrefix];
 	
 	// Construct the message
 	iTetMessage<iTetOutgoingMessage>* message;
@@ -70,7 +69,7 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 	[networkController sendMessage:message];
 	
 	// If the message is not a slash command, (other than /me) add the line to the chat view
-	if (action || ([[[messageContents string] commonPrefixWithString:iTetCommandMessagePrefix options:0] length] == 0))
+	if (action || ![[messageContents string] hasPrefix:iTetCommandMessagePrefix])
 	{
 		[self appendChatLine:messageContents
 				  fromPlayer:localPlayer
