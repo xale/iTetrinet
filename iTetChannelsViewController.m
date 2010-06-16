@@ -337,17 +337,8 @@ didConnectToHost:(NSString*)host
 	NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
 #endif
 	
-	// Parse the message data _after_ this method returns
-	// The channel description is formatted with HTML, which must be parsed by NSAttributedString's initWithHTML: methods. These methods fork the execution into another thread, which may cause the socket to call this callback again before the parsing is finished, resulting in the socket's buffer not being flushed properly. By returning from this method before attempting to parse the data, we ensure that the socket's buffer is flushed before the next read is attempted.
-	[self performSelector:@selector(parseMessageData:)
-			   withObject:data
-			   afterDelay:0.0];
-}
-
-- (void)parseMessageData:(NSData*)messageData
-{
 	// Attempt to parse the data as a Query response message
-	iTetMessage* message = [iTetMessage queryMessageFromData:messageData];
+	iTetMessage* message = [iTetMessage queryMessageFromData:data];
 	
 	// If the message is not a valid Query response, abort the attempt to retrieve channels
 	if (message == nil)
@@ -372,7 +363,7 @@ didConnectToHost:(NSString*)host
 																 maxPlayers:[channelMessage maxPlayers]
 																	  state:[channelMessage gameState]];
 			
-			// Check if the channel is the local players'
+			// Check if the channel is the local player's
 			if ([[channel channelName] isEqualToString:localPlayerChannelName])
 				[channel setLocalPlayerChannel:YES];
 			

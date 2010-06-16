@@ -47,19 +47,9 @@
 	channelName = [[quotedTokens objectAtIndex:1] retain];
 	
 	// Treat the second token as the channel description (ignoring the space between the second and third quotation marks)
-	NSString* description = [quotedTokens objectAtIndex:3];
+	channelDescription = [[quotedTokens objectAtIndex:3] retain];
 	
-	// Add the default font information to the description
-	// FIXME: hacky
-	NSFont* listFont = [iTetTextAttributes channelsListTextFont];
-	description = [NSString stringWithFormat:@"<p style=\"font-family:%@; font-size:%fpx\">%@</p>", [listFont fontName], [listFont pointSize], description];
-	
-	// Parse the HTML formatting on the description (NOTE: this uses WebKit's HTML engine, and causes this method—and the call stack below it—to fork into another thread of execution; see iTetChannelsViewController's -onSocket:didReadData:withTag: for further discussion)
-	NSDictionary* parseOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:iTetDefaultStringEncoding]
-															 forKey:NSCharacterEncodingDocumentOption];
-	channelDescription = [[NSAttributedString alloc] initWithHTML:[description dataUsingEncoding:iTetDefaultStringEncoding]
-														  options:parseOptions
-											   documentAttributes:NULL];
+	// FIXME: WRITEME: remove HTML tags from channel description
 	
 	// Split the remaining tokens on spaces
 	NSArray* unquotedTokens = [[quotedTokens objectAtIndex:4] componentsSeparatedByString:@" "];
