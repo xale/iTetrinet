@@ -729,8 +729,9 @@ willDisconnectWithError:(NSError*)error
 }
 
 #define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"Connect to Server...", @"NetworkController", @"Title of menu item used to open a connection to a server")
-#define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"Disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")
 #define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"Connection Closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
+#define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"Disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")
+#define iTetServerDisconnectedStatusLabel	NSLocalizedStringFromTable(@"Server closed connection", @"NetworkController", @"Status label displayed at bottom of window when the server closes the remote end of the connection")
 
 #define iTetCancelConnectionButtonTitle		NSLocalizedStringFromTable(@"Cancel Connection", @"NetworkController", @"Title of toolbar button used to cancel when attempting to open a connection to a server")
 #define iTetCancelConnectionMenuItemTitle	NSLocalizedStringFromTable(@"Cancel Connection in Progress", @"NetworkController", @"Title of menu item used to cancel when attempting to open a connection to a server")
@@ -766,14 +767,22 @@ willDisconnectWithError:(NSError*)error
 			[connectionMenuItem setTitle:iTetConnectMenuItemTitle];
 			[connectionMenuItem setKeyEquivalent:@"o"];
 			
-			// If the connection was not caneceled or errored-out, this was a "clean" disconnect
-			if (connectionState == disconnecting)
+			// If the connection was not canceled or errored-out, this was a "clean" disconnect
+			if ((connectionState != connectionError) && (connectionState != canceled))
 			{
-				// Change the status label
-				[connectionStatusLabel setStringValue:iTetDisconnectedStatusLabel];
-				
 				// Append a status message to the chat tab
 				[chatController appendStatusMessage:iTetDisconnectedStatusMessage];
+				
+				// Change the connection status label
+				if (connectionState != disconnecting)
+				{
+					// If the connection closed unexpectedly, blame the server
+					[connectionStatusLabel setStringValue:iTetServerDisconnectedStatusLabel];
+				}
+				else
+				{
+					[connectionStatusLabel setStringValue:iTetDisconnectedStatusLabel];
+				}
 			}
 			
 			break;
