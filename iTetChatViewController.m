@@ -20,8 +20,18 @@
 #import "iTetPlineActionMessage.h"
 
 #import "iTetTextAttributes.h"
+#import "iTetUserDefaults.h"
 
 @implementation iTetChatViewController
+
++ (void)initialize
+{
+	// Register default highlight color for local player's name
+	NSData* colorData = [NSKeyedArchiver archivedDataWithRootObject:[[NSColor purpleColor] blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]]];
+	NSDictionary* defaults = [NSDictionary dictionaryWithObject:colorData
+														 forKey:iTetLocalPlayerNameColorPrefKey];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];	
+}
 
 - (void)awakeFromNib
 {
