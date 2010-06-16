@@ -9,7 +9,9 @@
 //
 
 #import "iTetTextAttributes.h"
+#import "iTetUserDefaults.h"
 #import "NSColor+Comparisons.h"
+#import "NSUserDefaults+AdditionalTypes.h"
 
 #define iTetSilverTextColor		[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
 #define iTetGreenTextColor		[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:0.0 alpha:1.0]
@@ -110,7 +112,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 
 + (NSColor*)localPlayerNameTextColor
 {
-	return [[NSColor purpleColor] blendedColorWithFraction:0.5 ofColor:[NSColor blackColor]];
+	return [[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetLocalPlayerNameColorPrefKey];
 }
 
 + (NSColor*)goodSpecialDescriptionTextColor

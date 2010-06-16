@@ -17,3 +17,4 @@ NSString* const iTetThemesListPrefKey =				@"themesList";
 NSString* const iTetThemesSelectionPrefKey =		@"themesSelection";
 NSString* const iTetKeyConfigsListPrefKey =			@"keyConfigsList";
 NSString* const iTetCurrentKeyConfigNumberPrefKey =	@"currentKeyConfigNumber";
+NSString* const iTetLocalPlayerNameColorPrefKey =	@"localPlayerNameColor";
