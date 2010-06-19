@@ -46,10 +46,24 @@
 	// Treat the first quoted token as the channel name (ignoring the blank string before the first quotatation mark)
 	channelName = [[quotedTokens objectAtIndex:1] retain];
 	
-	// Treat the second token as the channel description (ignoring the space between the second and third quotation marks)
-	channelDescription = [[quotedTokens objectAtIndex:3] retain];
+	// Wrap the third token (the channel description) in HTML "paragraph" tags, to make it a valid XML element
+	channelDescription = [NSString stringWithFormat:@"<p>%@</p>", [quotedTokens objectAtIndex:3]];
 	
-	// FIXME: WRITEME: remove HTML tags from channel description
+	// Attempt to parse the description as HTML
+	NSError* parseError = nil;
+	NSXMLElement* html = [[NSXMLElement alloc] initWithXMLString:channelDescription
+														   error:&parseError];
+	if (parseError != nil)
+	{
+		NSLog(@"WARNING: error parsing HTML formatting on description of channel '%@': %@", channelName, [parseError description]);
+		channelDescription = [[quotedTokens objectAtIndex:3] retain];
+	}
+	else
+	{
+		// Convert to a raw string, stripping HTML formatting
+		channelDescription = [[html stringValue] retain];
+		[html release];
+	}
 	
 	// Split the remaining tokens on spaces
 	NSArray* unquotedTokens = [[quotedTokens objectAtIndex:4] componentsSeparatedByString:@" "];
