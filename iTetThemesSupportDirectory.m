@@ -22,6 +22,9 @@
 
 NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 
+#define iTetThemesDirectoryInaccessibleErrorDescription			NSLocalizedStringFromTable(@"Couldn't get path to Application Support directory", @"Themes", @"Error description displayed when the app is unable to access its subdirectory of the user's ~/Library/Application Support/ directory; underlying error cause is specified elsewhere")
+#define iTetThemeDirectoryCreationFailedErrorDescriptionFormat	NSLocalizedStringFromTable(@"Unable to create Application Support subdirectory for theme '%@'", @"Themes", @"Error description displayed when the app is unable to create a directory (used to store a copy of files related to the specified theme) within its subdirectory of the user's ~/Library/Application Support/ directory")
+
 + (NSString*)pathToSupportDirectoryForTheme:(NSString*)themeName
 						  createIfNecessary:(BOOL)createDirectory
 									  error:(NSError**)error
@@ -40,7 +43,7 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 		{
 			// Create a user info dictionary
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									  @"Couldn't get path to Application Support directory", NSLocalizedDescriptionKey,
+									  iTetThemesDirectoryInaccessibleErrorDescription, NSLocalizedDescriptionKey,
 									  appSupportError, NSUnderlyingErrorKey,
 									  nil];
 			
@@ -80,7 +83,7 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 		if (error != NULL)
 		{
 			// Create a user info dictionary
-			NSString* desc = [NSString stringWithFormat:@"Unable to create subdirectory for theme '%@'", themeName];
+			NSString* desc = [NSString stringWithFormat:iTetThemeDirectoryCreationFailedErrorDescriptionFormat, themeName];
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 									  desc, NSLocalizedDescriptionKey,
 									  creationError, NSUnderlyingErrorKey,
