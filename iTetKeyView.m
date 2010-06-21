@@ -97,6 +97,10 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	// Create the rect in which we will draw the key
 	NSRect imageRect = NSMakeRect(0, 0, stringSize.width + (KEY_NAME_MARGIN_SIZE * 2), viewSize.height);
 	
+	// If the key image would be smaller than its specified minimum width, expand it
+	if (imageRect.size.width < [key minDisplayWidth])
+		imageRect.size.width = [key minDisplayWidth];
+	
 	// If the key image would be taller than it would be wide, make it square
 	if (imageRect.size.height > imageRect.size.width)
 		imageRect.size.width = imageRect.size.height;
@@ -177,12 +181,18 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 }
 
 - (void)keyDown:(NSEvent*)keyEvent
-{	
+{
+#ifdef _ITETRINET_DEBUG
+	NSLog(@"DEBUG: iTetKeyView -keyDown:<%@>", keyEvent);
+#endif
 	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:keyEvent]];
 }
 
 - (void)flagsChanged:(NSEvent*)modifierEvent
-{	
+{
+#ifdef _ITETRINET_DEBUG
+	NSLog(@"DEBUG: iTetKeyView -flagsChanged:<%@>", modifierEvent);
+#endif
 	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:modifierEvent]];
 }
 

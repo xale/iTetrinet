@@ -27,6 +27,7 @@ extern NSString* const iTetDownArrowKeyPlaceholderString;
 	NSInteger keyCode;
 	NSString* keyName;
 	BOOL numpadKey;
+	CGFloat minDisplayWidth;
 }
 
 + (id)keyNamePairFromKeyEvent:(NSEvent*)event;
@@ -43,6 +44,7 @@ extern NSString* const iTetDownArrowKeyPlaceholderString;
 
 @property (readonly) NSInteger keyCode;
 @property (readonly) NSString* keyName;
+@property (readonly) CGFloat minDisplayWidth;
 @property (readonly, getter=isNumpadKey) BOOL numpadKey;
 @property (readonly) BOOL isArrowKey;
 @property (readonly) NSString* printedName;
