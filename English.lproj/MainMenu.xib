@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="573"/>
+			<integer value="501"/>
 			<integer value="29"/>
-			<integer value="451"/>
+			<integer value="573"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -917,7 +917,7 @@
 								<object class="NSTabViewItem" id="210918728">
 									<string key="NSIdentifier">game</string>
 									<object class="NSView" key="NSView" id="1052209441">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="1015514340"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1119,7 +1119,7 @@
 															<object class="NSTextView" id="61334635">
 																<reference key="NSNextResponder" ref="445338970"/>
 																<int key="NSvFlags">2322</int>
-																<string key="NSFrameSize">{731, 60}</string>
+																<string key="NSFrameSize">{731, 62}</string>
 																<reference key="NSSuperview" ref="445338970"/>
 																<object class="NSTextContainer" key="NSTextContainer" id="776877016">
 																	<object class="NSLayoutManager" key="NSLayoutManager">
@@ -1374,7 +1374,7 @@
 																<nil key="NSDelegate"/>
 															</object>
 														</object>
-														<string key="NSFrame">{{1, 1}, {731, 73}}</string>
+														<string key="NSFrame">{{1, 1}, {731, 75}}</string>
 														<reference key="NSSuperview" ref="905461774"/>
 														<reference key="NSNextKeyView" ref="61334635"/>
 														<reference key="NSDocView" ref="61334635"/>
@@ -1388,7 +1388,7 @@
 													<object class="NSScroller" id="337108210">
 														<reference key="NSNextResponder" ref="905461774"/>
 														<int key="NSvFlags">256</int>
-														<string key="NSFrame">{{732, 1}, {11, 73}}</string>
+														<string key="NSFrame">{{732, 1}, {11, 75}}</string>
 														<reference key="NSSuperview" ref="905461774"/>
 														<int key="NSsFlags">256</int>
 														<reference key="NSTarget" ref="905461774"/>
@@ -1407,7 +1407,7 @@
 														<double key="NSPercent">0.94565220000000005</double>
 													</object>
 												</object>
-												<string key="NSFrame">{{17, 47}, {744, 75}}</string>
+												<string key="NSFrame">{{17, 45}, {744, 77}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<reference key="NSNextKeyView" ref="445338970"/>
 												<int key="NSsFlags">18</int>
@@ -1549,7 +1549,7 @@
 											<object class="NSTextField" id="48704040">
 												<reference key="NSNextResponder" ref="1052209441"/>
 												<int key="NSvFlags">290</int>
-												<string key="NSFrame">{{17, 19}, {677, 20}}</string>
+												<string key="NSFrame">{{17, 17}, {677, 20}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="683895862">
@@ -1753,7 +1753,7 @@
 														<reference key="NSDocView" ref="1054741480"/>
 														<reference key="NSBGColor" ref="1150383"/>
 														<object class="NSCursor" key="NSCursor">
-															<string key="NSHotSpot">{1, -1}</string>
+															<string key="NSHotSpot">{4, 4}</string>
 															<int key="NSCursorType">0</int>
 														</object>
 														<int key="NScvFlags">4</int>
@@ -1885,6 +1885,7 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
+										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Game</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -1893,7 +1894,7 @@
 								<object class="NSTabViewItem" id="886642519">
 									<string key="NSIdentifier">chat</string>
 									<object class="NSView" key="NSView" id="88341571">
-										<reference key="NSNextResponder" ref="1015514340"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2584,7 +2585,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {778, 626}}</string>
-										<reference key="NSSuperview" ref="1015514340"/>
 									</object>
 									<string key="NSLabel">Chat</string>
 									<reference key="NSColor" ref="751214572"/>
@@ -2796,13 +2796,13 @@
 									<reference key="NSTabView" ref="1015514340"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="886642519"/>
+							<reference key="NSSelectedTabViewItem" ref="210918728"/>
 							<reference key="NSFont" ref="760012784"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="88341571"/>
+								<reference ref="1052209441"/>
 							</object>
 						</object>
 						<object class="NSTextField" id="834459839">
@@ -5979,8 +5979,6 @@
 							<reference ref="1002741777"/>
 							<reference ref="512262620"/>
 							<reference ref="307933378"/>
-							<reference ref="43540619"/>
-							<reference ref="48704040"/>
 							<reference ref="905461774"/>
 							<reference ref="1034487509"/>
 							<reference ref="659842136"/>
@@ -5999,6 +5997,8 @@
 							<reference ref="88024989"/>
 							<reference ref="547118700"/>
 							<reference ref="205515200"/>
+							<reference ref="43540619"/>
+							<reference ref="48704040"/>
 						</object>
 						<reference key="parent" ref="210918728"/>
 					</object>
@@ -7699,9 +7699,9 @@
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{464, 200}, {824, 713}}</string>
+					<string>{{183, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{464, 200}, {824, 713}}</string>
+					<string>{{183, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
