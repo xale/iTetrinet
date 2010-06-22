@@ -13,7 +13,7 @@
 @implementation iTetChannelInfo
 
 + (id)channelInfoWithName:(NSString*)name
-			  description:(NSAttributedString*)desc
+			  description:(NSString*)desc
 		   currentPlayers:(NSInteger)playerCount
 			   maxPlayers:(NSInteger)max
 					state:(iTetGameplayState)gameState
@@ -26,7 +26,7 @@
 }
 
 - (id)initWithName:(NSString*)name
-	   description:(NSAttributedString*)desc
+	   description:(NSString*)desc
 	currentPlayers:(NSInteger)playerCount
 		maxPlayers:(NSInteger)max
 			 state:(iTetGameplayState)gameState
@@ -54,11 +54,6 @@
 
 @synthesize channelName;
 @synthesize channelDescription;
-
-- (NSString*)sortableDescription
-{
-	return [channelDescription string];
-}
 
 - (NSString*)players
 {

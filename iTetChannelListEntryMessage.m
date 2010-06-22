@@ -46,20 +46,24 @@
 	// Treat the first quoted token as the channel name (ignoring the blank string before the first quotatation mark)
 	channelName = [[quotedTokens objectAtIndex:1] retain];
 	
-	// Treat the second token as the channel description (ignoring the space between the second and third quotation marks)
-	NSString* description = [quotedTokens objectAtIndex:3];
+	// Wrap the third token (the channel description) in HTML "paragraph" tags, to make it a valid XML element
+	channelDescription = [NSString stringWithFormat:@"<p>%@</p>", [quotedTokens objectAtIndex:3]];
 	
-	// Add the default font information to the description
-	// FIXME: hacky
-	NSFont* listFont = [iTetTextAttributes channelsListTextFont];
-	description = [NSString stringWithFormat:@"<p style=\"font-family:%@; font-size:%fpx\">%@</p>", [listFont fontName], [listFont pointSize], description];
-	
-	// Parse the HTML formatting on the description (NOTE: this uses WebKit's HTML engine, and causes this method—and the call stack below it—to fork into another thread of execution; see iTetChannelsViewController's -onSocket:didReadData:withTag: for further discussion)
-	NSDictionary* parseOptions = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:iTetDefaultStringEncoding]
-															 forKey:NSCharacterEncodingDocumentOption];
-	channelDescription = [[NSAttributedString alloc] initWithHTML:[description dataUsingEncoding:iTetDefaultStringEncoding]
-														  options:parseOptions
-											   documentAttributes:NULL];
+	// Attempt to parse the description as HTML
+	NSError* parseError = nil;
+	NSXMLElement* html = [[NSXMLElement alloc] initWithXMLString:channelDescription
+														   error:&parseError];
+	if (parseError != nil)
+	{
+		NSLog(@"WARNING: error parsing HTML formatting on description of channel '%@': %@", channelName, [parseError description]);
+		channelDescription = [[quotedTokens objectAtIndex:3] retain];
+	}
+	else
+	{
+		// Convert to a raw string, stripping HTML formatting
+		channelDescription = [[html stringValue] retain];
+		[html release];
+	}
 	
 	// Split the remaining tokens on spaces
 	NSArray* unquotedTokens = [[quotedTokens objectAtIndex:4] componentsSeparatedByString:@" "];

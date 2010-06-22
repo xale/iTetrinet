@@ -32,6 +32,8 @@ NSFileManager* supportFileManager = nil;
 
 NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 
+#define IPSSupportDirectoryCreationErrorDescription	NSLocalizedStringFromTable(@"Unable to create Application Support subdirectory", @"IPSApplicationSupportDirectory", @"Simple error description displayed when the application is unable to create a named subdirectory of the user's ~/Library/Application Support/ directory; the underlying cause of the error is specified elsewhere")
+
 + (NSString*)applicationSupportDirectoryPathForApp:(NSString*)appName
 											 error:(NSError**)error
 {
@@ -76,7 +78,7 @@ NSString* const IPSCompanyApplicationSupportSubdirectoryName = @"Indie Pennant";
 		{
 			// Create a user info dictionary
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-									  @"Unable to create Application Support directory", NSLocalizedDescriptionKey,
+									  IPSSupportDirectoryCreationErrorDescription, NSLocalizedDescriptionKey,
 									  creationError, NSUnderlyingErrorKey,
 									  fullPath, NSFilePathErrorKey,
 									  nil];
