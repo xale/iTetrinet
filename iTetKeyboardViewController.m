@@ -26,6 +26,7 @@
 NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
 NSString* const iTetNewControllerInfoKey =					@"newController";
 NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
+NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
 
 #define KEY_CONFIGS			[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey]
 #define CURRENT_CONFIG_NUM	[[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey]
@@ -36,6 +37,7 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 		 inPopUpMenuAtIndex:(NSUInteger)index
 				  tagNumber:(NSUInteger)tag;
 - (void)displayConfigurationNumber:(NSUInteger)configNum;
+- (void)runUnsavedConfigurationAlertWithContextInfo:(NSDictionary*)infoDict;
 - (void)clearUnsavedConfiguration;
 
 - (void)startObservingKeyView:(iTetKeyView*)keyView;
@@ -244,63 +246,81 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 
 #define iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText	NSLocalizedStringFromTable(@"Your current key configuration is unsaved. Do you wish to save the configuration?", @"KeyboardPrefsViewController", @"Informative text asking for confirmation before dismissing the keyboard configurations preference pane with an unsaved active configuration")
 
-- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
-				byWindowController:(iTetPreferencesWindowController*)sender
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
 {
 	if (unsavedConfiguration != nil)
 	{
-		// Create an "unsaved configuration" alert
-		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
-		[alert setInformativeText:iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText];
-		[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
-		[alert addButtonWithTitle:iTetCancelButtonTitle];
-		[alert addButtonWithTitle:iTetDoNotSaveButtonTitle];
-		
 		// Create a context info dictionary
-		NSDictionary* infoDict = [[NSDictionary alloc] initWithObjectsAndKeys:
-								  sender, iTetOriginalSenderInfoKey,
-								  newController, iTetNewControllerInfoKey,
-								  nil];
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:sender
+															 forKey:iTetApplicationToQuitInfoKey];
 		
-		// Run the alert as a sheet
-		[alert beginSheetModalForWindow:[[self view] window]
-						  modalDelegate:self
-						 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
-							contextInfo:infoDict];
+		// Run a modal "unsaved configuration" alert, with the relevant context information
+		[self runUnsavedConfigurationAlertWithContextInfo:infoDict];
 		
-		return NO;
+		// Tell the application to defer termination until the user has replied
+		return NSTerminateLater;
 	}
 	
-	return YES;
+	// Allow application to terminate normally
+	return NSTerminateNow;
 }
 
 - (BOOL)windowShouldClose:(id)window
 {
 	if (unsavedConfiguration != nil)
 	{
-		// Create an "unsaved configuration" alert
-		NSAlert* alert = [[NSAlert alloc] init];
-		[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
-		[alert setInformativeText:iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText];
-		[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
-		[alert addButtonWithTitle:iTetCancelButtonTitle];
-		[alert addButtonWithTitle:iTetDoNotSaveButtonTitle];
-		
 		// Create a context info dictionary
 		NSDictionary* infoDict = [NSDictionary dictionaryWithObject:window
 															 forKey:iTetWindowToCloseInfoKey];
 		
-		// Run the alert as a sheet
-		[alert beginSheetModalForWindow:[[self view] window]
-						  modalDelegate:self
-						 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
-							contextInfo:[infoDict retain]];
+		// Run a modal "unsaved configuration" alert, with the relevant context information
+		[self runUnsavedConfigurationAlertWithContextInfo:infoDict];
 		
+		// Tell the controller not to close the window yet
 		return NO;
 	}
 	
+	// Allow window to close
 	return YES;
+}
+
+- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
+				byWindowController:(iTetPreferencesWindowController*)sender
+{
+	if (unsavedConfiguration != nil)
+	{
+		// Create a context info dictionary
+		NSDictionary* infoDict = [NSDictionary dictionaryWithObjectsAndKeys:
+								  sender, iTetOriginalSenderInfoKey,
+								  newController, iTetNewControllerInfoKey,
+								  nil];
+		
+		// Run a modal "unsaved configuration" alert, with the relevant context information
+		[self runUnsavedConfigurationAlertWithContextInfo:infoDict];
+		
+		// Tell the controller not to swap the view just yet
+		return NO;
+	}
+	
+	// Allow view to be swapped out
+	return YES;
+}
+
+- (void)runUnsavedConfigurationAlertWithContextInfo:(NSDictionary*)infoDict
+{
+	// Create an "unsaved configuration" alert
+	NSAlert* alert = [[NSAlert alloc] init];
+	[alert setMessageText:iTetUnsavedKeyboardConfigurationAlertTitle];
+	[alert setInformativeText:iTetDismissWithUnsavedKeyboardConfigurationAlertInformativeText];
+	[alert addButtonWithTitle:iTetSaveKeyboardConfigurationButtonTitle];
+	[alert addButtonWithTitle:iTetCancelButtonTitle];
+	[alert addButtonWithTitle:iTetDoNotSaveButtonTitle];
+	
+	// Run the alert as a sheet
+	[alert beginSheetModalForWindow:[[self view] window]
+					  modalDelegate:self
+					 didEndSelector:@selector(unsavedConfigAlertDidEnd:returnCode:contextInfo:)
+						contextInfo:[infoDict retain]];
 }
 
 - (void)viewWillBeRemoved:(id)sender
@@ -323,56 +343,88 @@ NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
 					  returnCode:(NSInteger)returnCode
 					 contextInfo:(NSDictionary*)infoDict
 {	
-	// We're done with the sheet; ask it to order out
+	// Remove the alert sheet from the window
 	[[alert window] orderOut:self];
 	
 	// Balance the allocation of the context-info dictionary
 	[infoDict autorelease];
 	
-	// If the user pressed "cancel", re-select the unsaved config in the pop-up menu
-	if (returnCode == NSAlertSecondButtonReturn)
-	{
-		[configurationPopUpButton selectItemWithTitle:iTetUnsavedKeyboardConfigurationPlaceholderName];
-		return;
-	}
+	// Check if the context info contains an application object
+	NSApplication* app = [infoDict objectForKey:iTetApplicationToQuitInfoKey];
 	
-	// If the user pressed "don't save", delete the configuration
-	if (returnCode == NSAlertThirdButtonReturn)
+	// Determine which button the user pressed
+	switch (returnCode)
 	{
-		[self clearUnsavedConfiguration];
-		
-		// Determine what to do next
-		
-		// If the context info has a "new view controller" object, we need to swap this view out
-		iTetPreferencesViewController* newController = [infoDict objectForKey:iTetNewControllerInfoKey];
-		if (newController != nil)
+		case NSAlertFirstButtonReturn:
 		{
-			// Get the window controller out of the context info dictionary
-			iTetPreferencesWindowController* windowController = [infoDict objectForKey:iTetOriginalSenderInfoKey];
+			// User pressed "save":
+			// Tell the application not to quit, if applicable
+			if (app != nil)
+				[app replyToApplicationShouldTerminate:NO];
 			
-			// Call the window controller back, ask it to switch views
-			[windowController displayViewController:newController];
+			// Open the "save configuration" sheet
+			[self saveConfiguration:self];
 			
-			return;
+			break;
 		}
-		
-		// If the context info has a "window to close" object, tell it to close
-		NSWindow* window = [infoDict objectForKey:iTetWindowToCloseInfoKey];
-		if (window != nil)
+		case NSAlertSecondButtonReturn:
 		{
-			// Close the window
-			[window close];
+			// User pressed "cancel":
+			// Tell the application not to quit, if applicable
+			if (app != nil)
+				[app replyToApplicationShouldTerminate:NO];
 			
-			return;
+			// Re-select the unsaved config in the pop-up menu
+			[configurationPopUpButton selectItemWithTitle:iTetUnsavedKeyboardConfigurationPlaceholderName];
+			
+			break;
+		}	
+		case NSAlertThirdButtonReturn:
+		{
+			// User pressed "don't save"
+			// Delete the unsaved configuration
+			[self clearUnsavedConfiguration];
+			
+			// Determine what to do next
+			
+			// If the context info has a "new view controller" object, we need to swap this view out
+			iTetPreferencesViewController* newController = [infoDict objectForKey:iTetNewControllerInfoKey];
+			if (newController != nil)
+			{
+				// Get the window controller out of the context info dictionary
+				iTetPreferencesWindowController* windowController = [infoDict objectForKey:iTetOriginalSenderInfoKey];
+				
+				// Call the window controller back, ask it to switch views
+				[windowController displayViewController:newController];
+				
+				break;
+			}
+			
+			// If the context info has a "window to close" object, tell it to close
+			NSWindow* window = [infoDict objectForKey:iTetWindowToCloseInfoKey];
+			if (window != nil)
+			{
+				// Close the window
+				[window close];
+				
+				break;
+			}
+			
+			// If the context info has an "app to quit" object, tell the application to terminate
+			if (app != nil)
+			{
+				// Tell the application to finish termination
+				[app replyToApplicationShouldTerminate:YES];
+				
+				break;
+			}
+			
+			// Otherwise, (since the alert was triggered by an attempt to change configurations) change to the correct configuration
+			[self displayConfigurationNumber:[[infoDict objectForKey:iTetOriginalSenderInfoKey] tag]];
+			
+			break;
 		}
-		
-		[self displayConfigurationNumber:[[infoDict objectForKey:iTetOriginalSenderInfoKey] tag]];
-		
-		return;
 	}
-	
-	// Otherwise, open the "save configuration" sheet
-	[self saveConfiguration:self];
 }
 
 #define iTetReplaceKeyboardConfigurationAlertTitle				NSLocalizedStringFromTable(@"Replace Keyboard Configuration", @"KeyboardPrefsViewController", @"Title of the alert displayed when the user attempts to save a keyboard configuration using the name of an existing configuration")

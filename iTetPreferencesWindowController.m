@@ -48,7 +48,7 @@
 }
 
 #pragma mark -
-#pragma mark View Switching
+#pragma mark View Swapping
 
 - (IBAction)changeView:(id)sender
 {
@@ -136,13 +136,19 @@
 }
 
 #pragma mark -
+#pragma mark Application Termination Delegation
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
+{
+	return [[viewControllers objectAtIndex:currentViewNumber] applicationShouldTerminate:sender];
+}
+
+#pragma mark -
 #pragma mark NSToolbar Delegate Methods
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
 {
-	return [NSArray arrayWithObjects: [general itemIdentifier],
-			[themes itemIdentifier], [servers itemIdentifier],
-			[keyboard itemIdentifier], nil];
+	return [NSArray arrayWithObjects: [general itemIdentifier], [themes itemIdentifier], [servers itemIdentifier], [keyboard itemIdentifier], nil];
 }
 
 @end

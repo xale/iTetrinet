@@ -40,4 +40,6 @@ typedef enum
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar;
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender;
+
 @end
