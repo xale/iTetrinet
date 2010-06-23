@@ -168,15 +168,17 @@ NSString* const iTetDefaultServerReservedName =	@"SERVER";
 		goto bail;
 	}
 	
-	// Check that the player is not trying to spoof the server
-	if (([newNickname rangeOfString:iTetDefaultServerReservedName
-							options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
-							  range:NSMakeRange(0, [iTetDefaultServerReservedName length])
-							 locale:[[[NSLocale alloc] initWithLocaleIdentifier:iTetDefaultLocaleIdentifier] autorelease]].location != NSNotFound) ||
-		([newNickname rangeOfString:iTetLocalizedServerReservedName
-							options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
-							  range:NSMakeRange(0, [iTetLocalizedServerReservedName length])
-							 locale:[NSLocale currentLocale]].location != NSNotFound))
+	// Check that the player is not trying to spoof the server name
+	if ((([newNickname length] >= [iTetDefaultServerReservedName length]) &&
+		 ([newNickname rangeOfString:iTetDefaultServerReservedName
+							 options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
+							   range:NSMakeRange(0, [newNickname length])
+							  locale:[[[NSLocale alloc] initWithLocaleIdentifier:iTetDefaultLocaleIdentifier] autorelease]].location != NSNotFound)) ||
+		(([newNickname length] >= [iTetLocalizedServerReservedName length]) &&
+		 ([newNickname rangeOfString:iTetLocalizedServerReservedName
+							 options:(NSAnchoredSearch | NSCaseInsensitiveSearch)
+							   range:NSMakeRange(0, [newNickname length])
+							  locale:[NSLocale currentLocale]].location != NSNotFound)))
 	{
 		// Reserved nickname
 		validName = NO;
