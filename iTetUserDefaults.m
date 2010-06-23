@@ -10,11 +10,12 @@
 
 #import "iTetUserDefaults.h"
 
-NSString* const iTetConnectionTimeoutPrefKey =		@"connectionTimeout";
-NSString* const iTetAutoSwitchChatPrefKey =			@"autoSwitchChat";
-NSString* const iTetServersListPrefKey =			@"serversList";
-NSString* const iTetThemesListPrefKey =				@"themesList";
-NSString* const iTetThemesSelectionPrefKey =		@"themesSelection";
-NSString* const iTetKeyConfigsListPrefKey =			@"keyConfigsList";
-NSString* const iTetCurrentKeyConfigNumberPrefKey =	@"currentKeyConfigNumber";
-NSString* const iTetLocalPlayerNameColorPrefKey =	@"localPlayerNameColor";
+NSString* const iTetConnectionTimeoutPrefKey =			@"connectionTimeout";
+NSString* const iTetAutoSwitchChatOnConnectPrefKey =	@"autoSwitchChatOnConnect";
+NSString* const iTetAutoSwitchChatAfterGamePrefKey =	@"autoSwitchChatAfterGame";
+NSString* const iTetServersListPrefKey =				@"serversList";
+NSString* const iTetThemesListPrefKey =					@"themesList";
+NSString* const iTetThemesSelectionPrefKey =			@"themesSelection";
+NSString* const iTetKeyConfigsListPrefKey =				@"keyConfigsList";
+NSString* const iTetCurrentKeyConfigNumberPrefKey =		@"currentKeyConfigNumber";
+NSString* const iTetLocalPlayerNameColorPrefKey =		@"localPlayerNameColor";

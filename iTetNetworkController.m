@@ -61,7 +61,9 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[defaults setObject:[NSNumber numberWithDouble:5.0]
 				 forKey:iTetConnectionTimeoutPrefKey];
 	[defaults setObject:[NSNumber numberWithBool:YES]
-				 forKey:iTetAutoSwitchChatPrefKey];
+				 forKey:iTetAutoSwitchChatOnConnectPrefKey];
+	[defaults setObject:[NSNumber numberWithBool:YES]
+				 forKey:iTetAutoSwitchChatAfterGamePrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
 				 forKey:iTetServersListPrefKey];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
@@ -635,7 +637,7 @@ willDisconnectWithError:(NSError*)error
 			[gameController endGame];
 			
 			// If the user wants us to, automatically switch to the chat tab
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatPrefKey])
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatAfterGamePrefKey])
 				[windowController switchToChatTab:self];
 			
 			// Refresh the channel list
@@ -892,6 +894,10 @@ willDisconnectWithError:(NSError*)error
 			
 			// Attempt to retrieve the server's channel list
 			[channelsController requestChannelListFromServer:currentServer];
+			
+			// If the user wants us to, automatically switch to the chat tab
+			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatOnConnectPrefKey])
+				[windowController switchToChatTab:self];
 			
 			break;
 			

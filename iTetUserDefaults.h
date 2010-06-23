@@ -11,7 +11,8 @@
 #import <Cocoa/Cocoa.h>
 
 extern NSString* const iTetConnectionTimeoutPrefKey;
-extern NSString* const iTetAutoSwitchChatPrefKey;
+extern NSString* const iTetAutoSwitchChatOnConnectPrefKey;
+extern NSString* const iTetAutoSwitchChatAfterGamePrefKey;
 extern NSString* const iTetThemesListPrefKey;
 extern NSString* const iTetThemesSelectionPrefKey;
 extern NSString* const iTetServersListPrefKey;
