@@ -26,6 +26,8 @@
 
 #import "iTetLocalPlayer.h"
 
+#import "iTetGameRules.h"
+
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
 
@@ -41,6 +43,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #define iTetGameNetworkPort				(31457)
 
 @interface iTetNetworkController (Private)
+
+- (void)openServerSelectionDialog;
 
 - (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message;
 - (void)handleError:(NSError*)error;
@@ -88,10 +92,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #define iTetDisconnectWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to disconnect from the server?", @"NetworkController", @"Informative text on alert displayed when the user attempts to disconnect from a server while participating in a game")
 #define iTetDisconnectWithGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit and Disconnect", @"NetworkController", @"Title of button on 'disconnect with game in progress?' alert that allows the user to stop playing and disconnect")
 
-#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"Connect to Server", @"NetworkController", @"Title of 'connect to server' alert dialog")
-#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"Select a server to connect to:", @"NetworkController", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
-#define iTetConnectButtonTitle					NSLocalizedStringFromTable(@"Connect", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
-#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"Edit Server List...", @"NetworkController", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
+#define iTetConnectWithOfflineGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"An offline game is currently in progress. Before you can connect to a server, you will have to forfeit the game. Are you sure you want to do this?", @"NetworkController", @"Informative text on alert displayed when the user attempts to open a new server connection while playing an offline game")
+#define iTetConnectWithOfflineGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit Game", @"NetworkController", @"Title of button on 'connect with offline game in progress?' alert that allows the user to stop playing the offline game and open a connection to a server")
 
 - (IBAction)openCloseConnection:(id)sender
 {
@@ -142,22 +144,29 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// If we are not connected, open the server list for a new connection
 		case disconnected:
 		{
-			// Create an alert for the server selection dialog
-			NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
-			[dialog setMessageText:iTetConnectToServerAlertTitle];
-			[dialog setInformativeText:iTetConnectToServerAlertInformativeText];
-			[dialog addButtonWithTitle:iTetConnectButtonTitle];
-			[dialog addButtonWithTitle:iTetCancelButtonTitle];
-			[dialog addButtonWithTitle:iTetEditServerListButtonTitle];
-			
-			// Add the server selection view as the dialog's accessory
-			[dialog setAccessoryView:serverListView];
-			
-			// Run the dialog as a sheet
-			[dialog beginSheetModalForWindow:[windowController window]
-							   modalDelegate:self
-							  didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
-								 contextInfo:NULL];
+			if ([gameController gameplayState] != gameNotPlaying)
+			{
+				// Pause the game (if not already)
+				[gameController pauseGame];
+				
+				// If the user is playing an offline game, create an alert asking to end the game before connecting
+				NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+				[alert setMessageText:iTetGameInProgressAlertTitle];
+				[alert setInformativeText:iTetConnectWithOfflineGameInProgressAlertInformativeText];
+				[alert addButtonWithTitle:iTetConnectWithOfflineGameInProgressConfirmButtonTitle];
+				[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
+				
+				// Run the alert as sheet
+				[alert beginSheetModalForWindow:[windowController window]
+								  modalDelegate:self
+								 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:contextInfo:)
+									contextInfo:NULL];
+			}
+			else
+			{
+				// If there is no offline game in progress, open the server selection dialog
+				[self openServerSelectionDialog];
+			}
 			
 			break;
 		}
@@ -168,6 +177,71 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			NSLog(@"WARNING: openCloseConnection: called with network controller in invalid state");
 			break;
 	}
+}
+
+- (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert
+									 returnCode:(NSInteger)returnCode
+									contextInfo:(void*)contextInfo
+{
+	// If the user pressed "continue playing", do nothing
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// Otherwise, tell the game controller that the game is over
+	// (Do not tell the server to end game, so other players can keep playing)
+	[gameController endGame];
+	
+	// Disconnect from the server
+	[self setConnectionState:disconnecting];
+	[self disconnect];
+}
+
+- (void)connectWithOfflineGameInProgressAlertDidEnd:(NSAlert*)alert
+										 returnCode:(NSInteger)returnCode
+										contextInfo:(void*)contextInfo
+{
+	// Order out the sheet
+	[[alert window] orderOut:self];
+	
+	// If the user pressed "continue playing", resume the game
+	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// Resume the game
+		[gameController resumeGame];
+		
+		return;
+	}
+	
+	// Otherwise, tell the game controller to end the game
+	[gameController endGame];
+	
+	// Open the "connect to server" dialog
+	[self openServerSelectionDialog];
+}
+
+#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"Connect to Server", @"NetworkController", @"Title of 'connect to server' alert dialog")
+#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"Select a server to connect to:", @"NetworkController", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
+#define iTetConnectButtonTitle					NSLocalizedStringFromTable(@"Connect", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
+#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"Edit Server List...", @"NetworkController", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
+
+- (void)openServerSelectionDialog
+{
+	// Create an alert for the server selection dialog
+	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
+	[dialog setMessageText:iTetConnectToServerAlertTitle];
+	[dialog setInformativeText:iTetConnectToServerAlertInformativeText];
+	[dialog addButtonWithTitle:iTetConnectButtonTitle];
+	[dialog addButtonWithTitle:iTetCancelButtonTitle];
+	[dialog addButtonWithTitle:iTetEditServerListButtonTitle];
+	
+	// Add the table view containing the server list as the dialog's accessory
+	[dialog setAccessoryView:serverListView];
+	
+	// Run the dialog as a sheet
+	[dialog beginSheetModalForWindow:[windowController window]
+					   modalDelegate:self
+					  didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
+						 contextInfo:NULL];
 }
 
 - (void)connectAlertDidEnd:(NSAlert*)dialog
@@ -194,23 +268,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Attempt to connect to the server
 	[self connectToServer:server];
-}
-
-- (void)disconnectWithGameInProgressAlertDidEnd:(NSAlert*)alert
-									 returnCode:(NSInteger)returnCode
-									contextInfo:(void*)contextInfo
-{
-	// If the user pressed "continue playing", do nothing
-	if (returnCode == NSAlertSecondButtonReturn)
-		return;
-	
-	// Otherwise, tell the game controller that the game is over
-	// (Do not tell the server to end game, so other players can keep playing)
-	[gameController endGame];
-	
-	// Disconnect from the server
-	[self setConnectionState:disconnecting];
-	[self disconnect];
 }
 
 #pragma mark -
@@ -528,16 +585,10 @@ willDisconnectWithError:(NSError*)error
 			
 #pragma mark New Game Message
 		case newGameMessage:
-			// Switch to the game view tab, if not already there
-			[windowController switchToGameTab:self];
-			
 			// Tell the gameController to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
-									 rulesList:[(iTetNewGameMessage*)message rulesList]
-									  onServer:currentServer];
-			
-			// Refresh the channel list
-			[channelsController refreshChannelList:self];
+										 rules:[iTetGameRules gameRulesFromArray:[(iTetNewGameMessage*)message rulesList]
+																	withGameType:[currentServer protocol]]];
 			
 			break;
 			
@@ -568,9 +619,6 @@ willDisconnectWithError:(NSError*)error
 			}
 			else if (!pauseGame && ([gameController gameplayState] == gamePaused))
 			{
-				// Make sure we have the game tab open
-				[windowController switchToGameTab:self];
-				
 				// Resume the game
 				[gameController resumeGame];
 			}

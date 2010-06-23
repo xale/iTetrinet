@@ -72,12 +72,38 @@
 	return self;
 }
 
++ (id)offlineGameRules
+{
+	return [[[self alloc] initWithOfflineGameRules] autorelease];
+}
+
+- (id)initWithOfflineGameRules
+{
+	// FIXME: This information should be user-configurable, and stored in user defaults
+	gameType = tetrifastProtocol;
+	initialStackHeight = 0;
+	startingLevel = 1;
+	linesPerLevel = 10;
+	levelIncrease = 1;
+	linesPerSpecial = 2;
+	specialsAdded = 1;
+	specialCapacity = 20;
+	showAverageLevel = NO;
+	classicRules = NO;
+	for (NSInteger i = 0; i < 100; i++)
+		blockFrequencies[i] = (uint8_t)((random() % 7) + 1);
+	for (NSInteger i = 0; i < 100; i++)
+		specialFrequencies[i] = [iTetSpecials specialTypeForNumber:((random() % 9) + 1)];
+	
+	return self;
+}
+
 #pragma mark -
 #pragma mark Accessors
 
 @synthesize gameType;
-@synthesize startingLevel;
 @synthesize initialStackHeight;
+@synthesize startingLevel;
 @synthesize linesPerLevel;
 @synthesize levelIncrease;
 @synthesize linesPerSpecial;

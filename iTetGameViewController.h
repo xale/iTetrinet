@@ -93,8 +93,7 @@ typedef enum
 - (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
-				 rulesList:(NSArray*)rulesArray
-				  onServer:(iTetServerInfo*)gameServer;
+					 rules:(iTetGameRules*)rules;
 - (void)pauseGame;
 - (void)resumeGame;
 - (void)endGame;

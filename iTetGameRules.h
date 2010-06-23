@@ -33,6 +33,9 @@
 - (id)initWithRulesFromArray:(NSArray*)rules
 				withGameType:(iTetProtocolType)protocol;
 
++ (id)offlineGameRules;
+- (id)initWithOfflineGameRules;
+
 @property (readonly) iTetProtocolType gameType;
 @property (readonly) NSUInteger startingLevel;
 @property (readonly) NSUInteger initialStackHeight;
