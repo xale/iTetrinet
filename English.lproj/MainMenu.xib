@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="573"/>
-			<integer value="29"/>
+			<integer value="575"/>
 			<integer value="451"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3152,6 +3152,10 @@
 				<bool key="NSClearsFilterPredicateOnInsertion">YES</bool>
 			</object>
 			<object class="NSUserDefaultsController" id="538096115">
+				<object class="NSMutableArray" key="NSDeclaredKeys">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<string>iTetServersList</string>
+				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
@@ -5331,35 +5335,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">contentArray: values.serversList</string>
-						<reference key="source" ref="541646725"/>
-						<reference key="destination" ref="538096115"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="541646725"/>
-							<reference key="NSDestination" ref="538096115"/>
-							<string key="NSLabel">contentArray: values.serversList</string>
-							<string key="NSBinding">contentArray</string>
-							<string key="NSKeyPath">values.serversList</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSConditionallySetsEditable</string>
-									<string>NSValueTransformerName</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<boolean value="NO"/>
-									<string>NSKeyedUnarchiveFromData</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1663</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: arrangedObjects.serverAddress</string>
 						<reference key="source" ref="879171373"/>
 						<reference key="destination" ref="541646725"/>
@@ -5576,6 +5551,35 @@
 						</object>
 					</object>
 					<int key="connectionID">1682</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">contentArray: values.iTetServersList</string>
+						<reference key="source" ref="541646725"/>
+						<reference key="destination" ref="538096115"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="541646725"/>
+							<reference key="NSDestination" ref="538096115"/>
+							<string key="NSLabel">contentArray: values.iTetServersList</string>
+							<string key="NSBinding">contentArray</string>
+							<string key="NSKeyPath">values.iTetServersList</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSConditionallySetsEditable</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<boolean value="NO"/>
+									<string>NSKeyedUnarchiveFromData</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1683</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7699,9 +7703,9 @@
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{464, 200}, {824, 713}}</string>
+					<string>{{321, 87}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{464, 200}, {824, 713}}</string>
+					<string>{{321, 87}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -7890,7 +7894,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1682</int>
+			<int key="maxID">1683</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
