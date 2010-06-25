@@ -49,19 +49,23 @@
 	specialCapacity = [[rules objectAtIndex:6] integerValue];
 	
 	// Block-type frequencies
+	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
 	NSString* freq = [rules objectAtIndex:7];
 	NSRange currentChar = NSMakeRange(0, 1);
 	for (; currentChar.location < 100; currentChar.location++)
 	{
-		blockFrequencies[currentChar.location] = (uint8_t)[[freq substringWithRange:currentChar] intValue];
+		[temp addObject:[NSNumber numberWithInt:[[freq substringWithRange:currentChar] intValue]]];
 	}
+	blockFrequencies = [temp copy];
 	
 	// Special-type frequencies
+	[temp removeAllObjects];
 	freq = [rules objectAtIndex:8];
 	for (currentChar.location = 0; currentChar.location < 100; currentChar.location++)
 	{
-		specialFrequencies[currentChar.location] = [iTetSpecials specialTypeForNumber:[[freq substringWithRange:currentChar] intValue]];
+		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:[[freq substringWithRange:currentChar] intValue]]]];
 	}
+	specialFrequencies = [temp copy];
 	
 	// Level number averages across all players
 	showAverageLevel = [[rules objectAtIndex:9] boolValue];
@@ -90,12 +94,26 @@
 	specialCapacity = 20;
 	showAverageLevel = NO;
 	classicRules = NO;
+	
+	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
 	for (NSInteger i = 0; i < 100; i++)
-		blockFrequencies[i] = (uint8_t)((random() % 7) + 1);
+		[temp addObject:[NSNumber numberWithInt:((random() % 7) + 1)]];
+	blockFrequencies = [temp copy];
+	
+	temp = [NSMutableArray arrayWithCapacity:100];
 	for (NSInteger i = 0; i < 100; i++)
-		specialFrequencies[i] = [iTetSpecials specialTypeForNumber:((random() % 9) + 1)];
+		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:((random() % 9) + 1)]]];
+	specialFrequencies = [temp copy];
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	[blockFrequencies release];
+	[specialFrequencies release];
+	
+	[super dealloc];
 }
 
 #pragma mark -
@@ -109,17 +127,8 @@
 @synthesize linesPerSpecial;
 @synthesize specialsAdded;
 @synthesize specialCapacity;
-
-- (uint8_t*)blockFrequencies
-{
-	return blockFrequencies;
-}
-
-- (iTetSpecialType*)specialFrequencies
-{
-	return specialFrequencies;
-}
-
+@synthesize blockFrequencies;
+@synthesize specialFrequencies;
 @synthesize showAverageLevel;
 @synthesize classicRules;
 

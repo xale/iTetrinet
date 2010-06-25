@@ -22,8 +22,8 @@
 	NSUInteger linesPerSpecial;
 	NSUInteger specialsAdded;
 	NSUInteger specialCapacity;
-	uint8_t blockFrequencies[100];
-	iTetSpecialType specialFrequencies[100];
+	NSArray* blockFrequencies;
+	NSArray* specialFrequencies;
 	BOOL showAverageLevel;
 	BOOL classicRules;
 }
@@ -44,8 +44,8 @@
 @property (readonly) NSUInteger linesPerSpecial;
 @property (readonly) NSUInteger specialsAdded;
 @property (readonly) NSUInteger specialCapacity;
-@property (readonly) uint8_t* blockFrequencies;
-@property (readonly) iTetSpecialType* specialFrequencies;
+@property (readonly) NSArray* blockFrequencies;
+@property (readonly) NSArray* specialFrequencies;
 @property (readonly) BOOL showAverageLevel;
 @property (readonly) BOOL classicRules;
 

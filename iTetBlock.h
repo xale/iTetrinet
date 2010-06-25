@@ -68,8 +68,8 @@ typedef enum
 
 // Create random blocks using the frequency information from the game rules
 // blockFrequencies must be of length 100
-+ (id)randomBlockUsingBlockFrequencies:(uint8_t*)blockFrequencies;
-- (id)initWithRandomTypeAndOrientationUsingFrequencies:(uint8_t*)blockFrequencies;
++ (id)randomBlockUsingBlockFrequencies:(NSArray*)blockFrequencies;
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(NSArray*)blockFrequencies;
 
 // Returns the contents of this block at the specified cell
 - (uint8_t)cellAtRow:(NSInteger)row
