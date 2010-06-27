@@ -15,14 +15,20 @@
 + (id)stringWithMessageData:(NSData*)messageData
 {
 	// First, attempt to interpret the string as UTF-8
-	NSString* utf8String = [self stringWithData:messageData
-									   encoding:iTetDefaultStringEncoding];
-	if (utf8String != nil)
-		return utf8String;
+	NSString* decodedString = [self stringWithData:messageData
+										  encoding:iTetDefaultStringEncoding];
+	if (decodedString != nil)
+		return decodedString;
 	
-	// If that fails, decode the string as Windows-1252
+	// If that fails, attempt to decode the string as Windows-1252
+	decodedString = [self stringWithData:messageData
+								encoding:iTetTetrinetStandardStringEncoding];
+	if (decodedString != nil)
+		return decodedString;
+	
+	// If even _that_ fails, fall back to ISO Latin 1 (8859-1)
 	return [self stringWithData:messageData
-					   encoding:iTetFallbackStringEncoding];
+					   encoding:iTetFallbackISOStringEncoding];
 }
 
 + (id)stringWithData:(NSData*)data
