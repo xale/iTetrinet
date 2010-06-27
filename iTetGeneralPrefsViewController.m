@@ -10,7 +10,7 @@
 
 #import "iTetGeneralPrefsViewController.h"
 
-#define iTetGeneralPreferencessViewName	NSLocalizedStringFromTable(@"General Preferences", @"PreferencePanes", @"Title of the 'general preferences' preferences pane")
+#define iTetGeneralPreferencesViewName	NSLocalizedStringFromTable(@"General Preferences", @"PreferencePanes", @"Title of the 'general preferences' preferences pane")
 
 @implementation iTetGeneralPrefsViewController
 
@@ -19,7 +19,7 @@
 	if (![super initWithNibName:@"GeneralPrefsView" bundle:nil])
 		return nil;
 	
-	[self setTitle:iTetGeneralPreferencessViewName];
+	[self setTitle:iTetGeneralPreferencesViewName];
 	
 	return self;
 }
