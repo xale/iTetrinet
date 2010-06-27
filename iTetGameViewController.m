@@ -36,6 +36,8 @@
 
 #import "iTetCommonLocalizations.h"
 
+#import "NSDictionary+AdditionalTypes.h"
+
 #define LOCALPLAYER	[playersController localPlayer]
 
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
@@ -57,12 +59,25 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (NSTimer*)nextBlockTimer;
 - (NSTimer*)fallTimer;
 
+- (BOOL)offlineGame;
+
 - (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config;
 
 @end
 
-
 @implementation iTetGameViewController
+
++ (void)initialize
+{
+	if (self == [iTetGameViewController class])
+	{
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObject:[iTetGameRules defaultOfflineGameRules]
+																							forKey:iTetOfflineGameRulesPrefKey]];
+		
+		// Seed random number generator
+		srandom(time(NULL));
+	}
+}
 
 - (id)init
 {
@@ -106,14 +121,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			   options:nil];
 	[specialsView bind:@"capacity"
 			  toObject:self
-		   withKeyPath:@"currentGameRules.specialCapacity"
+		   withKeyPath:@"currentGameRules.iTetSpecialCapacity"
 			   options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:0]
 												   forKey:NSNullPlaceholderBindingOption]];
 	
 	// Level progress indicator
 	[levelProgressIndicator bind:@"maxValue"
 						toObject:self
-					 withKeyPath:@"currentGameRules.linesPerLevel"
+					 withKeyPath:@"currentGameRules.iTetLinesPerLevel"
 						 options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:1]
 															 forKey:NSNullPlaceholderBindingOption]];
 	[levelProgressIndicator bind:@"value"
@@ -123,9 +138,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 															 forKey:NSNullPlaceholderBindingOption]];
 	
 	// Specials progress indicator
+	[specialsProgressIndicator bind:@"hidden"
+						   toObject:self
+						withKeyPath:@"currentGameRules.iTetSpecialsEnabled"
+							options:[NSDictionary dictionaryWithObject:NSNegateBooleanTransformerName
+																forKey:NSValueTransformerNameBindingOption]];
 	[specialsProgressIndicator bind:@"maxValue"
 						   toObject:self
-						withKeyPath:@"currentGameRules.linesPerSpecial"
+						withKeyPath:@"currentGameRules.iTetLinesPerSpecial"
 							options:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:1]
 																forKey:NSNullPlaceholderBindingOption]];
 	[specialsProgressIndicator bind:@"value"
@@ -182,7 +202,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #define iTetEndGameConfirmButtonTitle	NSLocalizedStringFromTable(@"End Game", @"GameViewController", @"Title of button on 'end game' confirmation alert that allows the user to confirm and end the game in progress")
 
 - (IBAction)startStopGame:(id)sender
-{	
+{
 	// Check if a game is already in progress
 	if ([self gameplayState] != gameNotPlaying)
 	{
@@ -202,8 +222,25 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	else
 	{
-		// Start the game
-		[networkController sendMessage:[iTetStartStopGameMessage startMessageFromSender:LOCALPLAYER]];
+		// If we're connected to a server, send a "start game" message
+		if ([networkController connectionState] == connected)
+		{
+			[networkController sendMessage:[iTetStartStopGameMessage startMessageFromSender:LOCALPLAYER]];
+		}
+		// Otherwise, start an offline game
+		else
+		{
+			// Create a local player
+			[playersController setLocalPlayer:[iTetLocalPlayer playerWithNickname:NSFullUserName()
+																		   number:1]];
+			
+			// Switch to the game tab
+			[windowController switchToGameTab:self];
+			
+			// Start the game
+			[self newGameWithPlayers:[NSArray arrayWithObject:LOCALPLAYER]
+							   rules:[[NSUserDefaults standardUserDefaults] objectForKey:iTetOfflineGameRulesPrefKey]];
+		}
 	}
 }
 
@@ -231,14 +268,33 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 {
 	// Check if game is already paused
 	if ([self gameplayState] == gamePaused)
-	{	
-		// Send a message asking the server to resume play
-		[networkController sendMessage:[iTetPauseResumeGameMessage resumeMessageFromSender:LOCALPLAYER]];
+	{
+		// If we are connected to a server, send a message asking to resume play
+		if (![self offlineGame])
+		{
+			[networkController sendMessage:[iTetPauseResumeGameMessage resumeMessageFromSender:LOCALPLAYER]];
+		}
+		// Otherwise, if this is an offline game, resume immediately
+		else
+		{
+			// Make sure we are looking at the game tab
+			[windowController switchToGameTab:self];
+			
+			[self resumeGame];
+		}
 	}
 	else
 	{
-		// Send a message asking the server to pause
-		[networkController sendMessage:[iTetPauseResumeGameMessage pauseMessageFromSender:LOCALPLAYER]];
+		// If we are connected to a server, send a message asking to pause
+		if (![self offlineGame])
+		{
+			[networkController sendMessage:[iTetPauseResumeGameMessage pauseMessageFromSender:LOCALPLAYER]];
+		}
+		// Otherwise, if this is an offline game, pause immediately
+		else
+		{
+			[self pauseGame];
+		}
 	}
 }
 
@@ -274,8 +330,16 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
-	// Send the server a "stop game" message
-	[networkController sendMessage:[iTetStartStopGameMessage stopMessageFromSender:LOCALPLAYER]];
+	// If we are connected to a server, send a "stop game" message
+	if (![self offlineGame])
+	{
+		[networkController sendMessage:[iTetStartStopGameMessage stopMessageFromSender:LOCALPLAYER]];
+	}
+	// Otherwise, if this is an offline game, abort immediately
+	else
+	{
+		[self endGame];
+	}
 }
 
 - (void)forfeitDialogDidEnd:(NSAlert*)dialog
@@ -298,25 +362,30 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Determine which item we are looking at based on its action
 	SEL itemAction = [item action];
 	
-	// Get the current operator player
-	iTetPlayer* op = [playersController operatorPlayer];
+	// If we are connected to a server, get the current operator player
+	iTetPlayer* op = nil;
+	if (![self offlineGame])
+		op = [playersController operatorPlayer];
 	
-	// "New Game" button/menu item
+	// "New Game" / "End Game" button/menu item
 	if (itemAction == @selector(startStopGame:))
 	{
-		return (([networkController connectionState] == connected) && [op isLocalPlayer]);
+		// Enabled if we are not connected to a server (for offline games) or if we are connected and the local player is the operator
+		return (([networkController connectionState] == disconnected) || [op isLocalPlayer]);
 	}
 	
 	// "Forfeit" button/menu item
 	if (itemAction == @selector(forfeitGame:))
 	{
-		return (([self gameplayState] != gameNotPlaying) && [LOCALPLAYER isPlaying]);
+		// Enabled if the local player is playing in the current game
+		return [LOCALPLAYER isPlaying];
 	}
 	
-	// "Pause" button/menu item
+	// "Pause" / "Resume" button/menu item
 	if (itemAction == @selector(pauseResumeGame:))
 	{
-		return (([self gameplayState] != gameNotPlaying) && [op isLocalPlayer]);
+		// Enabled if there is a game in progress, and it is an offline game or an online game with the local player as operator
+		return (([self gameplayState] != gameNotPlaying) && ([self offlineGame] || [op isLocalPlayer]));
 	}
 	
 	return YES;
@@ -354,15 +423,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark Controlling Game State
 
 - (void)newGameWithPlayers:(NSArray*)players
-				 rulesList:(NSArray*)rulesArray
-				  onServer:(iTetServerInfo*)gameServer;
+					 rules:(NSDictionary*)rules
 {
 	// Clear the list of actions from the last game
 	[self clearActions];
 	
 	// Create the game rules
-	[self setCurrentGameRules:[iTetGameRules gameRulesFromArray:rulesArray
-												   withGameType:[gameServer protocol]]];
+	[self setCurrentGameRules:rules];
 	
 	// Set up the players' fields
 	for (iTetPlayer* player in players)
@@ -374,32 +441,35 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[player setField:[iTetField field]];
 		
 		// Set the starting level
-		[player setLevel:[[self currentGameRules] startingLevel]];
+		[player setLevel:[rules integerForKey:iTetGameRulesStartingLevelKey]];
 	}
 	
 	// If there is a starting stack, give the local player a field with garbage
-	if ([[self currentGameRules] initialStackHeight] > 0)
+	if ([rules integerForKey:iTetGameRulesInitialStackHeightKey] > 0)
 	{
 		// Create the field
-		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[[self currentGameRules] initialStackHeight]]];
+		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules integerForKey:iTetGameRulesInitialStackHeightKey]]];
 		
-		// Send the field to the server
+		// If this isn't an offline game, send the field to the server
 		[self sendFieldstring];
 	}
 	
 	// Create the first block to add to the field
-	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
+	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]]];
 	
 	// Move the block to the field
 	[self moveNextBlockToField];
 	
 	// Create a new specials queue for the local player
-	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[[self currentGameRules] specialCapacity]]];
+	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[rules integerForKey:iTetGameRulesSpecialCapacityKey]]];
 	
 	// Reset the local player's cleared lines
 	[LOCALPLAYER resetLinesCleared];
 	
-	// Make sure the field is the first responder
+	// Switch to the game view tab, if not already there
+	[windowController switchToGameTab:self];
+	
+	// Make sure the local player's field is the first responder
 	[[windowController window] makeFirstResponder:localFieldView];
 	
 	// Set the game state to "playing"
@@ -408,6 +478,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)pauseGame
 {
+	// If the game is already paused, do nothing
+	if ([self gameplayState] == gamePaused)
+		return;
+	
 	// Set the game state to "paused"
 	[self setGameplayState:gamePaused];
 	
@@ -428,6 +502,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)resumeGame
 {
+	// If the game is not paused, do nothing
+	if ([self gameplayState] != gamePaused)
+		return;
+	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
 	
@@ -446,6 +524,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// Add the timer to the current run loop
 		[[NSRunLoop currentRunLoop] addTimer:blockTimer
 									 forMode:NSDefaultRunLoopMode];
+		
+		// Make sure we're looking at the game tab
+		[windowController switchToGameTab:self];
 		
 		// Move first responder to the field
 		[[windowController window] makeFirstResponder:localFieldView];
@@ -467,17 +548,21 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
+	
+	// If we have been playing a local game, remove the local player
+	if ([self offlineGame])
+		[playersController setLocalPlayer:nil];
 }
 
 #pragma mark -
-#pragma mark Key Binding Key/Value Observation
+#pragma mark Key Bindings Key/Value Observation
 
 - (void)observeValueForKeyPath:(NSString*)keyPath
 					  ofObject:(id)object
 						change:(NSDictionary*)change
 					   context:(void *)context
 {
-	// Change to themes list; update the current theme
+	// Change to keyboard configuration; load new bindings from user defaults
 	[self setCurrentKeyConfiguration:[iTetKeyConfiguration currentKeyConfiguration]];
 }
 
@@ -522,7 +607,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	
 	// Depending on the protocol, either start the next block immediately, or set a time delay
-	if ([[self currentGameRules] gameType] == tetrifastProtocol)
+	if ([currentGameRules intForKey:iTetGameRulesGameTypeKey] == tetrifastProtocol)
 	{
 		// Spawn the next block immediately
 		[self moveNextBlockToField];
@@ -558,7 +643,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			for (NSNumber* special in specials)
 			{
 				// Check if there is space in the queue
-				if ([[LOCALPLAYER specialsQueue] count] >= [[self currentGameRules] specialCapacity])
+				if ([[LOCALPLAYER specialsQueue] count] >= [currentGameRules unsignedIntegerForKey:iTetGameRulesSpecialCapacityKey])
 					goto specialsfull;
 				
 				// Add to player's queue
@@ -569,7 +654,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	specialsfull:
 		
 		// Check whether to send lines to other players
-		if ([currentGameRules classicRules])
+		if ([currentGameRules boolForKey:iTetGameRulesClassicRulesKey])
 		{
 			// Determine how many lines to send
 			NSInteger linesToSend = 0;
@@ -601,11 +686,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		}
 		
 		// Check for level updates
-		NSInteger linesPer = [[self currentGameRules] linesPerLevel];
+		NSInteger linesPer = [currentGameRules integerForKey:iTetGameRulesLinesPerLevelKey];
 		while ([LOCALPLAYER linesSinceLastLevel] >= linesPer)
 		{
 			// Increase the level
-			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [[self currentGameRules] levelIncrease])];
+			[LOCALPLAYER setLevel:([LOCALPLAYER level] + [currentGameRules integerForKey:iTetGameRulesLevelIncreaseKey])];
 			
 			// Send a level increase message to the server
 			[self sendCurrentLevel];
@@ -613,17 +698,20 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// Decrement the lines cleared since the last level update
 			[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
 		}
-		
-		// Check whether to add specials to the field
-		linesPer = [[self currentGameRules] linesPerSpecial];
-		while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
-		{
-			// Add specials
-			[[LOCALPLAYER field] addSpecials:[[self currentGameRules] specialsAdded]
-							usingFrequencies:[[self currentGameRules] specialFrequencies]];
 			
-			// Decrement the lines cleared since last specials added
-			[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+		// Check whether to add specials to the field
+		if ([currentGameRules boolForKey:iTetGameRulesSpecialsEnabledKey])
+		{
+			linesPer = [currentGameRules integerForKey:iTetGameRulesLinesPerSpecialKey];
+			while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
+			{
+				// Add specials
+				[[LOCALPLAYER field] addSpecials:[currentGameRules integerForKey:iTetGameRulesSpecialsAddedKey]
+								usingFrequencies:[currentGameRules objectForKey:iTetGameRulesSpecialFrequenciesKey]];
+				
+				// Decrement the lines cleared since last specials added
+				[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
+			}
 		}
 		
 		// Check for additional lines cleared (an unusual occurrence, but still possible)
@@ -639,10 +727,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	iTetBlock* block = [LOCALPLAYER nextBlock];
 	
 	// Set the block's position to the top of the field
-	[block setRowPos:(ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [block initialRowOffset]];
+	[block setRowPos:((ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [block initialRowOffset])];
 	
 	// Center the block
-	[block setColPos:((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [block initialColumnOffset]];
+	[block setColPos:(((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [block initialColumnOffset])];
 	
 	// Check if the block can be moved to the field
 	if ([[LOCALPLAYER field] blockObstructed:block])
@@ -656,7 +744,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[LOCALPLAYER setCurrentBlock:block];
 	
 	// Generate a new next block
-	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[[self currentGameRules] blockFrequencies]]];
+	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules objectForKey:iTetGameRulesBlockFrequenciesKey]]];
 	
 	// Set the fall timer
 	blockTimer = [self fallTimer];
@@ -665,7 +753,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)useSpecial:(iTetSpecialType)special
 		  onTarget:(iTetPlayer*)target
 		fromSender:(iTetPlayer*)sender
-
 {
 	// Determine the action to take
 	switch (special)
@@ -755,6 +842,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)playerLost
 {
+	// If this is an offline game, simply end the game and clean up state
+	if ([self offlineGame])
+	{
+		[self endGame];
+		return;
+	}
+	
+	// Otherwise, clean up state for the local player only
 	// Clear the falling block
 	[LOCALPLAYER setCurrentBlock:nil];
 	
@@ -915,31 +1010,46 @@ doCommandBySelector:(SEL)command
 #pragma mark Client-to-Server Events
 
 - (void)sendFieldstring
-{	
-	// Send the string for the local player's field to the server
+{
+	// If this is an offline game, do nothing
+	if ([self offlineGame])
+		return;
+	
+	// Otherwise, send the string for the local player's field to the server
 	[networkController sendMessage:[iTetFieldstringMessage fieldMessageForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendPartialFieldstring
 {
+	// If this is an offline game, do nothing
+	if ([self offlineGame])
+		return;
+	
 	// Send the last partial update on the local player's field to the server
 	[networkController sendMessage:[iTetFieldstringMessage partialUpdateMessageForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendCurrentLevel
 {
+	// If this is an offline game, do nothing
+	if ([self offlineGame])
+		return;
+	
 	// Send the local player's level to the server
 	[networkController sendMessage:[iTetLevelUpdateMessage messageWithUpdateForPlayer:LOCALPLAYER]];
 }
 
 - (void)sendSpecial:(iTetSpecialType)special
 		   toPlayer:(iTetPlayer*)target
-{	
-	// Send a message to the server
-	iTetSpecialMessage* message = [iTetSpecialMessage messageWithSpecialType:special
-																	  sender:LOCALPLAYER
-																	  target:target];
-	[networkController sendMessage:message];
+{
+	// If this isn't an offline game, send a message to the server
+	if (![self offlineGame])
+	{
+		iTetSpecialMessage* message = [iTetSpecialMessage messageWithSpecialType:special
+																		  sender:LOCALPLAYER
+																		  target:target];
+		[networkController sendMessage:message];
+	}
 	
 	// Perform and record the action
 	[self specialUsed:special
@@ -948,13 +1058,17 @@ doCommandBySelector:(SEL)command
 }
 
 - (void)sendLines:(NSInteger)lines
-{	
-	// Send the message to the server
+{
+	// If this is an offline game, do nothing
+	if ([self offlineGame])
+		return;
+	
+	// Otherwise, send a message to the server...
 	iTetSpecialMessage* message = [iTetSpecialMessage messageWithClassicStyleLines:lines
 																			sender:LOCALPLAYER];
 	[networkController sendMessage:message];
 	
-	// Perform and record the action
+	// ...and perform and record the action
 	[self specialUsed:[message specialType]
 			 byPlayer:LOCALPLAYER
 			 onPlayer:nil];
@@ -1053,9 +1167,17 @@ doCommandBySelector:(SEL)command
 		NSString* specialName = [iTetSpecials nameForSpecialType:special];
 		
 		// Create the description string
-		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
-													   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
-		
+		if (![self offlineGame])
+		{
+			desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
+														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+		}
+		else
+		{
+			desc = [[[NSMutableAttributedString alloc] initWithString:specialName
+														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+		}
+
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:specialName];
 		if ([iTetSpecials specialIsPositive:special])
@@ -1072,11 +1194,14 @@ doCommandBySelector:(SEL)command
 				  range:attributeRange];
 	
 	// Bold the target and sender names
-	[desc applyFontTraits:NSBoldFontMask
-					range:[[desc string] rangeOfString:targetName]];
-	[desc applyFontTraits:NSBoldFontMask
-					range:[[desc string] rangeOfString:senderName
-											   options:NSBackwardsSearch]];
+	if (![self offlineGame])
+	{
+		[desc applyFontTraits:NSBoldFontMask
+						range:[[desc string] rangeOfString:targetName]];
+		[desc applyFontTraits:NSBoldFontMask
+						range:[[desc string] rangeOfString:senderName
+												   options:NSBackwardsSearch]];
+	}
 	
 	// If the local player was affected, add a background color
 	if (localPlayerAffected)
@@ -1169,6 +1294,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 #pragma mark Accessors
 
 @synthesize currentGameRules;
+
+- (BOOL)offlineGame
+{
+	return [currentGameRules boolForKey:iTetGameRulesOfflineGameKey];
+}
 
 #define iTetNewGameMenuItemTitle	NSLocalizedStringFromTable(@"Begin New Game", @"GameViewController", @"Title of menu item used to start a new game")
 #define iTetNewGameButtonTitle		NSLocalizedStringFromTable(@"New Game", @"GameViewController", @"Title of toolbar button used to start a new game")

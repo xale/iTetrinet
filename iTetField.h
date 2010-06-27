@@ -78,7 +78,7 @@ typedef enum
 // Adds the specified number of specials to the field, using the provided frequencies
 // specialFrequencies must be of length 100
 - (void)addSpecials:(NSInteger)count
-   usingFrequencies:(iTetSpecialType*)specialFrequencies;
+   usingFrequencies:(NSArray*)specialFrequencies;
 
 // Adds lines of garbage to the bottom of the field, pushing other lines up
 // Returns YES if the field overflows (player loses)

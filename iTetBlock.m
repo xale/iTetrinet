@@ -191,14 +191,14 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 											columnPosition:colPos];
 }
 
-+ (id)randomBlockUsingBlockFrequencies:(uint8_t*)blockFrequencies
++ (id)randomBlockUsingBlockFrequencies:(NSArray*)blockFrequencies
 {
 	return [[[self alloc] initWithRandomTypeAndOrientationUsingFrequencies:blockFrequencies] autorelease];
 }
 
-- (id)initWithRandomTypeAndOrientationUsingFrequencies:(uint8_t*)blockFrequencies
+- (id)initWithRandomTypeAndOrientationUsingFrequencies:(NSArray*)blockFrequencies
 {	
-	type = (iTetBlockType)(blockFrequencies[random() % 100] - 1);
+	type = (iTetBlockType)([[blockFrequencies objectAtIndex:(random() % [blockFrequencies count])] intValue] - 1);
 	orientation = (random() % orientationCount[type]);
 	
 	return self;

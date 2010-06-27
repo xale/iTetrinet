@@ -14,6 +14,7 @@
 
 - (NSString*)keyNameForEvent:(NSEvent*)event;
 - (NSString*)modifierNameForEvent:(NSEvent*)event;
+- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name;
 
 @end
 
@@ -51,7 +52,9 @@
 	
 	// Determine the name of the event
 	if (isModifier)
+	{
 		keyName = [[self modifierNameForEvent:event] retain];
+	}
 	else
 	{
 		keyName = [[self keyNameForEvent:event] retain];
@@ -59,6 +62,9 @@
 		// Check if the key is on the numeric keypad
 		numpadKey = (([event modifierFlags] & NSNumericPadKeyMask) > 0);
 	}
+	
+	// Set the minimum display width for drawing the key
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
 	
 	return self;
 	
@@ -71,6 +77,7 @@
 	keyCode = code;
 	keyName = [name copy];
 	numpadKey = isOnNumpad;
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
 	
 	return self;
 }
@@ -85,7 +92,7 @@
 #pragma mark -
 #pragma mark Key Name Lookups
 
-#define EscapeKeyCode	(53)
+#define EscapeKeyCode	53
 
 #define iTetEscapeKeyPlaceholderString	NSLocalizedStringFromTable(@"esc", @"Keyboard", @"Letters appearing on or abbreviation representing the escape key on the keyboard")
 #define iTetTabKeyPlaceholderString		NSLocalizedStringFromTable(@"tab", @"Keyboard", @"Name of the 'tab' key, in lowercase")
@@ -105,7 +112,6 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	{
 		case EscapeKeyCode:
 			return iTetEscapeKeyPlaceholderString;
-			// FIXME: others?
 	}
 	
 	// Get the characters representing the event
@@ -158,28 +164,87 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	return keyString;
 }
 
-#define iTetUnknownModifierPlaceholderString	NSLocalizedStringFromTable(@"(unknown)", @"Keyboard", @"Placeholder string for an unknown modifier key.")
+#define CapsLockKeyCode	57
+
+#define iTetCapsLockKeyPlaceholderString		NSLocalizedStringFromTable(@"caps lock", @"Keyboard", @"Name of the 'caps lock' key, in lowercase")
 #define iTetShiftKeyPlaceholderString			NSLocalizedStringFromTable(@"shift", @"Keyboard", @"Name of the 'shift' modifier key, in lowercase")
 #define iTetControlKeyPlaceholderString			NSLocalizedStringFromTable(@"control", @"Keyboard", @"Name of the 'control' modifier key, in lowercase")
 #define iTetAltOptionKeyPlaceholderString		NSLocalizedStringFromTable(@"option", @"Keyboard", @"Name of the 'option' modifier key, in lowercase")
 #define iTetCommandKeyPlaceholderString			NSLocalizedStringFromTable(@"command", @"Keyboard", @"Name of the 'command' modifier key, in lowercase")
+#define iTetUnknownModifierPlaceholderString	NSLocalizedStringFromTable(@"(unknown)", @"Keyboard", @"Placeholder string for an unknown modifier key")
 
 - (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
 {
-	NSString* modifierName = iTetUnknownModifierPlaceholderString;
-	
-	// Check which modifier is held down
+	// Check which modifier key has been pressed
 	NSUInteger flags = [modifierEvent modifierFlags];
 	if ((flags & NSAlphaShiftKeyMask) || (flags & NSShiftKeyMask))
-		modifierName = iTetShiftKeyPlaceholderString;
-	else if (flags & NSCommandKeyMask)
-		modifierName = iTetCommandKeyPlaceholderString;
+	{
+		// Differentiate between shift and caps lock
+		if ([modifierEvent keyCode] == CapsLockKeyCode)
+		{
+			return iTetCapsLockKeyPlaceholderString;
+		}
+		
+		return iTetShiftKeyPlaceholderString;
+	}
+	if (flags & NSCommandKeyMask)
+	{
+		return iTetCommandKeyPlaceholderString;
+	}
 	else if (flags & NSAlternateKeyMask)
-		modifierName = iTetAltOptionKeyPlaceholderString;
+	{
+		return iTetAltOptionKeyPlaceholderString;
+	}
 	else if (flags & NSControlKeyMask)
-		modifierName = iTetControlKeyPlaceholderString;
+	{
+		return iTetControlKeyPlaceholderString;
+	}
 	
-	return modifierName;
+	return iTetUnknownModifierPlaceholderString;
+}
+
+#define iTetSpaceKeyMinDisplayWidth		150.0
+#define iTetShiftKeyMinDisplayWidth		120.0
+#define iTetReturnKeyMinDisplayWidth	110.0
+#define iTetCapsLockKeyMinDisplayWidth	110.0
+#define iTetModifierKeyMinDisplayWidth	100.0
+#define iTetTabKeyMinDisplayWidth		90.0
+#define iTetDeleteKeyMinDisplayWidth	90.0
+
+- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
+{
+	if ([name isEqualToString:iTetSpacebarPlaceholderString])
+	{
+		return iTetSpaceKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetCapsLockKeyPlaceholderString])
+	{
+		return iTetCapsLockKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetShiftKeyPlaceholderString])
+	{
+		return iTetShiftKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetReturnKeyPlaceholderString])
+	{
+		return iTetReturnKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetTabKeyPlaceholderString])
+	{
+		return iTetTabKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetDeleteKeyPlaceholderString])
+	{
+		return iTetDeleteKeyMinDisplayWidth;
+	}
+	if ([name isEqualToString:iTetCommandKeyPlaceholderString] ||
+		[name isEqualToString:iTetAltOptionKeyPlaceholderString] ||
+		[name isEqualToString:iTetControlKeyPlaceholderString])
+	{
+		return iTetModifierKeyMinDisplayWidth;
+	}
+	
+	return 0.0;
 }
 
 #pragma mark -
@@ -215,6 +280,7 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
 	numpadKey = [decoder decodeBoolForKey:iTetKeyNamePairNumpadKey];
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
 	
 	return self;
 }
@@ -245,6 +311,7 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 @synthesize keyCode;
 @synthesize keyName;
 @synthesize numpadKey;
+@synthesize minDisplayWidth;
 
 - (BOOL)isArrowKey
 {
@@ -267,45 +334,45 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 {
 	NSString* name = nil;
 	
-	if ([[self keyName] rangeOfString:iTetEscapeKeyPlaceholderString].location != NSNotFound)
+	if ([[self keyName] isEqualToString:iTetEscapeKeyPlaceholderString])
 	{
 		name = @"Escape";
 	}
-	else if ([[self keyName] rangeOfString:iTetSpacebarPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetSpacebarPlaceholderString])
 	{
 		name = @"Space";
 	}
-	else if ([[self keyName] rangeOfString:iTetTabKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetTabKeyPlaceholderString])
 	{
 		name = @"Tab";
 	}
-	else if ([[self keyName] rangeOfString:iTetReturnKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetReturnKeyPlaceholderString])
 	{
 		name = @"Return";
 	}
-	else if ([[self keyName] rangeOfString:iTetEnterKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetEnterKeyPlaceholderString])
 	{
 		name = @"Enter";
 	}
-	else if ([[self keyName] rangeOfString:iTetDeleteKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetDeleteKeyPlaceholderString])
 	{
 		name = @"Delete";
 	}
-	else if ([[self keyName] rangeOfString:iTetShiftKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetShiftKeyPlaceholderString])
 	{
-		name = @"Shift"; // FIXME: left/right?
+		name = @"Shift";
 	}
-	else if ([[self keyName] rangeOfString:iTetControlKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetControlKeyPlaceholderString])
 	{
-		name = @"Control"; // FIXME: left/right?
+		name = @"Control";
 	}
-	else if ([[self keyName] rangeOfString:iTetAltOptionKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetAltOptionKeyPlaceholderString])
 	{
-		name = @"Option"; // FIXME: left/right?
+		name = @"Option";
 	}
-	else if ([[self keyName] rangeOfString:iTetCommandKeyPlaceholderString].location != NSNotFound)
+	else if ([[self keyName] isEqualToString:iTetCommandKeyPlaceholderString])
 	{
-		name = @"Command"; // FIXME: left/right?
+		name = @"Command";
 	}
 	else
 	{

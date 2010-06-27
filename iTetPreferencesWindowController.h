@@ -18,13 +18,14 @@ typedef enum
 	generalPreferencesTab =		0,
 	themesPreferencesTab =		1,
 	serversPreferencesTab =		2,
-	keyboardPreferencesTab =	3
+	keyboardPreferencesTab =	3,
+	offlineGamePreferencesTab =	4
 } iTetPreferencesTabNumber;
 
 @interface iTetPreferencesWindowController : NSWindowController
 {
 	NSArray* viewControllers;
-	NSInteger currentViewNumber;
+	iTetPreferencesTabNumber currentViewNumber;
 	
 	IBOutlet NSBox* viewBox;
 	
@@ -32,6 +33,7 @@ typedef enum
 	IBOutlet NSToolbarItem* themes;
 	IBOutlet NSToolbarItem* servers;
 	IBOutlet NSToolbarItem* keyboard;
+	IBOutlet NSToolbarItem* offline;
 }
 
 - (IBAction)changeView:(id)sender;
@@ -39,5 +41,7 @@ typedef enum
 - (void)displayViewController:(iTetPreferencesViewController*)controller;
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar;
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender;
 
 @end

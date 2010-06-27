@@ -51,9 +51,6 @@
 	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetWinlistEntryTypeImageTransformerName];
-	
-	// Seed random number generator
-	srandom(time(NULL));
 }
 
 - (void)awakeFromNib
@@ -83,7 +80,7 @@
 #define iTetQuitWithConnectionOpenConfirmButtonTitle	NSLocalizedStringFromTable(@"Disconnect and Quit", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to close the open connection and quit the application")
 #define iTetQuitWithConnectionOpenCancelButtonTitle		NSLocalizedStringFromTable(@"Don't Quit", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to cancel closing and remain connected")
 
-- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
 {
 	// Check if there is an open connection
 	if ([networkController connectionOpen])
@@ -116,6 +113,13 @@
 		return NSTerminateLater;
 	}
 	
+	// If the preferences window is open, check for unsaved state before terminating
+	if ([[prefsWindowController window] isVisible])
+	{
+		return [prefsWindowController applicationShouldTerminate:sender];
+	}
+	
+	// Otherwise, terminate immediately
 	return NSTerminateNow;
 }
 
@@ -126,8 +130,39 @@
 	// Ensure the sheet has closed
 	[[alert window] orderOut:self];
 	
-	// Reply to the NSApplication instance, telling it whether or not to quit
-	[NSApp replyToApplicationShouldTerminate:(returnCode == NSAlertFirstButtonReturn)];
+	// Check if the user chose to close the application
+	if (returnCode == NSAlertFirstButtonReturn)
+	{
+		// If the user pressed "quit", first check for unsaved state on the preferences window
+		if ([[prefsWindowController window] isVisible])
+		{
+			NSApplicationTerminateReply quitReply = [prefsWindowController applicationShouldTerminate:NSApp];
+			
+			switch (quitReply)
+			{
+				case NSTerminateNow:
+					// If there is no unsaved state, or unsaved state the user chooses to discard, terminate immediately
+					[NSApp replyToApplicationShouldTerminate:YES];
+					break;
+				case NSTerminateCancel:
+					// If there is unsaved state, and the user wishes to cancel the quit operation, tell the app not to quit
+					[NSApp replyToApplicationShouldTerminate:NO];
+				default:
+					// Otherwise, defer the termination decision to the preferences window
+					break;
+			}
+		}
+		else
+		{
+			// Otherwise, terminate immediately
+			[NSApp replyToApplicationShouldTerminate:YES];
+		}
+	}
+	else
+	{
+		// If the user pressed 'cancel', tell the app to abort quitting
+		[NSApp replyToApplicationShouldTerminate:NO];
+	}
 }
 
 #pragma mark -

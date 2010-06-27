@@ -25,16 +25,22 @@
 }
 
 #pragma mark -
-#pragma mark Accessors
+#pragma mark Delegation Methods
 
-- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
-				byWindowController:(iTetPreferencesWindowController*)sender;
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
+{
+	// Subclasses can override for graceful-termination behavior
+	return NSTerminateNow;
+}
+
+- (BOOL)windowShouldClose:(id)window
 {
 	// Subclasses can override for graceful-termination behavior
 	return YES;
 }
 
-- (BOOL)windowShouldClose:(id)window
+- (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
+				byWindowController:(iTetPreferencesWindowController*)sender;
 {
 	// Subclasses can override for graceful-termination behavior
 	return YES;

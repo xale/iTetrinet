@@ -15,10 +15,12 @@
 
 + (id)viewController;
 
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender;
+- (BOOL)windowShouldClose:(id)window;
 - (BOOL)viewShouldBeSwappedForView:(iTetPreferencesViewController*)newController
 				byWindowController:(iTetPreferencesWindowController*)sender;
-- (BOOL)windowShouldClose:(id)window;
 - (void)viewWillBeRemoved:(id)sender;
 - (void)viewWasSwappedIn:(id)sender;
+
 
 @end

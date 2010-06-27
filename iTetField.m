@@ -335,7 +335,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 }
 
 - (void)addSpecials:(NSInteger)count
-   usingFrequencies:(iTetSpecialType*)specialFrequencies
+   usingFrequencies:(NSArray*)specialFrequencies
 {
 	[self willChangeValueForKey:@"contents"];
 	
@@ -374,7 +374,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 						if (cellsLeftToSkip == 0)
 						{
 							// Replace the cell with a random special
-							contents[row][col] = specialFrequencies[random() % 100];
+							contents[row][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
 							
 							// Decrement the number of non-special cells remaining
 							numNonSpecialCells--;
@@ -409,7 +409,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 				if (row == ITET_FIELD_HEIGHT)
 				{
 					// Add the new special to the bottom row
-					contents[0][col] = specialFrequencies[random() % 100];
+					contents[0][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
 					
 					// Go to the next iteration of the special-adding loop
 					goto nextspecial;
