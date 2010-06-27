@@ -828,6 +828,10 @@ willDisconnectWithError:(NSError*)error
 				{
 					// If the connection closed unexpectedly, blame the server
 					[connectionStatusLabel setStringValue:iTetServerDisconnectedStatusLabel];
+					
+					// Make sure the progress indicator is stopped and hidden
+					[connectionProgressIndicator stopAnimation:self];
+					[connectionProgressIndicator setHidden:YES];
 				}
 				else
 				{
