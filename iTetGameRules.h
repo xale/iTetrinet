@@ -10,43 +10,28 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetServerInfo.h"
-#import "iTetSpecials.h"
+
+#define ITET_NUM_GAME_RULES_KEYS	14
+extern NSString* const iTetGameRulesOfflineGameKey;
+extern NSString* const iTetGameRulesGameTypeKey;
+extern NSString* const iTetGameRulesInitialStackHeightKey;
+extern NSString* const iTetGameRulesStartingLevelKey;
+extern NSString* const iTetGameRulesLinesPerLevelKey;
+extern NSString* const iTetGameRulesLevelIncreaseKey;
+extern NSString* const iTetGameRulesSpecialsEnabledKey;
+extern NSString* const iTetGameRulesLinesPerSpecialKey;
+extern NSString* const iTetGameRulesSpecialsAddedKey;
+extern NSString* const iTetGameRulesSpecialCapacityKey;
+extern NSString* const iTetGameRulesBlockFrequenciesKey;
+extern NSString* const iTetGameRulesSpecialFrequenciesKey;
+extern NSString* const iTetGameRulesShowAverageLevelKey;
+extern NSString* const iTetGameRulesClassicRulesKey;
 
 @interface iTetGameRules : NSObject
-{
-	iTetProtocolType gameType;
-	NSUInteger startingLevel;
-	NSUInteger initialStackHeight;
-	NSUInteger linesPerLevel;
-	NSUInteger levelIncrease;
-	NSUInteger linesPerSpecial;
-	NSUInteger specialsAdded;
-	NSUInteger specialCapacity;
-	NSArray* blockFrequencies;
-	NSArray* specialFrequencies;
-	BOOL showAverageLevel;
-	BOOL classicRules;
-}
 
-+ (id)gameRulesFromArray:(NSArray*)rules
-			withGameType:(iTetProtocolType)protocol;
-- (id)initWithRulesFromArray:(NSArray*)rules
-				withGameType:(iTetProtocolType)protocol;
++ (NSMutableDictionary*)gameRulesFromArray:(NSArray*)rules
+							  withGameType:(iTetProtocolType)protocol;
 
-+ (id)offlineGameRules;
-- (id)initWithOfflineGameRules;
-
-@property (readonly) iTetProtocolType gameType;
-@property (readonly) NSUInteger startingLevel;
-@property (readonly) NSUInteger initialStackHeight;
-@property (readonly) NSUInteger linesPerLevel;
-@property (readonly) NSUInteger levelIncrease;
-@property (readonly) NSUInteger linesPerSpecial;
-@property (readonly) NSUInteger specialsAdded;
-@property (readonly) NSUInteger specialCapacity;
-@property (readonly) NSArray* blockFrequencies;
-@property (readonly) NSArray* specialFrequencies;
-@property (readonly) BOOL showAverageLevel;
-@property (readonly) BOOL classicRules;
++ (NSMutableDictionary*)defaultOfflineGameRules;
 
 @end

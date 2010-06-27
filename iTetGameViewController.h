@@ -22,7 +22,6 @@
 @class IPSScalableLevelIndicator;
 @class iTetPlayer;
 @class iTetServerInfo;
-@class iTetGameRules;
 @class iTetKeyConfiguration;
 
 typedef enum
@@ -66,7 +65,7 @@ typedef enum
 	IBOutlet NSTextView* actionListView;
 	
 	// Rules for game in progress
-	iTetGameRules* currentGameRules;
+	NSDictionary* currentGameRules;
 	
 	// Timer for local player's falling block
 	NSTimer* blockTimer;
@@ -93,7 +92,7 @@ typedef enum
 - (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
-					 rules:(iTetGameRules*)rules;
+					 rules:(NSDictionary*)rules;
 - (void)pauseGame;
 - (void)resumeGame;
 - (void)endGame;
@@ -112,7 +111,7 @@ typedef enum
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;
 
-@property (readwrite, retain) iTetGameRules* currentGameRules;
+@property (readwrite, retain) NSDictionary* currentGameRules;
 @property (readwrite, assign) iTetGameplayState gameplayState;
 @property (readonly) BOOL gameInProgress;
 

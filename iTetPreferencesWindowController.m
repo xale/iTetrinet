@@ -13,6 +13,7 @@
 #import "iTetThemesViewController.h"
 #import "iTetServersViewController.h"
 #import "iTetKeyboardViewController.h"
+#import "iTetOfflineGamePrefsViewController.h"
 
 @implementation iTetPreferencesWindowController
 
@@ -27,6 +28,7 @@
 					   [iTetThemesViewController viewController],
 					   [iTetServersViewController viewController],
 					   [iTetKeyboardViewController viewController],
+					   [iTetOfflineGamePrefsViewController viewController],
 					   nil];
 	
 	currentViewNumber = noPreferencesTab;
@@ -148,7 +150,7 @@
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
 {
-	return [NSArray arrayWithObjects: [general itemIdentifier], [themes itemIdentifier], [servers itemIdentifier], [keyboard itemIdentifier], nil];
+	return [NSArray arrayWithObjects: [general itemIdentifier], [themes itemIdentifier], [servers itemIdentifier], [keyboard itemIdentifier], [offline itemIdentifier], nil];
 }
 
 @end

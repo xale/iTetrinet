@@ -51,9 +51,6 @@
 	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetWinlistEntryTypeImageTransformerName];
-	
-	// Seed random number generator
-	srandom(time(NULL));
 }
 
 - (void)awakeFromNib

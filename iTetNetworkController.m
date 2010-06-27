@@ -937,7 +937,7 @@ willDisconnectWithError:(NSError*)error
 	return ([self connectionState] == connected);
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString*)key
 {
 	if ([key isEqualToString:@"connectionState"])
 		return NO;
@@ -945,7 +945,7 @@ willDisconnectWithError:(NSError*)error
 	return [super automaticallyNotifiesObserversForKey:key];
 }
 
-+ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
++ (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key
 {
 	NSSet* keys = [super keyPathsForValuesAffectingValueForKey:key];
 	

@@ -10,126 +10,180 @@
 
 #import "iTetGameRules.h"
 #import "iTetSpecials.h"
+#import "NSDictionary+AdditionalTypes.h"
+
+NSString* const iTetGameRulesOfflineGameKey =			@"iTetOfflineGame";
+NSString* const iTetGameRulesGameTypeKey =				@"iTetGameType";
+NSString* const iTetGameRulesInitialStackHeightKey =	@"iTetInitialStackHeight";
+NSString* const iTetGameRulesStartingLevelKey =			@"iTetStartingLevel";
+NSString* const iTetGameRulesLinesPerLevelKey =			@"iTetLinesPerLevel";
+NSString* const iTetGameRulesLevelIncreaseKey =			@"iTetLevelIncrease";
+NSString* const iTetGameRulesSpecialsEnabledKey =		@"iTetSpecialsEnabled";
+NSString* const iTetGameRulesLinesPerSpecialKey =		@"iTetLinesPerSpecial";
+NSString* const iTetGameRulesSpecialsAddedKey =			@"iTetSpecialsAdded";
+NSString* const iTetGameRulesSpecialCapacityKey =		@"iTetSpecialCapacity";
+NSString* const iTetGameRulesBlockFrequenciesKey =		@"iTetBlockFrequencies";
+NSString* const iTetGameRulesSpecialFrequenciesKey =	@"iTetSpecialFrequencies";
+NSString* const iTetGameRulesShowAverageLevelKey =		@"iTetShowAverageLevel";
+NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 
 @implementation iTetGameRules
 
-+ (id)gameRulesFromArray:(NSArray*)rules
-			withGameType:(iTetProtocolType)protocol
+- (id)init
 {
-	return [[[self alloc] initWithRulesFromArray:rules
-									withGameType:protocol] autorelease];
+	[self doesNotRecognizeSelector:_cmd];
+	[self release];
+	return nil;
 }
 
-- (id)initWithRulesFromArray:(NSArray*)rules
-				withGameType:(iTetProtocolType)protocol
++ (NSMutableDictionary*)gameRulesFromArray:(NSArray*)rulesArray
+							  withGameType:(iTetProtocolType)protocol
 {
-	// Set the game type
-	gameType = protocol;
+	// Create a dictionary to hold the rules
+	NSMutableDictionary* rulesDict = [NSMutableDictionary dictionaryWithCapacity:ITET_NUM_GAME_RULES_KEYS];
 	
-	// The array recieved contains strings, which need to be parsed into the respective rules:
+	// Set the game type
+	[rulesDict setBool:NO
+				forKey:iTetGameRulesOfflineGameKey];
+	[rulesDict setInt:protocol
+			   forKey:iTetGameRulesGameTypeKey];
+	
+	// Create a decimal-number formatter
+	NSNumberFormatter* decFormat = [[NSNumberFormatter alloc] init];
+	[decFormat setNumberStyle:NSNumberFormatterDecimalStyle];
+	
+	// The game-rules array contains strings, which need to be parsed into the respective rules:
 	// Number of lines of "garbage" on the board when the game begins
-	initialStackHeight = [[rules objectAtIndex:0] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:0]]
+				  forKey:iTetGameRulesInitialStackHeightKey];
 	
 	// Starting level
-	startingLevel = [[rules objectAtIndex:1] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:1]]
+				  forKey:iTetGameRulesStartingLevelKey];
 	
 	// Number of line completions needed to trigger a level increase
-	linesPerLevel = [[rules objectAtIndex:2] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:2]]
+				  forKey:iTetGameRulesLinesPerLevelKey];
 	
 	// Number of levels per level increase
-	levelIncrease = [[rules objectAtIndex:3] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:3]]
+				  forKey:iTetGameRulesLevelIncreaseKey];
 	
 	// Number of line completions needed to trigger the spawn of specials
-	linesPerSpecial = [[rules objectAtIndex:4] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:4]]
+				  forKey:iTetGameRulesLinesPerSpecialKey];
 	
 	// Number of specials added per spawn
-	specialsAdded = [[rules objectAtIndex:5] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:5]]
+				  forKey:iTetGameRulesSpecialsAddedKey];
+	
+	// Check whether specials are enabled
+	[rulesDict setBool:(([rulesDict integerForKey:iTetGameRulesLinesPerSpecialKey] > 0) && ([rulesDict integerForKey:iTetGameRulesSpecialsAddedKey] > 0))
+				forKey:iTetGameRulesSpecialsEnabledKey];
 	
 	// Number of specials each player can hold in their "inventory"
-	specialCapacity = [[rules objectAtIndex:6] integerValue];
+	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:6]]
+				  forKey:iTetGameRulesSpecialCapacityKey];
 	
 	// Block-type frequencies
 	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
-	NSString* freq = [rules objectAtIndex:7];
+	NSString* freq = [rulesArray objectAtIndex:7];
 	NSRange currentChar = NSMakeRange(0, 1);
 	for (; currentChar.location < 100; currentChar.location++)
 	{
-		[temp addObject:[NSNumber numberWithInt:[[freq substringWithRange:currentChar] intValue]]];
+		[temp addObject:[decFormat numberFromString:[freq substringWithRange:currentChar]]];
 	}
-	blockFrequencies = [temp copy];
+	[rulesDict setObject:[NSArray arrayWithArray:temp]
+				  forKey:iTetGameRulesBlockFrequenciesKey];
 	
 	// Special-type frequencies
 	[temp removeAllObjects];
-	freq = [rules objectAtIndex:8];
+	freq = [rulesArray objectAtIndex:8];
 	for (currentChar.location = 0; currentChar.location < 100; currentChar.location++)
 	{
 		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:[[freq substringWithRange:currentChar] intValue]]]];
 	}
-	specialFrequencies = [temp copy];
+	[rulesDict setObject:[NSArray arrayWithArray:temp]
+				  forKey:iTetGameRulesSpecialFrequenciesKey];
 	
 	// Level number averages across all players
-	showAverageLevel = [[rules objectAtIndex:9] boolValue];
+	[rulesDict setBool:[[rulesArray objectAtIndex:9] boolValue]
+				forKey:iTetGameRulesShowAverageLevelKey];
 	
 	// Play with classic rules (multiple-line completions send lines to other players)
-	classicRules = [[rules objectAtIndex:10] boolValue];
+	[rulesDict setBool:[[rulesArray objectAtIndex:10] boolValue]
+				forKey:iTetGameRulesShowAverageLevelKey];
 	
-	return self;
+	// Release the number formatter
+	[decFormat release];
+	
+	// Return the dictionary of rules
+	return rulesDict;
 }
 
-+ (id)offlineGameRules
++ (NSMutableDictionary*)defaultOfflineGameRules
 {
-	return [[[self alloc] initWithOfflineGameRules] autorelease];
-}
-
-- (id)initWithOfflineGameRules
-{
-	// FIXME: This information should be user-configurable, and stored in user defaults
-	gameType = tetrifastProtocol;
-	initialStackHeight = 0;
-	startingLevel = 1;
-	linesPerLevel = 10;
-	levelIncrease = 1;
-	linesPerSpecial = 2;
-	specialsAdded = 1;
-	specialCapacity = 20;
-	showAverageLevel = NO;
-	classicRules = NO;
+	// Create a rules dictionary
+	NSMutableDictionary* rulesDict = [NSMutableDictionary dictionaryWithCapacity:ITET_NUM_GAME_RULES_KEYS];
 	
+	// Default offline game rules:
+	[rulesDict setBool:YES
+				forKey:iTetGameRulesOfflineGameKey];
+	
+	// TetriFast-style
+	[rulesDict setInt:tetrifastProtocol
+			   forKey:iTetGameRulesGameTypeKey];
+	
+	// No garbage
+	[rulesDict setInteger:0
+				   forKey:iTetGameRulesInitialStackHeightKey];
+	
+	// Starting level one, five lines per level, one level advance at a time
+	[rulesDict setInteger:1
+				   forKey:iTetGameRulesStartingLevelKey];
+	[rulesDict setInteger:5
+				   forKey:iTetGameRulesLinesPerLevelKey];
+	[rulesDict setInteger:1
+				   forKey:iTetGameRulesLevelIncreaseKey];
+	
+	// Two lines per special, one added at a time, queue capacity of 20
+	[rulesDict setBool:YES
+				forKey:iTetGameRulesSpecialsEnabledKey];
+	[rulesDict setInteger:2
+				   forKey:iTetGameRulesLinesPerSpecialKey];
+	[rulesDict setInteger:1
+				   forKey:iTetGameRulesSpecialsAddedKey];
+	[rulesDict setInteger:20
+				   forKey:iTetGameRulesSpecialCapacityKey];
+	
+	// Disable the average level indicator (since this is meaningless)
+	[rulesDict setBool:NO
+				forKey:iTetGameRulesShowAverageLevelKey];
+	
+	// Disable classic rules (again, this is irrelevant)
+	[rulesDict setBool:NO
+				forKey:iTetGameRulesClassicRulesKey];
+	
+	// Even block distribution
 	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
 	for (NSInteger i = 0; i < 100; i++)
+	{
 		[temp addObject:[NSNumber numberWithInt:((random() % 7) + 1)]];
-	blockFrequencies = [temp copy];
+	}
+	[rulesDict setObject:[NSArray arrayWithArray:temp]
+				  forKey:iTetGameRulesBlockFrequenciesKey];
 	
-	temp = [NSMutableArray arrayWithCapacity:100];
+	// FIXME: disable bad specials, switchfield
+	[temp removeAllObjects];
 	for (NSInteger i = 0; i < 100; i++)
-		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:((random() % 9) + 1)]]];
-	specialFrequencies = [temp copy];
+	{
+		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:((random() % 9) + 1)]]];	
+	}
+	[rulesDict setObject:[NSArray arrayWithArray:temp]
+				  forKey:iTetGameRulesSpecialFrequenciesKey];
 	
-	return self;
+	// Return the dictionary of rules
+	return rulesDict;
 }
-
-- (void)dealloc
-{
-	[blockFrequencies release];
-	[specialFrequencies release];
-	
-	[super dealloc];
-}
-
-#pragma mark -
-#pragma mark Accessors
-
-@synthesize gameType;
-@synthesize initialStackHeight;
-@synthesize startingLevel;
-@synthesize linesPerLevel;
-@synthesize levelIncrease;
-@synthesize linesPerSpecial;
-@synthesize specialsAdded;
-@synthesize specialCapacity;
-@synthesize blockFrequencies;
-@synthesize specialFrequencies;
-@synthesize showAverageLevel;
-@synthesize classicRules;
 
 @end
