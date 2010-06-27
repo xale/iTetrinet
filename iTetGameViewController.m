@@ -1167,9 +1167,17 @@ doCommandBySelector:(SEL)command
 		NSString* specialName = [iTetSpecials nameForSpecialType:special];
 		
 		// Create the description string
-		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
-													   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
-		
+		if (![self offlineGame])
+		{
+			desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
+														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+		}
+		else
+		{
+			desc = [[[NSMutableAttributedString alloc] initWithString:specialName
+														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+		}
+
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:specialName];
 		if ([iTetSpecials specialIsPositive:special])
@@ -1186,11 +1194,14 @@ doCommandBySelector:(SEL)command
 				  range:attributeRange];
 	
 	// Bold the target and sender names
-	[desc applyFontTraits:NSBoldFontMask
-					range:[[desc string] rangeOfString:targetName]];
-	[desc applyFontTraits:NSBoldFontMask
-					range:[[desc string] rangeOfString:senderName
-											   options:NSBackwardsSearch]];
+	if (![self offlineGame])
+	{
+		[desc applyFontTraits:NSBoldFontMask
+						range:[[desc string] rangeOfString:targetName]];
+		[desc applyFontTraits:NSBoldFontMask
+						range:[[desc string] rangeOfString:senderName
+												   options:NSBackwardsSearch]];
+	}
 	
 	// If the local player was affected, add a background color
 	if (localPlayerAffected)
