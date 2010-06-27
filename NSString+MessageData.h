@@ -11,7 +11,7 @@
 #import <Cocoa/Cocoa.h>
 
 #define iTetDefaultStringEncoding			NSUTF8StringEncoding
-#define iTetTetrinetStandardStringEncoding	NSWindowsCP1252StringEncoding
+#define iTetStandardTetrinetStringEncoding	NSWindowsCP1252StringEncoding
 #define iTetFallbackISOStringEncoding		NSISOLatin1StringEncoding
 
 @interface NSString (MessageData)

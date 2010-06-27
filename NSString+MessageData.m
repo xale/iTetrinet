@@ -22,7 +22,7 @@
 	
 	// If that fails, attempt to decode the string as Windows-1252
 	decodedString = [self stringWithData:messageData
-								encoding:iTetTetrinetStandardStringEncoding];
+								encoding:iTetStandardTetrinetStringEncoding];
 	if (decodedString != nil)
 		return decodedString;
 	
