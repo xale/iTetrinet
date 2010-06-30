@@ -112,7 +112,7 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 	
 	// Play with classic rules (multiple-line completions send lines to other players)
 	[rulesDict setBool:[[rulesArray objectAtIndex:10] boolValue]
-				forKey:iTetGameRulesShowAverageLevelKey];
+				forKey:iTetGameRulesClassicRulesKey];
 	
 	// Release the number formatter
 	[decFormat release];
