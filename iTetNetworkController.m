@@ -659,8 +659,12 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Level Update Message
 		case levelUpdateMessage:
 		{
-			// Update the specified player's level
+			// Check that the level update isn't an echo of one we just sent
 			iTetLevelUpdateMessage* levelMessage = (iTetLevelUpdateMessage*)message;
+			if ([levelMessage playerNumber] == [[playersController localPlayer] playerNumber])
+				break;
+			
+			// Otherwise, update the specified player's level
 			[playersController setLevel:[levelMessage level]
 						forPlayerNumber:[levelMessage playerNumber]];
 			break;
