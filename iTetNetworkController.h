@@ -71,7 +71,7 @@ typedef enum
 - (void)connectToServer:(iTetServerInfo*)server;
 - (void)disconnect;
 
-- (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message;
+- (void)sendMessage:(iTetMessage*)message;
 
 @property (readonly) NSString* currentServerAddress;
 @property (readonly) iTetConnectionState connectionState;

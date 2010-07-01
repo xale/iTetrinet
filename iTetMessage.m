@@ -10,101 +10,87 @@
 
 #import "iTetMessage.h"
 
-NSDictionary* iTetMessageDesignations = nil;
-NSString* const iTetNoConnectingMessageDesignation =			@"noconnecting";
+#import "iTetPlayer.h"
+#import "iTetSpecials.h"
 
-NSString* const iTetPlayerNumberMessageDesignation =			@"playernum";	// Tetrinet protocol
-NSString* const iTetTetrifastPlayerNumberMessageDesignation =	@")#)(!@(*3";	// Tetrifast protocol
-NSString* const iTetPlayerJoinMessageDesignation =				@"playerjoin";
-NSString* const iTetPlayerLeaveMessageDesignation =				@"playerleave";
-NSString* const iTetPlayerTeamMessageDesignation =				@"team";
-NSString* const iTetWinlistMessageDesignation =					@"winlist";
+#import "NSAttributedString+TetrinetTextAttributes.h"
 
-NSString* const iTetPLineTextMessageDesignation =				@"pline";
-NSString* const iTetPLineActionMessageDesignation =				@"plineact";
-NSString* const iTetGameChatMessageDesignation =				@"gmsg";
+#import "NSDictionary+AdditionalTypes.h"
+#import "NSString+MessageData.h"
 
-NSString* const iTetNewGameMessageDesignation =					@"newgame";		// Tetrinet protocol
-NSString* const iTetTetrifastNewGameMessageDesignation =		@"*******";		// Tetrifast protocol
-NSString* const iTetInGameMessageDesignation =					@"ingame";
-NSString* const iTetPauseResumeGameMessageDesignation =			@"pause";
-NSString* const iTetEndGameMessageDesignation =					@"endgame";
+#pragma mark Message Formats
 
-NSString* const iTetFieldstringMessageDesignation =				@"f";
-NSString* const iTetLevelUpdateMessageDesignation =				@"lvl";
-NSString* const iTetSpecialMessageDesignation =					@"sb";
-NSString* const iTetPlayerLostMessageDesignation =				@"playerlost";
-NSString* const iTetPlayerWonMessageDesignation =				@"playerwon";
+NSDictionary* iTetMessageFormats = nil;
+NSString* const iTetTetrinetLoginMessageFormat =				@"tetrisstart %@ %@";	// TetriNET protocol
+NSString* const iTetTetrifastLoginMessageFormat =				@"tetrifaster %@ %@";	// Tetrifast protocol
+NSString* const iTetNoConnectingMessageFormat =					@"noconnecting %@";
+NSString* const iTetClientInfoRequestMessageFormat =			@"lvl 0 0";
+NSString* const iTetClientInfoReplyMessageFormat =				@"clientinfo %@ %@";
+// Heartbeat message has no format string
+
+NSString* const iTetTetrinetPlayerNumberMessageFormat =			@"playernum %d";		// TetriNET protocol
+NSString* const iTetTetrifastPlayerNumberMessageFormat =		@")#)(!@(*3 %d";		// Tetrifast protocol
+NSString* const iTetPlayerJoinMessageFormat =					@"playerjoin %d %@";
+NSString* const iTetPlayerLeaveMessageFormat =					@"playerleave %d";
+NSString* const iTetPlayerTeamMessageFormat =					@"team %d %@";
+NSString* const iTetWinlistMessageFormat =						@"winlist %@";
+
+NSString* const iTetPLineChatMessageFormat =					@"pline %d %@";
+NSString* const iTetPLineActionMessageFormat =					@"plineact %d %@";
+NSString* const iTetGameChatMessageFormat =						@"gmsg %@";
+NSString* const iTetJoinChannelMessageFormat =					@"pline %d /join %@";
+
+NSString* const iTetStartStopGameMessageFormat =				@"startgame %d %d";
+NSString* const iTetTetrinetNewGameMessageFormat =				@"newgame %@";			// TetriNET protocol
+NSString* const iTetTetrifastNewGameMessageFormat =				@"******* %@";			// Tetrifast protocol
+NSString* const iTetInGameMessageFormat =						@"ingame";
+NSString* const iTetPauseResumeGameMessageFormat =				@"pause %d %d";
+NSString* const iTetEndGameMessageFormat =						@"endgame";
+
+NSString* const iTetFieldstringMessageFormat =					@"f %d %@";
+NSString* const iTetLevelUpdateMessageFormat =					@"lvl %d %d";
+NSString* const iTetSpecialUsedMessageFormat =					@"sb %d %@ %d";
+NSString* const iTetPlayerLostMessageFormat =					@"playerlost %d";
+NSString* const iTetPlayerWonMessageFormat =					@"playerwon %d";
 
 #pragma mark -
-#pragma mark Private Class Methods
+#pragma mark Message Contents Keys
 
-@interface iTetMessage (PrivateMethods)
+NSString* const iTetMessageServerAddressKey =			@"iTetServerAddress";
+NSString* const iTetMessageNoConnectingReasonKey =		@"iTetNoConnectingReason";
+NSString* const iTetMessageClientNameKey =				@"iTetClientName";
+NSString* const iTetMessageClientVersionKey =			@"iTetClientVersion";
 
-+ (NSDictionary*)messageDesignationsDictionary;
+NSString* const iTetMessagePlayerNumberKey =			@"iTetPlayerNumber";
+NSString* const iTetMessageTargetPlayerNumberKey =		@"iTetTargetPlayerNumber";
 
-@end
+NSString* const iTetMessagePlayerNicknameKey =			@"iTetPlayerNickname";
+NSString* const iTetMessagePlayerTeamNameKey =			@"iTetPlayerTeamName";
+NSString* const iTetMessageWinlistArrayKey =			@"iTetWinlistArray";
 
-@implementation iTetMessage (PrivateMethods)
+NSString* const iTetMessageChatContentsKey =			@"iTetChatContents";
+NSString* const iTetMessageChannelNameKey =				@"iTetChannelName";
 
-+ (NSDictionary*)messageDesignationsDictionary
-{
-	// Create a lookup-table of message designation-strings to message types
-	NSMutableDictionary* messages = [NSMutableDictionary dictionary];
-	
-	// Connection-handling messages
-	[messages setObject:[NSNumber numberWithInt:noConnectingMessage]
-				 forKey:iTetNoConnectingMessageDesignation];
-	
-	// Player-status messages
-	[messages setObject:[NSNumber numberWithInt:playerNumberMessage]
-				 forKey:iTetPlayerNumberMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerNumberMessage]
-				 forKey:iTetTetrifastPlayerNumberMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerJoinMessage]
-				 forKey:iTetPlayerJoinMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerLeaveMessage]
-				 forKey:iTetPlayerLeaveMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerTeamMessage]
-				 forKey:iTetPlayerTeamMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:winlistMessage]
-				 forKey:iTetWinlistMessageDesignation];
-	
-	// Chat messages
-	[messages setObject:[NSNumber numberWithInt:plineChatMessage]
-				 forKey:iTetPLineTextMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:plineActionMessage]
-				 forKey:iTetPLineActionMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:gameChatMessage]
-				 forKey:iTetGameChatMessageDesignation];
-	
-	// Game-state messages
-	[messages setObject:[NSNumber numberWithInt:newGameMessage]
-				 forKey:iTetNewGameMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:newGameMessage]
-				 forKey:iTetTetrifastNewGameMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:inGameMessage]
-				 forKey:iTetInGameMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:pauseResumeGameMessage]
-				 forKey:iTetPauseResumeGameMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:endGameMessage]
-				 forKey:iTetEndGameMessageDesignation];
-	// Gameplay messages
-	[messages setObject:[NSNumber numberWithInt:fieldstringMessage]
-				 forKey:iTetFieldstringMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:levelUpdateMessage]
-				 forKey:iTetLevelUpdateMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:specialMessage]
-				 forKey:iTetSpecialMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerLostMessage]
-				 forKey:iTetPlayerLostMessageDesignation];
-	[messages setObject:[NSNumber numberWithInt:playerWonMessage]
-				 forKey:iTetPlayerWonMessageDesignation];
-	
-	return messages;
-}
+NSString* const iTetMessageStartStopRequestTypeKey =	@"iTetStartStopRequestType";
+NSString* const iTetMessageGameRulesArrayKey =			@"iTetGameRulesArray";
+NSString* const iTetMessagePauseResumeRequestTypeKey =	@"iTetPauseResumeState";
+
+NSString* const iTetMessageFieldstringKey =				@"iTetFieldstring";
+NSString* const iTetMessageLevelNumberKey =				@"iTetLevelNumber";
+NSString* const iTetMessageSpecialTypeKey =				@"iTetSpecialType";
+
+#pragma mark -
+
+@interface iTetMessage (Private)
+
+- (NSData*)rawLoginMessageData;
++ (NSDictionary*)messageDesignations;
 
 @end
+
+BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
+
+#pragma mark -
 
 @implementation iTetMessage
 
@@ -115,22 +101,444 @@ NSString* const iTetPlayerWonMessageDesignation =				@"playerwon";
 	return nil;
 }
 
+- (void)dealloc
+{
+	[contents release];
+	
+	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Outgoing Message Constructor
+
++ (id)messageWithMessageType:(iTetMessageType)messageType
+{
+	return [[[self alloc] initWithMessageType:messageType] autorelease];
+}
+
+- (id)initWithMessageType:(iTetMessageType)messageType
+{
+	type = messageType;
+	contents = [[NSMutableDictionary alloc] init];
+	
+	return self;
+}
+
+#pragma mark -
+#pragma mark Incoming Message Constructor
+
++ (id)messageWithMessageData:(NSData*)messageData
+{
+	return [[[self alloc] initWithMessageData:messageData] autorelease];
+}
+
+- (id)initWithMessageData:(NSData*)messageData
+{
+	// Attempt to determine the type of the message
+	
+	// Special case: if the message is blank, this is just a server heartbeat
+	if ([messageData length] == 0)
+	{
+		type = heartbeatMessage;
+		goto done;
+	}
+	
+	// Convert the message to a string, split on spaces
+	NSArray* messageContents = [[NSString stringWithMessageData:messageData] componentsSeparatedByString:@" "];
+	
+	// Treat the first space-separated token as the message "designation", i.e., identifying the message type
+	NSString* messageDesignation = [messageContents objectAtIndex:0];
+	
+	// Attempt to determine the type of message using the designation
+	NSNumber* typeSearchResult = [[iTetMessage messageDesignations] objectForKey:messageDesignation];
+	if (typeSearchResult == nil)
+	{
+		NSLog(@"WARNING: unknown message designation: %@", messageDesignation);
+		[self release];
+		return nil;
+	}
+	type = (iTetMessageType)[typeSearchResult intValue];
+	contents = [[NSMutableDictionary alloc] init];
+	
+	// Create a decimal number formatter
+	NSNumberFormatter* decFormat = [[NSNumberFormatter alloc] init];
+	[decFormat setNumberStyle:NSNumberFormatterDecimalStyle];
+	
+	// Read the message's contents
+	
+	// "No Connecting" reason message
+	if (type == noConnectingMessage)
+	{
+		[contents setObject:[[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))] componentsJoinedByString:@" "]
+					 forKey:iTetMessageNoConnectingReasonKey];
+	}
+	
+	// Player number of sender or relevant player
+	if (iTetMessageTypeHasPlayerNumberFirst(type))
+	{
+		[contents setObject:[decFormat numberFromString:[messageContents objectAtIndex:1]]
+					 forKey:iTetMessagePlayerNumberKey];
+	}
+	else if (type == specialUsedMessage)
+	{
+		[contents setObject:[decFormat numberFromString:[messageContents objectAtIndex:3]] 
+					 forKey:iTetMessagePlayerNumberKey];
+	}
+	
+	// Player number of target player ("special used" messages)
+	if (type == specialUsedMessage)
+	{
+		[contents setObject:[decFormat numberFromString:[messageContents objectAtIndex:1]]
+					 forKey:iTetMessageTargetPlayerNumberKey];
+	}
+	
+	// Player's nickname ("player join" messages)
+	if (type == playerJoinMessage)
+	{
+		[contents setObject:[messageContents objectAtIndex:2]
+					 forKey:iTetMessagePlayerNicknameKey];
+	}
+	
+	// Player's team name ("player team" messages)
+	if (type == playerTeamMessage)
+	{
+		[contents setObject:[messageContents objectAtIndex:2]
+					 forKey:iTetMessagePlayerTeamNameKey];
+	}
+	
+	// Winlist array (winlist messages)
+	if (type == winlistMessage)
+	{
+		[contents setObject:[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))]
+					 forKey:iTetMessageWinlistArrayKey];
+	}
+	
+	// Chat message contents (pline chat, pline action, and game chat messages)
+	if ((type == plineChatMessage) || (type == plineActionMessage))
+	{
+		NSString* chatContents = [[messageContents subarrayWithRange:NSMakeRange(2, ([messageContents count] - 2))] componentsJoinedByString:@" "];
+		[contents setObject:[NSAttributedString attributedStringWithPlineMessageContents:chatContents]
+					 forKey:iTetMessageChatContentsKey];
+	}
+	else if (type == gameChatMessage)
+	{
+		[contents setObject:[[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))] componentsJoinedByString:@" "]
+					 forKey:iTetMessageChatContentsKey];
+	}
+	
+	// Game rules array ("new game" messages)
+	if ((type == tetrinetNewGameMessage) || (type == tetrifastNewGameMessage))
+	{
+		[contents setObject:[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))]
+					 forKey:iTetMessageGameRulesArrayKey];
+	}
+	
+	// Paused/resumed game state ("pause/resume" messages)
+	if (type == pauseResumeGameMessage)
+	{
+		[contents setObject:[decFormat numberFromString:[messageContents objectAtIndex:1]]
+					 forKey:iTetMessagePauseResumeRequestTypeKey];
+	}
+	
+	// Fieldstring (fieldstring messages)
+	if (type == fieldstringMessage)
+	{
+		[contents setObject:[messageContents objectAtIndex:2]
+					 forKey:iTetMessageFieldstringKey];
+	}
+	
+	// Level number ("level update" messages)
+	if (type == levelUpdateMessage)
+	{
+		[contents setObject:[decFormat numberFromString:[messageContents objectAtIndex:2]]
+					 forKey:iTetMessageLevelNumberKey];
+		
+		// Special case: if the player and level numbers are both zero, this is a client info request
+		if (([contents integerForKey:iTetMessagePlayerNumberKey] == 0) && ([contents integerForKey:iTetMessageLevelNumberKey] == 0))
+		{
+			type = clientInfoRequestMessage;
+			[contents release];
+			contents = nil;
+			goto done;
+		}
+	}
+	
+	// Special type ("special used" messages)
+	if (type == specialUsedMessage)
+	{
+		[contents setInt:[iTetSpecials specialTypeFromMessageName:[messageContents objectAtIndex:2]]
+				  forKey:iTetMessageSpecialTypeKey];
+	}
+	
+done:
+	return self;
+}
+
 #pragma mark -
 #pragma mark Accessors
+
+BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
+{
+	return ((t == tetrinetPlayerNumberMessage) || (t == tetrifastPlayerNumberMessage) || (t == playerJoinMessage) || (t == playerLeaveMessage) ||
+			(t == playerTeamMessage) || (t == plineChatMessage) || (t == plineActionMessage) || (t == fieldstringMessage) ||
+			(t == levelUpdateMessage) || (t == playerLostMessage) || (t == playerWonMessage));
+}
+
+- (NSData*)rawMessageData
+{
+	// Most messages require a player number
+	NSInteger playerNumber = [[self contents] integerForKey:iTetMessagePlayerNumberKey];
+	
+	// Create a string containing the message contents in the appropriate format for the type
+	NSString* messageContents = nil;
+	switch (type)
+	{
+		case heartbeatMessage:
+			// Special case: heartbeat message has no contents
+			return [NSData data];
+			
+		case tetrinetLoginMessage:
+		case tetrifastLoginMessage:
+			// Special case: login messages have to be "encrypted" before sending
+			return [self rawLoginMessageData];
+			
+		case playerTeamMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSString* teamName = [[self contents] objectForKey:iTetMessagePlayerTeamNameKey];
+			NSParameterAssert(teamName != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetPlayerTeamMessageFormat, playerNumber, teamName];
+			break;
+		}	
+		case clientInfoReplyMessage:
+		{
+			NSString* clientName = [[self contents] objectForKey:iTetMessageClientNameKey];
+			NSParameterAssert(clientName != nil);
+			NSString* clientVersion = [[self contents] objectForKey:iTetMessageClientVersionKey];
+			NSParameterAssert(clientVersion != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetClientInfoReplyMessageFormat, clientName, clientVersion];
+			break;
+		}	
+		case plineChatMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSString* chatContents = [[[self contents] objectForKey:iTetMessageChatContentsKey] plineMessageString];
+			NSParameterAssert(chatContents != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetPLineChatMessageFormat, playerNumber, chatContents];
+			break;
+		}	
+		case plineActionMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSString* chatContents = [[[self contents] objectForKey:iTetMessageChatContentsKey] plineMessageString];
+			NSParameterAssert(chatContents != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetPLineActionMessageFormat, playerNumber, chatContents];
+			break;
+		}
+		case gameChatMessage:
+		{
+			NSString* chatContents = [[self contents] objectForKey:iTetMessageChatContentsKey];
+			NSParameterAssert(chatContents != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetGameChatMessageFormat, chatContents];
+			break;
+		}	
+		case joinChannelMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSString* channelName = [[self contents] objectForKey:iTetMessageChannelNameKey];
+			NSParameterAssert(channelName != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetJoinChannelMessageFormat, playerNumber, channelName];
+			break;
+		}	
+		case startStopGameMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSNumber* startStopRequestType = [[self contents] objectForKey:iTetMessageStartStopRequestTypeKey];
+			NSParameterAssert(startStopRequestType != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetStartStopGameMessageFormat, [startStopRequestType intValue], playerNumber];
+			break;
+		}	
+		case pauseResumeGameMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSNumber* pauseResumeRequestType = [[self contents] objectForKey:iTetMessagePauseResumeRequestTypeKey];
+			NSParameterAssert(pauseResumeRequestType != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetPauseResumeGameMessageFormat, [pauseResumeRequestType intValue], playerNumber];
+			break;
+		}	
+		case fieldstringMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSString* fieldstring = [[self contents] objectForKey:iTetMessageFieldstringKey];
+			NSParameterAssert(fieldstring != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
+			break;
+		}	
+		case levelUpdateMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSNumber* levelNumber = [[self contents] objectForKey:iTetMessageLevelNumberKey];
+			NSParameterAssert(levelNumber != nil);
+			
+			messageContents = [NSString stringWithFormat:iTetLevelUpdateMessageFormat, playerNumber, [levelNumber integerValue]];
+			break;
+		}	
+		case specialUsedMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			NSNumber* targetPlayerNumber = [[self contents] objectForKey:iTetMessageTargetPlayerNumberKey];
+			NSParameterAssert(targetPlayerNumber != nil);	// Not using "checkPlayerNumber" macro, since target may be '0' (all players)
+			NSNumber* specialType = [[self contents] objectForKey:iTetMessageSpecialTypeKey];
+			NSParameterAssert(specialType != nil);
+			
+			NSString* specialName = [iTetSpecials messageNameForSpecialType:[specialType intValue]];
+			messageContents = [NSString stringWithFormat:iTetSpecialUsedMessageFormat, [targetPlayerNumber integerValue], specialName, playerNumber];
+			break;
+		}	
+		case playerLostMessage:
+		{
+			iTetCheckPlayerNumber(playerNumber);
+			
+			messageContents = [NSString stringWithFormat:iTetPlayerLostMessageFormat, playerNumber];
+			break;
+		}	
+		default:
+		{
+			NSLog(@"WARNING: rawMessageData called on message of invalid type: %d", [self type]);
+			return nil;
+		}
+	}
+	
+	return [messageContents messageData];
+}
+
+- (NSData*)rawLoginMessageData
+{
+	// Sanity checks
+	NSParameterAssert((([self type] == tetrinetLoginMessage) || ([self type] == tetrifastLoginMessage)));
+	NSString* nickname = [[self contents] objectForKey:iTetMessagePlayerNicknameKey];
+	NSParameterAssert(nickname != nil);
+	NSString* version = @"1.13";
+	NSParameterAssert(version != nil);
+	NSString* address = [[self contents] objectForKey:iTetMessageServerAddressKey];
+	NSParameterAssert(address != nil);
+	
+	// Fill in the player's nickname and the protocol version number to the login message format
+	NSString* format;
+	if ([self type] == tetrinetLoginMessage)
+		format = iTetTetrinetLoginMessageFormat;
+	else
+		format = iTetTetrifastLoginMessageFormat;
+	NSData* messageData = [[NSString stringWithFormat:format, nickname, version] messageData];
+	
+	// Split the server's IP address into integer components
+	NSArray* ipComponents = [address componentsSeparatedByString:@"."];
+	NSInteger ip[4];
+	NSUInteger i;
+	for (i = 0; i < 4; i++)
+		ip[i] = [[ipComponents objectAtIndex:i] integerValue];
+	
+	// Create the "hash" of the IP address
+	NSString* ipHash = [NSString stringWithFormat:@"%d", (54*ip[0]) + (41*ip[1]) + (29*ip[2]) + (17*ip[3])];
+	
+	// Create an "encoded" version of the message, starting with a random two-digit hexadecimal value in the range [0, 255)
+	uint8_t x = random() % 255;
+	NSMutableString* encodedMessage = [NSMutableString stringWithFormat:@"%02X", x];
+	
+	// Create a "hash" of each character in the message and append it as a hexadecimal value to the end of the encoded string
+	const uint8_t* rawData = [messageData bytes];
+	for (i = 0; i < [messageData length]; i++)
+	{
+		// Modular-add value of current character
+		x = ((x + rawData[i]) % 255);
+		
+		// XOR with a character of the IP address hash
+		x ^= [ipHash characterAtIndex:(i % [ipHash length])];
+		
+		// Append the hexadecimal value to the output string
+		[encodedMessage appendFormat:@"%02X", x];
+	}
+	
+	// Convert the encoded message to a data object before returning
+	return [encodedMessage messageData];
+}
 
 + (NSDictionary*)messageDesignations
 {
 	@synchronized(self)
 	{
-		if (iTetMessageDesignations == nil)
+		if (iTetMessageFormats == nil)
 		{
-			iTetMessageDesignations = [[self messageDesignationsDictionary] copy];
+			// Create a lookup-table of message format-strings to message types
+			NSMutableDictionary* messages = [[NSMutableDictionary alloc] init];
+			
+			// Connection-handling messages
+			[messages setInt:noConnectingMessage
+					  forKey:[iTetNoConnectingMessageFormat messageDesignation]];
+			[messages setInt:tetrinetPlayerNumberMessage
+					  forKey:[iTetTetrinetPlayerNumberMessageFormat messageDesignation]];
+			[messages setInt:tetrifastPlayerNumberMessage
+					  forKey:[iTetTetrifastPlayerNumberMessageFormat messageDesignation]];
+			
+			// Player-status messages
+			[messages setInt:playerJoinMessage
+					  forKey:[iTetPlayerJoinMessageFormat messageDesignation]];
+			[messages setInt:playerLeaveMessage
+					  forKey:[iTetPlayerLeaveMessageFormat messageDesignation]];
+			[messages setInt:playerTeamMessage
+					  forKey:[iTetPlayerTeamMessageFormat messageDesignation]];
+			[messages setInt:winlistMessage
+					  forKey:[iTetWinlistMessageFormat messageDesignation]];
+			
+			// Chat messages
+			[messages setInt:plineChatMessage
+					  forKey:[iTetPLineChatMessageFormat messageDesignation]];
+			[messages setInt:plineActionMessage
+					  forKey:[iTetPLineActionMessageFormat messageDesignation]];
+			[messages setInt:gameChatMessage
+					  forKey:[iTetGameChatMessageFormat messageDesignation]];
+			
+			// Game-state messages
+			[messages setInt:tetrinetNewGameMessage
+					  forKey:[iTetTetrinetNewGameMessageFormat messageDesignation]];
+			[messages setInt:tetrifastNewGameMessage
+					  forKey:[iTetTetrifastNewGameMessageFormat messageDesignation]];
+			[messages setInt:inGameMessage
+					  forKey:[iTetInGameMessageFormat messageDesignation]];
+			[messages setInt:pauseResumeGameMessage
+					  forKey:[iTetPauseResumeGameMessageFormat messageDesignation]];
+			[messages setInt:endGameMessage
+					  forKey:[iTetEndGameMessageFormat messageDesignation]];
+			
+			// Gameplay messages
+			[messages setInt:fieldstringMessage
+					  forKey:[iTetFieldstringMessageFormat messageDesignation]];
+			[messages setInt:levelUpdateMessage
+					  forKey:[iTetLevelUpdateMessageFormat messageDesignation]];
+			[messages setInt:specialUsedMessage
+					  forKey:[iTetSpecialUsedMessageFormat messageDesignation]];
+			[messages setInt:playerLostMessage
+					  forKey:[iTetPlayerLostMessageFormat messageDesignation]];
+			[messages setInt:playerWonMessage
+					  forKey:[iTetPlayerWonMessageFormat messageDesignation]];
+			
+			iTetMessageFormats = [messages copy];
 		}
 	}
 	
-	return iTetMessageDesignations;
+	return iTetMessageFormats;
 }
 
-@synthesize messageType;
+@synthesize type, contents;
 
 @end
+

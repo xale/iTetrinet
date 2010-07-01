@@ -15,7 +15,7 @@
 #import "iTetUserDefaults.h"
 
 #import "iTetNetworkController.h"
-#import "iTetOutgoingMessages.h"
+#import "iTetMessage.h"
 
 #import "iTetGameRules.h"
 #import "iTetLocalPlayer.h"
@@ -225,7 +225,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// If we're connected to a server, send a "start game" message
 		if ([networkController connectionState] == connected)
 		{
-			[networkController sendMessage:[iTetStartStopGameMessage startMessageFromSender:LOCALPLAYER]];
+			iTetMessage* startMessage = [iTetMessage messageWithMessageType:startStopGameMessage];
+			[[startMessage contents] setInteger:[LOCALPLAYER playerNumber]
+										 forKey:iTetMessagePlayerNumberKey];
+			[[startMessage contents] setInt:startGameRequest
+									 forKey:iTetMessageStartStopRequestTypeKey];
+			[networkController sendMessage:startMessage];
 		}
 		// Otherwise, start an offline game
 		else
@@ -272,7 +277,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// If we are connected to a server, send a message asking to resume play
 		if (![self offlineGame])
 		{
-			[networkController sendMessage:[iTetPauseResumeGameMessage resumeMessageFromSender:LOCALPLAYER]];
+			iTetMessage* resumeMessage = [iTetMessage messageWithMessageType:pauseResumeGameMessage];
+			[[resumeMessage contents] setInteger:[LOCALPLAYER playerNumber]
+										  forKey:iTetMessagePlayerNumberKey];
+			[[resumeMessage contents] setInt:resumeGameRequest
+									  forKey:iTetMessagePauseResumeRequestTypeKey];
+			[networkController sendMessage:resumeMessage];
 		}
 		// Otherwise, if this is an offline game, resume immediately
 		else
@@ -288,7 +298,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// If we are connected to a server, send a message asking to pause
 		if (![self offlineGame])
 		{
-			[networkController sendMessage:[iTetPauseResumeGameMessage pauseMessageFromSender:LOCALPLAYER]];
+			iTetMessage* pauseMessage = [iTetMessage messageWithMessageType:pauseResumeGameMessage];
+			[[pauseMessage contents] setInteger:[LOCALPLAYER playerNumber]
+										  forKey:iTetMessagePlayerNumberKey];
+			[[pauseMessage contents] setInt:pauseGameRequest
+									  forKey:iTetMessagePauseResumeRequestTypeKey];
+			[networkController sendMessage:pauseMessage];
 		}
 		// Otherwise, if this is an offline game, pause immediately
 		else
@@ -300,14 +315,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (IBAction)submitChatMessage:(id)sender
 {
-	// Check that there is a message to send
-	NSString* message = [messageField stringValue];
-	if ([message length] == 0)
+	// Check that there is chat text to send
+	NSString* messageText = [messageField stringValue];
+	if ([messageText length] == 0)
 		return;
 	
-	// Send the message to the server
-	[networkController sendMessage:[iTetGameChatMessage messageWithContents:message
-																	 sender:LOCALPLAYER]];
+	// Create a message
+	iTetMessage* message = [iTetMessage messageWithMessageType:gameChatMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:messageText
+						   forKey:iTetMessageChatContentsKey];
+	[networkController sendMessage:message];
 	
 	// Do not add the message to our chat view; the server will echo it back to us
 	
@@ -333,7 +352,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// If we are connected to a server, send a "stop game" message
 	if (![self offlineGame])
 	{
-		[networkController sendMessage:[iTetStartStopGameMessage stopMessageFromSender:LOCALPLAYER]];
+		iTetMessage* stopMessage = [iTetMessage messageWithMessageType:startStopGameMessage];
+		[[stopMessage contents] setInteger:[LOCALPLAYER playerNumber]
+									forKey:iTetMessagePlayerNumberKey];
+		[[stopMessage contents] setInt:stopGameRequest
+								forKey:iTetMessageStartStopRequestTypeKey];
+		[networkController sendMessage:stopMessage];
 	}
 	// Otherwise, if this is an offline game, abort immediately
 	else
@@ -867,7 +891,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	blockTimer = nil;
 	
 	// Send a "player lost" message to the server, along with the final field state
-	[networkController sendMessage:[iTetPlayerLostMessage messageForPlayer:LOCALPLAYER]];
+	iTetMessage* message = [iTetMessage messageWithMessageType:playerLostMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[networkController sendMessage:message];
 	[self sendFieldstring];
 }
 
@@ -1015,8 +1042,15 @@ doCommandBySelector:(SEL)command
 	if ([self offlineGame])
 		return;
 	
-	// Otherwise, send the string for the local player's field to the server
-	[networkController sendMessage:[iTetFieldstringMessage fieldMessageForPlayer:LOCALPLAYER]];
+	// Otherwise, create a message with the string for the local player's field
+	iTetMessage* message = [iTetMessage messageWithMessageType:fieldstringMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:[[LOCALPLAYER field] fieldstring]
+						   forKey:iTetMessageFieldstringKey];
+	
+	// Send the message to the server
+	[networkController sendMessage:message];
 }
 
 - (void)sendPartialFieldstring
@@ -1025,8 +1059,15 @@ doCommandBySelector:(SEL)command
 	if ([self offlineGame])
 		return;
 	
-	// Send the last partial update on the local player's field to the server
-	[networkController sendMessage:[iTetFieldstringMessage partialUpdateMessageForPlayer:LOCALPLAYER]];
+	// Otherwise, create a message with the last partial update on the local player's field
+	iTetMessage* message = [iTetMessage messageWithMessageType:fieldstringMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:[[LOCALPLAYER field] lastPartialUpdate]
+						   forKey:iTetMessageFieldstringKey];
+	
+	// Send the message to the server
+	[networkController sendMessage:message];
 }
 
 - (void)sendCurrentLevel
@@ -1035,8 +1076,15 @@ doCommandBySelector:(SEL)command
 	if ([self offlineGame])
 		return;
 	
-	// Send the local player's level to the server
-	[networkController sendMessage:[iTetLevelUpdateMessage messageWithUpdateForPlayer:LOCALPLAYER]];
+	// Create a message with the local player's level
+	iTetMessage* message = [iTetMessage messageWithMessageType:levelUpdateMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setInteger:[LOCALPLAYER level]
+							forKey:iTetMessageLevelNumberKey];
+	
+	// Send the message to the server
+	[networkController sendMessage:message];
 }
 
 - (void)sendSpecial:(iTetSpecialType)special
@@ -1045,9 +1093,14 @@ doCommandBySelector:(SEL)command
 	// If this isn't an offline game, send a message to the server
 	if (![self offlineGame])
 	{
-		iTetSpecialMessage* message = [iTetSpecialMessage messageWithSpecialType:special
-																		  sender:LOCALPLAYER
-																		  target:target];
+		iTetMessage* message = [iTetMessage messageWithMessageType:specialUsedMessage];
+		[[message contents] setInteger:[LOCALPLAYER playerNumber]
+								forKey:iTetMessagePlayerNumberKey];
+		[[message contents] setInteger:((target != nil) ? [target playerNumber] : 0)
+								forKey:iTetMessageTargetPlayerNumberKey];
+		[[message contents] setInt:special
+							forKey:iTetMessageSpecialTypeKey];
+		
 		[networkController sendMessage:message];
 	}
 	
@@ -1063,15 +1116,9 @@ doCommandBySelector:(SEL)command
 	if ([self offlineGame])
 		return;
 	
-	// Otherwise, send a message to the server...
-	iTetSpecialMessage* message = [iTetSpecialMessage messageWithClassicStyleLines:lines
-																			sender:LOCALPLAYER];
-	[networkController sendMessage:message];
-	
-	// ...and perform and record the action
-	[self specialUsed:[message specialType]
-			 byPlayer:LOCALPLAYER
-			 onPlayer:nil];
+	// Otherwise, convert the lines to a special, and send to everyone
+	[self sendSpecial:[iTetSpecials specialTypeForClassicLines:lines]
+			 toPlayer:[playersController serverPlayer]];
 }
 
 #pragma mark -
@@ -1079,9 +1126,10 @@ doCommandBySelector:(SEL)command
 
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player
-			  partialUpdate:(BOOL)isPartial;
 {
-	if (isPartial)
+	// Check if this is a partial field update
+	unichar firstChar = [fieldstring characterAtIndex:0];
+	if ((firstChar >= 0x21) && (firstChar <= 0x2F))
 	{
 		// Update the player's field with a partial update
 		[[player field] applyPartialUpdate:fieldstring];

@@ -44,4 +44,9 @@
 	return [self dataUsingEncoding:iTetDefaultStringEncoding];
 }
 
+- (NSString*)messageDesignation
+{
+	return [[self componentsSeparatedByString:@" "] objectAtIndex:0];
+}
+
 @end

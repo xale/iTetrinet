@@ -20,9 +20,7 @@
 #import "AsyncSocket.h"
 #import "iTetServerInfo.h"
 
-#import "iTetMessage+ClassFactory.h"
-#import "iTetIncomingMessages.h"
-#import "iTetOutgoingMessages.h"
+#import "iTetMessage.h"
 
 #import "iTetLocalPlayer.h"
 
@@ -30,6 +28,7 @@
 
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
+#import "NSDictionary+AdditionalTypes.h"
 
 #import "iTetCommonLocalizations.h"
 
@@ -46,7 +45,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 - (void)openServerSelectionDialog;
 
-- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message;
+- (void)messageReceived:(iTetMessage*)message;
 - (void)handleError:(NSError*)error;
 
 - (void)setConnectionState:(iTetConnectionState)newState;
@@ -329,10 +328,19 @@ didConnectToHost:(NSString*)hostname
 	if ([hostname isEqualToString:@"::1"])
 		hostname = @"127.0.0.1";
 	
-	// Create and send the server login message
-	[self sendMessage:[iTetLoginMessage messageWithProtocol:[currentServer protocol]
-												   nickname:[currentServer playerNickname]
-													address:hostname]];
+	// Create a server login message
+	iTetMessage* message;
+	if ([currentServer protocol] == tetrinetProtocol)
+		message = [iTetMessage messageWithMessageType:tetrinetLoginMessage];
+	else
+		message = [iTetMessage messageWithMessageType:tetrifastLoginMessage];
+	[[message contents] setObject:[currentServer playerNickname]
+						   forKey:iTetMessagePlayerNicknameKey];
+	[[message contents] setObject:hostname
+						   forKey:iTetMessageServerAddressKey];
+	
+	// Send the login message
+	[self sendMessage:message];
 	
 	// Change the connection state
 	[self setConnectionState:login];
@@ -383,7 +391,7 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Reads/Writes
 
-- (void)sendMessage:(iTetMessage<iTetOutgoingMessage>*)message
+- (void)sendMessage:(iTetMessage*)message
 {
 #ifdef _ITETRINET_DEBUG
 	NSString* messageString = [NSString stringWithMessageData:[message rawMessageData]];
@@ -426,7 +434,7 @@ willDisconnectWithError:(NSError*)error
 #endif
 	
 	// Convert the data to a message, after trimming the delimiter byte
-	iTetMessage<iTetIncomingMessage>* message = [iTetMessage messageFromData:[data subdataToIndex:([data length] - 1)]];
+	iTetMessage* message = [iTetMessage messageWithMessageData:[data subdataToIndex:([data length] - 1)]];
 	
 	// Hand off the message for processing
 	[self messageReceived:message];
@@ -437,20 +445,20 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
-#define iTetPlayerJoinedEventStatusMessage	NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
-#define iTetPlayerLeftEventStatusMessage	NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
 
-- (void)messageReceived:(iTetMessage<iTetIncomingMessage>*)message
+- (void)messageReceived:(iTetMessage*)message
 {
 	// Determine the nature of the message
-	iTetMessageType type = [message messageType];
+	iTetMessageType type = [message type];
 	switch (type)
 	{
 #pragma mark No Connecting (Error) Message
 		case noConnectingMessage:
 		{
-			// Create an error
-			NSDictionary* info = [NSDictionary dictionaryWithObject:[(iTetNoConnectingMessage*)message reason]
+			// Create an error, using the reason provided by the server
+			NSDictionary* info = [NSDictionary dictionaryWithObject:[[message contents] objectForKey:iTetMessageNoConnectingReasonKey]
 															 forKey:NSLocalizedFailureReasonErrorKey];
 			NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
 												 code:iTetNoConnectingError
@@ -460,27 +468,41 @@ willDisconnectWithError:(NSError*)error
 			[self handleError:error];
 			break;
 		}
-			
 #pragma mark Server Heartbeat
 		case heartbeatMessage:
 			// Send a keepalive message
-			[self sendMessage:[iTetHeartbeatMessage message]];
+			[self sendMessage:[iTetMessage messageWithMessageType:heartbeatMessage]];
 			break;
 			
 #pragma mark Client Info Request
 		case clientInfoRequestMessage:
+		{
 			// Send client info to server
-			[self sendMessage:[iTetClientInfoReplyMessage message]];
+			iTetMessage* replyMessage = [iTetMessage messageWithMessageType:clientInfoReplyMessage];
+			[[replyMessage contents] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey]
+										forKey:iTetMessageClientNameKey];
+			[[replyMessage contents] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey]
+										forKey:iTetMessageClientVersionKey];
+			[self sendMessage:replyMessage];
 			break;
-			
+		}	
 #pragma mark Player Number Message
-		case playerNumberMessage:
+		case tetrinetPlayerNumberMessage:
+		case tetrifastPlayerNumberMessage:
+		{
 			// Set the local player's number
-			[playersController setLocalPlayerNumber:[(iTetPlayerNumberMessage*)message playerNumber]
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			[playersController setLocalPlayerNumber:playerNumber
 										   nickname:[currentServer playerNickname]
 										   teamName:[currentServer playerTeamName]];
 			
-			[self sendMessage:[iTetPlayerTeamMessage messageForPlayer:[playersController localPlayer]]];
+			// Send the local player's team name to the server
+			iTetMessage* replyMessage = [iTetMessage messageWithMessageType:playerTeamMessage];
+			[[replyMessage contents] setInteger:playerNumber
+										 forKey:iTetMessagePlayerNumberKey];
+			[[replyMessage contents] setObject:[currentServer playerTeamName]
+										forKey:iTetMessagePlayerTeamNameKey];
+			[self sendMessage:replyMessage];
 			
 			// Change the connection state
 			[self setConnectionState:connected];
@@ -490,108 +512,106 @@ willDisconnectWithError:(NSError*)error
 			[channelsController refreshLocalPlayerChannel:self];
 			
 			break;
-			
+		}
 #pragma mark Player Join Message
 		case playerJoinMessage:
 		{
-			iTetPlayerJoinMessage* joinMessage = (iTetPlayerJoinMessage*)message;
-			
 			// Check that this isn't an echo of our own join event
-			if ([joinMessage playerNumber] == [[playersController localPlayer] playerNumber])
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			if (playerNumber == [[playersController localPlayer] playerNumber])
 				break;
 			
 			// Add a new player with the specified name and number
-			[playersController addPlayerWithNumber:[joinMessage playerNumber]
-										  nickname:[joinMessage nickname]];
+			NSString* nickname = [[message contents] objectForKey:iTetMessagePlayerNicknameKey];
+			[playersController addPlayerWithNumber:playerNumber
+										  nickname:nickname];
 			
 			// Add a status message to the chat view
-			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessage, [joinMessage nickname]]];
+			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, nickname]];
 			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];
 			
 			break;
-		}
-			
+		}	
 #pragma mark Player Leave Message
 		case playerLeaveMessage:
 		{
-			// Get player
-			iTetPlayer* player = [playersController playerNumber:[(iTetPlayerLeaveMessage*)message playerNumber]];
+			// If this message refers to the local player, ignore
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			if (playerNumber == [[playersController localPlayer] playerNumber])
+				break;
 			
-			// If the player number is not the local player's, add a status message to the chat view
-			if (![player isLocalPlayer])
-				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessage, [player nickname]]];
+			// Look up the player in question
+			iTetPlayer* player = [playersController playerNumber:playerNumber];
+			
+			// Append a status message
+			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, [player nickname]]];
 			
 			// Remove the player from the game
-			[playersController removePlayerNumber:[player playerNumber]];
+			[playersController removePlayer:player];
 			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];
 			
 			break;
 		}
-			
 #pragma mark Player Team Message
 		case playerTeamMessage:
-		{
 			// Change the specified player's team name
-			iTetPlayerTeamMessage* teamMessage = (iTetPlayerTeamMessage*)message;
-			[playersController setTeamName:[teamMessage teamName]
-						   forPlayerNumber:[teamMessage playerNumber]];
-			
+			[playersController setTeamName:[[message contents] objectForKey:iTetMessagePlayerTeamNameKey]
+						   forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
 			break;
-		}
 			
 #pragma mark Winlist Message
 		case winlistMessage:
 			// Pass the winlist entries to the winlist controller
-			[winlistController parseWinlist:[(iTetWinlistMessage*)message winlistTokens]];
-			
+			[winlistController parseWinlist:[[message contents] objectForKey:iTetMessageWinlistArrayKey]];
 			break;
 			
 #pragma mark Partyline Messages
 		case plineChatMessage:
 		case plineActionMessage:
-		{
 			// Add the message to the chat controller
-			iTetPlineChatMessage* plineMessage = (iTetPlineChatMessage*)message;
-			[chatController appendChatLine:[plineMessage messageContents]
-								fromPlayer:[playersController playerNumber:[plineMessage senderNumber]]
+			[chatController appendChatLine:[[message contents] objectForKey:iTetMessageChatContentsKey]
+								fromPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]
 									action:(type == plineActionMessage)];
 			break;
-		}
 			
 #pragma mark Game Chat Message
 		case gameChatMessage:
 		{
 			// Check if the first space-delimited word of the message is or contains a player's name
-			iTetGameChatMessage* chatMessage = (iTetGameChatMessage*)message;
+			NSString* chatContents = [[message contents] objectForKey:iTetMessageChatContentsKey];
+			NSArray* words = [chatContents componentsSeparatedByString:@" "];
 			for (iTetPlayer* player in [playersController playerList])
 			{
-				if ([[chatMessage firstWord] rangeOfString:[player nickname]].location != NSNotFound)
+				if ([[words objectAtIndex:0] rangeOfString:[player nickname]].location != NSNotFound)
 				{
 					// Add the message to the game chat view
-					[gameController appendChatLine:[chatMessage contentsAfterFirstWord]
+					[gameController appendChatLine:[[words subarrayWithRange:NSMakeRange(1, ([words count] - 1))] componentsJoinedByString:@" "]
 									fromPlayerName:[player nickname]];
 					goto playerfound;
 				}
 			}
 			
 			// Otherwise, just dump the message on the game chat view
-			[gameController appendChatLine:[chatMessage messageContents]];
+			[gameController appendChatLine:chatContents];
 			
 		playerfound:
 			break;
 		}
-			
 #pragma mark New Game Message
-		case newGameMessage:
+		case tetrinetNewGameMessage:
 			// Tell the gameController to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
-										 rules:[iTetGameRules gameRulesFromArray:[(iTetNewGameMessage*)message rulesList]
-																	withGameType:[currentServer protocol]]];
-			
+										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
+																	withGameType:tetrinetProtocol]];
+			break;
+		case tetrifastNewGameMessage:
+			[gameController newGameWithPlayers:[playersController playerList]
+										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
+																	withGameType:tetrifastProtocol]];
 			break;
 			
 #pragma mark Server In-Game Message
@@ -611,7 +631,7 @@ willDisconnectWithError:(NSError*)error
 		case pauseResumeGameMessage:
 		{
 			// Get pause state
-			BOOL pauseGame = [(iTetPauseResumeGameMessage*)message pauseGame];
+			BOOL pauseGame = [[message contents] boolForKey:iTetMessagePauseResumeRequestTypeKey];
 			
 			// Pause or resume the game
 			if (pauseGame && ([gameController gameplayState] == gamePlaying))
@@ -630,7 +650,6 @@ willDisconnectWithError:(NSError*)error
 			
 			break;
 		}
-			
 #pragma mark End of Game Message
 		case endGameMessage:
 			// End the game
@@ -649,50 +668,42 @@ willDisconnectWithError:(NSError*)error
 		case fieldstringMessage:
 		{
 			// Pass to the game controller
-			iTetFieldstringMessage* fieldMessage = (iTetFieldstringMessage*)message;
-			[gameController fieldstringReceived:[fieldMessage fieldstring]
-									  forPlayer:[playersController playerNumber:[fieldMessage playerNumber]]
-								  partialUpdate:[fieldMessage isPartialUpdate]];
+			[gameController fieldstringReceived:[[message contents] objectForKey:iTetMessageFieldstringKey]
+									  forPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]];
 			break;
 		}
-			
 #pragma mark Level Update Message
 		case levelUpdateMessage:
 		{
 			// Check that the level update isn't an echo of one we just sent
-			iTetLevelUpdateMessage* levelMessage = (iTetLevelUpdateMessage*)message;
-			if ([levelMessage playerNumber] == [[playersController localPlayer] playerNumber])
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			if (playerNumber == [[playersController localPlayer] playerNumber])
 				break;
 			
 			// Otherwise, update the specified player's level
-			[playersController setLevel:[levelMessage level]
-						forPlayerNumber:[levelMessage playerNumber]];
+			[playersController setLevel:[[message contents] integerForKey:iTetMessageLevelNumberKey]
+						forPlayerNumber:playerNumber];
 			break;
 		}
-			
 #pragma mark Special Used/Lines Received Message
-		case specialMessage:
+		case specialUsedMessage:
 		{
 			// Pass to game controller
-			iTetSpecialMessage* spMessage = (iTetSpecialMessage*)message;
-			[gameController specialUsed:[spMessage specialType]
-							   byPlayer:[playersController playerNumber:[spMessage senderNumber]]
-							   onPlayer:[playersController playerNumber:[spMessage targetNumber]]];
+			[gameController specialUsed:[[message contents] intForKey:iTetMessageSpecialTypeKey]
+							   byPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]
+							   onPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessageTargetPlayerNumberKey]]];
 			break;
 		}
-			
 #pragma mark Player Lost Message
 		case playerLostMessage:
 			// Set the player to "not playing"
 			[playersController setPlayerIsPlaying:NO
-								  forPlayerNumber:[(iTetPlayerLostMessage*)message playerNumber]];
-			
-			// FIXME: anything else?
+								  forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
 			break;
 			
 #pragma mark Player Won Message
 		case playerWonMessage:
-			// FIXME: should this do anything?
+			// Does nothing
 			break;
 			
 		default:

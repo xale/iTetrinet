@@ -20,19 +20,15 @@
 
 #import "iTetServerInfo.h"
 #import "AsyncSocket.h"
+#import "iTetMessage.h"
+#import "iTetQueryMessage.h"
 
 #import "iTetLocalPlayer.h"
 
-#import "iTetMessage+QueryMessageFactory.h"
-#import "iTetChannelListQueryMessage.h"
-#import "iTetChannelListEntryMessage.h"
-#import "iTetPlayerListQueryMessage.h"
-#import "iTetPlayerListEntryMessage.h"
-#import "iTetJoinChannelMessage.h"
-
-#import "NSString+MessageData.h"
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
+#import "NSDictionary+AdditionalTypes.h"
+#import "NSString+MessageData.h"
 
 #define iTetQueryNetworkPort			(31457)
 #define iTetOutgoingQueryTerminator		(0xFF)
@@ -40,14 +36,13 @@
 
 @interface iTetChannelsViewController (Private)
 
-- (void)sendQueryMessage:(iTetMessage<iTetOutgoingMessage>*)message;
+- (void)sendQueryMessage:(iTetQueryMessage*)message;
 - (void)listenForResponse;
 
 - (void)setChannels:(NSArray*)newChannels;
 - (void)setLocalPlayerChannelName:(NSString*)channelName;
 
 @end
-
 
 @implementation iTetChannelsViewController
 
@@ -137,7 +132,7 @@
 	}
 	
 	// If we are still connected, make an immediate request for the channel list
-	[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+	[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:channelListQueryMessage]];
 	channelQueryStatus = queryInProgress;
 	
 	// Listen for the query response
@@ -180,7 +175,7 @@
 	}
 	
 	// If we are still connected, make an immediate request for the channel list
-	[self sendQueryMessage:[iTetPlayerListQueryMessage message]];
+	[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:playerListQueryMessage]];
 	playerQueryStatus = queryInProgress;
 	
 	// Listen for the query response
@@ -269,15 +264,21 @@
 	// Append a status message to the chat view
 	[chatController appendStatusMessage:[NSString stringWithFormat:iTetSwitchedChannelStatusMessageFormat, channelName]];
 	
-	// Send a "/join" message to the server
-	[networkController sendMessage:[iTetJoinChannelMessage messageWithChannelName:channelName
-																		   player:[playersController localPlayer]]];
+	// Create a "/join <channelname>" chat message
+	iTetMessage* joinMessage = [iTetMessage messageWithMessageType:joinChannelMessage];
+	[[joinMessage contents] setInteger:[[playersController localPlayer] playerNumber]
+								forKey:iTetMessagePlayerNumberKey];
+	[[joinMessage contents] setObject:channelName
+							   forKey:iTetMessageChannelNameKey];
+	
+	// Send the message to the server (over the Tetrinet protocol, rather than as a query)
+	[networkController sendMessage:joinMessage];
 }
 
 #pragma mark -
 #pragma mark Queries
 
-- (void)sendQueryMessage:(iTetMessage<iTetOutgoingMessage>*)message
+- (void)sendQueryMessage:(iTetQueryMessage*)message
 {
 	NSData* messageData = [message rawMessageData];
 #ifdef _ITETRINET_DEBUG
@@ -305,8 +306,8 @@
 didConnectToHost:(NSString*)host
 			port:(UInt16)port
 {
-	// Request the channel list
-	[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+	// Make the initial request the for channel list
+	[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:channelListQueryMessage]];
 	channelQueryStatus = queryInProgress;
 	
 	// Perform a player list query when the channel query finishes
@@ -338,7 +339,7 @@ didConnectToHost:(NSString*)host
 #endif
 	
 	// Attempt to parse the data as a Query response message
-	iTetMessage* message = [iTetMessage queryMessageFromData:data];
+	iTetQueryMessage* message = [iTetQueryMessage queryMessageWithMessageData:data];
 	
 	// If the message is not a valid Query response, abort the attempt to retrieve channels
 	if (message == nil)
@@ -351,17 +352,17 @@ didConnectToHost:(NSString*)host
 	}
 	
 	// Otherwise, determine the nature of the message
-	switch ([message messageType])
+	switch ([message type])
 	{
 		case channelListEntryMessage:
 		{
 			// Create a new entry for the channel list
-			iTetChannelListEntryMessage* channelMessage = (iTetChannelListEntryMessage*)message;
-			iTetChannelInfo* channel = [iTetChannelInfo channelInfoWithName:[channelMessage channelName]
-																description:[channelMessage channelDescription]
-															 currentPlayers:[channelMessage playerCount]
-																 maxPlayers:[channelMessage maxPlayers]
-																	  state:[channelMessage gameState]];
+			NSDictionary* info = [message contents];
+			iTetChannelInfo* channel = [iTetChannelInfo channelInfoWithName:[info objectForKey:iTetMessageChannelNameKey]
+																description:[info objectForKey:iTetQueryMessageChannelDescriptionKey]
+															 currentPlayers:[info integerForKey:iTetQueryMessageChannelPlayerCountKey]
+																 maxPlayers:[info integerForKey:iTetQueryMessageChannelMaxPlayersKey]
+																	  state:[info intForKey:iTetQueryMessageGameplayStateKey]];
 			
 			// Check if the channel is the local player's
 			if ([[channel channelName] isEqualToString:localPlayerChannelName])
@@ -378,11 +379,10 @@ didConnectToHost:(NSString*)host
 		case playerListEntryMessage:
 		{
 			// Check if the entry corresponds to the local player
-			iTetPlayerListEntryMessage* playerMessage = (iTetPlayerListEntryMessage*)message;
-			if ([[playerMessage nickname] isEqualToString:[[playersController localPlayer] nickname]])
+			if ([[[message contents] objectForKey:iTetMessagePlayerNicknameKey] isEqualToString:[[playersController localPlayer] nickname]])
 			{
 				// Change the which channel is recognized as the local player's
-				[self setLocalPlayerChannelName:[playerMessage channelName]];
+				[self setLocalPlayerChannelName:[[message contents] objectForKey:iTetMessageChannelNameKey]];
 			}
 			
 			// Continue listening for reply messages
@@ -406,7 +406,7 @@ didConnectToHost:(NSString*)host
 				// If necessary, begin a player list request
 				if (playerQueryStatus == pendingQuery)
 				{
-					[self sendQueryMessage:[iTetPlayerListQueryMessage message]];
+					[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:playerListQueryMessage]];
 					playerQueryStatus = queryInProgress;
 					[self listenForResponse];
 				}
@@ -418,7 +418,7 @@ didConnectToHost:(NSString*)host
 				// If necessary, begin a new channel list request
 				if (channelQueryStatus == pendingQuery)
 				{
-					[self sendQueryMessage:[iTetChannelListQueryMessage message]];
+					[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:channelListQueryMessage]];
 					channelQueryStatus = queryInProgress;
 					[self listenForResponse];
 				}
@@ -431,7 +431,7 @@ didConnectToHost:(NSString*)host
 			break;
 		}	
 		default:
-			NSLog(@"WARNING: invalid message type detected in channel view controller: '%d'", [message messageType]);
+			NSLog(@"WARNING: invalid message type detected in channels view controller: '%d'", [message type]);
 			break;
 	}
 }

@@ -26,4 +26,7 @@
 // Returns an NSData object containing the receiver's contents encoded in a format suitable for sending in a message
 - (NSData*)messageData;
 
+// Returns the first space-separated word of the receiver
+- (NSString*)messageDesignation;
+
 @end

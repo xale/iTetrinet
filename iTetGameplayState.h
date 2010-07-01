@@ -10,7 +10,19 @@
 
 typedef enum
 {
-	gameNotPlaying,
-	gamePlaying,
-	gamePaused
+	gameNotPlaying =	1,
+	gamePlaying =		2,
+	gamePaused =		3
 } iTetGameplayState;
+
+typedef enum
+{
+	startGameRequest =	1,
+	stopGameRequest =	0
+} iTetStartStopRequestType;
+
+typedef enum
+{
+	pauseGameRequest =	1,
+	resumeGameRequest =	0
+} iTetPauseResumeRequestType;

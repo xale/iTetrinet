@@ -16,11 +16,14 @@
 #import "iTetChannelInfo.h"
 
 #import "iTetNetworkController.h"
-#import "iTetPlineChatMessage.h"
-#import "iTetPlineActionMessage.h"
+#import "iTetMessage.h"
 
+#import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
+
 #import "iTetUserDefaults.h"
+
+#import "NSDictionary+AdditionalTypes.h"
 
 @implementation iTetChatViewController
 
@@ -56,7 +59,7 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 	BOOL action = [[messageContents string] hasPrefix:iTetActionMessagePrefix];
 	
 	// Construct the message
-	iTetMessage<iTetOutgoingMessage>* message;
+	iTetMessage* message;
 	iTetPlayer* localPlayer = [playersController localPlayer];
 	if (action)
 	{
@@ -64,16 +67,19 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 		messageContents = [messageContents attributedSubstringFromRange:NSMakeRange([iTetActionMessagePrefix length], [messageContents length] - [iTetActionMessagePrefix length])];
 		
 		// Create the message
-		message = [iTetPlineActionMessage messageWithContents:messageContents
-												   fromPlayer:localPlayer];
-		
+		message = [iTetMessage messageWithMessageType:plineActionMessage];
 	}
 	else
 	{
 		// Create the message
-		message = [iTetPlineChatMessage messageWithContents:messageContents
-												 fromPlayer:localPlayer];
+		message = [iTetMessage messageWithMessageType:plineChatMessage];
 	}
+	
+	// Fill the message contents
+	[[message contents] setInteger:[localPlayer playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:messageContents
+						   forKey:iTetMessageChatContentsKey];
 	
 	// Send the message
 	[networkController sendMessage:message];

@@ -12,8 +12,9 @@
 
 @interface NSAttributedString (TetrinetTextAttributes)
 
-- (id)initWithPlineMessageData:(NSData*)messageData;
++ (id)attributedStringWithPlineMessageContents:(NSString*)messageContents;
+- (id)initWithPlineMessageContents:(NSString*)messageContents;
 
-- (NSData*)plineMessageData;
+- (NSString*)plineMessageString;
 
 @end

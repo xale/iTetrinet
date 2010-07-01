@@ -37,8 +37,6 @@
 	[super dealloc];
 }
 
-#define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= ITET_MAX_PLAYERS))
-
 - (void)setLocalPlayerNumber:(NSInteger)number
 					nickname:(NSString*)nickname
 					teamName:(NSString*)teamName
@@ -157,11 +155,11 @@
 	}
 }
 
-- (void)removePlayerNumber:(NSInteger)number
+- (void)removePlayer:(iTetPlayer*)player
 {
 	// Sanity checks
-	iTetCheckPlayerNumber(number);
-	if ([self playerNumber:number] == nil)
+	NSParameterAssert(![player isServerPlayer]);
+	if ([self playerNumber:[player playerNumber]] == nil)
 	{
 		NSLog(@"WARNING: attempt to remove player in empty player slot");
 		return;
@@ -170,7 +168,7 @@
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove the player
-	[players replaceObjectAtIndex:(number - 1)
+	[players replaceObjectAtIndex:([player playerNumber] - 1)
 					   withObject:[NSNull null]];
 	
 	// Update player count

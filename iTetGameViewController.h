@@ -105,8 +105,7 @@ typedef enum
 - (void)sendLines:(NSInteger)lines;
 
 - (void)fieldstringReceived:(NSString*)fieldstring
-				  forPlayer:(iTetPlayer*)player
-			  partialUpdate:(BOOL)isPartial;
+				  forPlayer:(iTetPlayer*)player;
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;

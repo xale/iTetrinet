@@ -20,11 +20,13 @@
 	return [[[self alloc] initWithString:string] autorelease];
 }
 
-- (id)initWithPlineMessageData:(NSData*)messageData
++ (id)attributedStringWithPlineMessageContents:(NSString*)messageContents
 {
-	// Convert the message to a raw string
-	NSString* rawMessage = [NSString stringWithMessageData:messageData];
-	
+	return [[[self alloc] initWithPlineMessageContents:messageContents] autorelease];
+}
+
+- (id)initWithPlineMessageContents:(NSString*)rawMessage
+{
 	// Split the message on formatting characters
 	NSArray* messageTokens = [rawMessage componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
 	
@@ -123,7 +125,7 @@
 	return [self initWithAttributedString:formattedMessage];
 }
 
-- (NSData*)plineMessageData
+- (NSString*)plineMessageString
 {
 	// Create the raw-data ASCII version of the message
 	NSMutableString* formattedMessage = [NSMutableString stringWithString:[self string]];
@@ -210,7 +212,7 @@
 	}
 	
 	// Return the formatted message as an NSData object
-	return [formattedMessage messageData];
+	return formattedMessage;
 }
 
 @end

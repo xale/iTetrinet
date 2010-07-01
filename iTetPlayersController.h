@@ -14,8 +14,6 @@
 @class iTetLocalPlayer;
 @class iTetServerPlayer;
 
-#define ITET_MAX_PLAYERS	(6)
-
 @interface iTetPlayersController : NSObject
 {
 	NSMutableArray* players;
@@ -36,7 +34,7 @@
 - (void)setLevel:(NSInteger)level
  forPlayerNumber:(NSInteger)playerNumber;
 - (void)setAllRemotePlayersToPlaying;
-- (void)removePlayerNumber:(NSInteger)playerNumber;
+- (void)removePlayer:(iTetPlayer*)player;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)playerNumber;
 - (iTetPlayer*)operatorPlayer;

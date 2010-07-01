@@ -10,17 +10,19 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define ITET_NUM_MESSAGE_TYPES	(23)
-
 typedef enum
 {
-	loginMessage,
+	invalidMessage = 0,
+	
+	tetrinetLoginMessage,
+	tetrifastLoginMessage,
 	noConnectingMessage,
 	clientInfoRequestMessage,
 	clientInfoReplyMessage,
 	heartbeatMessage,
 	
-	playerNumberMessage,
+	tetrinetPlayerNumberMessage,
+	tetrifastPlayerNumberMessage,
 	playerJoinMessage,
 	playerLeaveMessage,
 	playerTeamMessage,
@@ -29,50 +31,63 @@ typedef enum
 	plineChatMessage,
 	plineActionMessage,
 	gameChatMessage,
-	
-	channelListQueryMessage,
-	channelListEntryMessage,
-	playerListQueryMessage,
-	playerListEntryMessage,
-	queryResponseTerminatorMessage,
+	joinChannelMessage,
 	
 	startStopGameMessage,
-	newGameMessage,
+	tetrinetNewGameMessage,
+	tetrifastNewGameMessage,
 	inGameMessage,
 	pauseResumeGameMessage,
 	endGameMessage,
 	
 	fieldstringMessage,
 	levelUpdateMessage,
-	specialMessage,
+	specialUsedMessage,
 	playerLostMessage,
 	playerWonMessage,
-	
-	invalidMessage
 } iTetMessageType;
+
+extern NSString* const iTetMessageServerAddressKey;
+extern NSString* const iTetMessageNoConnectingReasonKey;
+extern NSString* const iTetMessageClientNameKey;
+extern NSString* const iTetMessageClientVersionKey;
+
+extern NSString* const iTetMessagePlayerNumberKey;
+extern NSString* const iTetMessageTargetPlayerNumberKey;
+
+extern NSString* const iTetMessagePlayerNicknameKey;
+extern NSString* const iTetMessagePlayerTeamNameKey;
+extern NSString* const iTetMessageWinlistArrayKey;
+
+extern NSString* const iTetMessageChatContentsKey;
+extern NSString* const iTetMessageChannelNameKey;
+
+extern NSString* const iTetMessageStartStopRequestTypeKey;
+extern NSString* const iTetMessageGameRulesArrayKey;
+extern NSString* const iTetMessagePauseResumeRequestTypeKey;
+
+extern NSString* const iTetMessageFieldstringKey;
+extern NSString* const iTetMessageLevelNumberKey;
+extern NSString* const iTetMessageSpecialTypeKey;
 
 @interface iTetMessage : NSObject
 {
-	iTetMessageType messageType;
+	iTetMessageType type;
+	NSMutableDictionary* contents;
 }
 
-+ (NSDictionary*)messageDesignations;
+// Creates a message of the specified type
++ (id)messageWithMessageType:(iTetMessageType)messageType;
+- (id)initWithMessageType:(iTetMessageType)messageType;
 
-@property (readonly) iTetMessageType messageType;
-
-@end
-
-@protocol iTetIncomingMessage
-
-// Constructs a message from the raw data off-the-wire, minus the message token and the first space
+// Constructs a message from the raw data off-the-wire (excluding the terminator character)
 + (id)messageWithMessageData:(NSData*)messageData;
 - (id)initWithMessageData:(NSData*)messageData;
 
-@end
-
-@protocol iTetOutgoingMessage
-
 // Converts the message into raw data suitable for sending over-the-wire
 - (NSData*)rawMessageData;
+
+@property (readonly) iTetMessageType type;
+@property (readwrite, retain) NSMutableDictionary* contents;
 
 @end
