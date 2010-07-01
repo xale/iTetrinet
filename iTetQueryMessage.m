@@ -102,16 +102,41 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	if ([messageTokens count] == 6)
 	{
 		type = channelListEntryMessage;
+		
+		// Channel name
 		[contents setObject:[messageTokens objectAtIndex:0]
 					 forKey:iTetMessageChannelNameKey];
-		[contents setObject:[messageTokens objectAtIndex:1]
+		
+		// Channel description (minus any HTML formatting)
+		NSString* description = [NSString stringWithFormat:@"<p>%@</p>", [messageTokens objectAtIndex:1]];
+		NSError* parseError = nil;
+		NSXMLElement* html = [[NSXMLElement alloc] initWithXMLString:description
+															   error:&parseError];
+		if (parseError != nil)
+		{
+			NSLog(@"WARNING: error parsing HTML formatting on description of channel '%@': %@", [messageTokens objectAtIndex:1], parseError);
+			description = [messageTokens objectAtIndex:1];
+		}
+		else
+		{
+			// Convert to a raw string, stripping HTML formatting
+			description = [[html stringValue] retain];
+			[html release];
+		}
+		[contents setObject:description
 					 forKey:iTetQueryMessageChannelDescriptionKey];
+		
+		// Current/max player count
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:2]]
 					 forKey:iTetQueryMessageChannelPlayerCountKey];
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:3]]
 					 forKey:iTetQueryMessageChannelMaxPlayersKey];
+		
+		// Channel priority (order in which players join as channels fill)
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:4]]
 					 forKey:iTetQueryMessageChannelPriorityKey];
+		
+		// Current gameplay state (in-game, paused, etc.)
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:5]]
 					 forKey:iTetQueryMessageGameplayStateKey];
 	}
@@ -119,18 +144,32 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	else if ([messageTokens count] == 7)
 	{
 		type = playerListEntryMessage;
+		
+		// Nickname
 		[contents setObject:[messageTokens objectAtIndex:0]
 					 forKey:iTetMessagePlayerNicknameKey];
+		
+		// Team name
 		[contents setObject:[messageTokens objectAtIndex:1]
 					 forKey:iTetMessagePlayerTeamNameKey];
+		
+		// Client protocol version
 		[contents setObject:[messageTokens objectAtIndex:2]
 					 forKey:iTetMessageClientVersionKey];
+		
+		// Player number
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:3]]
 					 forKey:iTetMessagePlayerNumberKey];
+		
+		// Current gameplay state (playing or not)
 		[contents setBool:([[messageTokens objectAtIndex:4] integerValue] == 1)
 				   forKey:iTetQueryMessageGameplayStateKey];
+		
+		// Operator/administrator status
 		[contents setObject:[decFormat numberFromString:[messageTokens objectAtIndex:5]]
 					 forKey:iTetQueryMessagePlayerAuthLevelKey];
+		
+		// Channel name
 		[contents setObject:[messageTokens objectAtIndex:6]
 					 forKey:iTetMessageChannelNameKey];
 	}
