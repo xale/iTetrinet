@@ -447,7 +447,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 abort:
 	if (error != nil)
 	{
-		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self themeName], [error description]);
+		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self themeName], error);
 	}
 }
 
@@ -467,7 +467,7 @@ abort:
 													error:&error];
 	if (!deleteSuccessful)
 	{
-		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self themeName], [error description]);
+		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self themeName], error);
 	}
 	
 	// Remove theme from cache
