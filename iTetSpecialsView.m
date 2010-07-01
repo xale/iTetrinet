@@ -29,30 +29,39 @@
 #pragma mark -
 #pragma mark Drawing
 
-#define LINE_WIDTH	2
+#define ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH		1.0
+#define ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA	0.6
 
 - (void)drawRect:(NSRect)rect
 {
-	// Fill the background with white
-	[[NSColor whiteColor] setFill];
-	
-	// Start with the full size of the view
-	NSRect boundsRect = [self bounds];
-	CGFloat width;
+	// Calculate the size of the background
+	CGFloat borderWidth = ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH;
+	NSRect backgroundRect = NSInsetRect([self bounds], borderWidth, borderWidth);
 	
 	// If a specials capacity has been set, resize the background to indicate it
 	if ([self capacity] > 0)
 	{
-		// Calculate the width of the resized background
-		width = (boundsRect.size.height * [self capacity]);
+		// Calculate the width of the resized background (integer multiple of the rect's height)
+		CGFloat adjustedWidth = (backgroundRect.size.height * [self capacity]);
 		
-		// Check that the resized background fits on the view
-		if (width < [self bounds].size.width)
-			boundsRect.size.width = width;
+		// Check that the resized background is not too large to draw
+		if (adjustedWidth < backgroundRect.size.width)
+			backgroundRect.size.width = adjustedWidth;
 	}
 	
-	// Fill the background
-	[NSBezierPath fillRect:boundsRect];
+	// Fill the background with white
+	[[NSColor whiteColor] setFill];
+	[NSBezierPath fillRect:backgroundRect];
+	
+	// Draw a border around the background
+	NSRect borderRect = NSInsetRect(backgroundRect, -(borderWidth / 2), -(borderWidth / 2));
+	[[NSColor lightGrayColor] setStroke];
+	[NSBezierPath strokeRect:borderRect];
+	
+	// Darken the top edge of the border, to give a "shadowed" effect
+	[[NSColor grayColor] setStroke];
+	[NSBezierPath strokeLineFromPoint:NSMakePoint(NSMinX(borderRect), NSMaxY(borderRect))
+							  toPoint:NSMakePoint(NSMaxX(borderRect), NSMaxY(borderRect))];
 	
 	// If we have specials to draw, scale the graphics context and draw them
 	if ((specials != nil) && ([specials count] > 0))
@@ -63,14 +72,14 @@
 		
 		// Create a scale transform from the cell height to the height of the view
 		NSAffineTransform* scaleTransform = [NSAffineTransform transform];
-		[scaleTransform scaleBy:([self bounds].size.height / [[self theme] cellSize].height)];
+		[scaleTransform scaleBy:(backgroundRect.size.height / [[self theme] cellSize].height)];
 		
 		// Apply the transform to the graphics context
 		[scaleTransform concat];
 		
 		// Get the image for the first special in the queue
 		NSImage* specialImage;
-		NSPoint drawPoint = NSZeroPoint;
+		NSPoint drawPoint = NSMakePoint(NSMinX(backgroundRect), NSMinY(backgroundRect));
 		
 		// Draw the specials (in reverse order)
 		for (NSNumber* special in [specials reverseObjectEnumerator])
@@ -88,7 +97,8 @@
 			drawPoint.x += [[self theme] cellSize].width;
 			
 			// Check that we are still on the view
-			if (drawPoint.x > [self bounds].size.width)
+			// FIXME: this does not account for the transformed graphics context
+			if (drawPoint.x > backgroundRect.size.width)
 				break;
 		}
 		
@@ -96,13 +106,12 @@
 		[graphicsContext restoreGraphicsState];
 	}
 	
-	// Draw a red box around the first (active) special
-	CGFloat boxEdgeLength = [self bounds].size.height - (LINE_WIDTH / 2) - 1;
-	NSRect boxRect = NSMakeRect((LINE_WIDTH / 2), (LINE_WIDTH / 2),
-								boxEdgeLength, boxEdgeLength);
-	[[NSColor redColor] setStroke];
-	[NSBezierPath setDefaultLineWidth:LINE_WIDTH];
-	[NSBezierPath strokeRect:boxRect];
+	// Highlight the active special
+	NSRect selectionRect = backgroundRect;
+	selectionRect.size.width = selectionRect.size.height;
+	NSColor* highlightColor = [[NSColor selectedControlColor] colorWithAlphaComponent:ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA];
+	[highlightColor setFill];
+	[NSBezierPath fillRect:selectionRect];
 }
 
 #pragma mark -
