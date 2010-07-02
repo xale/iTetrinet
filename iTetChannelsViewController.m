@@ -425,14 +425,16 @@ didConnectToHost:(NSString*)host
 			}
 			else
 			{
-				NSLog(@"WARNING: query-response-terminator received with no query in-progress");
+				NSLog(@"warning: query-response-terminator received with no query in-progress");
 			}
 			
 			break;
 		}	
 		default:
-			NSLog(@"WARNING: invalid message type detected in channels view controller: '%d'", [message type]);
+		{
+			NSAssert2(NO, @"invalid message type detected in ChannelsViewController: %d; contents: %@", [message type], [message contents]);
 			break;
+		}
 	}
 }
 
@@ -492,13 +494,13 @@ willDisconnectWithError:(NSError*)error
 	if ([filteredChannels count] > 0)
 	{
 		if ([filteredChannels count] > 1)
-			NSLog(@"WARNING: multiple channels named '%@' on this server!", channelName);
+			NSLog(@"warning: multiple channels named '%@' on this server", channelName);
 		
 		[[filteredChannels objectAtIndex:0] setLocalPlayerChannel:YES];
 	}
 	else
 	{
-		NSLog(@"WARNING: no channels named '%@' on this server!", channelName);
+		NSLog(@"warning: no channels named '%@' on this server", channelName);
 	}
 	
 	[self didChangeValueForKey:@"channels"];

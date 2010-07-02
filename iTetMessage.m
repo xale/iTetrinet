@@ -153,7 +153,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 	NSNumber* typeSearchResult = [[iTetMessage messageDesignations] objectForKey:messageDesignation];
 	if (typeSearchResult == nil)
 	{
-		NSLog(@"WARNING: unknown message designation: %@", messageDesignation);
+		NSAssert1(NO, @"unknown message designation: %@", messageDesignation);
 		[self release];
 		return nil;
 	}
@@ -413,7 +413,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 		}	
 		default:
 		{
-			NSLog(@"WARNING: rawMessageData called on message of invalid type: %d", [self type]);
+			NSAssert1(NO, @"rawMessageData called on message of invalid type: %d", [self type]);
 			return nil;
 		}
 	}

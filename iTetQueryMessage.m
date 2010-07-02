@@ -88,7 +88,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 																	stripQuotes:YES];
 	if (messageTokens == nil)
 	{
-		NSLog(@"WARNING: unbalanced quotes in query-reply message: %@", messageContents);
+		NSAssert1(NO, @"unbalanced quotes in query-reply message: %@", messageContents);
 		[self release];
 		return nil;
 	}
@@ -114,7 +114,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 															   error:&parseError];
 		if (parseError != nil)
 		{
-			NSLog(@"WARNING: error parsing HTML formatting on description of channel '%@': %@", [messageTokens objectAtIndex:1], parseError);
+			NSAssert2(NO, @"error parsing HTML formatting on description of channel '%@': %@", messageContents, parseError);
 			description = [messageTokens objectAtIndex:1];
 		}
 		else
@@ -176,7 +176,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	// Invalid number of tokens
 	else
 	{
-		NSLog(@"WARNING: invalid number of tokens in query-reply message: %@", messageContents);
+		NSAssert1(NO, @"invalid number of tokens in query-reply message: %@", messageContents);
 		[self release];
 		return nil;
 	}
@@ -198,7 +198,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 			return [iTetPlayerListQueryMessageFormat messageData];
 			
 		default:
-			NSLog(@"WARNING: rawMessageData called for invalid query message type: %d", [self type]);
+			NSAssert1(NO, @"rawMessageData called for invalid query message type: %d", [self type]);
 			break;
 	}
 	

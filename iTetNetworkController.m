@@ -175,7 +175,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		case canceled:
 		case connectionError:
 		case disconnecting:
-			NSLog(@"WARNING: openCloseConnection: called with network controller in invalid state");
+			NSAssert1(NO, @"NetworkController -openCloseConnection: called with invalid connection state: %d", [self connectionState]);
 			break;
 	}
 }
@@ -707,7 +707,7 @@ willDisconnectWithError:(NSError*)error
 			break;
 			
 		default:
-			NSLog(@"WARNING: invalid message type in appController messageReceived: %d", type);
+			NSAssert2(NO, @"invalid message type in NetworkController -messageReceived: %d; contents: %@", type, [message contents]);
 			break;
 	}
 }

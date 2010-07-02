@@ -112,7 +112,8 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSLog(@"WARNING: invalid special type in messageNameForSpecialType: %c (%d)", type, type);
+	NSAssert2(NO, @"invalid special type in messageNameForSpecialType: %c (%d)", type, type);
+	
 	return nil;
 }
 
@@ -201,7 +202,7 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSLog(@"WARNING: iTetSpecialIsPositive() called on invalid special type");
+	NSAssert2(NO, @"iTetSpecialIsPositive() called on invalid special type: %c (%d)", type, type);
 	return NO;
 }
 

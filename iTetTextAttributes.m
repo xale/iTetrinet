@@ -97,7 +97,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 											   forKey:NSUnderlineStyleAttributeName];
 	}
 	
-	NSLog(@"WARNING: invalid attribute code in iTetTextAttributes +textAttributeForCode: '%d'", attributeCode);
+	NSAssert1(NO, @"invalid attribute code in iTetTextAttributes +textAttributeForCode: '%d'", attributeCode);
 	
 	return nil;
 }

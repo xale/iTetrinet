@@ -124,7 +124,7 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 			blockRect = ITET_T_BLOCK_RECTS[orientation];
 			break;
 		default:
-			NSLog(@"WARNING: iTetBlock previewImageWithTheme called with invalid block type");
+			NSAssert1(NO, @"iTetBlock -previewImageWithTheme: called with invalid block type: %d", type);
 			return nil;
 	}
 	

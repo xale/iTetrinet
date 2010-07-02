@@ -32,7 +32,7 @@ NSString* const iTetTeamWinlistEntryCharacter =		@"t";
 		entryComponents = [entryToken componentsSeparatedByString:@";"];
 		if ([entryComponents count] < 2)
 		{
-			NSLog(@"WARNING: malformed winlist entry: %@", entryToken);
+			NSLog(@"warning: malformed winlist entry: %@", entryToken);
 			continue;
 		}
 		
@@ -50,7 +50,9 @@ NSString* const iTetTeamWinlistEntryCharacter =		@"t";
 																	score:[[entryComponents objectAtIndex:1] integerValue]]];
 		}
 		else
-			NSLog(@"WARNING: malformed winlist entry: %@", entryToken);
+		{
+			NSLog(@"warning: malformed winlist entry: %@", entryToken);
+		}
 	}
 	
 	[self setWinlist:winlistEntries];

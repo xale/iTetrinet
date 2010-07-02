@@ -859,7 +859,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		default:
-			NSLog(@"WARNING: gameViewController -activateSpecial: called with invalid special type: %d", special);
+			NSAssert2(NO, @"GameViewController -activateSpecial: called with invalid special type: %c (%d)", special, special);
 			break;
 	}
 	

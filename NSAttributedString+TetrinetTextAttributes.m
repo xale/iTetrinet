@@ -108,7 +108,9 @@
 							   forKey:attributeKey];
 		}
 		else
-			NSLog(@"WARNING: unknown attribute key in NSAttributedString -initWithPlineMessageData: '%@'", attributeKey);
+		{
+			NSAssert1(NO, @"unknown attribute key in NSAttributedString -initWithPlineMessageData: '%@'", attributeKey);
+		}
 		
 		// Increment the number of formatting bytes removed from the final message
 		charactersRemoved++;

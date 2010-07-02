@@ -447,6 +447,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 abort:
 	if (error != nil)
 	{
+		// FIXME: present error dialog to user
 		NSLog(@"WARNING: unable to copy theme files for theme '%@': %@", [self themeName], error);
 	}
 }
@@ -467,6 +468,7 @@ abort:
 													error:&error];
 	if (!deleteSuccessful)
 	{
+		// FIXME: present error dialog to user
 		NSLog(@"WARNING: attempt to delete theme files for theme '%@' was unsuccessful: %@", [self themeName], error);
 	}
 	
@@ -550,7 +552,8 @@ shouldProceedAfterError:(NSError*)error
 		return [specialImages objectAtIndex:(num - 1)];
 	
 	// Invalid cell type
-	NSLog(@"Warning: Image requested for invalid cell type: %d", cellType);
+	NSAssert1(NO, @"image requested for invalid cell type: %d", cellType);
+	
 	return nil;
 }
 

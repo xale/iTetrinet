@@ -49,8 +49,8 @@
 	// Check that the assigned slot is not already occupied
 	if ([self playerNumber:number] != nil)
 	{
-		NSLog(@"WARNING: local player assigned to occupied player slot");
-		playerCount--;
+		NSAssert2(NO,@"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
+		return;
 	}
 	
 	// Check if our player already exists; if so, this is a move operation
@@ -98,8 +98,8 @@
 	// Check that the slot is not already occupied
 	if ([self playerNumber:number] != nil)
 	{
-		NSLog(@"WARNING: new player assigned to occupied player slot");
-		playerCount--;
+		NSAssert3(NO, @"new player '%@' assigned to occupied player slot: %d (%@)", nick, number, [self playerNumber:number]);
+		return;
 	}
 	
 	// Create the new player
@@ -161,7 +161,7 @@
 	NSParameterAssert(![player isServerPlayer]);
 	if ([self playerNumber:[player playerNumber]] == nil)
 	{
-		NSLog(@"WARNING: attempt to remove player in empty player slot");
+		NSAssert2(NO, @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);
 		return;
 	}
 	
