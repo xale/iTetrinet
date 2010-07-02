@@ -576,6 +576,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// If we have been playing a local game, remove the local player
 	if ([self offlineGame])
 		[playersController setLocalPlayer:nil];
+	
+	// Clear the game rules
+	[self setCurrentGameRules:nil];
 }
 
 #pragma mark -
