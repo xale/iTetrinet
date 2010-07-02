@@ -138,12 +138,12 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 	[rulesDict setInteger:0
 				   forKey:iTetGameRulesInitialStackHeightKey];
 	
-	// Starting level one, five lines per level, one level advance at a time
+	// Starting level one, five lines per level, three-level increase per level-up
 	[rulesDict setInteger:1
 				   forKey:iTetGameRulesStartingLevelKey];
 	[rulesDict setInteger:5
 				   forKey:iTetGameRulesLinesPerLevelKey];
-	[rulesDict setInteger:1
+	[rulesDict setInteger:3
 				   forKey:iTetGameRulesLevelIncreaseKey];
 	
 	// Two lines per special, one added at a time, queue capacity of 20
