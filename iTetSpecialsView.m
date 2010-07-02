@@ -30,6 +30,7 @@
 #pragma mark Drawing
 
 #define ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH		1.0
+#define ITET_SPECIALS_VIEW_DIVIDER_LINE_WIDTH		0.5
 #define ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA	0.6
 
 - (void)drawRect:(NSRect)rect
@@ -53,9 +54,18 @@
 	[[NSColor whiteColor] setFill];
 	[NSBezierPath fillRect:backgroundRect];
 	
-	// Draw a border around the background
-	NSRect borderRect = NSInsetRect(backgroundRect, -(borderWidth / 2), -(borderWidth / 2));
+	// Add lines to deliniate spots for specials
 	[[NSColor lightGrayColor] setStroke];
+	CGFloat x = backgroundRect.origin.x + backgroundRect.size.height;
+	for (; x < NSMaxX(backgroundRect); x += backgroundRect.size.height)
+	{
+		[NSBezierPath strokeLineFromPoint:NSMakePoint(x, NSMinY(backgroundRect))
+								  toPoint:NSMakePoint(x, NSMaxX(backgroundRect))];
+	}
+	
+	// Draw a border around the background
+	[[NSColor lightGrayColor] setStroke];
+	NSRect borderRect = NSInsetRect(backgroundRect, -(borderWidth / 2), -(borderWidth / 2));
 	[NSBezierPath strokeRect:borderRect];
 	
 	// Darken the top edge of the border, to give a "shadowed" effect
@@ -77,6 +87,10 @@
 		// Apply the transform to the graphics context
 		[scaleTransform concat];
 		
+		// Calculate the new background rect
+		backgroundRect.origin = [scaleTransform transformPoint:backgroundRect.origin];
+		backgroundRect.size = [scaleTransform transformSize:backgroundRect.size];
+		
 		// Get the image for the first special in the queue
 		NSImage* specialImage;
 		NSPoint drawPoint = NSMakePoint(NSMinX(backgroundRect), NSMinY(backgroundRect));
@@ -96,22 +110,21 @@
 			// Move the drawing point to the next position
 			drawPoint.x += [[self theme] cellSize].width;
 			
-			// Check that we are still on the view
-			// FIXME: this does not account for the transformed graphics context
-			if (drawPoint.x > backgroundRect.size.width)
+			// Check that we are still on the view 
+			if (drawPoint.x > NSMaxX(backgroundRect))
 				break;
 		}
+		
+		// Highlight the active special
+		NSRect selectionRect = backgroundRect;
+		selectionRect.size.width = selectionRect.size.height;
+		NSColor* highlightColor = [[NSColor selectedControlColor] colorWithAlphaComponent:ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA];
+		[highlightColor setFill];
+		[NSBezierPath fillRect:selectionRect];
 		
 		// Pop the graphics context
 		[graphicsContext restoreGraphicsState];
 	}
-	
-	// Highlight the active special
-	NSRect selectionRect = backgroundRect;
-	selectionRect.size.width = selectionRect.size.height;
-	NSColor* highlightColor = [[NSColor selectedControlColor] colorWithAlphaComponent:ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA];
-	[highlightColor setFill];
-	[NSBezierPath fillRect:selectionRect];
 }
 
 #pragma mark -
@@ -124,8 +137,9 @@
 
 - (void)setSpecials:(NSArray*)newSpecials
 {
-	[specials autorelease];
-	specials = [newSpecials copy];
+	NSArray* temp = [newSpecials copy];
+	[specials release];
+	specials = temp;
 	
 	[self setNeedsDisplay:YES];
 }
