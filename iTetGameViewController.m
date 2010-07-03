@@ -947,26 +947,32 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case movePieceDown:
-			// Invalidate the fall timer ("move down" method will reset)
-			[blockTimer invalidate];
-			blockTimer = nil;
-			
-			// Move the piece down
-			[self moveCurrentBlockDown];
-			
+			// If there is a falling block on the board, move it down
+			if ([LOCALPLAYER currentBlock] != nil)
+			{
+				// Invalidate the fall timer ("move down" method will reset)
+				[blockTimer invalidate];
+				blockTimer = nil;
+				
+				// Move the piece down
+				[self moveCurrentBlockDown];
+			}
 			break;
 			
 		case dropPiece:
-			// Invalidate the fall timer
-			[blockTimer invalidate];
-			blockTimer = nil;
-			
-			// Move the block down until it stops
-			while (![[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]]);
-			
-			// Solidify the block
-			[self solidifyCurrentBlock];
-			
+			// If there is a falling block on the board, drop it
+			if ([LOCALPLAYER currentBlock] != nil)
+			{
+				// Invalidate the fall timer
+				[blockTimer invalidate];
+				blockTimer = nil;
+				
+				// Move the block down until it stops
+				while (![[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]]);
+				
+				// Solidify the block
+				[self solidifyCurrentBlock];
+			}
 			break;
 			
 		case discardSpecial:
