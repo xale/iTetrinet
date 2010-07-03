@@ -38,7 +38,7 @@ NSString* const iTetWinlistMessageFormat =						@"winlist %@";
 NSString* const iTetPLineChatMessageFormat =					@"pline %d %@";
 NSString* const iTetPLineActionMessageFormat =					@"plineact %d %@";
 NSString* const iTetGameChatMessageFormat =						@"gmsg %@";
-NSString* const iTetJoinChannelMessageFormat =					@"pline %d /join %@";
+NSString* const iTetJoinChannelMessageFormat =					@"pline %d /join #%@";
 
 NSString* const iTetStartStopGameMessageFormat =				@"startgame %d %d";
 NSString* const iTetTetrinetNewGameMessageFormat =				@"newgame %@";			// TetriNET protocol
