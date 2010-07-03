@@ -322,8 +322,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Create a message
 	iTetMessage* message = [iTetMessage messageWithMessageType:gameChatMessage];
-	[[message contents] setInteger:[LOCALPLAYER playerNumber]
-							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:[LOCALPLAYER nickname]
+						   forKey:iTetMessagePlayerNicknameKey];
 	[[message contents] setObject:messageText
 						   forKey:iTetMessageChatContentsKey];
 	[networkController sendMessage:message];

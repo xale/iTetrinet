@@ -21,37 +21,38 @@
 #pragma mark Message Formats
 
 NSDictionary* iTetMessageFormats = nil;
-NSString* const iTetTetrinetLoginMessageFormat =				@"tetrisstart %@ %@";	// TetriNET protocol
-NSString* const iTetTetrifastLoginMessageFormat =				@"tetrifaster %@ %@";	// Tetrifast protocol
-NSString* const iTetNoConnectingMessageFormat =					@"noconnecting %@";
-NSString* const iTetClientInfoRequestMessageFormat =			@"lvl 0 0";
-NSString* const iTetClientInfoReplyMessageFormat =				@"clientinfo %@ %@";
+NSString* const iTetTetrinetLoginMessageFormat =			@"tetrisstart %@ %@";	// TetriNET protocol
+NSString* const iTetTetrifastLoginMessageFormat =			@"tetrifaster %@ %@";	// Tetrifast protocol
+NSString* const iTetNoConnectingMessageFormat =				@"noconnecting %@";
+NSString* const iTetClientInfoRequestMessageFormat =		@"lvl 0 0";
+NSString* const iTetClientInfoReplyMessageFormat =			@"clientinfo %@ %@";
 // Heartbeat message has no format string
 
-NSString* const iTetTetrinetPlayerNumberMessageFormat =			@"playernum %d";		// TetriNET protocol
-NSString* const iTetTetrifastPlayerNumberMessageFormat =		@")#)(!@(*3 %d";		// Tetrifast protocol
-NSString* const iTetPlayerJoinMessageFormat =					@"playerjoin %d %@";
-NSString* const iTetPlayerLeaveMessageFormat =					@"playerleave %d";
-NSString* const iTetPlayerTeamMessageFormat =					@"team %d %@";
-NSString* const iTetWinlistMessageFormat =						@"winlist %@";
+NSString* const iTetTetrinetPlayerNumberMessageFormat =		@"playernum %d";		// TetriNET protocol
+NSString* const iTetTetrifastPlayerNumberMessageFormat =	@")#)(!@(*3 %d";		// Tetrifast protocol
+NSString* const iTetPlayerJoinMessageFormat =				@"playerjoin %d %@";
+NSString* const iTetPlayerLeaveMessageFormat =				@"playerleave %d";
+NSString* const iTetPlayerTeamMessageFormat =				@"team %d %@";
+NSString* const iTetWinlistMessageFormat =					@"winlist %@";
 
-NSString* const iTetPLineChatMessageFormat =					@"pline %d %@";
-NSString* const iTetPLineActionMessageFormat =					@"plineact %d %@";
-NSString* const iTetGameChatMessageFormat =						@"gmsg %@";
-NSString* const iTetJoinChannelMessageFormat =					@"pline %d /join #%@";
+NSString* const iTetPLineChatMessageFormat =				@"pline %d %@";
+NSString* const iTetPLineActionMessageFormat =				@"plineact %d %@";
+NSString* const iTetGameChatMessageWithNicknameFormat =		@"gmsg <%@> %@";
+NSString* const iTetGameChatMessageFormat =					@"gmsg %@";
+NSString* const iTetJoinChannelMessageFormat =				@"pline %d /join #%@";
 
-NSString* const iTetStartStopGameMessageFormat =				@"startgame %d %d";
-NSString* const iTetTetrinetNewGameMessageFormat =				@"newgame %@";			// TetriNET protocol
-NSString* const iTetTetrifastNewGameMessageFormat =				@"******* %@";			// Tetrifast protocol
-NSString* const iTetInGameMessageFormat =						@"ingame";
-NSString* const iTetPauseResumeGameMessageFormat =				@"pause %d %d";
-NSString* const iTetEndGameMessageFormat =						@"endgame";
+NSString* const iTetStartStopGameMessageFormat =			@"startgame %d %d";
+NSString* const iTetTetrinetNewGameMessageFormat =			@"newgame %@";			// TetriNET protocol
+NSString* const iTetTetrifastNewGameMessageFormat =			@"******* %@";			// Tetrifast protocol
+NSString* const iTetInGameMessageFormat =					@"ingame";
+NSString* const iTetPauseResumeGameMessageFormat =			@"pause %d %d";
+NSString* const iTetEndGameMessageFormat =					@"endgame";
 
-NSString* const iTetFieldstringMessageFormat =					@"f %d %@";
-NSString* const iTetLevelUpdateMessageFormat =					@"lvl %d %d";
-NSString* const iTetSpecialUsedMessageFormat =					@"sb %d %@ %d";
-NSString* const iTetPlayerLostMessageFormat =					@"playerlost %d";
-NSString* const iTetPlayerWonMessageFormat =					@"playerwon %d";
+NSString* const iTetFieldstringMessageFormat =				@"f %d %@";
+NSString* const iTetLevelUpdateMessageFormat =				@"lvl %d %d";
+NSString* const iTetSpecialUsedMessageFormat =				@"sb %d %@ %d";
+NSString* const iTetPlayerLostMessageFormat =				@"playerlost %d";
+NSString* const iTetPlayerWonMessageFormat =				@"playerwon %d";
 
 #pragma mark -
 #pragma mark Message Contents Keys
@@ -343,8 +344,16 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 		{
 			NSString* chatContents = [[self contents] objectForKey:iTetMessageChatContentsKey];
 			NSParameterAssert(chatContents != nil);
+			NSString* playerNickname = [[self contents] objectForKey:iTetMessagePlayerNicknameKey];
+			if (playerNickname != nil)
+			{
+				messageContents = [NSString stringWithFormat:iTetGameChatMessageWithNicknameFormat, playerNickname, chatContents];
+			}
+			else
+			{
+				messageContents = [NSString stringWithFormat:iTetGameChatMessageFormat, chatContents];
+			}
 			
-			messageContents = [NSString stringWithFormat:iTetGameChatMessageFormat, chatContents];
 			break;
 		}	
 		case joinChannelMessage:
