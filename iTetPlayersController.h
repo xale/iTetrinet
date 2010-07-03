@@ -22,9 +22,10 @@
 	iTetServerPlayer* serverPlayer;
 }
 
-- (void)setLocalPlayerNumber:(NSInteger)playerNumber
-					nickname:(NSString*)nickname
-					teamName:(NSString*)teamName;
+- (void)createLocalPlayerWithNumber:(NSInteger)number
+						   nickname:(NSString*)nickname
+						   teamName:(NSString*)teamName;
+- (void)changeLocalPlayerNumber:(NSInteger)number;
 - (void)addPlayerWithNumber:(NSInteger)playerNumber
 				   nickname:(NSString*)nick;
 - (void)setTeamName:(NSString*)teamName

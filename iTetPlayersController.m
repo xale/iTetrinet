@@ -37,14 +37,12 @@
 	[super dealloc];
 }
 
-- (void)setLocalPlayerNumber:(NSInteger)number
-					nickname:(NSString*)nickname
-					teamName:(NSString*)teamName
+- (void)createLocalPlayerWithNumber:(NSInteger)number
+						   nickname:(NSString*)nickname
+						   teamName:(NSString*)teamName
 {
 	// Sanity check
 	iTetCheckPlayerNumber(number);
-	
-	[self willChangeValueForKey:@"playerList"];
 	
 	// Check that the assigned slot is not already occupied
 	if ([self playerNumber:number] != nil)
@@ -53,36 +51,49 @@
 		return;
 	}
 	
-	// Check if our player already exists; if so, this is a move operation
-	if ([self localPlayer] != nil)
+	[self willChangeValueForKey:@"playerList"];
+	
+	// Create the local player
+	[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:nickname
+													  number:number
+													teamName:teamName]];
+	
+	// Place the player in the players array
+	[players replaceObjectAtIndex:(number - 1)
+					   withObject:[self localPlayer]];
+	
+	// Update player count
+	playerCount++;
+	
+	[self didChangeValueForKey:@"playerList"];
+}
+
+- (void)changeLocalPlayerNumber:(NSInteger)number
+{
+	// Sanity check
+	iTetCheckPlayerNumber(number);
+	
+	// Check that the assigned slot is not already occupied
+	if ([self playerNumber:number] != nil)
 	{
-		// Clear the old location in the players array
-		[players replaceObjectAtIndex:([[self localPlayer] playerNumber] - 1)
-						   withObject:[NSNull null]];
-		
-		// Change the local player's number
-		[[self localPlayer] setPlayerNumber:number];
-		
-		// Move to the new location in the players array
-		[players replaceObjectAtIndex:(number - 1)
-						   withObject:[self localPlayer]];
-		
-		// Player count unchanged
+		NSAssert2(NO,@"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
+		return;
 	}
-	else
-	{
-		// Create the local player
-		[self setLocalPlayer:[iTetLocalPlayer playerWithNickname:nickname
-														  number:number
-														teamName:teamName]];
-		
-		// Place the player in the players array
-		[players replaceObjectAtIndex:(number - 1)
-						   withObject:[self localPlayer]];
-		
-		// Update player count
-		playerCount++;
-	}
+	
+	[self willChangeValueForKey:@"playerList"];
+	
+	// Clear the local player's old slot
+	[players replaceObjectAtIndex:([localPlayer playerNumber] - 1)
+					   withObject:[NSNull null]];
+	
+	// Move to the new slot
+	[players replaceObjectAtIndex:(number - 1)
+					   withObject:localPlayer];
+	
+	// Change the local player's number
+	[localPlayer setPlayerNumber:number];
+	
+	// Playercount unchanged
 	
 	[self didChangeValueForKey:@"playerList"];
 }
@@ -93,14 +104,14 @@
 	// Sanity check
 	iTetCheckPlayerNumber(number);
 	
-	[self willChangeValueForKey:@"playerList"];
-	
 	// Check that the slot is not already occupied
 	if ([self playerNumber:number] != nil)
 	{
 		NSAssert3(NO, @"new player '%@' assigned to occupied player slot: %d (%@)", nick, number, [self playerNumber:number]);
 		return;
 	}
+	
+	[self willChangeValueForKey:@"playerList"];
 	
 	// Create the new player
 	[players replaceObjectAtIndex:(number - 1)
@@ -158,7 +169,8 @@
 - (void)removePlayer:(iTetPlayer*)player
 {
 	// Sanity checks
-	NSParameterAssert(![player isServerPlayer]);
+	NSParameterAssert(player != nil);
+	iTetCheckPlayerNumber([player playerNumber]);
 	if ([self playerNumber:[player playerNumber]] == nil)
 	{
 		NSAssert2(NO, @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);

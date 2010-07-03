@@ -490,11 +490,25 @@ willDisconnectWithError:(NSError*)error
 		case tetrinetPlayerNumberMessage:
 		case tetrifastPlayerNumberMessage:
 		{
-			// Set the local player's number
+			// Read the player number
 			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			[playersController setLocalPlayerNumber:playerNumber
-										   nickname:[currentServer playerNickname]
-										   teamName:[currentServer playerTeamName]];
+			
+			// Check if we've been assigned a player number yet
+			if ([playersController localPlayer] == nil)
+			{
+				// Create the local player object
+				[playersController createLocalPlayerWithNumber:playerNumber
+													  nickname:[currentServer playerNickname]
+													  teamName:[currentServer playerTeamName]];
+				
+				// Treat this as the sign of a successful connection
+				[self setConnectionState:connected];
+			}
+			// Check if we're being moved to a new slot (probably a sign we've moved to a new channel)
+			else if (playerNumber != [[playersController localPlayer] playerNumber])
+			{
+				[playersController changeLocalPlayerNumber:playerNumber];
+			}
 			
 			// Send the local player's team name to the server
 			iTetMessage* replyMessage = [iTetMessage messageWithMessageType:playerTeamMessage];
@@ -503,9 +517,6 @@ willDisconnectWithError:(NSError*)error
 			[[replyMessage contents] setObject:[currentServer playerTeamName]
 										forKey:iTetMessagePlayerTeamNameKey];
 			[self sendMessage:replyMessage];
-			
-			// Change the connection state
-			[self setConnectionState:connected];
 			
 			// Refresh channel list and local player's current channel
 			[channelsController refreshChannelList:self];
