@@ -1150,7 +1150,8 @@ doCommandBySelector:(SEL)command
 	}
 }
 
-#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used; tokens in order are: special name, target player's name, sender player's name")
+#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
+#define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
 #define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ added to %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
 #define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"1 Line", @"GameViewController", @"Token for event description messages describing a single line to be added to a player's field")
 #define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"%d Lines", @"GameViewController", @"Token format for event description messages describing multiple lines to be added to a player's field")
@@ -1187,17 +1188,25 @@ doCommandBySelector:(SEL)command
 	NSColor* textColor;
 	NSRange attributeRange;
 	
-	// Determine the target player's name
-	if ([target playerNumber] == 0)
-		targetName = iTetTargetAllPlaceholderName;
-	else
-		targetName = [target nickname];
+	// Check if this was a "use on self" event
+	BOOL selfEvent = NO;
+	if ([target isEqual:sender])
+		selfEvent = YES;
 	
 	// Determine the sender player's name
 	if ([sender isServerPlayer])
 		senderName = iTetServerSenderPlaceholderName;
 	else
 		senderName = [sender nickname];
+	
+	// Determine the target player's name
+	if (!selfEvent)
+	{
+		if ([target playerNumber] == 0)
+			targetName = iTetTargetAllPlaceholderName;
+		else
+			targetName = [target nickname];
+	}
 	
 	// Determine if the special is a classic-style line add
 	NSInteger numLinesAdded = [iTetSpecials classicLinesForSpecialType:special];
@@ -1211,8 +1220,8 @@ doCommandBySelector:(SEL)command
 			linesDesc = iTetOneLineAddedFormat;
 		
 		// Create the description string
-		desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]
-													   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+		desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]
+													  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
 		
 		// Find the highlight range and color
 		attributeRange = [[desc string] rangeOfString:linesDesc];
@@ -1226,13 +1235,21 @@ doCommandBySelector:(SEL)command
 		// Create the description string
 		if (![self offlineGame])
 		{
-			desc = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
-														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+			if (selfEvent)
+			{
+				desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSelfSpecialEventDescriptionFormat, specialName, senderName]
+															  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
+			}
+			else
+			{
+				desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
+															  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
+			}
 		}
 		else
 		{
-			desc = [[[NSMutableAttributedString alloc] initWithString:specialName
-														   attributes:[iTetTextAttributes defaultGameActionsTextAttributes]] autorelease];
+			desc = [[NSMutableAttributedString alloc] initWithString:specialName
+														  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
 		}
 
 		// Find the highlight range and color
@@ -1250,14 +1267,17 @@ doCommandBySelector:(SEL)command
 													forKey:NSForegroundColorAttributeName]
 				  range:attributeRange];
 	
-	// Bold the target and sender names
+	// Bold the sender and (if applicable) target names
 	if (![self offlineGame])
 	{
 		[desc applyFontTraits:NSBoldFontMask
-						range:[[desc string] rangeOfString:targetName]];
-		[desc applyFontTraits:NSBoldFontMask
 						range:[[desc string] rangeOfString:senderName
 												   options:NSBackwardsSearch]];
+		if (!selfEvent)
+		{
+			[desc applyFontTraits:NSBoldFontMask
+							range:[[desc string] rangeOfString:targetName]];
+		}
 	}
 	
 	// If the local player was affected, add a background color
@@ -1271,6 +1291,7 @@ doCommandBySelector:(SEL)command
 	
 	// Record the event
 	[self appendEventDescription:desc];
+	[desc release];
 }
 
 #pragma mark -
