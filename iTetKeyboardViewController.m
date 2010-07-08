@@ -127,7 +127,7 @@ NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
 	// Add the "save configuration" menu item
 	NSMenuItem* menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetSaveKeyboardConfigurationMenuTitle
 																				action:@selector(saveConfiguration:)
-																		 keyEquivalent:@""];
+																		 keyEquivalent:[NSString string]];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
@@ -135,7 +135,7 @@ NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
 	// Add the "delete configuration" menu item
 	menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetDeleteKeyboardConfigurationMenuTitle
 																	action:@selector(deleteConfiguration:)
-															 keyEquivalent:@""];
+															 keyEquivalent:[NSString string]];
 	[menuItem setTarget:self];
 	[[configurationPopUpButton menu] addItem:menuItem];
 	[menuItem release];
@@ -582,15 +582,16 @@ NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
 				  tagNumber:(NSUInteger)tag
 {
 	// Create a menu item
-	NSMenuItem* item = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:[config configurationName]
-																			 action:@selector(changeConfiguration:)
-																	  keyEquivalent:@""] autorelease];
+	NSMenuItem* item = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:[config configurationName]
+																			action:@selector(changeConfiguration:)
+																	 keyEquivalent:[NSString string]];
 	[item setTarget:self];
 	[item setTag:tag];
 	
 	// Add it to the menu
 	[[configurationPopUpButton menu] insertItem:item
 										atIndex:index];
+	[item release];
 }
 
 - (void)displayConfigurationNumber:(NSUInteger)configNum
