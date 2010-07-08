@@ -114,7 +114,8 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 															   error:&parseError];
 		if (parseError != nil)
 		{
-			NSAssert2(NO, @"error parsing HTML formatting on description of channel '%@': %@", messageContents, parseError);
+			// If the description can't be parsed as HTML, treat it as unformatted text
+			NSLog(@"warning: error parsing HTML formatting on description of channel '%@': %@", messageContents, parseError);
 			description = [messageTokens objectAtIndex:1];
 		}
 		else
