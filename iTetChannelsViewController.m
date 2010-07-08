@@ -39,6 +39,7 @@
 - (void)sendQueryMessage:(iTetQueryMessage*)message;
 - (void)listenForResponse;
 
+- (void)setCurrentServer:(iTetServerInfo*)server;
 - (void)setChannels:(NSArray*)newChannels;
 - (void)setLocalPlayerChannelName:(NSString*)channelName;
 
@@ -86,7 +87,7 @@
 - (void)requestChannelListFromServer:(iTetServerInfo*)server
 {
 	// Hold a reference to the server
-	currentServer = [server retain];
+	[self setCurrentServer:server];
 	
 	// Assume, until we determine otherwise, that the server supports the Query protocol
 	serverSupportsQueries = YES;
@@ -184,8 +185,9 @@
 
 - (void)stopQueriesAndDisconnect
 {
-	// Disconnect the socket
+	// Disconnect from the server
 	[querySocket disconnect];
+	[self setCurrentServer:nil];
 	
 	// De-register for tab-change notifications
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -204,26 +206,38 @@
 #pragma mark -
 #pragma mark IPSContextMenuTableView Delegate Methods
 
-#define iTetChannelRightClickActionsMenuTitle	NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
-#define iTetJoinChannelActionMenuItemTitle		NSLocalizedStringFromTable(@"Join Channel", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
+#define iTetChannelRightClickActionsMenuTitle		NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
+#define iTetJoinChannelActionMenuItemTitle			NSLocalizedStringFromTable(@"Join Channel", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
+#define iTetRefreshChannelListActionMenuItemTitle	NSLocalizedStringFromTable(@"Refresh Channel List", @"ChannelsViewController", @"Title of menut item in the contextual menu displayed when a user right- or control-clicks on the channels list that allows the user to refresh the list of channels")
 
 - (NSMenu*)tableView:(IPSContextMenuTableView*)tableView
 		menuForEvent:(NSEvent*)event
 {
-	// Check that the table view has exactly one row selected
-	if ([tableView numberOfSelectedRows] != 1)
-		return nil;
-	
 	// Create a menu
 	NSMenu* menu = [[[NSMenu allocWithZone:[NSMenu menuZone]] initWithTitle:iTetChannelRightClickActionsMenuTitle] autorelease];
 	[menu setAutoenablesItems:NO];
 	
-	// Create "join channel" a menu item
-	NSMenuItem* menuItem = [[[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetJoinChannelActionMenuItemTitle
-																				 action:@selector(switchToSelectedChannel:)
-																		  keyEquivalent:[NSString string]] autorelease];
+	// Create a "join channel" menu item
+	NSMenuItem* menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetJoinChannelActionMenuItemTitle
+																				action:@selector(switchToSelectedChannel:)
+																		 keyEquivalent:[NSString string]];
 	[menuItem setTarget:self];
 	[menu addItem:menuItem];
+	
+	// If the table view doesn't have a row selected, disable the "join channel" item
+	[menuItem setEnabled:([tableView numberOfSelectedRows] == 1)];
+	[menuItem release];
+	
+	// Create a "refresh channel list" menu item
+	menuItem = [[NSMenuItem allocWithZone:[NSMenu menuZone]] initWithTitle:iTetRefreshChannelListActionMenuItemTitle
+																	action:@selector(refreshChannelList:)
+															 keyEquivalent:[NSString string]];
+	[menuItem setTarget:self];
+	[menu addItem:menuItem];
+	
+	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" item
+	[menuItem setEnabled:((currentServer != nil) && serverSupportsQueries)];
+	[menuItem release];
 	
 	return menu;
 }
@@ -455,6 +469,13 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Accessors
 
+- (void)setCurrentServer:(iTetServerInfo*)server
+{
+	[server retain];
+	[currentServer release];
+	currentServer = server;
+}
+
 - (void)setChannels:(NSArray*)newChannels
 {
 	[self willChangeValueForKey:@"channels"];
@@ -478,7 +499,7 @@ willDisconnectWithError:(NSError*)error
 	if (channelName == nil)
 		channelName = [NSString string];
 	
-	// If the name isn't changing, do nothing (fail-fast optimization)
+	// If the name isn't changing, do nothing (short-circuit optimization)
 	if ([localPlayerChannelName isEqualToString:channelName])
 		return;
 	

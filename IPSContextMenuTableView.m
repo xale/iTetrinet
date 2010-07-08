@@ -36,8 +36,17 @@
     }
     else
     {
-		// If the user has not clicked a row, deleselect the rows and don't ask for a menu
+		// If the user has not clicked a row, deleselect any selected rows before asking for a menu
 		[self deselectAll:self];
+		
+		if ([[self delegate] respondsToSelector:@selector(tableView:menuForEvent:)])
+		{
+			NSMenu* delegateMenu = [[self delegate] tableView:self
+												 menuForEvent:event];
+			
+			if (delegateMenu != nil)
+				return delegateMenu;
+		}
     }
 	
 	// If the delegate could not supply (or was not asked for) a menu, return the default
