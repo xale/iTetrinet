@@ -12,9 +12,9 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="29"/>
-			<integer value="501"/>
 			<integer value="575"/>
+			<integer value="501"/>
+			<integer value="24"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -620,6 +620,25 @@
 									<reference key="NSMenu" ref="835318025"/>
 									<string key="NSTitle">Winlist Tab</string>
 									<string key="NSKeyEquiv">3</string>
+									<int key="NSKeyEquivModMask">1048576</int>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="405133155">
+									<reference key="NSMenu" ref="835318025"/>
+									<bool key="NSIsDisabled">YES</bool>
+									<bool key="NSIsSeparator">YES</bool>
+									<string key="NSTitle"/>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+								</object>
+								<object class="NSMenuItem" id="508773096">
+									<reference key="NSMenu" ref="835318025"/>
+									<string key="NSTitle">Refresh Channels List</string>
+									<string key="NSKeyEquiv">r</string>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
@@ -2194,7 +2213,6 @@
 																				<reference key="NSHScroller" ref="797695432"/>
 																				<reference key="NSContentView" ref="653475451"/>
 																				<reference key="NSHeaderClipView" ref="556002691"/>
-																				<reference key="NSCornerView" ref="595408053"/>
 																				<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 																			</object>
 																		</object>
@@ -2570,7 +2588,6 @@
 																<reference key="NSHScroller" ref="265173672"/>
 																<reference key="NSContentView" ref="995879770"/>
 																<reference key="NSHeaderClipView" ref="54117063"/>
-																<reference key="NSCornerView" ref="1059446900"/>
 																<bytes key="NSScrollAmts">QSAAAEEgAABBmAAAQZgAAA</bytes>
 															</object>
 														</object>
@@ -5612,6 +5629,14 @@
 					</object>
 					<int key="connectionID">1718</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">refreshChannelList:</string>
+						<reference key="source" ref="964681874"/>
+						<reference key="destination" ref="508773096"/>
+					</object>
+					<int key="connectionID">1736</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -5890,6 +5915,8 @@
 							<reference ref="432754247"/>
 							<reference ref="946448388"/>
 							<reference ref="290948441"/>
+							<reference ref="508773096"/>
+							<reference ref="405133155"/>
 						</object>
 						<reference key="parent" ref="713487014"/>
 					</object>
@@ -7304,6 +7331,16 @@
 						<reference key="object" ref="249663700"/>
 						<reference key="parent" ref="1052209441"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1734</int>
+						<reference key="object" ref="508773096"/>
+						<reference key="parent" ref="835318025"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1735</int>
+						<reference key="object" ref="405133155"/>
+						<reference key="parent" ref="835318025"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -7402,6 +7439,8 @@
 					<string>1649.IBPluginDependency</string>
 					<string>1660.IBPluginDependency</string>
 					<string>1669.IBPluginDependency</string>
+					<string>1734.IBPluginDependency</string>
+					<string>1735.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>19.ImportedFromIB2</string>
 					<string>197.IBPluginDependency</string>
@@ -7696,6 +7735,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -7725,7 +7766,7 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{340, 673}, {194, 163}}</string>
+					<string>{{340, 643}, {225, 193}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
@@ -7734,9 +7775,9 @@
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{162, 87}, {824, 713}}</string>
+					<string>{{178, -9}, {824, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{162, 87}, {824, 713}}</string>
+					<string>{{178, -9}, {824, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -7836,7 +7877,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{80, 604}, {193, 183}}</string>
+					<string>{{92, 653}, {193, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -7925,7 +7966,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1733</int>
+			<int key="maxID">1736</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

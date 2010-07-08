@@ -204,6 +204,21 @@
 }
 
 #pragma mark -
+#pragma mark Interface Validations
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+	// Determine which item we are looking at based on its action
+	SEL itemAction = [item action];
+	
+	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" items
+	if (itemAction == @selector(refreshChannelList:))
+		return ((currentServer != nil) && serverSupportsQueries);
+	
+	return YES;
+}
+
+#pragma mark -
 #pragma mark IPSContextMenuTableView Delegate Methods
 
 #define iTetChannelRightClickActionsMenuTitle		NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
@@ -235,7 +250,7 @@
 	[menuItem setTarget:self];
 	[menu addItem:menuItem];
 	
-	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" item
+	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" items
 	[menuItem setEnabled:((currentServer != nil) && serverSupportsQueries)];
 	[menuItem release];
 	

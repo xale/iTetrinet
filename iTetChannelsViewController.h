@@ -24,7 +24,7 @@ typedef enum
 	queryInProgress
 } iTetQueryStatus;
 
-@interface iTetChannelsViewController : NSObject
+@interface iTetChannelsViewController : NSObject <NSUserInterfaceValidations>
 {
 	// Top-level controllers
 	IBOutlet iTetChatViewController* chatController;
