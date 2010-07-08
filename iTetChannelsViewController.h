@@ -51,7 +51,6 @@ typedef enum
 
 - (void)requestChannelListFromServer:(iTetServerInfo*)server;
 - (IBAction)refreshChannelList:(id)sender;
-- (IBAction)refreshLocalPlayerChannel:(id)sender;
 - (void)stopQueriesAndDisconnect;
 
 - (IBAction)switchToSelectedChannel:(id)sender;

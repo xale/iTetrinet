@@ -136,48 +136,8 @@
 	[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:channelListQueryMessage]];
 	channelQueryStatus = queryInProgress;
 	
-	// Listen for the query response
-	[self listenForResponse];
-}
-
-- (IBAction)refreshLocalPlayerChannel:(id)sender
-{
-	// If we already know that this server doesn't support the Query protocol, don't bother trying to refresh
-	if (!serverSupportsQueries)
-		return;
-	
-	// If we already have a player query pending or in progress, ignore the attempt to refresh
-	if (playerQueryStatus != noQuery)
-		return;
-	
-	// If we have a channel query in progress, wait for it to complete
-	if (channelQueryStatus == queryInProgress)
-	{
-		playerQueryStatus = pendingQuery;
-		return;
-	}
-	
-	// If we're not looking at the chat view tab, delay the refresh until the user switches
-	if (![[[[windowController tabView] selectedTabViewItem] identifier] isEqualToString:iTetChatViewTabIdentifier])
-	{
-		playerQueryStatus = pendingQuery;
-		return;
-	}
-	
-	// If we have been disconnected since the last query, reconnect
-	if (![querySocket isConnected])
-	{
-		[querySocket connectToHost:[currentServer serverAddress]
-							onPort:iTetQueryNetworkPort
-							 error:NULL];
-		
-		// Player query will be performed automatically (after a channel query)
-		return;
-	}
-	
-	// If we are still connected, make an immediate request for the channel list
-	[self sendQueryMessage:[iTetQueryMessage queryMessageWithMessageType:playerListQueryMessage]];
-	playerQueryStatus = queryInProgress;
+	// Perform a player list query when the channel query is complete
+	playerQueryStatus = pendingQuery;
 	
 	// Listen for the query response
 	[self listenForResponse];

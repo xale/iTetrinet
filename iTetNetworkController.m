@@ -518,9 +518,8 @@ willDisconnectWithError:(NSError*)error
 										forKey:iTetMessagePlayerTeamNameKey];
 			[self sendMessage:replyMessage];
 			
-			// Refresh channel list and local player's current channel
+			// Refresh channel list
 			[channelsController refreshChannelList:self];
-			[channelsController refreshLocalPlayerChannel:self];
 			
 			break;
 		}
