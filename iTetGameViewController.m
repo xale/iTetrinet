@@ -23,6 +23,7 @@
 #import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
+#import "iTetFrequencyBlockGenerator.h"
 
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
@@ -188,6 +189,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	[currentKeyConfiguration release];
 	[currentGameRules release];
+	[blockGenerator release];
 	
 	[blockTimer invalidate];
 	
@@ -478,8 +480,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[self sendFieldstring];
 	}
 	
+	// Create a random block generator
+	blockGenerator = [[iTetFrequencyBlockGenerator alloc] initWithBlockFrequencies:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]];
+	
 	// Create the first block to add to the field
-	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]]];
+	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];
 	
 	// Move the block to the field
 	[self moveNextBlockToField];
@@ -579,6 +584,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Clear the game rules
 	[self setCurrentGameRules:nil];
+	[blockGenerator release];
+	blockGenerator = nil;
 }
 
 #pragma mark -
@@ -771,7 +778,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[LOCALPLAYER setCurrentBlock:block];
 	
 	// Generate a new next block
-	[LOCALPLAYER setNextBlock:[iTetBlock randomBlockUsingBlockFrequencies:[currentGameRules objectForKey:iTetGameRulesBlockFrequenciesKey]]];
+	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];
 	
 	// Set the fall timer
 	blockTimer = [self fallTimer];

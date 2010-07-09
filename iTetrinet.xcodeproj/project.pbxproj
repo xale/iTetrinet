@@ -47,6 +47,8 @@
 		6A7DC210115047080068584D /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DC20F115047080068584D /* iTetWindowController.m */; };
 		6A7E20A41184036100FBFC8A /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A21184036100FBFC8A /* gtetblocks.png */; };
 		6A7E20A51184036100FBFC8A /* GTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A31184036100FBFC8A /* GTetrinetTheme.cfg */; };
+		6A851CF511E7D0A900A384C2 /* iTetRandomBlockGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A851CF411E7D0A900A384C2 /* iTetRandomBlockGenerator.m */; };
+		6A851CF811E7D16100A384C2 /* iTetFrequencyBlockGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A851CF711E7D16100A384C2 /* iTetFrequencyBlockGenerator.m */; };
 		6A8E0CB7117641F700A0F909 /* Current Channel Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */; };
 		6A8E0CC5117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8E0CC4117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m */; };
 		6A8EEEE1115439020050339E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 6A8EEEDF115439020050339E /* Credits.rtf */; };
@@ -170,6 +172,10 @@
 		6A7DC20F115047080068584D /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
 		6A7E20A21184036100FBFC8A /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
 		6A7E20A31184036100FBFC8A /* GTetrinetTheme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GTetrinetTheme.cfg; sourceTree = "<group>"; };
+		6A851CF311E7D0A900A384C2 /* iTetRandomBlockGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetRandomBlockGenerator.h; sourceTree = "<group>"; };
+		6A851CF411E7D0A900A384C2 /* iTetRandomBlockGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetRandomBlockGenerator.m; sourceTree = "<group>"; };
+		6A851CF611E7D16100A384C2 /* iTetFrequencyBlockGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetFrequencyBlockGenerator.h; sourceTree = "<group>"; };
+		6A851CF711E7D16100A384C2 /* iTetFrequencyBlockGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetFrequencyBlockGenerator.m; sourceTree = "<group>"; };
 		6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Current Channel Icon.png"; sourceTree = "<group>"; };
 		6A8E0CC3117642AD00A0F909 /* iTetCurrentChannelImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetCurrentChannelImageTransformer.h; sourceTree = "<group>"; };
 		6A8E0CC4117642AD00A0F909 /* iTetCurrentChannelImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetCurrentChannelImageTransformer.m; sourceTree = "<group>"; };
@@ -454,6 +460,17 @@
 			name = "Array Controllers";
 			sourceTree = "<group>";
 		};
+		6A851CF211E7D09800A384C2 /* Block Generators */ = {
+			isa = PBXGroup;
+			children = (
+				6A851CF311E7D0A900A384C2 /* iTetRandomBlockGenerator.h */,
+				6A851CF411E7D0A900A384C2 /* iTetRandomBlockGenerator.m */,
+				6A851CF611E7D16100A384C2 /* iTetFrequencyBlockGenerator.h */,
+				6A851CF711E7D16100A384C2 /* iTetFrequencyBlockGenerator.m */,
+			);
+			name = "Block Generators";
+			sourceTree = "<group>";
+		};
 		6A8B72FB107F9C5A00F82C44 /* Local Player's Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -505,6 +522,7 @@
 		6A96B57910098EAC003D353E /* Game Objects */ = {
 			isa = PBXGroup;
 			children = (
+				6A851CF211E7D09800A384C2 /* Block Generators */,
 				6A739806106AB12600F51BF5 /* iTetGameRules.h */,
 				6A739807106AB12600F51BF5 /* iTetGameRules.m */,
 				6A96B55A10098E88003D353E /* iTetField.h */,
@@ -867,6 +885,8 @@
 				6AFD63E911D695D900202465 /* NSDictionary+AdditionalTypes.m in Sources */,
 				6AAD72D311D6F9C1009052CC /* iTetQueryMessage.m in Sources */,
 				6ACF192911DBA0B400AF4961 /* NSString+QuotedComponents.m in Sources */,
+				6A851CF511E7D0A900A384C2 /* iTetRandomBlockGenerator.m in Sources */,
+				6A851CF811E7D16100A384C2 /* iTetFrequencyBlockGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

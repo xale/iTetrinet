@@ -22,6 +22,7 @@
 @class IPSScalableLevelIndicator;
 @class iTetPlayer;
 @class iTetServerInfo;
+@class iTetRandomBlockGenerator;
 @class iTetKeyConfiguration;
 
 typedef enum
@@ -66,6 +67,9 @@ typedef enum
 	
 	// Rules for game in progress
 	NSDictionary* currentGameRules;
+	
+	// Random block generator
+	iTetRandomBlockGenerator* blockGenerator;
 	
 	// Timer for local player's falling block
 	NSTimer* blockTimer;
