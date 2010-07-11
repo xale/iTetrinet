@@ -39,7 +39,7 @@
 	NSUInteger blockOrientation = ((sequenceValue * ITET_GENERATOR_ORIENTATIONS) / ITET_GENERATOR_MODULUS);
 	
 	// Create and return a new block using these values
-	return [iTetBlock blockWithType:(iTetBlockType)([[blockFrequencies objectAtIndex:blockTypeIndex] intValue] - 1)
+	return [iTetBlock blockWithType:(iTetBlockType)[[blockFrequencies objectAtIndex:blockTypeIndex] intValue]
 						orientation:blockOrientation];
 }
 

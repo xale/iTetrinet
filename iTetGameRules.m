@@ -9,6 +9,7 @@
 //
 
 #import "iTetGameRules.h"
+#import "iTetBlock.h"
 #import "iTetSpecials.h"
 #import "NSDictionary+AdditionalTypes.h"
 
@@ -96,7 +97,8 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	NSRange currentChar = NSMakeRange(0, 1);
 	for (; currentChar.location < 100; currentChar.location++)
 	{
-		[temp addObject:[formatter numberFromString:[freq substringWithRange:currentChar]]];
+		iTetBlockType blockType = (iTetBlockType)([[freq substringWithRange:currentChar] intValue] - 1);
+		[temp addObject:[NSNumber numberWithInt:blockType]];
 	}
 	[rulesDict setObject:[NSArray arrayWithArray:temp]
 				  forKey:iTetGameRulesBlockFrequenciesKey];
@@ -138,17 +140,15 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 			}
 			else
 			{
+				// If we can't read the seed sent by the server, print a warning and use a random seed
 				NSLog(@"warning: could not parse block-generator seed supplied by server: %@", [rulesArray objectAtIndex:11]);
-				
-				// Use a random seed
 				seed = random();
 			}
 		}
 		else
 		{
+			// If the server did not supply us with a seed, print a warning and use a random seed
 			NSLog(@"warning: no block-generator seed supplied by server with newgame message");
-			
-			// Use a random seed
 			seed = random();
 		}
 		
