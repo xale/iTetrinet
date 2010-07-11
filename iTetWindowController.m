@@ -9,8 +9,10 @@
 //
 
 #import "iTetWindowController.h"
+
 #import "iTetNetworkController.h"
 #import "iTetPlayersController.h"
+#import "iTetGameViewController.h"
 
 #import "iTetLocalPlayer.h"
 
@@ -25,6 +27,13 @@
 #import "iTetWinlistEntryTypeImageTransformer.h"
 
 #import "iTetCommonLocalizations.h"
+
+@interface iTetWindowController (Private)
+
+- (void)checkPreferencesBeforeClosing;
+
+@end
+
 
 @implementation iTetWindowController
 
@@ -118,6 +127,30 @@
 		return NSTerminateLater;
 	}
 	
+	// Check if there is an offline game in progress
+	if ([gameController gameplayState] != gameNotPlaying)
+	{
+		// Make note if the game was paused, pause if not
+		BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);
+		if (!gameWasPaused)
+			[gameController pauseGame];
+		
+		// Create an alert
+		NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+		[alert setMessageText:iTetGameInProgressAlertTitle];
+		[alert setMessageText:iTetQuitWithGameInProgressAlertInformativeText];
+		[alert addButtonWithTitle:iTetQuitWithGameInProgressConfirmButtonTitle];
+		[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
+		
+		// Run the alert as a modal sheet
+		[alert beginSheetModalForWindow:window
+						  modalDelegate:self
+						 didEndSelector:@selector(offlineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
+							contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
+		
+		return NSTerminateLater;
+	}
+	
 	// If the preferences window is open, check for unsaved state before terminating
 	if ([[prefsWindowController window] isVisible])
 	{
@@ -138,35 +171,69 @@
 	// Check if the user chose to close the application
 	if (returnCode == NSAlertFirstButtonReturn)
 	{
-		// If the user pressed "quit", first check for unsaved state on the preferences window
-		if ([[prefsWindowController window] isVisible])
-		{
-			NSApplicationTerminateReply quitReply = [prefsWindowController applicationShouldTerminate:NSApp];
-			
-			switch (quitReply)
-			{
-				case NSTerminateNow:
-					// If there is no unsaved state, or unsaved state the user chooses to discard, terminate immediately
-					[NSApp replyToApplicationShouldTerminate:YES];
-					break;
-				case NSTerminateCancel:
-					// If there is unsaved state, and the user wishes to cancel the quit operation, tell the app not to quit
-					[NSApp replyToApplicationShouldTerminate:NO];
-				default:
-					// Otherwise, defer the termination decision to the preferences window
-					break;
-			}
-		}
-		else
-		{
-			// Otherwise, terminate immediately
-			[NSApp replyToApplicationShouldTerminate:YES];
-		}
+		// If the user pressed "quit", check for unsaved state on the preferences window, or close immediately
+		[self checkPreferencesBeforeClosing];
 	}
 	else
 	{
 		// If the user pressed 'cancel', tell the app to abort quitting
 		[NSApp replyToApplicationShouldTerminate:NO];
+	}
+}
+
+- (void)offlineGameInProgressAlertDidEnd:(NSAlert*)alert
+							  returnCode:(NSInteger)returnCode
+						   gameWasPaused:(NSNumber*)pausedValue
+{
+	BOOL gameWasPaused = [pausedValue boolValue];
+	[pausedValue release];
+	
+	// Ensure the sheet has closed
+	[[alert window] orderOut:self];
+	
+	// Check if the user chose to close the application
+	if (returnCode == NSAlertFirstButtonReturn)
+	{
+		// If the user pressed "quit", check for unsaved state on the preferences window, or close immediately
+		[self checkPreferencesBeforeClosing];
+	}
+	else
+	{
+		// If the user pressed 'cancel', tell the app to abort quitting
+		[NSApp replyToApplicationShouldTerminate:NO];
+		
+		// If the game in progress was not paused when this alert opened, resume it
+		if (!gameWasPaused)
+			[gameController resumeGame];
+	}
+}
+
+- (void)checkPreferencesBeforeClosing
+{
+	// Check if the preferences window is visible
+	if ([[prefsWindowController window] isVisible])
+	{
+		// Ask the controller if the application should quit (i.e., whether or not the controller has dirty state)
+		NSApplicationTerminateReply quitReply = [prefsWindowController applicationShouldTerminate:NSApp];
+		switch (quitReply)
+		{
+			case NSTerminateNow:
+				// If there is no unsaved state, or unsaved state the user chooses to discard, terminate immediately
+				[NSApp replyToApplicationShouldTerminate:YES];
+				break;
+			case NSTerminateCancel:
+				// If there is unsaved state, and the user wishes to cancel the quit operation, tell the app not to quit
+				[NSApp replyToApplicationShouldTerminate:NO];
+			default:
+				// If there is unsaved the user wishes to save before quitting, defer the termination decision to the preferences view controllers
+				// (Does nothing; -replyToApplicationShouldTerminate: will be invoked by one of the preferences view controllers)
+				break;
+		}
+	}
+	else
+	{
+		// If the preferences window isn't open, terminate immediately
+		[NSApp replyToApplicationShouldTerminate:YES];
 	}
 }
 

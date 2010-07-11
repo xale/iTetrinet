@@ -485,7 +485,7 @@
 							<object class="NSButtonCell" id="751145219">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">0</int>
-								<string key="NSContents">TetriFast</string>
+								<string key="NSContents">Tetrifast</string>
 								<reference key="NSSupport" ref="213446063"/>
 								<reference key="NSControlView" ref="185936164"/>
 								<int key="NSTag">2</int>

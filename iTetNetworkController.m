@@ -145,10 +145,13 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// If we are not connected, open the server list for a new connection
 		case disconnected:
 		{
+			// Check if the user is playing an offline game
 			if ([gameController gameplayState] != gameNotPlaying)
 			{
-				// Pause the game (if not already)
-				[gameController pauseGame];
+				// Make note if the game was paused, pause if not
+				BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);
+				if (!gameWasPaused)
+					[gameController pauseGame];
 				
 				// If the user is playing an offline game, create an alert asking to end the game before connecting
 				NSAlert* alert = [[[NSAlert alloc] init] autorelease];
@@ -160,8 +163,8 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 				// Run the alert as sheet
 				[alert beginSheetModalForWindow:[windowController window]
 								  modalDelegate:self
-								 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:contextInfo:)
-									contextInfo:NULL];
+								 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
+									contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
 			}
 			else
 			{
@@ -199,16 +202,20 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 - (void)connectWithOfflineGameInProgressAlertDidEnd:(NSAlert*)alert
 										 returnCode:(NSInteger)returnCode
-										contextInfo:(void*)contextInfo
+									  gameWasPaused:(NSNumber*)pauseState
 {
+	BOOL gameWasPaused = [pauseState boolValue];
+	[pauseState release];
+	
 	// Order out the sheet
 	[[alert window] orderOut:self];
 	
 	// If the user pressed "continue playing", resume the game
 	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		// Resume the game
-		[gameController resumeGame];
+		// If the game was not paused beforehand, resume the game
+		if (!gameWasPaused)
+			[gameController resumeGame];
 		
 		return;
 	}

@@ -12,6 +12,7 @@
 
 @class iTetNetworkController;
 @class iTetPlayersController;
+@class iTetGameViewController;
 @class iTetPreferencesWindowController;
 
 extern NSString* const iTetWindowControllerSelectedTabViewItemDidChangeNotification;
@@ -30,6 +31,7 @@ extern NSString* const iTetWinlistViewTabIdentifier;
 	// Top-level controllers
 	IBOutlet iTetNetworkController* networkController;
 	IBOutlet iTetPlayersController* playersController;
+	IBOutlet iTetGameViewController* gameController;
 	
 	// Preferences window
 	iTetPreferencesWindowController* prefsWindowController;
