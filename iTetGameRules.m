@@ -14,6 +14,7 @@
 
 NSString* const iTetGameRulesOfflineGameKey =			@"iTetOfflineGame";
 NSString* const iTetGameRulesGameTypeKey =				@"iTetGameType";
+NSString* const iTetGameRulesGameVersionKey =			@"iTetGameVersion";
 NSString* const iTetGameRulesInitialStackHeightKey =	@"iTetInitialStackHeight";
 NSString* const iTetGameRulesStartingLevelKey =			@"iTetStartingLevel";
 NSString* const iTetGameRulesLinesPerLevelKey =			@"iTetLinesPerLevel";
@@ -26,6 +27,7 @@ NSString* const iTetGameRulesBlockFrequenciesKey =		@"iTetBlockFrequencies";
 NSString* const iTetGameRulesSpecialFrequenciesKey =	@"iTetSpecialFrequencies";
 NSString* const iTetGameRulesShowAverageLevelKey =		@"iTetShowAverageLevel";
 NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
+NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 
 @implementation iTetGameRules
 
@@ -38,6 +40,7 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 
 + (NSMutableDictionary*)gameRulesFromArray:(NSArray*)rulesArray
 							  withGameType:(iTetProtocolType)protocol
+							   gameVersion:(iTetGameVersion)version
 {
 	// Create a dictionary to hold the rules
 	NSMutableDictionary* rulesDict = [NSMutableDictionary dictionaryWithCapacity:ITET_NUM_GAME_RULES_KEYS];
@@ -47,34 +50,36 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 				forKey:iTetGameRulesOfflineGameKey];
 	[rulesDict setInt:protocol
 			   forKey:iTetGameRulesGameTypeKey];
+	[rulesDict setInt:version
+			   forKey:iTetGameRulesGameVersionKey];
 	
 	// Create a decimal-number formatter
-	NSNumberFormatter* decFormat = [[NSNumberFormatter alloc] init];
-	[decFormat setNumberStyle:NSNumberFormatterDecimalStyle];
+	NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
+	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	
 	// The game-rules array contains strings, which need to be parsed into the respective rules:
 	// Number of lines of "garbage" on the board when the game begins
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:0]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:0]]
 				  forKey:iTetGameRulesInitialStackHeightKey];
 	
 	// Starting level
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:1]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:1]]
 				  forKey:iTetGameRulesStartingLevelKey];
 	
 	// Number of line completions needed to trigger a level increase
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:2]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:2]]
 				  forKey:iTetGameRulesLinesPerLevelKey];
 	
 	// Number of levels per level increase
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:3]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:3]]
 				  forKey:iTetGameRulesLevelIncreaseKey];
 	
 	// Number of line completions needed to trigger the spawn of specials
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:4]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:4]]
 				  forKey:iTetGameRulesLinesPerSpecialKey];
 	
 	// Number of specials added per spawn
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:5]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:5]]
 				  forKey:iTetGameRulesSpecialsAddedKey];
 	
 	// Check whether specials are enabled
@@ -82,7 +87,7 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 				forKey:iTetGameRulesSpecialsEnabledKey];
 	
 	// Number of specials each player can hold in their "inventory"
-	[rulesDict setObject:[decFormat numberFromString:[rulesArray objectAtIndex:6]]
+	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:6]]
 				  forKey:iTetGameRulesSpecialCapacityKey];
 	
 	// Block-type frequencies
@@ -91,7 +96,7 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 	NSRange currentChar = NSMakeRange(0, 1);
 	for (; currentChar.location < 100; currentChar.location++)
 	{
-		[temp addObject:[decFormat numberFromString:[freq substringWithRange:currentChar]]];
+		[temp addObject:[formatter numberFromString:[freq substringWithRange:currentChar]]];
 	}
 	[rulesDict setObject:[NSArray arrayWithArray:temp]
 				  forKey:iTetGameRulesBlockFrequenciesKey];
@@ -114,8 +119,45 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 	[rulesDict setBool:[[rulesArray objectAtIndex:10] boolValue]
 				forKey:iTetGameRulesClassicRulesKey];
 	
+	// Block-generator seed (if applicable)
+	if (version == version114)
+	{
+		NSUInteger seed;
+		
+		// Check that the server has supplied us with a seed
+		if ([rulesArray count] >= 12)
+		{
+			// Attempt to parse the hexadecimal seed
+			unsigned long long temp;
+			BOOL success = [[NSScanner scannerWithString:[rulesArray objectAtIndex:11]] scanHexLongLong:&temp];
+			
+			// Check that the seed parsed properly
+			if (success)
+			{
+				seed = temp;
+			}
+			else
+			{
+				NSLog(@"warning: could not parse block-generator seed supplied by server: %@", [rulesArray objectAtIndex:11]);
+				
+				// Use a random seed
+				seed = random();
+			}
+		}
+		else
+		{
+			NSLog(@"warning: no block-generator seed supplied by server with newgame message");
+			
+			// Use a random seed
+			seed = random();
+		}
+		
+		[rulesDict setUnsignedInteger:seed
+							   forKey:iTetGameRulesBlockGeneratorSeedKey];
+	}
+	
 	// Release the number formatter
-	[decFormat release];
+	[formatter release];
 	
 	// Return the dictionary of rules
 	return rulesDict;
@@ -160,7 +202,7 @@ NSString* const iTetGameRulesClassicRulesKey =			@"iTetClassicRules";
 	[rulesDict setBool:NO
 				forKey:iTetGameRulesShowAverageLevelKey];
 	
-	// Disable classic rules (again, this is irrelevant)
+	// Disable classic rules (again, this is more-or-less irrelevant)
 	[rulesDict setBool:NO
 				forKey:iTetGameRulesClassicRulesKey];
 	

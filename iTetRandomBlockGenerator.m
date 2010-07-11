@@ -20,10 +20,26 @@
 	return nil;
 }
 
+- (id)initWithBlockFrequencies:(NSArray*)frequencies
+{
+	blockFrequencies = [frequencies copy];
+	
+	return self;
+}
+
+- (void)dealloc
+{
+	[blockFrequencies release];
+	
+	[super dealloc];
+}
+
+#pragma mark -
+#pragma mark Accessors
+
 - (iTetBlock*)generateNextBlock
 {
-	[self doesNotRecognizeSelector:_cmd];
-	return nil;
+	return [iTetBlock randomBlockUsingBlockFrequencies:blockFrequencies];
 }
 
 @end

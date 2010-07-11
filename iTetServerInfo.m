@@ -12,6 +12,12 @@
 #import "iTetNetworkController.h"
 #import "iTetUserDefaults.h"
 
+NSString* const iTetTetrinetProtocolName =	@"TetriNET";
+NSString* const iTetTetrifastProtocolName =	@"Tetrifast";
+
+NSString* const iTet113GameVersionName =	@"1.13";
+NSString* const iTet114GameVersionName =	@"1.14";
+
 @interface iTetServerInfo (Private)
 
 - (NSString*)sanitizedName:(NSString*)inputString;
@@ -32,12 +38,14 @@
 									   address:iTetExampleServerAddress
 								playerNickname:NSUserName()
 								playerTeamName:iTetExampleTeamName
-									  protocol:tetrinetProtocol],
+									  protocol:tetrinetProtocol
+								   gameVersion:version113],
 			[iTetServerInfo serverInfoWithName:iTetExampleTetrifastServerName
 									   address:iTetExampleServerAddress
 								playerNickname:NSUserName()
 								playerTeamName:iTetExampleTeamName
-									  protocol:tetrifastProtocol],
+									  protocol:tetrifastProtocol
+								   gameVersion:version113],
 			nil];
 }
 
@@ -46,12 +54,14 @@
 		  playerNickname:(NSString*)nick
 		  playerTeamName:(NSString*)team
 				protocol:(iTetProtocolType)p
+			 gameVersion:(iTetGameVersion)version
 {
 	return [[[self alloc] initWithName:name
 							   address:addr
 						playerNickname:nick
 						playerTeamName:team
-							  protocol:p] autorelease];
+							  protocol:p
+						   gameVersion:version] autorelease];
 }
 
 - (id)initWithName:(NSString*)name
@@ -59,12 +69,14 @@
 	playerNickname:(NSString*)nick
 	playerTeamName:(NSString*)team
 		  protocol:(iTetProtocolType)p
+	   gameVersion:(iTetGameVersion)version
 {
 	serverName = [name copy];
 	serverAddress = [addr copy];
 	playerNickname = [nick copy];
 	playerTeamName = [team copy];
 	protocol = p;
+	gameVersion = version;
 	
 	return self;
 }
@@ -77,7 +89,8 @@
 					  address:iTetExampleServerAddress
 			   playerNickname:NSUserName()
 			   playerTeamName:iTetExampleTeamName
-					 protocol:tetrinetProtocol];
+					 protocol:tetrinetProtocol
+				  gameVersion:version113];
 }
 
 - (void)dealloc
@@ -93,33 +106,37 @@
 #pragma mark -
 #pragma mark NSCoding Protocol
 
-NSString* const iTetServerInfoNameArchiverKey =				@"serverName";
-NSString* const iTetServerInfoAddressArchiverKey =			@"serverAddress";
-NSString* const iTetServerInfoPlayerNicknameArchiverKey =	@"playerNickname";
-NSString* const iTetServerInfoPlayerTeamNameArchiverKey =	@"playerTeamName";
-NSString* const iTetServerInfoProtocolArchiverKey =			@"protocol";
+NSString* const iTetServerInfoNameCoderKey =			@"serverName";
+NSString* const iTetServerInfoAddressCoderKey =			@"serverAddress";
+NSString* const iTetServerInfoPlayerNicknameCoderKey =	@"playerNickname";
+NSString* const iTetServerInfoPlayerTeamNameCoderKey =	@"playerTeamName";
+NSString* const iTetServerInfoProtocolCoderKey =		@"protocol";
+NSString* const iTetServerInfoGameVersionCoderKey =		@"gameVersion";
 
 - (void)encodeWithCoder:(NSCoder*)encoder
 {
 	[encoder encodeObject:[self serverName]
-				   forKey:iTetServerInfoNameArchiverKey];
+				   forKey:iTetServerInfoNameCoderKey];
 	[encoder encodeObject:[self serverAddress]
-				   forKey:iTetServerInfoAddressArchiverKey];
+				   forKey:iTetServerInfoAddressCoderKey];
 	[encoder encodeObject:[self playerNickname]
-				   forKey:iTetServerInfoPlayerNicknameArchiverKey];
+				   forKey:iTetServerInfoPlayerNicknameCoderKey];
 	[encoder encodeObject:[self playerTeamName]
-				   forKey:iTetServerInfoPlayerTeamNameArchiverKey];
+				   forKey:iTetServerInfoPlayerTeamNameCoderKey];
 	[encoder encodeInt:[self protocol]
-				forKey:iTetServerInfoProtocolArchiverKey];
+				forKey:iTetServerInfoProtocolCoderKey];
+	[encoder encodeInt:[self gameVersion]
+				forKey:iTetServerInfoGameVersionCoderKey];
 }
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-	serverName = [[decoder decodeObjectForKey:iTetServerInfoNameArchiverKey] retain];
-	serverAddress = [[decoder decodeObjectForKey:iTetServerInfoAddressArchiverKey] retain];
-	playerNickname = [[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameArchiverKey] retain];
-	playerTeamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameArchiverKey] retain];
-	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolArchiverKey];
+	serverName = [[decoder decodeObjectForKey:iTetServerInfoNameCoderKey] retain];
+	serverAddress = [[decoder decodeObjectForKey:iTetServerInfoAddressCoderKey] retain];
+	playerNickname = [[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameCoderKey] retain];
+	playerTeamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameCoderKey] retain];
+	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolCoderKey];
+	gameVersion = [decoder decodeIntForKey:iTetServerInfoGameVersionCoderKey];
 	
 	return self;
 }
@@ -249,7 +266,8 @@ bail:
 				([serverAddress localizedCompare:[otherServer serverAddress]] == NSOrderedSame) &&
 				([playerNickname localizedCompare:[otherServer playerNickname]] == NSOrderedSame) &&
 				([playerTeamName localizedCompare:[otherServer playerTeamName]] == NSOrderedSame) &&
-				(protocol == [otherServer protocol]));
+				(protocol == [otherServer protocol]) &&
+				(gameVersion == [otherServer gameVersion]));
 	}
 	
 	return NO;
@@ -263,6 +281,7 @@ bail:
 @synthesize playerNickname;
 @synthesize playerTeamName;
 @synthesize protocol;
+@synthesize gameVersion;
 
 - (NSString*)description
 {

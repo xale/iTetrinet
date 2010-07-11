@@ -16,6 +16,18 @@ typedef enum
 	tetrifastProtocol = 2
 } iTetProtocolType;
 
+extern NSString* const iTetTetrinetProtocolName;
+extern NSString* const iTetTetrifastProtocolName;
+
+typedef enum
+{
+	version113 = 1,
+	version114 = 2
+} iTetGameVersion;
+
+extern NSString* const iTet113GameVersionName;
+extern NSString* const iTet114GameVersionName;
+
 @interface iTetServerInfo : NSObject <NSCoding>
 {
 	NSString* serverName;
@@ -23,6 +35,7 @@ typedef enum
 	NSString* playerNickname;
 	NSString* playerTeamName;
 	iTetProtocolType protocol;
+	iTetGameVersion gameVersion;
 }
 
 + (NSArray*)defaultServers;
@@ -30,17 +43,20 @@ typedef enum
 				 address:(NSString*)addr
 		  playerNickname:(NSString*)nick
 		  playerTeamName:(NSString*)team
-				protocol:(iTetProtocolType)p;
+				protocol:(iTetProtocolType)p
+			 gameVersion:(iTetGameVersion)version;
 - (id)initWithName:(NSString*)name
 		   address:(NSString*)addr
 	playerNickname:(NSString*)nick
 	playerTeamName:(NSString*)team
-		  protocol:(iTetProtocolType)p;
+		  protocol:(iTetProtocolType)p
+	   gameVersion:(iTetGameVersion)version;
 
 @property (readwrite, copy) NSString* serverName;
 @property (readwrite, copy) NSString* serverAddress;
 @property (readwrite, copy) NSString* playerNickname;
 @property (readwrite, copy) NSString* playerTeamName;
 @property (readwrite, assign) iTetProtocolType protocol;
+@property (readwrite, assign) iTetGameVersion gameVersion;
 
 @end

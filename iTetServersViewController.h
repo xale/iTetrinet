@@ -20,5 +20,6 @@
 - (IBAction)createServer:(id)sender;
 
 @property (readonly) NSArray* valuesForProtocolPopUpCell;
+@property (readonly) NSArray* valuesForGameVersionPopUpCell;
 
 @end

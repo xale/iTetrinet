@@ -155,12 +155,12 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 - (id)initWithType:(iTetBlockType)blockType
 	   orientation:(NSInteger)blockOrientation
 	   rowPosition:(NSInteger)row
-    columnPosition:(NSInteger)column
+	columnPosition:(NSInteger)col
 {
 	type = blockType;
-	orientation = blockOrientation;
+	orientation = (blockOrientation % orientationCount[type]);
 	rowPos = row;
-	colPos = column;
+	colPos = col;
 	
 	return self;
 }
@@ -168,19 +168,17 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 + (id)blockWithType:(iTetBlockType)blockType
 		orientation:(NSInteger)blockOrientation
 {
-	return [self blockWithType:blockType
-				   orientation:blockOrientation
-				   rowPosition:0
-				columnPosition:0];
+	return [[[self alloc] initWithType:blockType
+						   orientation:blockOrientation] autorelease];
 }
 
 - (id)initWithType:(iTetBlockType)blockType
 	   orientation:(NSInteger)blockOrientation
-{	
-	return [self initWithType:blockType
-				  orientation:blockOrientation
-				  rowPosition:0
-			   columnPosition:0];
+{
+	type = blockType;
+	orientation = (blockOrientation % orientationCount[type]);
+	
+	return self;
 }
 
 - (id)copyWithZone:(NSZone*)zone
@@ -224,7 +222,10 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 											orientation:[self orientation]
 											rowPosition:[self rowPos]
 										 columnPosition:newColPos]])
-		return; // Block obstructed
+	{
+		// Block obstructed
+		return;
+	}
 	
 	// Otherwise, move the block to the new position
 	[self setColPos:newColPos];

@@ -19,6 +19,7 @@
 
 #import "iTetCurrentChannelImageTransformer.h"
 #import "iTetGameStateImageTransformer.h"
+#import "iTetGameVersionTransformer.h"
 #import "iTetProtocolTransformer.h"
 #import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
@@ -39,6 +40,10 @@
 	transformer = [[[iTetGameStateImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetGameStateImageTransformerName];
+	// Game version enum to name
+	transformer = [[[iTetGameVersionTransformer alloc] init] autorelease];
+	[NSValueTransformer setValueTransformer:transformer
+									forName:iTetGameVersionTransformerName];
 	// Protocol enum to name
 	transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer

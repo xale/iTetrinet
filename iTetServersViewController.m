@@ -59,7 +59,12 @@
 
 - (NSArray*)valuesForProtocolPopUpCell
 {
-	return [NSArray arrayWithObjects:@"Tetrinet", @"Tetrifast", nil];
+	return [NSArray arrayWithObjects:iTetTetrinetProtocolName, iTetTetrifastProtocolName, nil];
+}
+
+- (NSArray*)valuesForGameVersionPopUpCell
+{
+	return [NSArray arrayWithObjects:iTet113GameVersionName, iTet114GameVersionName, nil];
 }
 
 @end

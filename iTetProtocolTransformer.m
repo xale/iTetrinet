@@ -25,8 +25,6 @@ NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 	return YES;
 }
 
-NSString* const iTetTetrinetProtocolName =	@"Tetrinet";
-NSString* const iTetTetrifastProtocolName =	@"Tetrifast";
 #define iTetUnknownProtocolName	NSLocalizedStringFromTable(@"Unknown Protocol", @"ServerInfo", @"Placeholder string for names of unfamiliar tetrinet protocols")
 
 - (id)transformedValue:(id)value

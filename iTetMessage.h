@@ -48,6 +48,7 @@ typedef enum
 } iTetMessageType;
 
 extern NSString* const iTetMessageServerAddressKey;
+extern NSString* const iTetMessageGameVersionKey;
 extern NSString* const iTetMessageNoConnectingReasonKey;
 extern NSString* const iTetMessageClientNameKey;
 extern NSString* const iTetMessageClientVersionKey;

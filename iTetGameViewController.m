@@ -23,7 +23,7 @@
 #import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
-#import "iTetFrequencyBlockGenerator.h"
+#import "iTetSequencedBlockGenerator.h"
 
 #import "iTetLocalFieldView.h"
 #import "iTetNextBlockView.h"
@@ -481,7 +481,15 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	
 	// Create a random block generator
-	blockGenerator = [[iTetFrequencyBlockGenerator alloc] initWithBlockFrequencies:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]];
+	if ([rules intForKey:iTetGameRulesGameVersionKey] == version114)
+	{
+		blockGenerator = [[iTetSequencedBlockGenerator alloc] initWithBlockFrequenices:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]
+																		  sequenceSeed:[rules integerForKey:iTetGameRulesBlockGeneratorSeedKey]];
+	}
+	else
+	{
+		blockGenerator = [[iTetRandomBlockGenerator alloc] initWithBlockFrequencies:[rules objectForKey:iTetGameRulesBlockFrequenciesKey]];
+	}
 	
 	// Create the first block to add to the field
 	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];

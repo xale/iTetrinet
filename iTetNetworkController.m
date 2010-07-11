@@ -338,6 +338,8 @@ didConnectToHost:(NSString*)hostname
 						   forKey:iTetMessagePlayerNicknameKey];
 	[[message contents] setObject:hostname
 						   forKey:iTetMessageServerAddressKey];
+	[[message contents] setInt:[currentServer gameVersion]
+						forKey:iTetMessageGameVersionKey];
 	
 	// Send the login message
 	[self sendMessage:message];
@@ -613,15 +615,12 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark New Game Message
 		case tetrinetNewGameMessage:
+		case tetrifastNewGameMessage:
 			// Tell the gameController to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
 										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
-																	withGameType:tetrinetProtocol]];
-			break;
-		case tetrifastNewGameMessage:
-			[gameController newGameWithPlayers:[playersController playerList]
-										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
-																	withGameType:tetrifastProtocol]];
+																	withGameType:[currentServer protocol]
+																	 gameVersion:[currentServer gameVersion]]];
 			break;
 			
 #pragma mark Server In-Game Message

@@ -13,6 +13,11 @@
 @class iTetBlock;
 
 @interface iTetRandomBlockGenerator : NSObject
+{
+	NSArray* blockFrequencies;
+}
+
+- (id)initWithBlockFrequencies:(NSArray*)frequencies;
 
 - (iTetBlock*)generateNextBlock;
 

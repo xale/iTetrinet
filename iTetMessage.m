@@ -12,6 +12,7 @@
 
 #import "iTetPlayer.h"
 #import "iTetSpecials.h"
+#import "iTetServerInfo.h"
 
 #import "NSAttributedString+TetrinetTextAttributes.h"
 
@@ -58,6 +59,7 @@ NSString* const iTetPlayerWonMessageFormat =				@"playerwon %d";
 #pragma mark Message Contents Keys
 
 NSString* const iTetMessageServerAddressKey =			@"iTetServerAddress";
+NSString* const iTetMessageGameVersionKey =				@"iTetGameVersion";
 NSString* const iTetMessageNoConnectingReasonKey =		@"iTetNoConnectingReason";
 NSString* const iTetMessageClientNameKey =				@"iTetClientName";
 NSString* const iTetMessageClientVersionKey =			@"iTetClientVersion";
@@ -436,8 +438,8 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	NSParameterAssert((([self type] == tetrinetLoginMessage) || ([self type] == tetrifastLoginMessage)));
 	NSString* nickname = [[self contents] objectForKey:iTetMessagePlayerNicknameKey];
 	NSParameterAssert(nickname != nil);
-	NSString* version = @"1.13";
-	NSParameterAssert(version != nil);
+	NSNumber* version = [[self contents] objectForKey:iTetMessageGameVersionKey];
+	NSParameterAssert((version != nil) && (([version intValue] == version113) || ([version intValue] == version114)));
 	NSString* address = [[self contents] objectForKey:iTetMessageServerAddressKey];
 	NSParameterAssert(address != nil);
 	
@@ -447,7 +449,12 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 		format = iTetTetrinetLoginMessageFormat;
 	else
 		format = iTetTetrifastLoginMessageFormat;
-	NSData* messageData = [[NSString stringWithFormat:format, nickname, version] messageData];
+	NSString* versionString;
+	if ([version intValue] == version113)
+		versionString = iTet113GameVersionName;
+	else
+		versionString = iTet114GameVersionName;
+	NSData* messageData = [[NSString stringWithFormat:format, nickname, versionString] messageData];
 	
 	// Split the server's IP address into integer components
 	NSArray* ipComponents = [address componentsSeparatedByString:@"."];

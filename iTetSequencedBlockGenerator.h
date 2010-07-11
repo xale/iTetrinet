@@ -1,5 +1,5 @@
 //
-//  iTetFrequencyBlockGenerator.h
+//  iTetSequencedBlockGenerator.h
 //  iTetrinet
 //
 //  Created by Alex Heinz on 7/9/10.
@@ -11,11 +11,12 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetRandomBlockGenerator.h"
 
-@interface iTetFrequencyBlockGenerator : iTetRandomBlockGenerator
+@interface iTetSequencedBlockGenerator : iTetRandomBlockGenerator
 {
-	NSArray* blockFrequencies;
+	NSUInteger sequenceValue;
 }
 
-- (id)initWithBlockFrequencies:(NSArray*)frequencies;
+- (id)initWithBlockFrequenices:(NSArray*)frequencies
+				  sequenceSeed:(NSUInteger)seed;
 
 @end
