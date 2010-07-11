@@ -207,16 +207,11 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 				forKey:iTetGameRulesClassicRulesKey];
 	
 	// Even block distribution
-	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
-	for (NSInteger i = 0; i < 100; i++)
-	{
-		[temp addObject:[NSNumber numberWithInt:((random() % 7) + 1)]];
-	}
-	[rulesDict setObject:[NSArray arrayWithArray:temp]
+	[rulesDict setObject:[self defaultBlockFrequencies]
 				  forKey:iTetGameRulesBlockFrequenciesKey];
 	
 	// FIXME: disable bad specials, switchfield
-	[temp removeAllObjects];
+	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
 	for (NSInteger i = 0; i < 100; i++)
 	{
 		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:((random() % 9) + 1)]]];	
@@ -226,6 +221,31 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	
 	// Return the dictionary of rules
 	return rulesDict;
+}
+
++ (NSArray*)defaultBlockFrequencies
+{
+	// Create an empty array
+	NSMutableArray* frequencies = [NSMutableArray arrayWithCapacity:100];
+	iTetBlockType blockType;
+	NSInteger typeCount;
+	
+	for (blockType = 0; blockType < ITET_NUM_BLOCK_TYPES; blockType++)
+	{
+		// Add an equal fraction of each type of block
+		for (typeCount = 0; typeCount < (100 / ITET_NUM_BLOCK_TYPES); typeCount++)
+		{
+			[frequencies addObject:[NSNumber numberWithInt:blockType]];
+		}
+		
+		// Add an additional line and square block, to bring the total to 100
+		if ((blockType == I_block) || (blockType == O_block))
+		{
+			[frequencies addObject:[NSNumber numberWithInt:blockType]];
+		}
+	}
+	
+	return [NSArray arrayWithArray:frequencies];
 }
 
 @end
