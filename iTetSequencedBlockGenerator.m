@@ -16,7 +16,9 @@
 - (id)initWithBlockFrequenices:(NSArray*)frequencies
 				  sequenceSeed:(NSUInteger)seed
 {
-	blockFrequencies = [frequencies copy];
+	if (![super initWithBlockFrequencies:frequencies])
+		return nil;
+	
 	sequenceValue = seed;
 	
 	return self;
