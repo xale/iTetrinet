@@ -65,6 +65,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 #define KEY_LINE_COLOR				[NSColor grayColor]
 #define KEY_FILL_COLOR				[NSColor whiteColor]
 #define KEY_FONT_SIZE				(22.0)
+#define KEY_NAME_NUM_OFFSET			(3.0)
 #define KEY_NUM_LABEL_FONT_SIZE		(10.0)
 #define KEY_NAME_MARGIN_SIZE		(10)
 #define KEY_BORDER_WIDTH			(2)
@@ -134,11 +135,18 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 	NSPoint stringDrawPoint = NSMakePoint(((imageRect.size.width - stringSize.width)/2),
 										  ((imageRect.size.height - stringSize.height)/2));
 	
+	// If the key is on the numeric keypad, (and not an arrow key) shift the key name upward slightly, to leave room for a label underneath
+	BOOL drawNumLabel = ([key isNumpadKey] && ![key isArrowKey]);
+	if (drawNumLabel)
+	{
+		stringDrawPoint.y += KEY_NAME_NUM_OFFSET;
+	}
+	
 	// Draw the key name
 	[drawString drawAtPoint:stringDrawPoint];
 	
-	// If the key is on the numeric keypad, (and not an arrow key) add a label to indicate so
-	if ([key isNumpadKey] && ![key isArrowKey])
+	// If the key is on the numeric keypad, draw a label
+	if (drawNumLabel)
 	{
 		// Create an attributed string using the "num" label
 		drawFont = [NSFont fontWithName:iTetKeyFontName
@@ -155,7 +163,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 		
 		// Center the label beneath the key name
 		stringDrawPoint = NSMakePoint(((imageRect.size.width - stringSize.width)/2),
-									  ((imageRect.size.height / 5) - (stringSize.height / 2)));
+									  ((imageRect.size.height / 4) - (stringSize.height / 2)));
 		
 		// Draw the label
 		[drawString drawAtPoint:stringDrawPoint];
@@ -233,7 +241,7 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 }
 
 - (BOOL)resignFirstResponder
-{	
+{
 	// Ask superclass if it is okay to resign first responder
 	BOOL shouldResign = [super resignFirstResponder];
 	
