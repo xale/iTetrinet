@@ -451,7 +451,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)newGameWithPlayers:(NSArray*)players
 					 rules:(NSDictionary*)rules
 {
-	// Clear the list of actions from the last game
+	// Clear the chat view and list of actions from the last game
+	[self clearChat];
 	[self clearActions];
 	
 	// Create the game rules
