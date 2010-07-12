@@ -14,7 +14,8 @@
 
 - (NSString*)keyNameForEvent:(NSEvent*)event;
 - (NSString*)modifierNameForEvent:(NSEvent*)event;
-- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name;
+- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
+								onNumpad:(BOOL)isOnNumpad;
 
 @end
 
@@ -64,7 +65,8 @@
 	}
 	
 	// Set the minimum display width for drawing the key
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
+												 onNumpad:numpadKey];
 	
 	return self;
 	
@@ -77,7 +79,8 @@
 	keyCode = code;
 	keyName = [name copy];
 	numpadKey = isOnNumpad;
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
+												 onNumpad:numpadKey];
 	
 	return self;
 }
@@ -203,45 +206,53 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	return iTetUnknownModifierPlaceholderString;
 }
 
-#define iTetSpaceKeyMinDisplayWidth		150.0
-#define iTetShiftKeyMinDisplayWidth		120.0
-#define iTetReturnKeyMinDisplayWidth	110.0
-#define iTetCapsLockKeyMinDisplayWidth	110.0
-#define iTetModifierKeyMinDisplayWidth	100.0
-#define iTetTabKeyMinDisplayWidth		90.0
-#define iTetDeleteKeyMinDisplayWidth	90.0
+#define iTetSpaceKeyMinDisplayWidth			150.0
+#define iTetShiftKeyMinDisplayWidth			120.0
+#define iTetNumpadZeroKeyMinDisplayWidth	120.0
+#define iTetReturnKeyMinDisplayWidth		110.0
+#define iTetCapsLockKeyMinDisplayWidth		110.0
+#define iTetModifierKeyMinDisplayWidth		100.0
+#define iTetTabKeyMinDisplayWidth			90.0
+#define iTetDeleteKeyMinDisplayWidth		90.0
+
+NSString* const iTetZeroKeyName =			@"0";
 
 - (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
+								onNumpad:(BOOL)isOnNumPad
 {
 	if ([name isEqualToString:iTetSpacebarPlaceholderString])
 	{
 		return iTetSpaceKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetCapsLockKeyPlaceholderString])
+	else if ([name isEqualToString:iTetCapsLockKeyPlaceholderString])
 	{
 		return iTetCapsLockKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetShiftKeyPlaceholderString])
+	else if ([name isEqualToString:iTetShiftKeyPlaceholderString])
 	{
 		return iTetShiftKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetReturnKeyPlaceholderString])
+	else if ([name isEqualToString:iTetReturnKeyPlaceholderString])
 	{
 		return iTetReturnKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetTabKeyPlaceholderString])
+	else if ([name isEqualToString:iTetTabKeyPlaceholderString])
 	{
 		return iTetTabKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetDeleteKeyPlaceholderString])
+	else if ([name isEqualToString:iTetDeleteKeyPlaceholderString])
 	{
 		return iTetDeleteKeyMinDisplayWidth;
 	}
-	if ([name isEqualToString:iTetCommandKeyPlaceholderString] ||
-		[name isEqualToString:iTetAltOptionKeyPlaceholderString] ||
-		[name isEqualToString:iTetControlKeyPlaceholderString])
+	else if ([name isEqualToString:iTetCommandKeyPlaceholderString] ||
+			 [name isEqualToString:iTetAltOptionKeyPlaceholderString] ||
+			 [name isEqualToString:iTetControlKeyPlaceholderString])
 	{
 		return iTetModifierKeyMinDisplayWidth;
+	}
+	else if ([name isEqualToString:iTetZeroKeyName] && isOnNumPad)
+	{
+		return iTetNumpadZeroKeyMinDisplayWidth;
 	}
 	
 	return 0.0;
@@ -280,7 +291,8 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
 	numpadKey = [decoder decodeBoolForKey:iTetKeyNamePairNumpadKey];
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName];
+	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
+												 onNumpad:numpadKey];
 	
 	return self;
 }
