@@ -170,8 +170,16 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 	// "No Connecting" reason message
 	if (type == noConnectingMessage)
 	{
-		[contents setObject:[[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))] componentsJoinedByString:@" "]
-					 forKey:iTetMessageNoConnectingReasonKey];
+		if ([messageContents count] >= 3)
+		{
+			[contents setObject:[[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))] componentsJoinedByString:@" "]
+						 forKey:iTetMessageNoConnectingReasonKey];
+		}
+		else
+		{
+			[contents setObject:[NSString string]
+						 forKey:iTetMessageNoConnectingReasonKey];
+		}
 	}
 	
 	// Player number of sender or relevant player
@@ -218,8 +226,16 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 	// Winlist array (winlist messages)
 	if (type == winlistMessage)
 	{
-		[contents setObject:[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))]
-					 forKey:iTetMessageWinlistArrayKey];
+		if ([messageContents count] >= 3)
+		{
+			[contents setObject:[messageContents subarrayWithRange:NSMakeRange(1, ([messageContents count] - 1))]
+						 forKey:iTetMessageWinlistArrayKey];
+		}
+		else
+		{
+			[contents setObject:[NSString string]
+						 forKey:iTetMessageWinlistArrayKey];
+		}
 	}
 	
 	// Chat message contents (pline chat, pline action, and game chat messages)
@@ -252,8 +268,16 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 	// Fieldstring (fieldstring messages)
 	if (type == fieldstringMessage)
 	{
-		[contents setObject:[messageContents objectAtIndex:2]
-					 forKey:iTetMessageFieldstringKey];
+		if ([messageContents count] >= 3)
+		{
+			[contents setObject:[messageContents objectAtIndex:2]
+						 forKey:iTetMessageFieldstringKey];
+		}
+		else
+		{
+			[contents setObject:[NSString string]
+						 forKey:iTetMessageFieldstringKey];
+		}
 	}
 	
 	// Level number ("level update" messages)
