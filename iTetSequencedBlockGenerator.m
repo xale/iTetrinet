@@ -39,19 +39,11 @@
 	sequenceValue = ITET_GENERATOR_NEXT_SEQUENCE_VALUE(sequenceValue);
 	NSUInteger blockTypeIndex = ((((uint64_t)sequenceValue) * ITET_GENERATOR_TYPE_INDEXES) / ITET_GENERATOR_MODULUS);
 	
-	// FIXME: debug logging
-	NSLog(@"DEBUG: sequence value: 0x%08X", sequenceValue);
-	NSLog(@"           type index: %d", blockTypeIndex);
-	
 	// Generate another value, and use it to determine the block's orientation
 	sequenceValue = ITET_GENERATOR_NEXT_SEQUENCE_VALUE(sequenceValue);
 	NSUInteger blockOrientation = ((((uint64_t)sequenceValue) * ITET_GENERATOR_ORIENTATIONS) / ITET_GENERATOR_MODULUS);
 	
-	NSLog(@"       sequence value: 0x%08X", sequenceValue);
-	NSLog(@"          orientation: %d", blockOrientation);
-	NSLog(@"---------------------------------");
-	
-	// Create and return a new block using these values
+	// Create and return a new block using the block type at the generated index, and the generated orientation
 	return [iTetBlock blockWithType:(iTetBlockType)[[blockFrequencies objectAtIndex:blockTypeIndex] intValue]
 						orientation:blockOrientation];
 }

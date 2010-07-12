@@ -175,7 +175,7 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	// Tetrifast-style, normal random()-based block selection
 	[rulesDict setInt:tetrifastProtocol
 			   forKey:iTetGameRulesGameTypeKey];
-	[rulesDict setInt:version114					// FIXME: debug
+	[rulesDict setInt:version113
 			   forKey:iTetGameRulesGameVersionKey];
 	
 	// No garbage
@@ -220,10 +220,6 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	}
 	[rulesDict setObject:[NSArray arrayWithArray:temp]
 				  forKey:iTetGameRulesSpecialFrequenciesKey];
-	
-	// FIXME: debug
-	[rulesDict setInt:0x00000000
-			   forKey:iTetGameRulesBlockGeneratorSeedKey];
 	
 	// Return the dictionary of rules
 	return rulesDict;

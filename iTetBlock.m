@@ -62,16 +62,6 @@ static BLOCK bJ[4] = {
 
 static BLOCK bL[4] = {
 	{
-		{0,0,0,0},
-		{4,4,4,0},
-		{4,0,0,0},
-		{0,0,0,0}
-	}, {
-		{4,4,0,0},
-		{0,4,0,0},
-		{0,4,0,0},
-		{0,0,0,0}
-	}, {
 		{0,0,4,0},
 		{4,4,4,0},
 		{0,0,0,0},
@@ -80,6 +70,16 @@ static BLOCK bL[4] = {
 		{0,4,0,0},
 		{0,4,0,0},
 		{0,4,4,0},
+		{0,0,0,0}
+	}, {
+		{0,0,0,0},
+		{4,4,4,0},
+		{4,0,0,0},
+		{0,0,0,0}
+	}, {
+		{4,4,0,0},
+		{0,4,0,0},
+		{0,4,0,0},
 		{0,0,0,0}
 	}
 };
@@ -318,15 +318,15 @@ successfulShift:
 	// Determine whether the block needs an offset
 	switch (type)
 	{
-			// L- and S-blocks in orientation 1
-		case L_block:
+			// S-blocks in orientation 1
 		case S_block:
 			if (orientation == 1)
 				return 1;
 			break;
 			
-			// J- and T-blocks in orientation 3
+			// J-, L- and T-blocks in orientation 3
 		case J_block:
+		case L_block:
 		case T_block:
 			if (orientation == 3)
 				return 1;
@@ -344,15 +344,15 @@ successfulShift:
 	// Determine whether the block needs an offset
 	switch (type)
 	{
-			// I- and L-blocks in orientation 0
+			// I-blocks in orientation 0
 		case I_block:
-		case L_block:
 			if (orientation == 0)
 				return 1;
 			break;
 			
-			// J- and T-blocks in orientation 2
+			// J-, L- and T-blocks in orientation 2
 		case J_block:
+		case L_block:
 		case T_block:
 			if (orientation == 2)
 				return 1;

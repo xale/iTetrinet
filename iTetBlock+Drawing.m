@@ -68,10 +68,10 @@ static NSRect ITET_J_BLOCK_RECTS[4] = {
 };
 
 static NSRect ITET_L_BLOCK_RECTS[4] = {
-	{0, 1, 3, 2},	// Protrusion on bottom
-	{0, 1, 2, 3},	// Left
-	{0, 2, 3, 2},	// Top
-	{1, 1, 2, 3}	// Right
+	{0, 2, 3, 2},	// Protrusion on top
+	{1, 1, 2, 3},	// Right
+	{0, 1, 3, 2},	// Bottom
+	{0, 1, 2, 3}	// Left
 };
 
 static NSRect ITET_Z_BLOCK_RECTS[2] = {
