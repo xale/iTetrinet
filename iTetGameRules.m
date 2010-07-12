@@ -190,10 +190,10 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	[rulesDict setInteger:3
 				   forKey:iTetGameRulesLevelIncreaseKey];
 	
-	// Two lines per special, one added at a time, queue capacity of 20
+	// Five lines per special, one added at a time, queue capacity of 20
 	[rulesDict setBool:YES
 				forKey:iTetGameRulesSpecialsEnabledKey];
-	[rulesDict setInteger:2
+	[rulesDict setInteger:5
 				   forKey:iTetGameRulesLinesPerSpecialKey];
 	[rulesDict setInteger:1
 				   forKey:iTetGameRulesSpecialsAddedKey];
