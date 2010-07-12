@@ -15,22 +15,22 @@ typedef uint8_t BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
 
 static BLOCK bI[2] = {
 	{
-		{0,1,0,0},
-		{0,1,0,0},
-		{0,1,0,0},
-		{0,1,0,0}
-	}, {
 		{0,0,0,0},
 		{1,1,1,1},
 		{0,0,0,0},
 		{0,0,0,0}
+	}, {
+		{0,1,0,0},
+		{0,1,0,0},
+		{0,1,0,0},
+		{0,1,0,0}
 	}
 };
 
 static BLOCK bO[1] = {
 	{
-		{2,2,0,0},
-		{2,2,0,0},
+		{0,2,2,0},
+		{0,2,2,0},
 		{0,0,0,0},
 		{0,0,0,0}
 	}
@@ -38,11 +38,6 @@ static BLOCK bO[1] = {
 
 static BLOCK bJ[4] = {
 	{
-		{0,3,0,0},
-		{0,3,0,0},
-		{3,3,0,0},
-		{0,0,0,0}
-	}, {
 		{3,0,0,0},
 		{3,3,3,0},
 		{0,0,0,0},
@@ -57,11 +52,21 @@ static BLOCK bJ[4] = {
 		{3,3,3,0},
 		{0,0,3,0},
 		{0,0,0,0}
-	}
+	}, {
+		{0,3,0,0},
+		{0,3,0,0},
+		{3,3,0,0},
+		{0,0,0,0}
+	},
 };
 
 static BLOCK bL[4] = {
 	{
+		{0,0,0,0},
+		{4,4,4,0},
+		{4,0,0,0},
+		{0,0,0,0}
+	}, {
 		{4,4,0,0},
 		{0,4,0,0},
 		{0,4,0,0},
@@ -76,49 +81,39 @@ static BLOCK bL[4] = {
 		{0,4,0,0},
 		{0,4,4,0},
 		{0,0,0,0}
-	}, {
-		{0,0,0,0},
-		{4,4,4,0},
-		{4,0,0,0},
-		{0,0,0,0}
 	}
 };
 
 static BLOCK bZ[2] = {
 	{
-		{0,0,5,0},
-		{0,5,5,0},
-		{0,5,0,0},
-		{0,0,0,0}
-	}, {
 		{5,5,0,0},
 		{0,5,5,0},
 		{0,0,0,0},
+		{0,0,0,0}
+	}, {
+		{0,0,5,0},
+		{0,5,5,0},
+		{0,5,0,0},
 		{0,0,0,0}
 	}
 };
 
 static BLOCK bS[2] = {
 	{
-		{1,0,0,0},
-		{1,1,0,0},
-		{0,1,0,0},
-		{0,0,0,0}
-	}, {
 		{0,1,1,0},
 		{1,1,0,0},
 		{0,0,0,0},
+		{0,0,0,0}
+	}, {
+		{1,0,0,0},
+		{1,1,0,0},
+		{0,1,0,0},
 		{0,0,0,0}
 	}
 };
 
 static BLOCK bT[4] = {
 	{
-		{0,2,0,0},
-		{2,2,0,0},
-		{0,2,0,0},
-		{0,0,0,0}
-	}, {
 		{0,2,0,0},
 		{2,2,2,0},
 		{0,0,0,0},
@@ -131,6 +126,11 @@ static BLOCK bT[4] = {
 	}, {
 		{0,0,0,0},
 		{2,2,2,0},
+		{0,2,0,0},
+		{0,0,0,0}
+	}, {
+		{0,2,0,0},
+		{2,2,0,0},
 		{0,2,0,0},
 		{0,0,0,0}
 	}
@@ -315,15 +315,28 @@ successfulShift:
 
 - (NSInteger)initialColumnOffset
 {
-	// All block configurations with column offsets are orientation 0
-	if (orientation != 0)
-		return 0;
+	// Determine whether the block needs an offset
+	switch (type)
+	{
+			// L- and S-blocks in orientation 1
+		case L_block:
+		case S_block:
+			if (orientation == 1)
+				return 1;
+			break;
+			
+			// J- and T-blocks in orientation 3
+		case J_block:
+		case T_block:
+			if (orientation == 3)
+				return 1;
+			break;
+			
+		default:
+			break;
+	}
 	
-	// I- and Z-blocks don't need column offsets
-	if ((type == I_block) || (type == Z_block))
-		return 0;
-	
-	return 1;
+	return 0;
 }
 
 - (NSInteger)initialRowOffset
@@ -331,17 +344,17 @@ successfulShift:
 	// Determine whether the block needs an offset
 	switch (type)
 	{
-			// I-blocks in orientation 1
+			// I- and L-blocks in orientation 0
 		case I_block:
-			if (orientation == 1)
+		case L_block:
+			if (orientation == 0)
 				return 1;
 			break;
 			
-			// J-, L-, and T-blocks in orientation 3
+			// J- and T-blocks in orientation 2
 		case J_block:
-		case L_block:
 		case T_block:
-			if (orientation == 3)
+			if (orientation == 2)
 				return 1;
 			break;
 			

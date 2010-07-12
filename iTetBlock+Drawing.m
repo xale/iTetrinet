@@ -54,41 +54,41 @@
 }
 
 static NSRect ITET_I_BLOCK_RECTS[2] = {
-	{1, 0, 1, 4},
-	{0, 2, 4, 1}
+	{0, 2, 4, 1},	// Horizontal
+	{1, 0, 1, 4}	// Vertical
 };
 
-static NSRect ITET_O_BLOCK_RECT = {0, 2, 2, 2};
+static NSRect ITET_O_BLOCK_RECT = {1, 2, 2, 2};
 
 static NSRect ITET_J_BLOCK_RECTS[4] = {
-	{0, 1, 2, 3},
-	{0, 2, 3, 2},
-	{1, 1, 2, 3},
-	{0, 1, 3, 2}
+	{0, 2, 3, 2},	// Protrusion on top
+	{1, 1, 2, 3},	// Right
+	{0, 1, 3, 2},	// Bottom
+	{0, 1, 2, 3}	// Left
 };
 
 static NSRect ITET_L_BLOCK_RECTS[4] = {
-	{0, 1, 2, 3},
-	{0, 2, 3, 2},
-	{1, 1, 2, 3},
-	{0, 1, 3, 2}
+	{0, 1, 3, 2},	// Protrusion on bottom
+	{0, 1, 2, 3},	// Left
+	{0, 2, 3, 2},	// Top
+	{1, 1, 2, 3}	// Right
 };
 
 static NSRect ITET_Z_BLOCK_RECTS[2] = {
-	{1, 1, 2, 3},
-	{0, 2, 3, 2}
+	{0, 2, 3, 2},	// Horizontal
+	{1, 1, 2, 3}	// Vertical
 };
 
 static NSRect ITET_S_BLOCK_RECTS[2] = {
-	{0, 1, 2, 3},
-	{0, 2, 3, 2}
+	{0, 2, 3, 2},	// Horizontal
+	{0, 1, 2, 3}	// Vertical
 };
 
 static NSRect ITET_T_BLOCK_RECTS[4] = {
-	{0, 1, 2, 3},
-	{0, 2, 3, 2},
-	{1, 1, 2, 3},
-	{0, 1, 3, 2}
+	{0, 2, 3, 2},	// Protrusion on top
+	{1, 1, 2, 3},	// Right
+	{0, 1, 3, 2},	// Bottom
+	{0, 1, 2, 3}	// Left
 };
 
 - (NSImage*)previewImageWithTheme:(iTetTheme*)theme
