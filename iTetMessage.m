@@ -203,8 +203,16 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 	// Player's team name ("player team" messages)
 	if (type == playerTeamMessage)
 	{
-		[contents setObject:[messageContents objectAtIndex:2]
-					 forKey:iTetMessagePlayerTeamNameKey];
+		if ([messageContents count] >= 3)
+		{	
+			[contents setObject:[messageContents objectAtIndex:2]
+						 forKey:iTetMessagePlayerTeamNameKey];
+		}
+		else
+		{
+			[contents setObject:[NSString string]
+						 forKey:iTetMessagePlayerTeamNameKey];
+		}
 	}
 	
 	// Winlist array (winlist messages)
