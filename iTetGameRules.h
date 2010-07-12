@@ -38,5 +38,6 @@ extern NSString* const iTetGameRulesBlockGeneratorSeedKey;
 + (NSMutableDictionary*)defaultOfflineGameRules;
 
 + (NSArray*)defaultOfflineBlockFrequencies;
++ (NSArray*)defaultOfflineSpecialFrequencies;
 
 @end

@@ -212,13 +212,8 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	[rulesDict setObject:[self defaultOfflineBlockFrequencies]
 				  forKey:iTetGameRulesBlockFrequenciesKey];
 	
-	// FIXME: disable bad specials, switchfield
-	NSMutableArray* temp = [NSMutableArray arrayWithCapacity:100];
-	for (NSInteger i = 0; i < 100; i++)
-	{
-		[temp addObject:[NSNumber numberWithInt:[iTetSpecials specialTypeForNumber:((random() % 9) + 1)]]];	
-	}
-	[rulesDict setObject:[NSArray arrayWithArray:temp]
+	// Predetermined "offline mode" specials distribution
+	[rulesDict setObject:[self defaultOfflineSpecialFrequencies]
 				  forKey:iTetGameRulesSpecialFrequenciesKey];
 	
 	// Return the dictionary of rules
@@ -237,6 +232,25 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 		[frequencies addObject:[NSNumber numberWithInt:blockType]];
 		blockType = ((blockType + 1) % ITET_NUM_BLOCK_TYPES);
 	}
+	
+	return [NSArray arrayWithArray:frequencies];
+}
+
++ (NSArray*)defaultOfflineSpecialFrequencies
+{
+	// Create an empty array
+	NSMutableArray* frequencies = [NSMutableArray arrayWithCapacity:100];
+	
+	// Add specific quantities of the "good" types of specials
+	NSInteger count;
+	// Clearline (most common)
+	for (count = 0; count < 80; count++)
+		[frequencies addObject:[NSNumber numberWithInt:clearLine]];
+	// Nuke and gravity (rarer)
+	for (count = 0; count < 10; count++)
+		[frequencies addObject:[NSNumber numberWithInt:nukeField]];
+	for (count = 0; count < 10; count++)
+		[frequencies addObject:[NSNumber numberWithInt:gravity]];
 	
 	return [NSArray arrayWithArray:frequencies];
 }
