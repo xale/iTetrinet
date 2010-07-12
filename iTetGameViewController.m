@@ -1138,7 +1138,10 @@ doCommandBySelector:(SEL)command
 {
 	// Check for clear-field updates
 	if ((fieldstring == nil) || ([fieldstring length] == 0))
+	{
 		[player setField:[iTetField field]];
+		return;
+	}
 	
 	// Check if this is a partial field update
 	unichar firstChar = [fieldstring characterAtIndex:0];
