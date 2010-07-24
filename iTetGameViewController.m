@@ -209,6 +209,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if ([self gameplayState] != gameNotPlaying)
 	{
 		// Confirm with user before ending game
+		// If this is an offline game, make sure the game is paused
+		BOOL offlineGameShouldBeResumed = NO;
+		if ([self offlineGame] && ([self gameplayState] != gamePaused))
+		{
+			[self pauseGame];
+			offlineGameShouldBeResumed = YES;
+		}
+		
 		// Create a confirmation dialog
 		NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
 		[dialog setMessageText:iTetEndGameAlertTitle];
@@ -219,8 +227,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// Run the dialog as a window-modal sheet
 		[dialog beginSheetModalForWindow:[windowController window]
 						   modalDelegate:self
-						  didEndSelector:@selector(stopGameAlertDidEnd:returnCode:contextInfo:)
-							 contextInfo:NULL];
+						  didEndSelector:@selector(stopGameAlertDidEnd:returnCode:resumeOfflineGameOnCancel:)
+							 contextInfo:[[NSNumber alloc] initWithBool:offlineGameShouldBeResumed]];
 	}
 	else
 	{
@@ -257,6 +265,14 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (IBAction)forfeitGame:(id)sender
 {
+	// If this is an offline game, make sure the game is paused
+	BOOL offlineGameShouldBeResumed = NO;
+	if ([self offlineGame] && ([self gameplayState] != gamePaused))
+	{
+		[self pauseGame];
+		offlineGameShouldBeResumed = YES;
+	}
+	
 	// Create a confirmation dialog
 	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
 	[dialog setMessageText:iTetForfeitGameAlertTitle];
@@ -267,8 +283,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Run the dialog as a window-modal sheet
 	[dialog beginSheetModalForWindow:[windowController window]
 					   modalDelegate:self
-					  didEndSelector:@selector(forfeitDialogDidEnd:returnCode:contextInfo:)
-						 contextInfo:NULL];
+					  didEndSelector:@selector(forfeitDialogDidEnd:returnCode:resumeOfflineGameOnCancel:)
+						 contextInfo:[[NSNumber alloc] initWithBool:offlineGameShouldBeResumed]];
 }
 
 - (IBAction)pauseResumeGame:(id)sender
@@ -345,11 +361,22 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)stopGameAlertDidEnd:(NSAlert*)dialog
 				 returnCode:(NSInteger)returnCode
-				contextInfo:(void*)contextInfo
+  resumeOfflineGameOnCancel:(NSNumber*)resumeGame
 {
-	// If the user pressed "continue playing", do nothing
+	BOOL offlineGameShouldBeResumed = [resumeGame boolValue];
+	[resumeGame release];
+	
+	// If the user pressed "continue playing", cancel ending the game
 	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// If this is an offline game, and it needs to be resumed, do so
+		if ([self offlineGame] && offlineGameShouldBeResumed)
+		{
+			[self resumeGame];
+		}
+		
 		return;
+	}
 	
 	// If we are connected to a server, send a "stop game" message
 	if (![self offlineGame])
@@ -370,11 +397,22 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)forfeitDialogDidEnd:(NSAlert*)dialog
 				 returnCode:(NSInteger)returnCode
-				contextInfo:(void*)contextInfo
+  resumeOfflineGameOnCancel:(NSNumber*)resumeGame
 {
-	// If the user pressed "continue playing", do nothing
+	BOOL offlineGameShouldBeResumed = [resumeGame boolValue];
+	[resumeGame release];
+	
+	// If the user pressed "continue playing", cancel forfeitting
 	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// If this is an offline game, and it needs to be resumed, do so
+		if ([self offlineGame] && offlineGameShouldBeResumed)
+		{
+			[self resumeGame];
+		}
+		
 		return;
+	}
 	
 	// Forfeit the current game
 	[self playerLost];
