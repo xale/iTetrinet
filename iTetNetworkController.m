@@ -123,7 +123,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			}
 			
 			// Otherwise, just disconnect from the server
-			[self setConnectionState:disconnecting];
 			[self disconnect];
 			
 			break;
@@ -191,12 +190,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
-	// Otherwise, tell the game controller that the game is over
-	// (Do not tell the server to end game, so other players can keep playing)
-	[gameController endGame];
-	
 	// Disconnect from the server
-	[self setConnectionState:disconnecting];
 	[self disconnect];
 }
 
@@ -368,6 +362,14 @@ didConnectToHost:(NSString*)hostname
 	// If we are already disconnected, ignore
 	if (![gameSocket isConnected])
 		return;
+	
+	// If there is a game in progress, end it
+	if ([gameController gameplayState] != gameNotPlaying)
+		[gameController endGame];
+	
+	// Change connection status, if necessary
+	if ([self connectionState] == connected)
+		[self setConnectionState:disconnecting];
 	
 	// Tell the socket to disconnect
 	[gameSocket disconnectAfterWriting];

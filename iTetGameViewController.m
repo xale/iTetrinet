@@ -1371,10 +1371,9 @@ doCommandBySelector:(SEL)command
 									   userInfo:[NSNumber numberWithInt:nextBlock]
 										repeats:NO];
 	
-	// Spawn a thread and add the timer to its run loop
-	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
-							 toTarget:self
-						   withObject:blockTimer];
+	// Attach the timer to the current run loop
+	[[NSRunLoop currentRunLoop] addTimer:blockTimer
+								 forMode:NSDefaultRunLoopMode];
 }
 
 - (void)startBlockFallTimer
@@ -1386,10 +1385,9 @@ doCommandBySelector:(SEL)command
 									   userInfo:[NSNumber numberWithInt:blockFall]
 										repeats:YES];
 	
-	// Spawn a thread and add the timer to its run loop
-	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
-							 toTarget:self
-						   withObject:blockTimer];
+	// Attach the timer to the current run loop
+	[[NSRunLoop currentRunLoop] addTimer:blockTimer
+								 forMode:NSDefaultRunLoopMode];
 }
 
 - (void)pauseBlockTimer
@@ -1401,7 +1399,7 @@ doCommandBySelector:(SEL)command
 	// Record the type of timer
 	lastTimerType = [[blockTimer userInfo] intValue];
 	
-	// Invalidate and nil the timer (also terminates the associated run loop and thread)
+	// Invalidate and nil the timer
 	[blockTimer invalidate];
 	blockTimer = nil;
 }
@@ -1417,27 +1415,9 @@ doCommandBySelector:(SEL)command
 										   userInfo:[NSNumber numberWithInt:lastTimerType]
 											repeats:timerRepeats] autorelease];
 	
-	// Spawn a thread and add the timer to its run loop
-	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
-							 toTarget:self
-						   withObject:blockTimer];
-}
-
-- (void)startBlockTimer:(NSTimer*)timer
-{
-	// Create an autorelease pool
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-	
-	// Attach the block timer to the thread's run loop
-	NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
-	[runLoop addTimer:timer
-			  forMode:NSDefaultRunLoopMode];
-	
-	// Run the run loop
-	[runLoop run];
-	
-	// Drain and free the autorelease pool
-	[pool drain];
+	// Attach the timer to the current run loop
+	[[NSRunLoop currentRunLoop] addTimer:blockTimer
+								 forMode:NSDefaultRunLoopMode];
 }
 
 - (void)timerFired:(NSTimer*)timer
@@ -1445,15 +1425,11 @@ doCommandBySelector:(SEL)command
 	switch ([[timer userInfo] intValue])
 	{
 		case nextBlock:
-			[self performSelectorOnMainThread:@selector(moveNextBlockToField)
-								   withObject:nil
-								waitUntilDone:NO];
+			[self moveNextBlockToField];
 			break;
 			
 		case blockFall:
-			[self performSelectorOnMainThread:@selector(moveCurrentBlockDown)
-								   withObject:nil
-								waitUntilDone:NO];
+			[self moveCurrentBlockDown];
 			break;
 	}
 }

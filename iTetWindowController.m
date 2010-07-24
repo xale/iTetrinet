@@ -124,7 +124,9 @@
 						 didEndSelector:@selector(connectionOpenAlertDidEnd:returnCode:contextInfo:)
 							contextInfo:NULL];
 		
-		return NSTerminateLater;
+		// Tell the application not to quit yet
+		// Note: ordinarily, we should return "NSTerminateLater", and call back with -replyToApplicationShouldTerminate:, but doing so places the application in modal run loop mode, which silences game events that should still be processed in the background; instead, the individual callbacks will terminate the application manually
+		return NSTerminateCancel;
 	}
 	
 	// Check if there is an offline game in progress
@@ -148,7 +150,9 @@
 						 didEndSelector:@selector(offlineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
 							contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
 		
-		return NSTerminateLater;
+		// Tell the application not to quit yet
+		// (See note at previous return statement)
+		return NSTerminateCancel;
 	}
 	
 	// If the preferences window is open, check for unsaved state before terminating
@@ -168,17 +172,13 @@
 	// Ensure the sheet has closed
 	[[alert window] orderOut:self];
 	
-	// Check if the user chose to close the application
-	if (returnCode == NSAlertFirstButtonReturn)
-	{
-		// If the user pressed "quit", check for unsaved state on the preferences window, or close immediately
-		[self checkPreferencesBeforeClosing];
-	}
-	else
-	{
-		// If the user pressed 'cancel', tell the app to abort quitting
-		[NSApp replyToApplicationShouldTerminate:NO];
-	}
+	// If the user chose to cancel, abort quitting (do nothing)
+	if (returnCode == NSAlertSecondButtonReturn)
+		return;
+	
+	// If the user pressed "quit", disconnect, and try to quit again
+	[networkController disconnect];
+	[NSApp terminate:self];
 }
 
 - (void)offlineGameInProgressAlertDidEnd:(NSAlert*)alert
@@ -191,50 +191,19 @@
 	// Ensure the sheet has closed
 	[[alert window] orderOut:self];
 	
-	// Check if the user chose to close the application
-	if (returnCode == NSAlertFirstButtonReturn)
+	// If the user chose to cancel, abort quitting
+	if (returnCode == NSAlertSecondButtonReturn)
 	{
-		// If the user pressed "quit", check for unsaved state on the preferences window, or close immediately
-		[self checkPreferencesBeforeClosing];
-	}
-	else
-	{
-		// If the user pressed 'cancel', tell the app to abort quitting
-		[NSApp replyToApplicationShouldTerminate:NO];
-		
 		// If the game in progress was not paused when this alert opened, resume it
 		if (!gameWasPaused)
 			[gameController resumeGame];
+		
+		return;
 	}
-}
-
-- (void)checkPreferencesBeforeClosing
-{
-	// Check if the preferences window is visible
-	if ([[prefsWindowController window] isVisible])
-	{
-		// Ask the controller if the application should quit (i.e., whether or not the controller has dirty state)
-		NSApplicationTerminateReply quitReply = [prefsWindowController applicationShouldTerminate:NSApp];
-		switch (quitReply)
-		{
-			case NSTerminateNow:
-				// If there is no unsaved state, or unsaved state the user chooses to discard, terminate immediately
-				[NSApp replyToApplicationShouldTerminate:YES];
-				break;
-			case NSTerminateCancel:
-				// If there is unsaved state, and the user wishes to cancel the quit operation, tell the app not to quit
-				[NSApp replyToApplicationShouldTerminate:NO];
-			default:
-				// If there is unsaved the user wishes to save before quitting, defer the termination decision to the preferences view controllers
-				// (Does nothing; -replyToApplicationShouldTerminate: will be invoked by one of the preferences view controllers)
-				break;
-		}
-	}
-	else
-	{
-		// If the preferences window isn't open, terminate immediately
-		[NSApp replyToApplicationShouldTerminate:YES];
-	}
+	
+	// If the user pressed "quit", end the offline game, and try to quit again
+	[gameController endGame];
+	[NSApp terminate:self];
 }
 
 #pragma mark -
