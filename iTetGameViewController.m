@@ -57,8 +57,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
 
-- (NSTimer*)nextBlockTimer;
-- (NSTimer*)fallTimer;
+- (void)startNextBlockTimer;
+- (void)startBlockFallTimer;
+- (void)pauseBlockTimer;
+- (void)resumeBlockTimer;
 
 - (BOOL)offlineGame;
 
@@ -523,19 +525,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Set the game state to "paused"
 	[self setGameplayState:gamePaused];
 	
-	// If the local player is still in the game, record the time until the next timer fires
+	// If the local player is still in the game, pause the current block timer
 	if ([LOCALPLAYER isPlaying])
-	{
-		// Record the time until next firing
-		timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
-		
-		// Record the type of timer
-		lastTimerType = [[blockTimer userInfo] intValue];
-		
-		// Invalidate and nil the timer
-		[blockTimer invalidate];
-		blockTimer = nil;
-	}
+		[self pauseBlockTimer];
 }
 
 - (void)resumeGame
@@ -547,26 +539,15 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
 	
-	// If the local player is in the game, re-create the block timer, and give the field first responder status
+	// If the local player is in the game, resume the block timer, and give the field first responder status
 	if ([LOCALPLAYER isPlaying])
 	{
-		// Create a timer with a firing date calculated from the time recorded when the game was paused
-		BOOL timerRepeats = (lastTimerType == blockFall);
-		blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
-											   interval:blockFallDelayForLevel([LOCALPLAYER level])
-												 target:self
-											   selector:@selector(timerFired:)
-											   userInfo:[NSNumber numberWithInt:lastTimerType]
-												repeats:timerRepeats] autorelease];
-		
-		// Add the timer to the current run loop
-		[[NSRunLoop currentRunLoop] addTimer:blockTimer
-									 forMode:NSDefaultRunLoopMode];
+		[self resumeBlockTimer];
 		
 		// Make sure we're looking at the game tab
 		[windowController switchToGameTab:self];
 		
-		// Move first responder to the field
+		// Give the local player's field first responder status
 		[[windowController window] makeFirstResponder:localFieldView];
 	}
 }
@@ -628,7 +609,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	else if (blockTimer == nil)
 	{
 		// Re-create the fall timer
-		blockTimer = [self fallTimer];
+		[self startBlockFallTimer];
 	}
 }
 
@@ -661,7 +642,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[LOCALPLAYER setCurrentBlock:nil];
 		
 		// Set a timer to spawn the next block
-		blockTimer = [self nextBlockTimer];
+		[self startNextBlockTimer];
 	}
 }
 
@@ -790,7 +771,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];
 	
 	// Set the fall timer
-	blockTimer = [self fallTimer];
+	[self startBlockFallTimer];
 }
 
 - (void)useSpecial:(iTetSpecialType)special
@@ -966,7 +947,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// If there is a falling block on the board, move it down
 			if ([LOCALPLAYER currentBlock] != nil)
 			{
-				// Invalidate the fall timer ("move down" method will reset)
+				// Invalidate the fall timer ("move block down" method will create a new one)
 				[blockTimer invalidate];
 				blockTimer = nil;
 				
@@ -979,7 +960,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// If there is a falling block on the board, drop it
 			if ([LOCALPLAYER currentBlock] != nil)
 			{
-				// Invalidate the fall timer
+				// Invalidate the fall timer ("solidify block" method will create the next one)
 				[blockTimer invalidate];
 				blockTimer = nil;
 				
@@ -1343,28 +1324,88 @@ doCommandBySelector:(SEL)command
 
 #define TETRINET_NEXT_BLOCK_DELAY	1.0
 
-- (NSTimer*)nextBlockTimer
-{	
-	// Start the timer to spawn the next block
-	return [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
-											target:self
-										  selector:@selector(timerFired:)
-										  userInfo:[NSNumber numberWithInt:nextBlock]
-										   repeats:NO];
+- (void)startNextBlockTimer
+{
+	// Create a timer to spawn the next block
+	blockTimer = [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
+												  target:self
+												selector:@selector(timerFired:)
+												userInfo:[NSNumber numberWithInt:nextBlock]
+												 repeats:NO];
+	
+	// Spawn a thread and attach the timer to the thread's run loop
+	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
+							 toTarget:self
+						   withObject:blockTimer];
 }
 
-- (NSTimer*)fallTimer
+- (void)startBlockFallTimer
 {	
-	// Start the timer to move the block down
-	return [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
-											target:self
-										  selector:@selector(timerFired:)
-										  userInfo:[NSNumber numberWithInt:blockFall]
-										   repeats:YES];
+	// Create a timer to move the current block down
+	blockTimer = [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
+												  target:self
+												selector:@selector(timerFired:)
+												userInfo:[NSNumber numberWithInt:blockFall]
+												 repeats:YES];
+	
+	// Spawn a thread and attach the timer to the thread's run loop
+	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
+							 toTarget:self
+						   withObject:blockTimer];
+}
+
+- (void)pauseBlockTimer
+{
+	// Timers cannot be paused, so we will instead invalidate the existing timer and create a new one when the game is resumed
+	// Record the time until next firing
+	timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
+	
+	// Record the type of timer
+	lastTimerType = [[blockTimer userInfo] intValue];
+	
+	// Invalidate and nil the timer (also terminates the associated run loop and thread)
+	[blockTimer invalidate];
+	blockTimer = nil;
+}
+
+- (void)resumeBlockTimer
+{
+	// Create a timer with a firing date calculated from the time recorded when the game was paused
+	BOOL timerRepeats = (lastTimerType == blockFall);
+	blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
+										   interval:blockFallDelayForLevel([LOCALPLAYER level])
+											 target:self
+										   selector:@selector(timerFired:)
+										   userInfo:[NSNumber numberWithInt:lastTimerType]
+											repeats:timerRepeats] autorelease];
+	
+	// Spawn a thread and attach the timer to the thread's run loop
+	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
+							 toTarget:self
+						   withObject:blockTimer];
+}
+
+- (void)startBlockTimer:(NSTimer*)timer
+{
+	// Create an autorelease pool
+	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	
+	// Attach the block timer to the thread's run loop
+	NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+	[runLoop addTimer:timer
+			  forMode:NSDefaultRunLoopMode];
+	
+	// Run the run loop
+	[runLoop run];
+	
+	// Drain and free the autorelease pool
+	[pool drain];
 }
 
 - (void)timerFired:(NSTimer*)timer
 {
+	// FIXME: thread safety needed here
+	/*
 	switch ([[timer userInfo] intValue])
 	{
 		case nextBlock:
@@ -1375,6 +1416,7 @@ doCommandBySelector:(SEL)command
 			[self moveCurrentBlockDown];
 			break;
 	}
+	 */
 }
 
 #define ITET_MAX_DELAY_TIME				(1.005)
