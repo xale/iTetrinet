@@ -1396,7 +1396,7 @@ doCommandBySelector:(SEL)command
 {
 	// Timers cannot be paused, so we will instead invalidate the existing timer and create a new one when the game is resumed
 	// Record the time until next firing
-	timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceDate:[NSDate date]];
+	timeUntilNextTimerFire = [[blockTimer fireDate] timeIntervalSinceNow];
 	
 	// Record the type of timer
 	lastTimerType = [[blockTimer userInfo] intValue];
