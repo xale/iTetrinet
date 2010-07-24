@@ -1205,15 +1205,15 @@ doCommandBySelector:(SEL)command
 	}
 	
 	// Add a description of the event to the list of actions
-	NSString* senderName;
-	NSString* targetName;
-	NSMutableAttributedString* desc;
-	NSColor* textColor;
+	NSString* senderName = nil;
+	NSString* targetName = nil;
+	NSMutableAttributedString* desc = nil;
+	NSColor* textColor = nil;
 	NSRange attributeRange;
 	
 	// Check if this was a "use on self" event
 	BOOL selfEvent = NO;
-	if ([target isEqual:sender])
+	if (![sender isServerPlayer] && [target isEqual:sender])
 		selfEvent = YES;
 	
 	// Determine the sender player's name
