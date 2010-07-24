@@ -1327,13 +1327,13 @@ doCommandBySelector:(SEL)command
 - (void)startNextBlockTimer
 {
 	// Create a timer to spawn the next block
-	blockTimer = [NSTimer scheduledTimerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
-												  target:self
-												selector:@selector(timerFired:)
-												userInfo:[NSNumber numberWithInt:nextBlock]
-												 repeats:NO];
+	blockTimer = [NSTimer timerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
+										 target:self
+									   selector:@selector(timerFired:)
+									   userInfo:[NSNumber numberWithInt:nextBlock]
+										repeats:NO];
 	
-	// Spawn a thread and attach the timer to the thread's run loop
+	// Spawn a thread and add the timer to its run loop
 	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
 							 toTarget:self
 						   withObject:blockTimer];
@@ -1342,13 +1342,13 @@ doCommandBySelector:(SEL)command
 - (void)startBlockFallTimer
 {	
 	// Create a timer to move the current block down
-	blockTimer = [NSTimer scheduledTimerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
-												  target:self
-												selector:@selector(timerFired:)
-												userInfo:[NSNumber numberWithInt:blockFall]
-												 repeats:YES];
+	blockTimer = [NSTimer timerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
+										 target:self
+									   selector:@selector(timerFired:)
+									   userInfo:[NSNumber numberWithInt:blockFall]
+										repeats:YES];
 	
-	// Spawn a thread and attach the timer to the thread's run loop
+	// Spawn a thread and add the timer to its run loop
 	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
 							 toTarget:self
 						   withObject:blockTimer];
@@ -1379,7 +1379,7 @@ doCommandBySelector:(SEL)command
 										   userInfo:[NSNumber numberWithInt:lastTimerType]
 											repeats:timerRepeats] autorelease];
 	
-	// Spawn a thread and attach the timer to the thread's run loop
+	// Spawn a thread and add the timer to its run loop
 	[NSThread detachNewThreadSelector:@selector(startBlockTimer:)
 							 toTarget:self
 						   withObject:blockTimer];
@@ -1404,19 +1404,20 @@ doCommandBySelector:(SEL)command
 
 - (void)timerFired:(NSTimer*)timer
 {
-	// FIXME: thread safety needed here
-	/*
 	switch ([[timer userInfo] intValue])
 	{
 		case nextBlock:
-			[self moveNextBlockToField];
+			[self performSelectorOnMainThread:@selector(moveNextBlockToField)
+								   withObject:nil
+								waitUntilDone:NO];
 			break;
 			
 		case blockFall:
-			[self moveCurrentBlockDown];
+			[self performSelectorOnMainThread:@selector(moveCurrentBlockDown)
+								   withObject:nil
+								waitUntilDone:NO];
 			break;
 	}
-	 */
 }
 
 #define ITET_MAX_DELAY_TIME				(1.005)
