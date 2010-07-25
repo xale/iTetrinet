@@ -125,7 +125,7 @@
 							contextInfo:NULL];
 		
 		// Tell the application not to quit yet
-		// Note: ordinarily, we should return "NSTerminateLater", and call back with -replyToApplicationShouldTerminate:, but doing so places the application in modal run loop mode, which silences game events that should still be processed in the background; instead, the individual callbacks will terminate the application manually
+		// Note: ordinarily, we should return "NSTerminateLater", and call back with -replyToApplicationShouldTerminate:, but doing so places the application in modal run loop mode, which silences game events that should still be processed in the background; instead, the individual callbacks will terminate the application by cleaning up state and calling -terminate: (which results in this method being run again)
 		return NSTerminateCancel;
 	}
 	
