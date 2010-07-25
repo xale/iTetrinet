@@ -195,7 +195,10 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 }
 
 - (id)initWithRandomTypeAndOrientationUsingFrequencies:(NSArray*)blockFrequencies
-{	
+{
+	NSParameterAssert(blockFrequencies != nil);
+	NSParameterAssert([blockFrequencies count] == 100);
+	
 	type = (iTetBlockType)[[blockFrequencies objectAtIndex:(random() % [blockFrequencies count])] intValue];
 	orientation = (random() % orientationCount[type]);
 	
