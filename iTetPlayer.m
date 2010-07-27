@@ -109,13 +109,13 @@
 
 - (void)setField:(iTetField*)newField
 {
-	// Check that the new field has an update fieldstring, and create it if it does not
-	if ([newField updateFieldstring] == nil)
+	// Check that the new field has calculated a dirty region to draw, and calculate it if not
+	if (IPSEqualRegions([newField updateDirtyRegion], iTetUnknownDirtyRegion))
 	{
-		if (field == nil)
-			[newField setUpdateDeltasFromField:[iTetField field]];
+		if (field != nil)
+			[newField setUpdateDirtyRegionFromField:field];
 		else
-			[newField setUpdateDeltasFromField:field];
+			[newField setUpdateDirtyRegionFromField:[iTetField field]];
 	}
 	
 	// Swap in the new field

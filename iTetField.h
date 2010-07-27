@@ -10,6 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetSpecials.h"
+#import "IPSIntegerGeometry.h"
 
 #define ITET_FIELD_WIDTH	12
 #define ITET_FIELD_HEIGHT	22
@@ -29,25 +30,10 @@ typedef enum
 	classicStyle
 } iTetLineAddStyle;
 
-typedef struct Region
-{
-	NSInteger minRow, minCol, maxRow, maxCol;
-} Region;
+extern const IPSRegion iTetUnknownDirtyRegion;
+extern const IPSRegion iTetFullFieldDirtyRegion;
 
-NS_INLINE Region iTetMakeRegion(NSInteger minRow, NSInteger minCol, NSInteger maxRow, NSInteger maxCol)
-{
-	Region r;
-	r.minRow = minRow;
-	r.minCol = minCol;
-	r.maxRow = maxRow;
-	r.maxCol = maxCol;
-	return r;
-}
-
-extern const Region iTetEmptyDirtyRegion;
-extern const Region iTetUnknownDirtyRegion;
-extern const Region iTetFullFieldDirtyRegion;
-
+extern NSString* const iTetEmptyFieldstring;
 extern NSString* const iTetUnchangedFieldstringPlaceholder;
 
 @class iTetBlock;
@@ -59,7 +45,7 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 	
 	// Field-update deltas
 	NSString* updateFieldstring;
-	Region updateDirtyRegion;
+	IPSRegion updateDirtyRegion;
 }
 
 // Initializer for an empty field
@@ -138,8 +124,11 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 // Returns a new field with all block bomb specials in the receiver's contents "exploded", scattering the cells around them
 - (iTetField*)fieldByExplodingBlockBombs;
 
-// Computes and sets the receiver's field-update delta ivars (partial fieldstring and "dirty rect")
+// Computes and sets the receiver's field-update delta ivars (partial fieldstring and dirty region)
 - (void)setUpdateDeltasFromField:(iTetField*)field;
+
+// Computes and sets the receiver's dirty region
+- (void)setUpdateDirtyRegionFromField:(iTetField*)field;
 
 // Returns the contents of the cell at the specified coordinates on the field
 - (uint8_t)cellAtRow:(NSInteger)row
@@ -149,6 +138,6 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 @property (readonly) NSString* updateFieldstring;
 
 // Returns a region calculated by -setUpdateDeltasFromField:, to be used by fieldviews to determine the portion of the view that needs to be redrawn
-@property (readonly) Region updateDirtyRegion;
+@property (readonly) IPSRegion updateDirtyRegion;
 
 @end

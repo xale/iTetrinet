@@ -30,6 +30,24 @@
 	return YES;
 }
 
+- (void)setField:(iTetField*)newField
+{
+	// Check that the new field has calculated its field deltas
+	if (([newField updateFieldstring] == nil) || IPSEqualRegions([newField updateDirtyRegion], iTetUnknownDirtyRegion))
+	{
+		// Calculate the deltas relative to the old field
+		if (field != nil)
+			[newField setUpdateDeltasFromField:field];
+		else
+			[newField setUpdateDeltasFromField:[iTetField field]];
+	}
+	
+	// Swap in the new field
+	[newField retain];
+	[field release];
+	field = newField;
+}
+
 #pragma mark Lines
 
 - (void)addLines:(NSInteger)lines

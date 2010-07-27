@@ -11,6 +11,7 @@
 #import "iTetMessage.h"
 
 #import "iTetPlayer.h"
+#import "iTetField.h"
 #import "iTetSpecials.h"
 #import "iTetServerInfo.h"
 
@@ -422,6 +423,7 @@ done:
 			NSParameterAssert(fieldstring != nil);
 			
 			messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
+			
 			break;
 		}	
 		case levelUpdateMessage:

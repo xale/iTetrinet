@@ -1153,12 +1153,9 @@ doCommandBySelector:(SEL)command
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player
 {
-	// Check for clear-field updates
+	// Check for "no change" updates
 	if ((fieldstring == nil) || ([fieldstring length] == 0))
-	{
-		[player setField:[iTetField field]];
 		return;
-	}
 	
 	// Check if this is a partial field update
 	unichar firstChar = [fieldstring characterAtIndex:0];
