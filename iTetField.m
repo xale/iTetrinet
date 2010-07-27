@@ -560,21 +560,21 @@ abort:; // Unable to add more specials; bail
 		// Determine what style of line add to perform
 		if (style == classicStyle)
 		{
-			// Fill the bottom row completely
+			// Fill the row completely
 			for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
-				(*newContents)[0][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+				(*newContents)[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
 			
 			// Clear a random cell in the row
-			(*newContents)[0][(random() % ITET_FIELD_WIDTH)] = 0;
+			(*newContents)[row][(random() % ITET_FIELD_WIDTH)] = 0;
 		}
 		else
 		{
-			// Fill the bottom row randomly
+			// Fill the row randomly
 			for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
-				(*newContents)[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
+				(*newContents)[row][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 			
 			// Ensure that at least one column index is empty
-			(*newContents)[0][(random() % ITET_FIELD_WIDTH)] = 0;
+			(*newContents)[row][(random() % ITET_FIELD_WIDTH)] = 0;
 		}
 	}
 	
