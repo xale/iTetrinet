@@ -33,6 +33,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
      inDirection:(BOOL)shiftLeft;
 
 - (FIELD*)contents;
+- (NSString*)fullFieldstring;
 
 - (void)setUpdateFieldstring:(NSString*)fieldstring;
 - (void)setUpdateDirtyRegion:(IPSRegion)dirtyRegion;
