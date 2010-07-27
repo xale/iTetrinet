@@ -11,6 +11,19 @@
 #import "iTetField.h"
 #import "iTetBlock.h"
 
+typedef struct Coord
+{
+	NSInteger row, col;
+} Coord;
+
+NS_INLINE Coord iTetMakeCoord(NSInteger row, NSInteger col)
+{
+	Coord c;
+	c.row = row;
+	c.col = col;
+	return c;
+}
+
 #define ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX	33
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
@@ -950,9 +963,10 @@ cellfound:
 	return &contents;
 }
 
-- (uint8_t)cellAtCoordinates:(Coord)coordinates
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)col
 {
-	return contents[coordinates.row][coordinates.col];
+	return contents[row][col];
 }
 
 - (NSString*)fullFieldstring

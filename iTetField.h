@@ -29,19 +29,6 @@ typedef enum
 	classicStyle
 } iTetLineAddStyle;
 
-typedef struct Coord
-{
-	NSInteger row, col;
-} Coord;
-
-NS_INLINE Coord iTetMakeCoord(NSInteger row, NSInteger col)
-{
-	Coord c;
-	c.row = row;
-	c.col = col;
-	return c;
-}
-
 typedef struct Region
 {
 	NSInteger minRow, minCol, maxRow, maxCol;
@@ -155,7 +142,8 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 - (void)setUpdateDeltasFromField:(iTetField*)field;
 
 // Returns the contents of the cell at the specified coordinates on the field
-- (uint8_t)cellAtCoordinates:(Coord)coordinates;
+- (uint8_t)cellAtRow:(NSInteger)row
+			  column:(NSInteger)col;
 
 // Returns the partial fieldstring calculated by -setUpdateDeltasFromField:
 @property (readonly) NSString* updateFieldstring;

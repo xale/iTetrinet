@@ -73,7 +73,8 @@
 		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the cell type
-			cell = [[self field] cellAtCoordinates:iTetMakeCoord(row, col)];
+			cell = [[self field] cellAtRow:row
+									column:col];
 			
 			// If there is nothing to draw, skip to next iteration of loop
 			if (cell == 0)
