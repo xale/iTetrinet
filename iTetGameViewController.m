@@ -55,6 +55,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)playerLost;
 
 - (void)sendFieldUpdate;
+- (void)sendFullFieldstring;
 - (void)sendCurrentLevel;
 - (void)sendSpecial:(iTetSpecialType)special
 		   toPlayer:(iTetPlayer*)target;
@@ -524,8 +525,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules integerForKey:iTetGameRulesInitialStackHeightKey]]];
 	}
 	
-	// If this isn't an offline game, send the local player's field to the server
-	[self sendFieldUpdate];
+	// If this isn't an offline game, send the local player's field to the server (make sure to send the whole thing)
+	[self sendFullFieldstring];
 	
 	// Create a random block generator
 	if ([rules intForKey:iTetGameRulesGameVersionKey] == version114)
@@ -1090,6 +1091,23 @@ doCommandBySelector:(SEL)command
 	[[message contents] setInteger:[LOCALPLAYER playerNumber]
 							forKey:iTetMessagePlayerNumberKey];
 	[[message contents] setObject:[[LOCALPLAYER field] updateFieldstring]
+						   forKey:iTetMessageFieldstringKey];
+	
+	// Send the message to the server
+	[networkController sendMessage:message];
+}
+
+- (void)sendFullFieldstring
+{
+	// If this is an offline game, do nothing
+	if ([self offlineGame])
+		return;
+	
+	// Otherwise, create a fieldstring message
+	iTetMessage* message = [iTetMessage messageWithMessageType:fieldstringMessage];
+	[[message contents] setInteger:[LOCALPLAYER playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:[[LOCALPLAYER field] fullFieldstring]
 						   forKey:iTetMessageFieldstringKey];
 	
 	// Send the message to the server

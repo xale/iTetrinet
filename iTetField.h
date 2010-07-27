@@ -133,6 +133,9 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col;
 
+// Returns a fieldstring representing the entire contents of the field
+- (NSString*)fullFieldstring;
+
 // Returns the partial fieldstring calculated by -setUpdateDeltasFromField:
 @property (readonly) NSString* updateFieldstring;
 
