@@ -11,19 +11,49 @@
 #import "iTetField.h"
 #import "iTetBlock.h"
 
+#define ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX	33
+
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
-#define ITET_CONVERT_ROW(coord)		(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3') // (conveniently, this is its own inverse)
-#define ITET_PARTIAL_TO_COL(coord)	((coord) - '3')
-#define ITET_COL_TO_PARTIAL(coord)	((coord) + '3')
+#define ITET_CONVERT_PARTIAL_ROW(coord)			(((ITET_FIELD_HEIGHT - 1) - (coord)) + '3') // (conveniently, this is its own inverse)
+#define ITET_CONVERT_PARTIAL_TO_COL(coord)		((coord) - '3')
+#define ITET_CONVERT_PARTIAL_FROM_COL(coord)	((coord) + '3')
 // ...and the cell contents are mapped to different characters
 char cellToPartialUpdateChar(uint8_t cellType);
 uint8_t partialUpdateCharToCell(char updateChar);
+
+const Region iTetEmptyDirtyRegion = {-1, -1, -1, -1};
+const Region iTetUnknownDirtyRegion = {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH, -1, -1};
+const Region iTetFullFieldDirtyRegion = {0, 0, (ITET_FIELD_HEIGHT - 1), (ITET_FIELD_WIDTH - 1)};
+
+NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring";
+
+@interface iTetField (Private)
+
+- (void)shiftRow:(NSInteger)row
+		byAmount:(NSInteger)shiftAmount
+     inDirection:(BOOL)shiftLeft;
+
+- (FIELD*)contents;
+- (NSString*)fullFieldstring;
+
+- (void)setUpdateFieldstring:(NSString*)fieldstring;
+- (void)setUpdateDirtyRegion:(Region)dirtyRegion;
+
+@end
 
 @implementation iTetField
 
 + (id)field
 {
 	return [[[self alloc] init] autorelease];
+}
+
+- (id)init
+{
+	updateFieldstring = [[self fullFieldstring] retain];
+	updateDirtyRegion = iTetFullFieldDirtyRegion;
+	
+	return self;
 }
 
 #pragma mark Fields from a Fieldstring
@@ -37,15 +67,14 @@ uint8_t partialUpdateCharToCell(char updateChar);
 {
 	// Convert the field string to a standard ASCII C string
 	const char* field = [fieldstring cStringUsingEncoding:NSASCIIStringEncoding];
-	char currentChar;
-	uint8_t currentCell;
+	NSUInteger length = [fieldstring lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
 	
 	// Iterate through the fieldstring
-	NSInteger row, col;
-	for (NSUInteger i = 0; i < [fieldstring length]; i++)
+	for (NSUInteger i = 0; i < length; i++)
 	{
 		// Get the cell value at this index
-		currentChar = field[i];
+		char currentChar = field[i];
+		uint8_t currentCell;
 		
 		// If the current cell is a numeric value, convert to its integer value
 		if (isdigit(currentChar))
@@ -55,15 +84,74 @@ uint8_t partialUpdateCharToCell(char updateChar);
 			currentCell = (uint8_t)currentChar;
 		
 		// Find the coordinates this index corresponds to
-		row = (ITET_FIELD_HEIGHT - 1) - (i / ITET_FIELD_WIDTH);
-		col = i % ITET_FIELD_WIDTH;
+		NSInteger row = ((ITET_FIELD_HEIGHT - 1) - (i / ITET_FIELD_WIDTH));
+		NSInteger col = (i % ITET_FIELD_WIDTH);
 		
 		// Set the cell at those coordinates to the value at this index
 		contents[row][col] = currentCell;
 	}
 	
+	updateFieldstring = [fieldstring retain];
+	updateDirtyRegion = iTetFullFieldDirtyRegion;
 	
 	return self;
+}
+
++ (id)fieldByApplyingPartialUpdate:(NSString*)partialUpdate
+						   toField:(iTetField*)field
+{
+	return [[[self alloc] initWithPartialUpdate:partialUpdate
+										toField:field] autorelease];
+}
+
+- (id)initWithPartialUpdate:(NSString*)partialUpdate
+					toField:(iTetField*)field
+{
+	// Copy the existing field
+	[self initWithField:field];
+	updateDirtyRegion = iTetUnknownDirtyRegion;
+	
+	// Apply the partial update
+	// Convert the update string to ASCII
+	const char* update = [partialUpdate cStringUsingEncoding:NSASCIIStringEncoding];
+	NSUInteger length = [partialUpdate lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+	
+	// Get the first type of cell we are adding
+	char currentChar = update[0];
+	uint8_t cellType = partialUpdateCharToCell(currentChar);
+	
+	// For each coordinate pair in the fieldstring
+	for (NSUInteger i = 1; i < length; i++)
+	{
+		currentChar = update[i];
+		
+		// Check if this character specifies a new cell type
+		if ((currentChar >= 0x21) && (currentChar <= 0x2F))
+		{
+			cellType = partialUpdateCharToCell(currentChar);
+		}
+		// If not, this character is a column-index, and the next is a row-index
+		else
+		{
+			// Convert the coordinates to our coordinate system
+			NSInteger col = ITET_CONVERT_PARTIAL_TO_COL(update[i]);
+			NSInteger row = ITET_CONVERT_PARTIAL_ROW(update[i+1]);
+			
+			// Change the cell on the field to the current type
+			contents[row][col] = cellType;
+			
+			// Skip the next character (we just used it)
+			i++;
+			
+			// Keep track of the bounds of the region of the field that will need to be redrawn
+			updateDirtyRegion.minRow = MIN(updateDirtyRegion.minRow, row);
+			updateDirtyRegion.minCol = MIN(updateDirtyRegion.minCol, col);
+			updateDirtyRegion.maxRow = MAX(updateDirtyRegion.maxRow, row);
+			updateDirtyRegion.maxCol = MAX(updateDirtyRegion.maxCol, col);
+		}
+	}
+	
+	updateFieldstring = [partialUpdate copy];
 }
 
 #pragma mark Fields with Starting Stack
@@ -90,6 +178,9 @@ uint8_t partialUpdateCharToCell(char updateChar);
 		contents[row][emptyCol] = 0;
 	}
 	
+	updateFieldstring = [[self fullFieldstring] retain];
+	updateDirtyRegion = iTetFullFieldDirtyRegion;
+	
 	return self;
 }
 
@@ -110,6 +201,9 @@ uint8_t partialUpdateCharToCell(char updateChar);
 		}
 	}
 	
+	updateFieldstring = [[self fullFieldstring] retain];
+	updateDirtyRegion = iTetFullFieldDirtyRegion;
+	
 	return self;
 }
 
@@ -117,19 +211,27 @@ uint8_t partialUpdateCharToCell(char updateChar);
 
 - (id)copyWithZone:(NSZone*)zone
 {
-	return [[[self class] allocWithZone:zone] initWithContents:contents];
+	return [[[self class] allocWithZone:zone] initWithField:self];
 }
 
-- (id)initWithContents:(uint8_t[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents
++ (id)fieldWithField:(iTetField*)field
+{
+	return [[[self alloc] initWithField:field] autorelease];
+}
+
+- (id)initWithField:(iTetField*)field
 {	
-	memcpy(contents, fieldContents, (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(uint8_t)));
+	memcpy(contents, *[field contents], (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(uint8_t)));
+	
+	updateFieldstring = iTetUnchangedFieldstringPlaceholder;
+	updateDirtyRegion = iTetEmptyDirtyRegion;
 	
 	return self;
 }
 
 - (void)dealloc
 {
-	[lastPartialUpdate release];
+	[updateFieldstring release];
 	
 	[super dealloc];
 }
@@ -139,17 +241,16 @@ uint8_t partialUpdateCharToCell(char updateChar);
 
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block
 {
-	NSInteger row, col;
-	uint8_t cell;
 	iTetObstructionState side = obstructNone;
 	
 	// For each cell in the block, check if it is obstructed on the field
-	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
+	for (NSInteger row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
-		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
-			cell = [block cellAtRow:row column:col];
-			if (cell)
+			uint8_t cell = [block cellAtRow:row
+									 column:col];
+			if (cell != 0)
 			{
 				switch ([self cellObstructedAtRow:([block rowPos] + row)
 										   column:([block colPos] + col)])
@@ -193,59 +294,75 @@ uint8_t partialUpdateCharToCell(char updateChar);
 }
 
 #pragma mark -
-#pragma mark Board Changes/Updates
+#pragma mark Field Changes/Updates
 
-- (void)solidifyBlock:(iTetBlock*)block
+- (iTetField*)fieldBySolidifyingBlock:(iTetBlock*)block
 {
-	NSInteger row, col;
-	uint8_t cell, lastCell = 0;
-	NSInteger rowCoord, colCoord;
+	iTetField* newField = [iTetField fieldWithField:self];
+	FIELD* newContents = [newField contents];
 	
-	NSMutableString* update = [NSMutableString string];
+	NSMutableString* fieldstring = [NSMutableString string];
+	Region dirtyRegion = iTetUnknownDirtyRegion;
 	
-	[self willChangeValueForKey:@"contents"];
-	
-	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
+	uint8_t lastCell = 0;
+	for (NSInteger blockRow = 0; blockRow < ITET_BLOCK_HEIGHT; blockRow++)
 	{
-		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
+		for (NSInteger blockCol = 0; blockCol < ITET_BLOCK_WIDTH; blockCol++)
 		{
-			cell = [block cellAtRow:row column:col];
-			if (cell)
+			uint8_t cell = [block cellAtRow:blockRow
+									 column:blockCol];
+			if (cell != 0)
 			{
+				// Determine the coordinates of the field at which to add the cell
+				NSInteger fieldRow = ([block rowPos] + blockRow), fieldCol = ([block colPos] + blockCol);
+				
 				// Add this cell of the block to the field
-				contents[[block rowPos] + row][[block colPos] + col] = cell;
+				(*newContents)[fieldRow][fieldCol] = cell;
 				
 				// If this cell is a different "color" from the last one in the partial update, add that information to the update string
 				if (cell != lastCell)
 				{
-					[update appendFormat:@"%c", cellToPartialUpdateChar(cell)];
+					[fieldstring appendFormat:@"%c", cellToPartialUpdateChar(cell)];
 					lastCell = cell;
 				}
 				
-				// Add the changed cell's coordinates to the update string
-				rowCoord = ITET_CONVERT_ROW([block rowPos] + row);
-				colCoord = ITET_COL_TO_PARTIAL([block colPos] + col);
-				[update appendFormat:@"%c%c", colCoord, rowCoord];
+				// Append the changed cell's field coordinates to the partial update
+				[fieldstring appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(fieldCol), ITET_CONVERT_PARTIAL_ROW(fieldRow)];
+				
+				// Keep track of the bounds of the region of the field that will need to be redrawn
+				dirtyRegion.minRow = MIN(dirtyRegion.minRow, fieldRow);
+				dirtyRegion.minCol = MIN(dirtyRegion.minCol, fieldCol);
+				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, fieldRow);
+				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, fieldCol);
 			}
 		}
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	[newField setUpdateFieldstring:fieldstring];
+	[newField setUpdateDirtyRegion:dirtyRegion];
 	
-	// Retain this as the most recent partial update
-	[self setLastPartialUpdate:update];
+	return newField;
 }
 
-- (NSInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials
-{	
-	NSInteger linesCleared = 0;
+- (iTetField*)fieldWithLinesCleared:(NSInteger*)linesCleared
+				  retrievedSpecials:(NSArray**)specialsRetrieved
+{
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
 	
-	[self willChangeValueForKey:@"contents"];
+	NSInteger lines = 0;
 	
-	// Scan the field for complete lines, bottom-to-top
-	NSInteger row, col;
-	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	NSMutableArray* specials = nil;
+	if (specialsRetrieved != NULL)
 	{
+		specials = [NSMutableArray array];
+		*specialsRetrieved = specials;
+	}
+	
+	// Scan the old field for complete lines, bottom-to-top
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		NSInteger col;
 		for (col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			if (contents[row][col] == 0)
@@ -256,7 +373,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 		if (col == ITET_FIELD_WIDTH)
 		{
 			// ...increment the number of cleared lines...
-			linesCleared++;
+			lines++;
 			
 			// ...and scan for specials
 			if (specials != nil)
@@ -270,83 +387,60 @@ uint8_t partialUpdateCharToCell(char updateChar);
 				}
 			}
 		}
-		// Otherwise, move the line down by the number of lines cleared below it
-		else if (linesCleared > 0)
-		{
-			// Move the row
-			memcpy(contents[row - linesCleared], contents[row], sizeof(contents[row]));
-			
-			// Clear the row's previous location
-			memset(contents[row], 0, sizeof(contents[row]));
-		}
-	}
-	
-	[self didChangeValueForKey:@"contents"];
-	
-	return linesCleared;
-}
-
-- (void)clearLines
-{
-	[self clearLinesAndRetrieveSpecials:nil];
-}
-
-- (void)applyPartialUpdate:(NSString *)partialUpdate
-{
-	// Check that the update is not blank (some clients send blank updates)
-	if ([partialUpdate length] == 0)
-		return;
-	
-	[self willChangeValueForKey:@"contents"];
-	
-	// Get the first type of cell we are adding
-	const char* update = [partialUpdate cStringUsingEncoding:NSASCIIStringEncoding];
-	char currentChar = update[0];
-	uint8_t cellType = partialUpdateCharToCell(currentChar);
-	
-	NSInteger row, col;
-	for (NSUInteger i = 1; i < [partialUpdate length]; i++)
-	{
-		currentChar = update[i];
-		
-		// Check if this character specifies a new cell type
-		if ((currentChar >= 0x21) && (currentChar <= 0x2F))
-		{
-			cellType = partialUpdateCharToCell(currentChar);
-		}
-		// If not, this character is a column-index, and the next is a row-index
+		// Otherwise, copy the line to the new field, moving it down by the number of lines cleared below it
 		else
 		{
-			// Convert to our coordinate system
-			col = ITET_PARTIAL_TO_COL(currentChar);
-			row = ITET_CONVERT_ROW(update[i+1]);
-			
-			// Change the cell on the field at the specified coordinates
-			contents[row][col] = cellType;
-			
-			// Skip the next character (we just used it)
-			i++;
+			memcpy((*newContents)[row - lines], contents[row], sizeof(contents[row]));
 		}
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	// Minor optimization: if no lines were cleared, carry over the field-update deltas from the old field
+	if (lines == 0)
+	{
+		[newField setUpdateFieldstring:[self updateFieldstring]];
+		[newField setUpdateDirtyRegion:[self updateDirtyRegion]];
+	}
+	else
+	{
+		// Otherwise, make sure they get calculated later
+		[newField setUpdateFieldstring:nil];
+		[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	}
 	
-	[self setLastPartialUpdate:partialUpdate];
+	// Return (through the provided pointer) the number of lines cleared
+	if (linesCleared != NULL)
+		*linesCleared = lines;
+	
+	return newField;
 }
 
-- (void)addSpecials:(NSInteger)count
-   usingFrequencies:(NSArray*)specialFrequencies
+- (iTetField*)fieldWithLinesCleared
 {
-	[self willChangeValueForKey:@"contents"];
+	return [self fieldWithLinesCleared:NULL
+					 retrievedSpecials:NULL];
+}
+
+- (iTetField*)fieldByAddingSpecials:(NSInteger)count
+				   usingFrequencies:(NSArray*)specialFrequencies
+{
+	NSParameterAssert(specialFrequencies != nil);
+	NSParameterAssert([specialFrequencies count] == 100);
 	
-	// Count the number of non-special filled cells on the board
-	NSInteger row, col, numNonSpecialCells = 0;
-	uint8_t cell;
-	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	iTetField* newField = [iTetField fieldWithField:self];
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	FIELD* newContents = [newField contents];
+	
+	if (count == 0)
+		return newField;
+	
+	// Count the number of non-special filled cells on the old field
+	NSInteger numNonSpecialCells = 0;
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
-			cell = contents[row][col];
+			uint8_t cell = contents[row][col];
 			if ((cell > 0) && (cell <= ITET_NUM_CELL_COLORS))
 				numNonSpecialCells++;
 		}
@@ -355,26 +449,26 @@ uint8_t partialUpdateCharToCell(char updateChar);
 	// Attempt to add the specified number of specials
 	for (NSInteger specialsAdded = 0; specialsAdded < count; specialsAdded++)
 	{
-		// If there are non-special cells on the board, replace one at random with a special
+		// If there are non-special cells on the field, replace one at random with a special
 		if (numNonSpecialCells > 0)
 		{
 			// Choose a random number of cells to pass over before dropping the special
 			NSInteger cellsLeftToSkip = random() % numNonSpecialCells;
 			
-			// Iterate over the board
-			for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+			// Iterate over the field
+			for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 			{
-				for (col = 0; col < ITET_FIELD_WIDTH; col++)
+				for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 				{
 					// If this is a non-special cell, check whether to add the special
-					cell = contents[row][col];
+					uint8_t cell = (*newContents)[row][col];
 					if ((cell > 0) && (cell <= ITET_NUM_CELL_COLORS))
 					{
 						// If we have skipped the predetermined number of cells, add the special
 						if (cellsLeftToSkip == 0)
 						{
 							// Replace the cell with a random special
-							contents[row][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
+							(*newContents)[row][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
 							
 							// Decrement the number of non-special cells remaining
 							numNonSpecialCells--;
@@ -396,12 +490,13 @@ uint8_t partialUpdateCharToCell(char updateChar);
 			for (tries = 0; tries < 20; tries++)
 			{
 				// Choose a random column
-				col = random() % ITET_FIELD_WIDTH;
+				NSInteger col = random() % ITET_FIELD_WIDTH;
 				
 				// Check if the column is empty
+				NSInteger row;
 				for (row = 0; row < ITET_FIELD_HEIGHT; row++)
 				{
-					if (contents[row][col] > 0)
+					if ((*newContents)[row][col] > 0)
 						break;
 				}
 				
@@ -409,7 +504,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 				if (row == ITET_FIELD_HEIGHT)
 				{
 					// Add the new special to the bottom row
-					contents[0][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
+					(*newContents)[0][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] unsignedCharValue];
 					
 					// Go to the next iteration of the special-adding loop
 					goto nextspecial;
@@ -424,103 +519,140 @@ uint8_t partialUpdateCharToCell(char updateChar);
 	}
 abort:; // Unable to add more specials; bail
 	
-	[self didChangeValueForKey:@"contents"];
+	return newField;
 }
 
 #pragma mark Specials
 
-- (BOOL)addLines:(NSInteger)linesToAdd
-		   style:(iTetLineAddStyle)style
+- (iTetField*)fieldByAddingLines:(NSInteger)numLines
+						   style:(iTetLineAddStyle)style
+					  playerLost:(BOOL*)playerLost
 {
-	[self willChangeValueForKey:@"contents"];
+	NSParameterAssert(playerLost != NULL);
 	
-	BOOL playerLost = NO;
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
 	
-	// Repeat for each line to add
-	NSInteger row, col;
-	for (NSInteger linesAdded = 0; linesAdded < linesToAdd; linesAdded++)
+	*playerLost = NO;
+	
+	// Check if adding the specified number of lines will cause the field to "overflow" (and the player to lose)
+	for (NSInteger row = (ITET_FIELD_HEIGHT - 1); (row >= (ITET_FIELD_HEIGHT - numLines)) && !(*playerLost); row--)
 	{
-		// Check the top row to see if the player has lost
-		row = (ITET_FIELD_HEIGHT - 1);
-		for (col = 0; !playerLost && (col < ITET_FIELD_WIDTH); col++)
+		for (NSInteger col = 0;  (col < ITET_FIELD_WIDTH) && !(*playerLost); col++)
 		{
-			// If any cell is filled, adding the next line will overflow
+			// If any cell in one of these rows is filled, the field will overflow when the specified number of lines is added
 			if (contents[row][col] > 0)
-				playerLost = YES;
+				*playerLost = YES;
 		}
-		
-		// Shift all rows (except the top row) up
-		for (row = (ITET_FIELD_HEIGHT - 2); row >= 0; row--)
-		{
-			// Copy this row to the row above
-			memcpy(contents[row + 1], contents[row], sizeof(contents[row]));
-		}
-		
+	}
+	
+	// Copy rows from the old field to the new, shifting up by the appropriate number of lines
+	for (NSInteger row = 0; row < (ITET_FIELD_HEIGHT - numLines); row++)
+	{
+		memcpy((*newContents)[row + numLines], contents[row], sizeof(contents[row]));
+	}
+	
+	// Fill the empty rows at the bottom of the new field with garbage
+	for (NSInteger row = 0; row < numLines; row++)
+	{
 		// Determine what style of line add to perform
 		if (style == classicStyle)
 		{
 			// Fill the bottom row completely
-			for (col = 0; col < ITET_FIELD_WIDTH; col++)
-				contents[0][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+			for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+				(*newContents)[0][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
 			
 			// Clear a random cell in the row
-			contents[0][(random() % ITET_FIELD_WIDTH)] = 0;
+			(*newContents)[0][(random() % ITET_FIELD_WIDTH)] = 0;
 		}
 		else
 		{
 			// Fill the bottom row randomly
-			for (col = 0; col < ITET_FIELD_WIDTH; col++)
-				contents[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
+			for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+				(*newContents)[0][col] = random() % (ITET_NUM_CELL_COLORS + 1);
 			
 			// Ensure that at least one column index is empty
-			contents[0][(random() % ITET_FIELD_WIDTH)] = 0;
+			(*newContents)[0][(random() % ITET_FIELD_WIDTH)] = 0;
 		}
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
 	
-	return playerLost;
+	return newField;
 }
 
-- (void)clearBottomLine
+- (iTetField*)fieldByClearingBottomLine
 {
-	[self willChangeValueForKey:@"contents"];
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
 	
-	// Shift all lines (except the bottom) down
+	// Copy all lines (except the bottom) from the old field to the new, shifting down by one row
 	for (NSInteger row = 1; row < ITET_FIELD_HEIGHT; row++)
 	{
-		// Move this row to the row below
-		memcpy(contents[row - 1], contents[row], sizeof(contents[row]));
+		memcpy((*newContents)[row - 1], contents[row], sizeof(contents[row]));
 	}
 	
-	// Clear the top line
-	memset(contents[(ITET_FIELD_HEIGHT - 1)], 0, sizeof(contents[(ITET_FIELD_HEIGHT - 1)]));
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
 	
-	[self didChangeValueForKey:@"contents"];
+	return newField;
 }
 
 #define ITET_NUM_RANDOM_CLEARS	(10)
 
-- (void)clearRandomCells
+- (iTetField*)fieldByClearingTenRandomCells
 {
-	[self willChangeValueForKey:@"contents"];
+	iTetField* newField = [iTetField fieldWithField:self];
+	FIELD* newContents = [newField contents];
+	
+	NSMutableString* updatedCoordinates = [NSMutableString string];
+	Region dirtyRegion = iTetUnknownDirtyRegion;
 	
 	// Clear ten random cells on the field
 	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
-		contents[(random() % ITET_FIELD_HEIGHT)][(random() % ITET_FIELD_WIDTH)] = 0;
+	{
+		// Select random row/column indexes
+		NSInteger row = (random() % ITET_FIELD_HEIGHT), col = (random() % ITET_FIELD_WIDTH);
+		
+		// Check if the cell is already empty
+		if ((*newContents)[row][col] != 0)
+		{
+			// Clear the cell
+			(*newContents)[row][col] = 0;
+			
+			// Append the coordinates to the partial-update fieldstring
+			[updatedCoordinates appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(col), ITET_CONVERT_PARTIAL_ROW(row)];
+			
+			// Keep track of the bounds of the region of the field that will need to be redrawn
+			dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
+			dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
+			dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
+			dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+		}
+	}
 	
-	[self didChangeValueForKey:@"contents"];
+	// Check if the field has changed at all (this special sometimes has no effect)
+	if ([updatedCoordinates length] > 0)
+	{
+		[newField setUpdateFieldstring:[NSString stringWithFormat:@"%c%@", cellToPartialUpdateChar(0), updatedCoordinates]];
+		[newField setUpdateDirtyRegion:dirtyRegion];
+	}
+	
+	return newField;
 }
 
 #define ITET_NUM_CLEAR_ROWS	(6)
 
-- (void)shiftClearTopRows
+- (iTetField*)fieldByClearingTopSixRows
 {
 	// Find the highest row among the top six with an occupied cell
-	NSInteger row, col, rowsToShift = 0;
-	for (row = (ITET_FIELD_HEIGHT - 1); row > ((ITET_FIELD_HEIGHT - 1) - ITET_NUM_CLEAR_ROWS); row--)
+	NSInteger rowsToShift = 0;
+	for (NSInteger row = (ITET_FIELD_HEIGHT - 1); row > ((ITET_FIELD_HEIGHT - 1) - ITET_NUM_CLEAR_ROWS); row--)
 	{
-		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			if (contents[row][col] > 0)
 			{
@@ -531,63 +663,66 @@ abort:; // Unable to add more specials; bail
 	}
 cellfound:
 	
-	// Shift the field down
-	[self shiftAllRowsDownByAmount:rowsToShift];
+	// Return a copy of the field, shifted down by the appropriate amount
+	return [self fieldByShiftingContentsDownByAmount:rowsToShift];
 }
 
-- (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount
+- (iTetField*)fieldByShiftingContentsDownByAmount:(NSInteger)shiftAmount
 {
 	if (shiftAmount <= 0)
-		return;
+		return [iTetField fieldWithField:self];
 	
-	[self willChangeValueForKey:@"contents"];
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
 	
-	// Iterate over rows on the field, bottom to top, and shift them down
-	NSInteger row;
-	for (row = shiftAmount; row < (ITET_FIELD_HEIGHT - (ITET_NUM_CLEAR_ROWS - shiftAmount)); row++)
+	// Iterate over rows on the old field, skipping rows at the bottom, and any clear rows at the top, and copy them to the new field, shifted down
+	for (NSInteger row = shiftAmount; row < (ITET_FIELD_HEIGHT - (ITET_NUM_CLEAR_ROWS - shiftAmount)); row++)
 	{
-		// Move the row down
-		memcpy(contents[row - shiftAmount], contents[row], sizeof(contents[row]));
+		memcpy((*newContents)[row - shiftAmount], contents[row], sizeof(contents[row]));
 	}
 	
-	// Clear the rows that haven't been overwritten
-	for (row = (ITET_FIELD_HEIGHT - ITET_NUM_CLEAR_ROWS); row < (ITET_FIELD_HEIGHT - (ITET_NUM_CLEAR_ROWS - shiftAmount)); row++)
-	{
-		// Clear the row
-		memset(contents[row], 0, sizeof(contents[row]));
-	}
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
 	
-	[self didChangeValueForKey:@"contents"];
+	return newField;
 }
 
-- (void)removeAllSpecials
+- (iTetField*)fieldByRemovingAllSpecials
 {
-	[self willChangeValueForKey:@"contents"];
+	iTetField* newField = [iTetField fieldWithField:self];
+	FIELD* newContents = [newField contents];
 	
-	// Iterate over the field
+	// Iterate over the old field
 	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
 		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
-			// If this cell is a special, replace it with a random normal cell
+			// Check if each cell is a special on the old field
 			if (contents[row][col] > ITET_NUM_CELL_COLORS)
-				contents[row][col] = (random() % ITET_NUM_CELL_COLORS) + 1;
+			{
+				// Change the special to a random normal cell
+				(*newContents)[row][col] = ((random() % ITET_NUM_CELL_COLORS) + 1);
+			}
 		}
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	
+	return newField;
 }
 
-- (void)pullCellsDown
+- (iTetField*)fieldByPullingCellsDown
 {
-	[self willChangeValueForKey:@"contents"];
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
 	
 	// Iterate over the field in column-row order (my apologies to the CPU cache)
-	NSInteger gapsBelow;
 	for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 	{
 		// Scan the column for gaps, bottom-to-top
-		gapsBelow = 0;
+		NSInteger gapsBelow = 0;
 		for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 		{
 			// If the cell is empty, increment the number of gaps in the column
@@ -595,29 +730,31 @@ cellfound:
 			{
 				gapsBelow++;
 			}
-			// Otherwise, copy the cell down by the number of gaps below it
-			else if (gapsBelow > 0)
+			// Otherwise, copy the cell to the new field, shifted down by the number of gaps below it
+			else
 			{
-				// Move the cell down
-				contents[row - gapsBelow][col] = contents[row][col];
-				
-				// Clear the old location
-				contents[row][col] = 0;
+				(*newContents)[row - gapsBelow][col] = contents[row][col];
 			}
 		}
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	
+	return newField;
 }
 
-- (void)randomShiftRows
-{	
-	// Iterate over each row of the board
-	NSInteger randomNumber, shiftAmount;
+- (iTetField*)fieldByRandomlyShiftingRows
+{
+	iTetField* newField = [iTetField field];
+	FIELD* newContents = [newField contents];
+	
+	// Iterate over each row of the old field
 	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
 		// Doing this GTetrinet-style: pick a random number in [0, 22)
-		randomNumber = random() % 22;
+		NSInteger randomNumber = random() % 22, shiftAmount = 0;
 		
 		// Use the random value to pick a shift amount
 		if (randomNumber < 1)
@@ -627,139 +764,237 @@ cellfound:
 		else if (randomNumber < 11)
 			shiftAmount = 1;
 		else
-			continue; // No shift
+			shiftAmount = 0; // No shift
 		
-		[self shiftRow:row
-			  byAmount:shiftAmount
-		   inDirection:(random() % 2)];
+		// Pick a shift direction
+		BOOL shiftLeft = (random() % 2);
+		if (shiftLeft)
+		{
+			// Copy the row from the old field to the new, shifted left by the chosen amount
+			memcpy((*newContents)[row], (contents[row] + shiftAmount), (sizeof(uint8_t) * (ITET_FIELD_WIDTH - shiftAmount)));
+		}
+		else
+		{
+			// Copy the row from the old field to the new, shifted right by the chosen amount
+			memcpy(((*newContents)[row] + shiftAmount), contents[row], (sizeof(uint8_t) * (ITET_FIELD_WIDTH - shiftAmount)));
+		}
 	}
+	
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	
+	return newField;
 }
 
-- (void)shiftRow:(NSInteger)row
-		byAmount:(NSInteger)shiftAmount
-     inDirection:(BOOL)shiftLeft
+- (iTetField*)fieldByExplodingBlockBombs
 {
-	NSInteger col;
+	iTetField* newField = [iTetField fieldWithField:self];
+	FIELD* newContents = [newField contents];
 	
-	[self willChangeValueForKey:@"contents"];
-	
-	if (shiftLeft)
-	{	
-		// Shift cells in the row to the left
-		for (col = 0; col < (ITET_FIELD_WIDTH - shiftAmount); col++)
-			contents[row][col] = contents[row][col + shiftAmount];
-		
-		// Clear the cells to the right of the shifted columns
-		for (; col < ITET_FIELD_WIDTH; col++)
-			contents[row][col] = 0;
-	}
-	else
-	{
-		// Shift cells in the row to the right
-		for (col = ((ITET_FIELD_WIDTH - 1) - shiftAmount); col >= 0; col--)
-			contents[row][col + shiftAmount] = contents[row][col];
-		
-		// Clear the cells to the left
-		for (col = 0; col < shiftAmount; col++)
-			contents[row][col] = 0;
-	}
-	
-	[self didChangeValueForKey:@"contents"];
-}
-
-- (void)explodeBlockBombs
-{
 	NSMutableArray* scatteredCells = [NSMutableArray array];
 	
-	[self willChangeValueForKey:@"contents"];
-	
-	// Scan the board for block bomb specials
-	NSInteger row, col;
-	uint8_t cell;
-	for (row = 0; row < ITET_FIELD_HEIGHT; row++)
+	// Scan the field for block bomb specials
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (col = 0; col < ITET_FIELD_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
-			// If this cell is a block bomb, remove it, and the cells around it
+			// If this cell is a block bomb on the old field, remove it from the new field
 			if (contents[row][col] == blockBomb)
 			{
 				// Remove the block bomb
-				contents[row][col] = 0;
+				(*newContents)[row][col] = 0;
 				
-				// Check the surrounding cells
+				// Clear the surrounding cells, and collect their contents, to be "scattered" around the field
 				for (NSInteger rowOffset = -1; rowOffset <= 1; rowOffset++)
 				{
 					for (NSInteger colOffset = -1; colOffset <= 1; colOffset++)
 					{
 						// Check if this cell is off-field
 						if (((row + rowOffset) < 0) || ((row + rowOffset) >= ITET_FIELD_HEIGHT) ||
-						    ((col + colOffset) < 0) || ((col + colOffset) >= ITET_FIELD_WIDTH))
+							((col + colOffset) < 0) || ((col + colOffset) >= ITET_FIELD_WIDTH))
 							continue;
 						
 						// Get the contents of each (on-field) cell around the block bomb
-						cell = contents[row + rowOffset][col + colOffset];
+						uint8_t cell = (*newContents)[row + rowOffset][col + colOffset];
 						
-						// Treat other block bomb cells as already empty
-						if (cell == blockBomb)
-							cell = 0;
-						// Clear all other cells
-						else
-							contents[row + rowOffset][col + colOffset] = 0;
-						
-						// Collect the cells, to be scattered around the field
-						[scatteredCells addObject:[NSNumber numberWithUnsignedChar:cell]];
+						// Ignore other block bomb cells found in this way
+						if (cell != blockBomb)
+						{
+							(*newContents)[row + rowOffset][col + colOffset] = 0;
+							
+							// Collect the cells, to be scattered around the field
+							[scatteredCells addObject:[NSNumber numberWithUnsignedChar:cell]];
+						}
 					}
 				}
 			}
 		}
 	}
 	
-	// Scatter the collected cells around the field, keeping the top six rows clear
+	// Scatter the collected cells around the field (leaving the top six rows clear)
 	// note: this is GTetrinet's implemetation; some cells may overwrite others
 	for (NSNumber* movedCell in scatteredCells)
 	{
-		row = random() % (ITET_FIELD_HEIGHT - 6);
-		col = random() % ITET_FIELD_WIDTH;
-		contents[row][col] = [movedCell unsignedCharValue];
+		(*newContents)[(random() % (ITET_FIELD_HEIGHT - ITET_NUM_CLEAR_ROWS))][(random() % ITET_FIELD_WIDTH)] = [movedCell unsignedCharValue];
 	}
 	
-	[self didChangeValueForKey:@"contents"];
+	// Make sure the field-update deltas get calculated later
+	[newField setUpdateFieldstring:nil];
+	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
+	
+	return newField;
 }
 
 #pragma mark -
 #pragma mark Accessors
 
-- (uint8_t)cellAtRow:(NSInteger)row
-			  column:(NSInteger)col
+// Total cell types = |{empty cell}| + |{normal cells}| + |{specials}|
+#define ITET_TOTAL_CELL_TYPES	(1 + (ITET_NUM_CELL_COLORS) + (ITET_NUM_SPECIAL_TYPES))
+
+- (void)setUpdateDeltasFromField:(iTetField*)field
 {
-	return contents[row][col];
+	NSInteger totalCellsChanged = 0;
+	
+	Coord updateCoordinates[ITET_TOTAL_CELL_TYPES][ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT];
+	memset(&updateCoordinates, 0, sizeof(updateCoordinates));
+	
+	NSInteger cellTypeUpdateCount[ITET_TOTAL_CELL_TYPES];
+	memset(&cellTypeUpdateCount, 0, sizeof(cellTypeUpdateCount));
+	
+	Region dirtyRegion = iTetUnknownDirtyRegion;
+	
+	// Iterate over the fields
+	FIELD* otherContents = [field contents];
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			// Check if the cell at these coordinates differs from the same cell on the other field
+			uint8_t cell = contents[row][col];
+			if (cell != (*otherContents)[row][col])
+			{
+				// Convert the cell value to an index in the array of updated coordinates
+				NSInteger cellTypeIndex = (cellToPartialUpdateChar(cell) - ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);
+				
+				// Add the current coordinates to the list of changed coordinates for cells of this type
+				updateCoordinates[cellTypeIndex][cellTypeUpdateCount[cellTypeIndex]] = iTetMakeCoord(row, col);
+				
+				// Increment the count of cells in the delta, along with the count of cells of this type
+				cellTypeUpdateCount[cellTypeIndex]++;
+				totalCellsChanged++;
+				
+				// Keep track of the bounds of the region of the field that will need to be redrawn
+				dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
+				dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
+				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
+				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+			}
+		}
+	}
+	
+	// Short-circuit optimization: check if the fields are identical
+	if (totalCellsChanged <= 0)
+	{
+		[self setUpdateFieldstring:iTetUnchangedFieldstringPlaceholder];
+		[self setUpdateDirtyRegion:iTetEmptyDirtyRegion];
+		return;
+	}
+	
+	// Count the number of cell type which have update coordinates on the field
+	NSInteger cellTypesWithChanges = 0;
+	for (NSInteger cellTypeIndex = 0; cellTypeIndex < ITET_TOTAL_CELL_TYPES; cellTypeIndex++)
+	{
+		if (cellTypeUpdateCount[cellTypeIndex] > 0)
+			cellTypesWithChanges++;
+	}
+	
+	// Short-circuit optimization: check if a partial-update fieldstring would be longer than a standard, full-field fieldstring
+	// Length = (one character for each cell type with updates) + (two characters for row/column indexes of each updated cell)
+	NSInteger partialUpdateLength = (cellTypesWithChanges + (totalCellsChanged * 2));
+	if (partialUpdateLength >= (ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT))
+	{
+		[self setUpdateFieldstring:[self fullFieldstring]];
+		
+		// Keep the calculated dirty region; it may still be smaller than the whole field
+		[self setUpdateDirtyRegion:dirtyRegion];
+		
+		return;
+	}
+	
+	// Create the partial update fieldstring
+	NSMutableString* partialUpdate = [NSMutableString stringWithCapacity:partialUpdateLength];
+	for (NSInteger cellTypeIndex = 0; cellTypeIndex < ITET_TOTAL_CELL_TYPES; cellTypeIndex++)
+	{
+		if (cellTypeUpdateCount[cellTypeIndex] <= 0)
+			continue;
+		
+		// Append the specifier character for this cell-type to the update string
+		[partialUpdate appendFormat:@"%c", (cellTypeIndex + ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX)];
+		
+		// For each updated coordinate of this cell type...
+		for (NSInteger coordinateIndex = 0; coordinateIndex < cellTypeUpdateCount[cellTypeIndex]; coordinateIndex++)
+		{
+			// Convert to the partial-update format, and append in column-row order
+			Coord coord = updateCoordinates[cellTypeIndex][coordinateIndex];
+			[partialUpdate appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(coord.col), ITET_CONVERT_PARTIAL_ROW(coord.row)];
+		}
+	}
+	
+	[self setUpdateFieldstring:partialUpdate];
+	[self setUpdateDirtyRegion:dirtyRegion];
 }
 
-- (NSString*)fieldstring
+- (FIELD*)contents
 {
-	NSMutableString* field = [NSMutableString stringWithCapacity:(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT)];
+	return &contents;
+}
+
+- (uint8_t)cellAtCoordinates:(Coord)coordinates
+{
+	return contents[coordinates.row][coordinates.col];
+}
+
+- (NSString*)fullFieldstring
+{
+	NSMutableString* fieldstring = [NSMutableString stringWithCapacity:(ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT)];
 	
-	uint8_t cell;
 	// Iterate over the whole field (TOP TO BOTTOM)
 	for (NSInteger row = (ITET_FIELD_HEIGHT - 1); row >= 0; row--)
 	{
 		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the contents of this cell
-			cell = contents[row][col];
+			uint8_t cell = contents[row][col];
 			
 			// If the cell contains a special, add the special's letter to the fieldstring
 			if (cell > ITET_NUM_CELL_COLORS)
-				[field appendFormat:@"%c", cell];
+				[fieldstring appendFormat:@"%c", cell];
 			// Otherwise, add the cell's numeric value
 			else
-				[field appendFormat:@"%d", cell];
+				[fieldstring appendFormat:@"%d", cell];
 		}
 	}
 	
 	// Return the completed fieldstring
-	return [NSString stringWithString:field];
+	return fieldstring;
 }
+
+- (void)setUpdateFieldstring:(NSString*)fieldstring
+{
+	NSString* temp = [fieldstring copy];
+	[updateFieldstring release];
+	updateFieldstring = temp;
+}
+@synthesize updateFieldstring;
+
+- (void)setUpdateDirtyRegion:(Region)dirtyRegion
+{
+	updateDirtyRegion = dirtyRegion;
+}
+@synthesize updateDirtyRegion;
+
+@end
 
 char cellToPartialUpdateChar(uint8_t cellType)
 {
@@ -768,23 +1003,19 @@ char cellToPartialUpdateChar(uint8_t cellType)
 	
 	// If it is, index from ASCII 38 ('&')
 	if (cellAsSpecial != invalidSpecial)
-		return (cellAsSpecial + 38);
+		return (cellAsSpecial + (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS));
 	
 	// Normal cells are indexed from ASCII 33 ('!')
-	return (cellType + 33);
+	return (cellType + ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);
 }
 
 uint8_t partialUpdateCharToCell(char updateChar)
 {
 	// Check to see if the update character maps to a special type
-	uint8_t cellAsSpecial = [iTetSpecials specialTypeForNumber:(updateChar - 38)];
+	uint8_t cellAsSpecial = [iTetSpecials specialTypeForNumber:(updateChar - (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS))];
 	if (cellAsSpecial != invalidSpecial)
 		return cellAsSpecial;
 	
 	// Otherwise, reverse-index from ASCII 33 to get the normal cell type
-	return (updateChar - 33);
+	return (updateChar - ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);
 }
-
-@synthesize lastPartialUpdate;
-
-@end

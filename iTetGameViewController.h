@@ -101,13 +101,6 @@ typedef enum
 - (void)resumeGame;
 - (void)endGame;
 
-- (void)sendFieldstring;
-- (void)sendPartialFieldstring;
-- (void)sendCurrentLevel;
-- (void)sendSpecial:(iTetSpecialType)special
-		   toPlayer:(iTetPlayer*)target;
-- (void)sendLines:(NSInteger)lines;
-
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player;
 - (void)specialUsed:(iTetSpecialType)special

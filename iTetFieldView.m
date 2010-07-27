@@ -73,8 +73,7 @@
 		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
 		{
 			// Get the cell type
-			cell = [[self field] cellAtRow:row
-									column:col];
+			cell = [[self field] cellAtCoordinates:iTetMakeCoord(row, col)];
 			
 			// If there is nothing to draw, skip to next iteration of loop
 			if (cell == 0)
@@ -100,26 +99,6 @@
 }
 
 #pragma mark -
-#pragma mark Key-Value Observing
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-					  ofObject:(id)object
-						change:(NSDictionary *)change
-					   context:(void *)context
-{
-	if ([object isKindOfClass:[iTetField class]])
-	{
-		[self setNeedsDisplay:YES];
-		return;
-	}
-	
-	[super observeValueForKeyPath:keyPath
-						 ofObject:object
-						   change:change
-						  context:context];
-}
-
-#pragma mark -
 #pragma mark Accessors
 
 - (BOOL)isOpaque
@@ -129,20 +108,10 @@
 
 - (void)setField:(iTetField*)newField
 {
-	// Stop observing the old field
-	[field removeObserver:self
-			   forKeyPath:@"contents"];
-	
 	// Swap in new field
 	[newField retain];
 	[field release];
 	field = newField;
-	
-	// Start observing the new field
-	[field addObserver:self
-			forKeyPath:@"contents"
-			   options:0
-			   context:NULL];
 	
 	[self setNeedsDisplay:YES];
 }

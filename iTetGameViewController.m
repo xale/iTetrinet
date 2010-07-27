@@ -47,12 +47,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)moveCurrentBlockDown;
 - (void)solidifyCurrentBlock;
-- (BOOL)checkForLinesCleared;
+- (void)checkForLinesCleared:(iTetField*)field;
 - (void)moveNextBlockToField;
 - (void)useSpecial:(iTetSpecialType)special
 		  onTarget:(iTetPlayer*)target
 		fromSender:(iTetPlayer*)sender;
 - (void)playerLost;
+
+- (void)sendFieldUpdate;
+- (void)sendCurrentLevel;
+- (void)sendSpecial:(iTetSpecialType)special
+		   toPlayer:(iTetPlayer*)target;
+- (void)sendLines:(NSInteger)lines;
 
 - (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
@@ -516,10 +522,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		// Create the field
 		[LOCALPLAYER setField:[iTetField fieldWithStackHeight:[rules integerForKey:iTetGameRulesInitialStackHeightKey]]];
-		
-		// If this isn't an offline game, send the field to the server
-		[self sendFieldstring];
 	}
+	
+	// If this isn't an offline game, send the local player's field to the server
+	[self sendFieldUpdate];
 	
 	// Create a random block generator
 	if ([rules intForKey:iTetGameRulesGameVersionKey] == version114)
@@ -653,48 +659,16 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)solidifyCurrentBlock
 {
-	// Solidify the block
-	[[LOCALPLAYER field] solidifyBlock:[LOCALPLAYER currentBlock]];
+	// Add the current block to the local player's field
+	iTetField* newField = [[LOCALPLAYER field] fieldBySolidifyingBlock:[LOCALPLAYER currentBlock]];
 	
-	// Check for cleared lines
-	if ([self checkForLinesCleared])
-	{
-		// Send the updated field to the server
-		[self sendFieldstring];
-	}
-	else
-	{
-		// Send the field with the new block to the server
-		[self sendPartialFieldstring];
-	}
-	
-	// Depending on the protocol, either start the next block immediately, or set a time delay
-	if ([currentGameRules intForKey:iTetGameRulesGameTypeKey] == tetrifastProtocol)
-	{
-		// Spawn the next block immediately
-		[self moveNextBlockToField];
-	}
-	else
-	{
-		// Remove the current block
-		[LOCALPLAYER setCurrentBlock:nil];
-		
-		// Set a timer to spawn the next block
-		[self startNextBlockTimer];
-	}
-}
-
-- (BOOL)checkForLinesCleared
-{
 	// Attempt to clear lines on the field
-	BOOL linesCleared = NO;
-	NSMutableArray* specials = [NSMutableArray array];
-	NSInteger numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
+	NSInteger numLines = 0;
+	NSArray* specials = nil;
+	newField = [newField fieldWithLinesCleared:&numLines
+							 retrievedSpecials:&specials];
 	while (numLines > 0)
 	{
-		// Make a note that some lines were cleared
-		linesCleared = YES;
-		
 		// Add the lines to the player's counts
 		[LOCALPLAYER addLines:numLines];
 		
@@ -722,22 +696,22 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			NSInteger linesToSend = 0;
 			switch (numLines)
 			{
-				// For two lines cleared, send one line
+					// For two lines cleared, send one line
 				case 2:
 					linesToSend = 1;
 					break;
 					
-				// For three lines cleared, send two lines
+					// For three lines cleared, send two lines
 				case 3:
 					linesToSend = 2;
 					break;
 					
-				// For four lines cleared, send four lines
+					// For four lines cleared, send four lines
 				case 4:
 					linesToSend = 4;
 					break;
 					
-				// For one line, send nothing
+					// For one line, send nothing
 				default:
 					break;
 			}
@@ -760,7 +734,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			// Decrement the lines cleared since the last level update
 			[LOCALPLAYER setLinesSinceLastLevel:([LOCALPLAYER linesSinceLastLevel] - linesPer)];
 		}
-			
+		
 		// Check whether to add specials to the field
 		if ([currentGameRules boolForKey:iTetGameRulesSpecialsEnabledKey])
 		{
@@ -768,20 +742,39 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			while ([LOCALPLAYER linesSinceLastSpecials] >= linesPer)
 			{
 				// Add specials
-				[[LOCALPLAYER field] addSpecials:[currentGameRules integerForKey:iTetGameRulesSpecialsAddedKey]
-								usingFrequencies:[currentGameRules objectForKey:iTetGameRulesSpecialFrequenciesKey]];
+				newField = [newField fieldByAddingSpecials:[currentGameRules integerForKey:iTetGameRulesSpecialsAddedKey]
+										  usingFrequencies:[currentGameRules objectForKey:iTetGameRulesSpecialFrequenciesKey]];
 				
 				// Decrement the lines cleared since last specials added
 				[LOCALPLAYER setLinesSinceLastSpecials:([LOCALPLAYER linesSinceLastSpecials] - linesPer)];
 			}
 		}
 		
-		// Check for additional lines cleared (an unusual occurrence, but still possible)
-		[specials removeAllObjects];
-		numLines = [[LOCALPLAYER field] clearLinesAndRetrieveSpecials:specials];
+		// Check for additional lines cleared (a very unusual occurrence, but still possible)
+		newField = [newField fieldWithLinesCleared:&numLines
+								 retrievedSpecials:&specials];
 	}
 	
-	return linesCleared;
+	// Update the local player's field
+	[LOCALPLAYER setField:newField];
+	
+	// Send updates to the server
+	[self sendFieldUpdate];
+	
+	// Depending on the protocol, either start the next block immediately, or set a time delay
+	if ([currentGameRules intForKey:iTetGameRulesGameTypeKey] == tetrifastProtocol)
+	{
+		// Spawn the next block immediately
+		[self moveNextBlockToField];
+	}
+	else
+	{
+		// Remove the current block
+		[LOCALPLAYER setCurrentBlock:nil];
+		
+		// Set a timer to spawn the next block
+		[self startNextBlockTimer];
+	}
 }
 
 - (void)moveNextBlockToField
@@ -816,81 +809,72 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		  onTarget:(iTetPlayer*)target
 		fromSender:(iTetPlayer*)sender
 {
-	// Determine the action to take
+	iTetField* newField = nil;
+	BOOL playerLost = NO;
+	
+	// Determine the type of special and its effect on the field
 	switch (special)
 	{
 		case addLine:
-			// Add a line to the field, check for field overflow
-			if ([[LOCALPLAYER field] addLines:1 style:specialStyle])
-			{
-				[self playerLost];
-				return;
-			}
+			// Add a line to the field
+			newField = [[LOCALPLAYER field] fieldByAddingLines:1
+														 style:specialStyle 
+													playerLost:&playerLost];
 			break;
 			
 		case clearLine:
 			// Remove the bottom line from the field
-			[[LOCALPLAYER field] clearBottomLine];
+			newField = [[LOCALPLAYER field] fieldByClearingBottomLine];
 			break;
 			
 		case nukeField:
 			// Clear the field
-			[LOCALPLAYER setField:[iTetField field]];
+			newField = [iTetField field];
 			break;
 			
 		case randomClear:
 			// Clear random cells from the field
-			[[LOCALPLAYER field] clearRandomCells];
+			newField = [[LOCALPLAYER field] fieldByClearingTenRandomCells];
 			break;
 			
 		case switchField:
 			// If the local player is the target, copy the sender's field
 			if ([target isLocalPlayer])
-				[LOCALPLAYER setField:[[[sender field] copy] autorelease]];
+				newField = [[sender field] fieldByClearingTopSixRows];
 			// If the local player is the sender, copy the target's field
 			else
-				[LOCALPLAYER setField:[[[target field] copy] autorelease]];
-			
-			// Safety check: ensure the top rows of the swapped field are clear (prevents the switchfield from being an insta-kill)
-			[[LOCALPLAYER field] shiftClearTopRows];
-			
+				newField = [[target field] fieldByClearingTopSixRows];
 			break;
 			
 		case clearSpecials:
 			// Clear all specials from the field
-			[[LOCALPLAYER field] removeAllSpecials];
+			newField = [[LOCALPLAYER field] fieldByRemovingAllSpecials];
 			break;
 			
 		case gravity:
 			// Apply gravity to the field
-			[[LOCALPLAYER field] pullCellsDown];
-			
-			// Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected
-			[[LOCALPLAYER field] clearLines];
+			// (Lines may be completed after a gravity special, but they don't count toward the player's lines cleared, and specials aren't collected)
+			newField = [[[LOCALPLAYER field] fieldByPullingCellsDown] fieldWithLinesCleared];
 			break;
 			
 		case quakeField:
 			// "Quake" the field
-			[[LOCALPLAYER field] randomShiftRows];
+			newField = [[LOCALPLAYER field] fieldByRandomlyShiftingRows];
 			break;
 			
 		case blockBomb:
 			// "Explode" block bomb blocks
-			[[LOCALPLAYER field] explodeBlockBombs];
-			
-			// Block bombs may (very rarely) complete lines; see note at "gravity"
-			[[LOCALPLAYER field] clearLines];
+			// (Block bombs may (very rarely) complete lines; see note at "gravity")
+			newField = [[[LOCALPLAYER field] fieldByExplodingBlockBombs] fieldWithLinesCleared];
 			break;
 			
 		case classicStyle1:
 		case classicStyle2:
 		case classicStyle4:
-			// Add line(s) to the field, check for field overflow
-			if ([[LOCALPLAYER field] addLines:[iTetSpecials classicLinesForSpecialType:special] style:classicStyle])
-			{
-				[self playerLost];
-				return;
-			}
+			// Add line(s) to the field
+			newField = [[LOCALPLAYER field] fieldByAddingLines:[iTetSpecials classicLinesForSpecialType:special]
+														 style:classicStyle 
+													playerLost:&playerLost];
 			break;
 			
 		default:
@@ -898,8 +882,19 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 	}
 	
-	// Send field changes to the server
-	[self sendFieldstring];
+	// Check if the local player has lost the game
+	if (playerLost)
+	{
+		[self playerLost];
+	}
+	else
+	{
+		// Apply changes to local player's field
+		[LOCALPLAYER setField:newField];
+		
+		// Send field changes to the server
+		[self sendFieldUpdate];
+	}	
 }
 
 - (void)playerLost
@@ -928,12 +923,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[blockTimer invalidate];
 	blockTimer = nil;
 	
-	// Send a "player lost" message to the server, along with the final field state
+	// Send a "player lost" message to the server, along with the "death field"
 	iTetMessage* message = [iTetMessage messageWithMessageType:playerLostMessage];
 	[[message contents] setInteger:[LOCALPLAYER playerNumber]
 							forKey:iTetMessagePlayerNumberKey];
 	[networkController sendMessage:message];
-	[self sendFieldstring];
+	[self sendFieldUpdate];
 }
 
 #pragma mark iTetLocalFieldView Event Delegate Methods
@@ -1080,34 +1075,21 @@ doCommandBySelector:(SEL)command
 #pragma mark -
 #pragma mark Client-to-Server Events
 
-- (void)sendFieldstring
+- (void)sendFieldUpdate
 {
 	// If this is an offline game, do nothing
 	if ([self offlineGame])
 		return;
 	
-	// Otherwise, create a message with the string for the local player's field
-	iTetMessage* message = [iTetMessage messageWithMessageType:fieldstringMessage];
-	[[message contents] setInteger:[LOCALPLAYER playerNumber]
-							forKey:iTetMessagePlayerNumberKey];
-	[[message contents] setObject:[[LOCALPLAYER field] fieldstring]
-						   forKey:iTetMessageFieldstringKey];
-	
-	// Send the message to the server
-	[networkController sendMessage:message];
-}
-
-- (void)sendPartialFieldstring
-{
-	// If this is an offline game, do nothing
-	if ([self offlineGame])
+	// If the field has no relevant updates, do nothing
+	if ([[[LOCALPLAYER field] updateFieldstring] isEqualToString:iTetUnchangedFieldstringPlaceholder])
 		return;
 	
-	// Otherwise, create a message with the last partial update on the local player's field
+	// Otherwise, create a field-update message
 	iTetMessage* message = [iTetMessage messageWithMessageType:fieldstringMessage];
 	[[message contents] setInteger:[LOCALPLAYER playerNumber]
 							forKey:iTetMessagePlayerNumberKey];
-	[[message contents] setObject:[[LOCALPLAYER field] lastPartialUpdate]
+	[[message contents] setObject:[[LOCALPLAYER field] updateFieldstring]
 						   forKey:iTetMessageFieldstringKey];
 	
 	// Send the message to the server
@@ -1183,7 +1165,8 @@ doCommandBySelector:(SEL)command
 	if ((firstChar >= 0x21) && (firstChar <= 0x2F))
 	{
 		// Update the player's field with a partial update
-		[[player field] applyPartialUpdate:fieldstring];
+		[player setField:[iTetField fieldByApplyingPartialUpdate:fieldstring
+														 toField:[player field]]];
 	}
 	else
 	{

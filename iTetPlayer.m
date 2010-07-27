@@ -106,6 +106,23 @@
 @synthesize playerNumber;
 @synthesize teamName;
 @synthesize playing;
+
+- (void)setField:(iTetField*)newField
+{
+	// Check that the new field has an update fieldstring, and create it if it does not
+	if ([newField updateFieldstring] == nil)
+	{
+		if (field == nil)
+			[newField setUpdateDeltasFromField:[iTetField field]];
+		else
+			[newField setUpdateDeltasFromField:field];
+	}
+	
+	// Swap in the new field
+	[newField retain];
+	[field release];
+	field = newField;
+}
 @synthesize field;
 @synthesize level;
 

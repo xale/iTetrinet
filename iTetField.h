@@ -14,6 +14,8 @@
 #define ITET_FIELD_WIDTH	12
 #define ITET_FIELD_HEIGHT	22
 
+typedef uint8_t FIELD[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
+
 typedef enum
 {
 	obstructNone =	0,
@@ -27,23 +29,64 @@ typedef enum
 	classicStyle
 } iTetLineAddStyle;
 
+typedef struct Coord
+{
+	NSInteger row, col;
+} Coord;
+
+NS_INLINE Coord iTetMakeCoord(NSInteger row, NSInteger col)
+{
+	Coord c;
+	c.row = row;
+	c.col = col;
+	return c;
+}
+
+typedef struct Region
+{
+	NSInteger minRow, minCol, maxRow, maxCol;
+} Region;
+
+NS_INLINE Region iTetMakeRegion(NSInteger minRow, NSInteger minCol, NSInteger maxRow, NSInteger maxCol)
+{
+	Region r;
+	r.minRow = minRow;
+	r.minCol = minCol;
+	r.maxRow = maxRow;
+	r.maxCol = maxCol;
+	return r;
+}
+
+extern const Region iTetEmptyDirtyRegion;
+extern const Region iTetUnknownDirtyRegion;
+extern const Region iTetFullFieldDirtyRegion;
+
+extern NSString* const iTetUnchangedFieldstringPlaceholder;
+
 @class iTetBlock;
 
 @interface iTetField: NSObject <NSCopying>
 {
 	// Contents of the field, indexed row/column, bottom-to-top, left-to-right
-	uint8_t contents[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
+	FIELD contents;
 	
-	// The delta created by the last block added to the field
-	NSString* lastPartialUpdate;
+	// Field-update deltas
+	NSString* updateFieldstring;
+	Region updateDirtyRegion;
 }
 
 // Initializer for an empty field
 + (id)field;
 
-// Initializer from a fieldstring sent by the server
+// Initializer from a full-field fieldstring
 + (id)fieldFromFieldstring:(NSString*)fieldstring;
 - (id)initWithFieldstring:(NSString*)fieldstring;
+
+// Initializer from an existing field and a partial update
++ (id)fieldByApplyingPartialUpdate:(NSString*)partialUpdate
+						   toField:(iTetField*)field;
+- (id)initWithPartialUpdate:(NSString*)partialUpdate
+					toField:(iTetField*)field;
 
 // Initializers for a field with a starting stack height
 + (id)fieldWithStackHeight:(NSInteger)stackHeight;
@@ -54,7 +97,8 @@ typedef enum
 - (id)initWithRandomContents;
 
 // Copy initializer
-- (id)initWithContents:(uint8_t[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH])fieldContents;
++ (id)fieldWithField:(iTetField*)field;
+- (id)initWithField:(iTetField*)field;
 
 // Checks whether a block is in a valid position on the field
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block;
@@ -63,65 +107,60 @@ typedef enum
 - (iTetObstructionState)cellObstructedAtRow:(NSInteger)row
 									 column:(NSInteger)col;
 
-// Add the cells of the specified block to the field's contents
-- (void)solidifyBlock:(iTetBlock*)block;
+// Returns a new field created by adding the cells of the specified block to the receiver's contents
+- (iTetField*)fieldBySolidifyingBlock:(iTetBlock*)block;
 
-// Check for and clear completed lines on the field; returns the number of lines cleared
-- (NSInteger)clearLinesAndRetrieveSpecials:(NSMutableArray*)specials;
+// Returns a new field by clearing completed lines in the receiver, counting the lines cleared and retreiving any specials from those lines
+- (iTetField*)fieldWithLinesCleared:(NSInteger*)linesCleared
+				  retrievedSpecials:(NSArray**)specialsRetrieved;
 
-// Clear completed lines, without retrieving specials or counting lines
-- (void)clearLines;
+// Returns a new field by clearing completed lines in the receiver, without retrieving specials or counting lines
+- (iTetField*)fieldWithLinesCleared;
 
-// Add a partial update from the server to the field
-- (void)applyPartialUpdate:(NSString*)partialUpdate;
-
-// Adds the specified number of specials to the field, using the provided frequencies
+// Returns a new field with the specified number of specials added to the receiver's contents, using the provided frequencies
 // specialFrequencies must be of length 100
-- (void)addSpecials:(NSInteger)count
-   usingFrequencies:(NSArray*)specialFrequencies;
+- (iTetField*)fieldByAddingSpecials:(NSInteger)count
+				   usingFrequencies:(NSArray*)specialFrequencies;
 
-// Adds lines of garbage to the bottom of the field, pushing other lines up
-// Returns YES if the field overflows (player loses)
-- (BOOL)addLines:(NSInteger)count
-		   style:(iTetLineAddStyle)style;
+// Returns a new field with the specified number of lines of garbage added to the bottom of the receiver's contents
+- (iTetField*)fieldByAddingLines:(NSInteger)numLines
+						   style:(iTetLineAddStyle)style
+					  playerLost:(BOOL*)playerLost;
 
-// Clears the bottom line of the field, shifting others down; does not collect specials
-- (void)clearBottomLine;
+// Returns a new field with the bottom line of the receiver's contents removed, shifting others down; does not collect specials
+- (iTetField*)fieldByClearingBottomLine;
 
-// Clears ten random cells on the field
-- (void)clearRandomCells;
+// Returns a new field with ten random cells from the receiver's contents cleared
+- (iTetField*)fieldByClearingTenRandomCells;
 
-// Pushes the contents down to clear the top rows of a field that has just been swapped via the switchfield special
-- (void)shiftClearTopRows;
+// Returns a new field with the top six rows of the receiver's contents cleared; used after a switchfield special to prevent cheap kills
+- (iTetField*)fieldByClearingTopSixRows;
 
-// Shifts the contents of the field down by the specified number of rows
-- (void)shiftAllRowsDownByAmount:(NSInteger)shiftAmount;
+// Returns a new field with the contents of the receiver shifted down by the specified number of rows
+- (iTetField*)fieldByShiftingContentsDownByAmount:(NSInteger)shiftAmount;
 
-// Turns all special blocks on the field into normal cells
-- (void)removeAllSpecials;
+// Returns a new field with all special blocks on in the receiver's contents converted into normal cells
+- (iTetField*)fieldByRemovingAllSpecials;
 
-// Pulls all cells down, filling gaps
-- (void)pullCellsDown;
+// Returns a new field with all cells in the receiver's contents pulled down to fill gaps
+- (iTetField*)fieldByPullingCellsDown;
 
-// Randomly shifts all rows on the field 0-3 columns left or right
-- (void)randomShiftRows;
+// Returns a new field with each row in the reciever's contents shifted by 0-3 columns to the left or right at random
+- (iTetField*)fieldByRandomlyShiftingRows;
 
-// "Explodes" all block bomb specials on the field, scattering the cells around them
-- (void)explodeBlockBombs;
+// Returns a new field with all block bomb specials in the receiver's contents "exploded", scattering the cells around them
+- (iTetField*)fieldByExplodingBlockBombs;
 
-// Shifts the specified row horizontally by the specified number of columns in the specified direction
-- (void)shiftRow:(NSInteger)row
-		byAmount:(NSInteger)shiftAmount
-     inDirection:(BOOL)shiftLeft;
+// Computes and sets the receiver's field-update delta ivars (partial fieldstring and "dirty rect")
+- (void)setUpdateDeltasFromField:(iTetField*)field;
 
-// Returns the contents of the specified cell of the field
-- (uint8_t)cellAtRow:(NSInteger)row
-			  column:(NSInteger)column;
+// Returns the contents of the cell at the specified coordinates on the field
+- (uint8_t)cellAtCoordinates:(Coord)coordinates;
 
-// The current fieldstring that describes the state of the field
-- (NSString*)fieldstring;
+// Returns the partial fieldstring calculated by -setUpdateDeltasFromField:
+@property (readonly) NSString* updateFieldstring;
 
-// The fieldstring for last partial update
-@property (readwrite, retain) NSString* lastPartialUpdate;
+// Returns a region calculated by -setUpdateDeltasFromField:, to be used by fieldviews to determine the portion of the view that needs to be redrawn
+@property (readonly) Region updateDirtyRegion;
 
 @end
