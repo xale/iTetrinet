@@ -71,6 +71,8 @@ extern NSString* const iTetMessageFieldstringKey;
 extern NSString* const iTetMessageLevelNumberKey;
 extern NSString* const iTetMessageSpecialTypeKey;
 
+BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t);
+
 @interface iTetMessage : NSObject
 {
 	iTetMessageType type;

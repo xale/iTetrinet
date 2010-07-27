@@ -82,6 +82,13 @@ NSString* const iTetMessageFieldstringKey =				@"iTetFieldstring";
 NSString* const iTetMessageLevelNumberKey =				@"iTetLevelNumber";
 NSString* const iTetMessageSpecialTypeKey =				@"iTetSpecialType";
 
+BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
+{
+	return ((t == tetrinetPlayerNumberMessage) || (t == tetrifastPlayerNumberMessage) || (t == playerJoinMessage) || (t == playerLeaveMessage) ||
+			(t == playerTeamMessage) || (t == plineChatMessage) || (t == plineActionMessage) || (t == fieldstringMessage) ||
+			(t == levelUpdateMessage) || (t == playerLostMessage) || (t == playerWonMessage));
+}
+
 #pragma mark -
 
 @interface iTetMessage (Private)
@@ -90,8 +97,6 @@ NSString* const iTetMessageSpecialTypeKey =				@"iTetSpecialType";
 + (NSDictionary*)messageDesignations;
 
 @end
-
-BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType messageType);
 
 #pragma mark -
 
@@ -311,13 +316,6 @@ done:
 
 #pragma mark -
 #pragma mark Accessors
-
-BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
-{
-	return ((t == tetrinetPlayerNumberMessage) || (t == tetrifastPlayerNumberMessage) || (t == playerJoinMessage) || (t == playerLeaveMessage) ||
-			(t == playerTeamMessage) || (t == plineChatMessage) || (t == plineActionMessage) || (t == fieldstringMessage) ||
-			(t == levelUpdateMessage) || (t == playerLostMessage) || (t == playerWonMessage));
-}
 
 - (NSData*)rawMessageData
 {
