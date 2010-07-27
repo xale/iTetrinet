@@ -126,6 +126,9 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 // Computes and sets the receiver's field-update delta ivars (partial fieldstring and dirty region)
 - (void)setUpdateDeltasFromField:(iTetField*)field;
 
+// Computes and sets the receiver's dirty region
+- (void)setUpdateDirtyRegionFromField:(iTetField*)field;
+
 // Returns the contents of the cell at the specified coordinates on the field
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col;

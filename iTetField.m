@@ -944,6 +944,36 @@ cellfound:
 	[self setUpdateDirtyRegion:dirtyRegion];
 }
 
+- (void)setUpdateDirtyRegionFromField:(iTetField*)field
+{
+	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
+	
+	// Iterate over the fields
+	FIELD* otherContents = [field contents];
+	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
+	{
+		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		{
+			// Check if the cell at these coordinates differs from the same cell on the other field
+			uint8_t cell = contents[row][col];
+			if (cell != (*otherContents)[row][col])
+			{
+				// Keep track of the bounds of the region of the field that will need to be redrawn
+				dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
+				dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
+				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
+				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+			}
+		}
+	}
+	
+	// Check if the fields are identical
+	if (IPSEqualRegions(dirtyRegion, iTetUnknownDirtyRegion))
+		[self setUpdateDirtyRegion:IPSEmptyRegion];
+	else
+		[self setUpdateDirtyRegion:dirtyRegion];
+}
+
 - (FIELD*)contents
 {
 	return &contents;
