@@ -44,6 +44,7 @@
 		6A734F38118B0DE5005E2776 /* KeyboardPrefsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */; };
 		6A739808106AB12600F51BF5 /* iTetGameRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A739807106AB12600F51BF5 /* iTetGameRules.m */; };
 		6A772C4C1020014200AAA2B8 /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A772C4B1020014200AAA2B8 /* iTetThemesArrayController.m */; };
+		6A7C86E711FF1F2C00649DAB /* IPSIntegerGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7C86E611FF1F2C00649DAB /* IPSIntegerGeometry.m */; };
 		6A7DC210115047080068584D /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DC20F115047080068584D /* iTetWindowController.m */; };
 		6A7E20A41184036100FBFC8A /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A21184036100FBFC8A /* gtetblocks.png */; };
 		6A7E20A51184036100FBFC8A /* GTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A31184036100FBFC8A /* GTetrinetTheme.cfg */; };
@@ -169,6 +170,8 @@
 		6A739807106AB12600F51BF5 /* iTetGameRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameRules.m; sourceTree = "<group>"; };
 		6A772C4A1020014200AAA2B8 /* iTetThemesArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesArrayController.h; sourceTree = "<group>"; };
 		6A772C4B1020014200AAA2B8 /* iTetThemesArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesArrayController.m; sourceTree = "<group>"; };
+		6A7C86E511FF1F2C00649DAB /* IPSIntegerGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPSIntegerGeometry.h; sourceTree = "<group>"; };
+		6A7C86E611FF1F2C00649DAB /* IPSIntegerGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPSIntegerGeometry.m; sourceTree = "<group>"; };
 		6A7DC20E115047080068584D /* iTetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWindowController.h; sourceTree = "<group>"; };
 		6A7DC20F115047080068584D /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
 		6A7E20A21184036100FBFC8A /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
@@ -722,6 +725,8 @@
 				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
 				6AEBBF18113F1C1D003C997B /* Utility Categories */,
 				6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */,
+				6A7C86E511FF1F2C00649DAB /* IPSIntegerGeometry.h */,
+				6A7C86E611FF1F2C00649DAB /* IPSIntegerGeometry.m */,
 			);
 			name = Miscellaneous;
 			sourceTree = "<group>";
@@ -893,6 +898,7 @@
 				6A851CF511E7D0A900A384C2 /* iTetRandomBlockGenerator.m in Sources */,
 				6A851D2B11E7DBAC00A384C2 /* iTetSequencedBlockGenerator.m in Sources */,
 				6AA8FDCA11E942E100EF5746 /* iTetGameVersionTransformer.m in Sources */,
+				6A7C86E711FF1F2C00649DAB /* IPSIntegerGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,19 +11,6 @@
 #import "iTetField.h"
 #import "iTetBlock.h"
 
-typedef struct Coord
-{
-	NSInteger row, col;
-} Coord;
-
-NS_INLINE Coord iTetMakeCoord(NSInteger row, NSInteger col)
-{
-	Coord c;
-	c.row = row;
-	c.col = col;
-	return c;
-}
-
 #define ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX	33
 
 // For the partial update string, rows and columns are reverse-indexed from '3' (decimal 51)...
@@ -34,9 +21,8 @@ NS_INLINE Coord iTetMakeCoord(NSInteger row, NSInteger col)
 char cellToPartialUpdateChar(uint8_t cellType);
 uint8_t partialUpdateCharToCell(char updateChar);
 
-const Region iTetEmptyDirtyRegion = {-1, -1, -1, -1};
-const Region iTetUnknownDirtyRegion = {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH, -1, -1};
-const Region iTetFullFieldDirtyRegion = {0, 0, (ITET_FIELD_HEIGHT - 1), (ITET_FIELD_WIDTH - 1)};
+const IPSRegion iTetUnknownDirtyRegion = {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH, -1, -1};
+const IPSRegion iTetFullFieldDirtyRegion = {0, 0, (ITET_FIELD_HEIGHT - 1), (ITET_FIELD_WIDTH - 1)};
 
 NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring";
 
@@ -50,7 +36,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 - (NSString*)fullFieldstring;
 
 - (void)setUpdateFieldstring:(NSString*)fieldstring;
-- (void)setUpdateDirtyRegion:(Region)dirtyRegion;
+- (void)setUpdateDirtyRegion:(IPSRegion)dirtyRegion;
 
 @end
 
@@ -237,7 +223,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	memcpy(contents, *[field contents], (ITET_FIELD_HEIGHT * ITET_FIELD_WIDTH * sizeof(uint8_t)));
 	
 	updateFieldstring = iTetUnchangedFieldstringPlaceholder;
-	updateDirtyRegion = iTetEmptyDirtyRegion;
+	updateDirtyRegion = IPSEmptyRegion;
 	
 	return self;
 }
@@ -315,7 +301,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	FIELD* newContents = [newField contents];
 	
 	NSMutableString* fieldstring = [NSMutableString string];
-	Region dirtyRegion = iTetUnknownDirtyRegion;
+	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
 	
 	uint8_t lastCell = 0;
 	for (NSInteger blockRow = 0; blockRow < ITET_BLOCK_HEIGHT; blockRow++)
@@ -622,7 +608,7 @@ abort:; // Unable to add more specials; bail
 	FIELD* newContents = [newField contents];
 	
 	NSMutableString* updatedCoordinates = [NSMutableString string];
-	Region dirtyRegion = iTetUnknownDirtyRegion;
+	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
 	
 	// Clear ten random cells on the field
 	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
@@ -869,13 +855,13 @@ cellfound:
 {
 	NSInteger totalCellsChanged = 0;
 	
-	Coord updateCoordinates[ITET_TOTAL_CELL_TYPES][ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT];
+	IPSCoord updateCoordinates[ITET_TOTAL_CELL_TYPES][ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT];
 	memset(&updateCoordinates, 0, sizeof(updateCoordinates));
 	
 	NSInteger cellTypeUpdateCount[ITET_TOTAL_CELL_TYPES];
 	memset(&cellTypeUpdateCount, 0, sizeof(cellTypeUpdateCount));
 	
-	Region dirtyRegion = iTetUnknownDirtyRegion;
+	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
 	
 	// Iterate over the fields
 	FIELD* otherContents = [field contents];
@@ -891,7 +877,7 @@ cellfound:
 				NSInteger cellTypeIndex = (cellToPartialUpdateChar(cell) - ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);
 				
 				// Add the current coordinates to the list of changed coordinates for cells of this type
-				updateCoordinates[cellTypeIndex][cellTypeUpdateCount[cellTypeIndex]] = iTetMakeCoord(row, col);
+				updateCoordinates[cellTypeIndex][cellTypeUpdateCount[cellTypeIndex]] = IPSMakeCoord(row, col);
 				
 				// Increment the count of cells in the delta, along with the count of cells of this type
 				cellTypeUpdateCount[cellTypeIndex]++;
@@ -910,7 +896,7 @@ cellfound:
 	if (totalCellsChanged <= 0)
 	{
 		[self setUpdateFieldstring:iTetUnchangedFieldstringPlaceholder];
-		[self setUpdateDirtyRegion:iTetEmptyDirtyRegion];
+		[self setUpdateDirtyRegion:IPSEmptyRegion];
 		return;
 	}
 	
@@ -949,7 +935,7 @@ cellfound:
 		for (NSInteger coordinateIndex = 0; coordinateIndex < cellTypeUpdateCount[cellTypeIndex]; coordinateIndex++)
 		{
 			// Convert to the partial-update format, and append in column-row order
-			Coord coord = updateCoordinates[cellTypeIndex][coordinateIndex];
+			IPSCoord coord = updateCoordinates[cellTypeIndex][coordinateIndex];
 			[partialUpdate appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(coord.col), ITET_CONVERT_PARTIAL_ROW(coord.row)];
 		}
 	}
@@ -1002,7 +988,7 @@ cellfound:
 }
 @synthesize updateFieldstring;
 
-- (void)setUpdateDirtyRegion:(Region)dirtyRegion
+- (void)setUpdateDirtyRegion:(IPSRegion)dirtyRegion
 {
 	updateDirtyRegion = dirtyRegion;
 }
