@@ -242,14 +242,13 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	NSMutableArray* frequencies = [NSMutableArray arrayWithCapacity:100];
 	
 	// Add specific quantities of the "good" types of specials
-	NSInteger count;
 	// Clearline (most common)
-	for (count = 0; count < 80; count++)
+	for (NSInteger count = 0; count < 80; count++)
 		[frequencies addObject:[NSNumber numberWithInt:clearLine]];
 	// Nuke and gravity (rarer)
-	for (count = 0; count < 10; count++)
+	for (NSInteger count = 0; count < 10; count++)
 		[frequencies addObject:[NSNumber numberWithInt:nukeField]];
-	for (count = 0; count < 10; count++)
+	for (NSInteger count = 0; count < 10; count++)
 		[frequencies addObject:[NSNumber numberWithInt:gravity]];
 	
 	return [NSArray arrayWithArray:frequencies];
