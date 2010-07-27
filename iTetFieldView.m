@@ -18,9 +18,21 @@
 	[self exposeBinding:@"field"];
 }
 
+- (void)awakeFromNib
+{
+	// Calculate the graphics context transform
+	NSAffineTransform* newTransform = [NSAffineTransform transform];
+	NSSize viewSize = [self bounds].size;
+	NSSize backgroundSize = [[[self theme] background] size];
+	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
+					   yBy:(viewSize.height / backgroundSize.height)];
+	[self setViewScaleTransform:newTransform];
+}
+
 - (void)dealloc
 {
 	[field release];
+	[viewScaleTransform release];
 	
 	[super dealloc];
 }
@@ -38,17 +50,9 @@
 	
 	// Get the background image from the theme
 	NSImage* background = [[self theme] background];
-	NSSize bgSize = [background size];
 	
-	NSSize viewSize = [self bounds].size;
-	
-	// Create an affine transform from the background's size to the view's size
-	NSAffineTransform* scaleTransform = [NSAffineTransform transform];
-	[scaleTransform scaleXBy:(viewSize.width / bgSize.width)
-						 yBy:(viewSize.height / bgSize.height)];
-	
-	// Concatenate the transform to the graphics context
-	[scaleTransform concat];
+	// Apply our scale transform to the graphics context
+	[[self viewScaleTransform] concat];
 	
 	// Draw the background
 	[background drawAtPoint:NSZeroPoint
@@ -58,11 +62,7 @@
 	
 	// If we have no field contents to draw, we are finished
 	if ([self field] == nil)
-	{
-		// Pop graphics context before returning
-		[graphicsContext restoreGraphicsState];
-		return;
-	}
+		goto done;
 	
 	// Draw the field contents
 	uint8_t cell;
@@ -95,6 +95,8 @@
 		}
 	}
 	
+done:;
+	
 	// Pop the graphics context
 	[graphicsContext restoreGraphicsState];
 }
@@ -117,5 +119,26 @@
 	[self setNeedsDisplay:YES];
 }
 @synthesize field;
+
+- (void)setTheme:(iTetTheme*)newTheme
+{
+	if ([newTheme isEqual:theme])
+		return;
+	
+	[super setTheme:newTheme];
+	
+	// Recalculate the graphics context transform, based on the theme's background size
+	NSAffineTransform* newTransform = [NSAffineTransform transform];
+	NSSize viewSize = [self bounds].size;
+	NSSize backgroundSize = [[newTheme background] size];
+	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
+					   yBy:(viewSize.height / backgroundSize.height)];
+	[self setViewScaleTransform:newTransform];
+	
+	// Just to be safe...
+	[self setNeedsDisplay:YES];
+}
+
+@synthesize viewScaleTransform;
 
 @end

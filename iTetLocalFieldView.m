@@ -38,22 +38,28 @@
 	if ([self block] == nil)
 		return;
 	
-	// Determine the size at which the block should be drawn
-	NSSize cellSize = NSMakeSize(([self bounds].size.width / ITET_FIELD_WIDTH),
-								 ([self bounds].size.height / ITET_FIELD_HEIGHT));
-	NSSize blockSize = NSMakeSize((4 * cellSize.width), (4 * cellSize.height));
+	// Draw the block to an image
+	NSImage* blockImage = [[self block] imageWithTheme:[self theme]];
 	
-	// Draw the block to an image of that size
-	NSImage* blockImage = [[self block] imageWithSize:blockSize
-												theme:[self theme]];
+	// Get the block's location
+	NSPoint blockLocation = NSMakePoint(([[self block] colPos] * [[self theme] cellSize].width),
+										([[self block] rowPos] * [[self theme] cellSize].height));
 	
-	// Draw the image at the block's position
-	NSPoint drawPoint = NSMakePoint(([[self block] colPos] * cellSize.width),
-									([[self block] rowPos] * cellSize.height));
-	[blockImage drawAtPoint:drawPoint
+	// Push the graphics context onto the stack
+	NSGraphicsContext* context = [NSGraphicsContext currentContext];
+	[context saveGraphicsState];
+	
+	// Apply our scale transform to the graphics context
+	[[self viewScaleTransform] concat];
+	
+	// Draw the block image to the view
+	[blockImage drawAtPoint:blockLocation
 				   fromRect:NSZeroRect
 				  operation:NSCompositeSourceOver
 				   fraction:1.0];
+	
+	// Pop the graphics context
+	[context restoreGraphicsState];
 }
 
 #pragma mark -

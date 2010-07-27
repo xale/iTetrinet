@@ -18,8 +18,10 @@
 @interface iTetFieldView : iTetThemedView
 {
 	iTetField* field;
+	NSAffineTransform* viewScaleTransform;
 }
 
 @property (readwrite, retain) iTetField* field;
+@property (readwrite, retain) NSAffineTransform* viewScaleTransform;
 
 @end

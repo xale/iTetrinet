@@ -15,8 +15,7 @@
 
 @interface iTetBlock (Drawing)
 
-- (NSImage*)imageWithSize:(NSSize)size
-					theme:(iTetTheme*)theme;
+- (NSImage*)imageWithTheme:(iTetTheme*)theme;
 
 - (NSImage*)previewImageWithTheme:(iTetTheme *)theme;
 

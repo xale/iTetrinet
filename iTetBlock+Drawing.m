@@ -13,8 +13,7 @@
 
 @implementation iTetBlock (Drawing)
 
-- (NSImage*)imageWithSize:(NSSize)size
-					theme:(iTetTheme*)theme
+- (NSImage*)imageWithTheme:(iTetTheme*)theme
 {
 	// Create an NSImage to draw to
 	NSSize cellSize = [theme cellSize];
@@ -45,9 +44,6 @@
 	
 	// Release drawing focus
 	[image unlockFocus];
-	
-	// Resize the image to fill the specified rectangle
-	[image setSize:size];
 	
 	// Return the image
 	return image;
@@ -93,10 +89,8 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 
 - (NSImage*)previewImageWithTheme:(iTetTheme*)theme
 {
-	// Create an image of the block using a default size
-	NSSize cellSize = [theme cellSize];
-	NSImage* blockImage = [self imageWithSize:NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH), (cellSize.height * ITET_BLOCK_HEIGHT))
-										theme:theme];
+	// Create an image of the block using the default cellSize from the theme
+	NSImage* blockImage = [self imageWithTheme:theme];
 	
 	// Determine the area of the image to crop
 	NSRect blockRect;
@@ -129,10 +123,10 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	}
 	
 	// Scale the area to the same proportions as the default image size
-	blockRect.origin.x *= cellSize.width;
-	blockRect.origin.y *= cellSize.height;
-	blockRect.size.width *= cellSize.width;
-	blockRect.size.height *= cellSize.height;
+	blockRect.origin.x *= [theme cellSize].width;
+	blockRect.origin.y *= [theme cellSize].height;
+	blockRect.size.width *= [theme cellSize].width;
+	blockRect.size.height *= [theme cellSize].height;
 	
 	// Create a blank image of the final desired size
 	NSImage* previewImage = [[[NSImage alloc] initWithSize:blockRect.size] autorelease];
