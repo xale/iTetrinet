@@ -640,9 +640,6 @@ willDisconnectWithError:(NSError*)error
 			// Set the game view controller's state as "playing"
 			[gameController setGameplayState:gamePlaying];
 			
-			// Tell the game view controller to send the local player's field to the server
-			[gameController sendFieldstring];
-			
 			break;
 			
 #pragma mark Pause/Resume Game Message
