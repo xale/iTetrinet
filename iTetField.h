@@ -33,6 +33,7 @@ typedef enum
 extern const IPSRegion iTetUnknownDirtyRegion;
 extern const IPSRegion iTetFullFieldDirtyRegion;
 
+extern NSString* const iTetEmptyFieldstringPlaceholder;
 extern NSString* const iTetUnchangedFieldstringPlaceholder;
 
 @class iTetBlock;

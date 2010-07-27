@@ -11,6 +11,7 @@
 #import "iTetMessage.h"
 
 #import "iTetPlayer.h"
+#import "iTetField.h"
 #import "iTetSpecials.h"
 #import "iTetServerInfo.h"
 
@@ -421,7 +422,12 @@ done:
 			NSString* fieldstring = [[self contents] objectForKey:iTetMessageFieldstringKey];
 			NSParameterAssert(fieldstring != nil);
 			
-			messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
+			// Minor optimization: if the fieldstring represents an empty field, send a blank fieldstring
+			if ([fieldstring isEqual:iTetEmptyFieldstringPlaceholder])
+				messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, [NSString string]];
+			else
+				messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
+			
 			break;
 		}	
 		case levelUpdateMessage:
