@@ -977,7 +977,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case movePieceDown:
-			// If there is a falling block on the board, move it down
+			// If there is a falling block on the field, move it down
 			if ([LOCALPLAYER currentBlock] != nil)
 			{
 				// Invalidate the fall timer ("move block down" method will create a new one)
@@ -990,7 +990,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		case dropPiece:
-			// If there is a falling block on the board, drop it
+			// If there is a falling block on the field, drop it
 			if ([LOCALPLAYER currentBlock] != nil)
 			{
 				// Invalidate the fall timer ("solidify block" method will create the next one)

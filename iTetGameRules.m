@@ -59,7 +59,7 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	
 	// The game-rules array contains strings, which need to be parsed into the respective rules:
-	// Number of lines of "garbage" on the board when the game begins
+	// Number of lines of "garbage" on the field when the game begins
 	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:0]]
 				  forKey:iTetGameRulesInitialStackHeightKey];
 	
