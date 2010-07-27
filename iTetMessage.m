@@ -422,11 +422,7 @@ done:
 			NSString* fieldstring = [[self contents] objectForKey:iTetMessageFieldstringKey];
 			NSParameterAssert(fieldstring != nil);
 			
-			// Minor optimization: if the fieldstring represents an empty field, send a blank fieldstring
-			if ([fieldstring isEqual:iTetEmptyFieldstringPlaceholder])
-				messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, [NSString string]];
-			else
-				messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
+			messageContents = [NSString stringWithFormat:iTetFieldstringMessageFormat, playerNumber, fieldstring];
 			
 			break;
 		}	

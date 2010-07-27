@@ -24,7 +24,7 @@ uint8_t partialUpdateCharToCell(char updateChar);
 const IPSRegion iTetUnknownDirtyRegion = {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH, -1, -1};
 const IPSRegion iTetFullFieldDirtyRegion = {0, 0, (ITET_FIELD_HEIGHT - 1), (ITET_FIELD_WIDTH - 1)};
 
-NSString* const iTetEmptyFieldstringPlaceholder =		@"iTetEmptyFieldstring";
+NSString* const iTetEmptyFieldstring =					@"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring";
 
 @interface iTetField (Private)
@@ -50,7 +50,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 
 - (id)init
 {
-	updateFieldstring = iTetEmptyFieldstringPlaceholder;
+	updateFieldstring = iTetEmptyFieldstring;
 	updateDirtyRegion = iTetFullFieldDirtyRegion;
 	
 	return self;
