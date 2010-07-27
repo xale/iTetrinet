@@ -152,6 +152,8 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	}
 	
 	updateFieldstring = [partialUpdate copy];
+	
+	return self;
 }
 
 #pragma mark Fields with Starting Stack
