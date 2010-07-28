@@ -49,6 +49,7 @@
 	return image;
 }
 
+// FIXME: convert to IPSRegions
 static NSRect ITET_I_BLOCK_RECTS[2] = {
 	{0, 2, 4, 1},	// Horizontal
 	{1, 0, 1, 4}	// Vertical
@@ -93,34 +94,7 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	NSImage* blockImage = [self imageWithTheme:theme];
 	
 	// Determine the area of the image to crop
-	NSRect blockRect;
-	switch (type)
-	{
-		case I_block:
-			blockRect = ITET_I_BLOCK_RECTS[orientation];
-			break;
-		case O_block:
-			blockRect = ITET_O_BLOCK_RECT;
-			break;
-		case J_block:
-			blockRect = ITET_J_BLOCK_RECTS[orientation];
-			break;
-		case L_block:
-			blockRect = ITET_L_BLOCK_RECTS[orientation];
-			break;
-		case Z_block:
-			blockRect = ITET_Z_BLOCK_RECTS[orientation];
-			break;
-		case S_block:
-			blockRect = ITET_S_BLOCK_RECTS[orientation];
-			break;
-		case T_block:
-			blockRect = ITET_T_BLOCK_RECTS[orientation];
-			break;
-		default:
-			NSAssert1(NO, @"iTetBlock -previewImageWithTheme: called with invalid block type: %d", type);
-			return nil;
-	}
+	NSRect blockRect = [self boundingRect];
 	
 	// Scale the area to the same proportions as the default image size
 	blockRect.origin.x *= [theme cellSize].width;
@@ -145,6 +119,32 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	
 	// Return the image
 	return previewImage;
+}
+
+- (NSRect)boundingRect
+{
+	switch (type)
+	{
+		case I_block:
+			return ITET_I_BLOCK_RECTS[orientation];
+		case O_block:
+			return ITET_O_BLOCK_RECT;
+		case J_block:
+			return ITET_J_BLOCK_RECTS[orientation];
+		case L_block:
+			return ITET_L_BLOCK_RECTS[orientation];
+		case Z_block:
+			return ITET_Z_BLOCK_RECTS[orientation];
+		case S_block:
+			return ITET_S_BLOCK_RECTS[orientation];
+		case T_block:
+			return ITET_T_BLOCK_RECTS[orientation];
+		default:
+			NSAssert1(NO, @"iTetBlock -previewImageWithTheme: called with invalid block type: %d", type);
+			break;
+	}
+	
+	return NSZeroRect;
 }
 
 @end

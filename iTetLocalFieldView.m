@@ -29,10 +29,10 @@
 #pragma mark -
 #pragma mark Drawing
 
-- (void)drawRect:(NSRect)rect
+- (void)drawRect:(NSRect)dirtyRect
 {
 	// Call the default iTetFieldView drawRect:
-	[super drawRect:rect];
+	[super drawRect:dirtyRect];
 	
 	// If we have no block to draw, we're done
 	if ([self block] == nil)
@@ -96,6 +96,7 @@
 {
 	if ([object isKindOfClass:[iTetBlock class]])
 	{
+		// FIXME: WRITME: calculate dirty rect
 		[self setNeedsDisplay:YES];
 		return;
 	}
@@ -131,7 +132,22 @@
 	[block addObserver:self forKeyPath:@"colPos" options:0 context:NULL];
 	[block addObserver:self forKeyPath:@"orientation" options:0 context:NULL];
 	
-	[self setNeedsDisplay:YES];
+	// Calculate the rect of the view that needs to be redrawn
+	NSRect boundingRect = [newBlock boundingRect];
+	NSSize cellSize = [[self theme] cellSize];
+	NSRect dirtyRect;
+	dirtyRect.origin.x = (([newBlock colPos] + boundingRect.origin.x) * cellSize.width);
+	dirtyRect.origin.y = (([newBlock rowPos] + boundingRect.origin.y) * cellSize.height);
+	dirtyRect.size.width = (boundingRect.size.width * cellSize.width);
+	dirtyRect.size.height = (boundingRect.size.height * cellSize.height);
+	
+	// Convert to the transformed coordinate system
+	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	
+	// FIXME: not working
+	[self setNeedsDisplayInRect:dirtyRect];
+	//[self setNeedsDisplay:YES];
 }
 @synthesize block;
 

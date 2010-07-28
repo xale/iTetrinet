@@ -19,4 +19,7 @@
 
 - (NSImage*)previewImageWithTheme:(iTetTheme *)theme;
 
+// FIXME: convert to IPSRegion
+- (NSRect)boundingRect;
+
 @end

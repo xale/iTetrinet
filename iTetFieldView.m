@@ -42,10 +42,12 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	// Get the graphics context we are drawing to
-	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
+	// FIXME: WRITEME: redraw only dirty rect
 	
-	// Push the existing context onto the context stack
+	NSLog(@"DEBUG: field view drawRect: called with dirtyRect: %@", NSStringFromRect(dirtyRect));
+	
+	// Push the graphics context onto the stack
+	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
 	[graphicsContext saveGraphicsState];
 	
 	// Get the background image from the theme
@@ -116,7 +118,35 @@ done:;
 	[field release];
 	field = newField;
 	
-	[self setNeedsDisplay:YES];
+	// Determine the portion of the view that needs to be redrawn
+	IPSRegion fieldDirtyRegion = [newField updateDirtyRegion];
+	
+	// If the field is unchanged, no redraw is necessary
+	if (IPSEqualRegions(fieldDirtyRegion, IPSEmptyRegion))
+		return;
+	
+	// Check if the entire view needs to be redrawn
+	if (IPSEqualRegions(fieldDirtyRegion, iTetFullFieldDirtyRegion))
+	{
+		[self setNeedsDisplay:YES];
+		return;
+	}
+	
+	// If the dirty region is only a portion of the field, calculate the corresponding view rect
+	NSSize cellSize = [[self theme] cellSize];
+	NSRect dirtyRect;
+	dirtyRect.origin.x = (fieldDirtyRegion.minCol * cellSize.width);
+	dirtyRect.origin.y = (fieldDirtyRegion.minRow * cellSize.height);
+	dirtyRect.size.width = ((fieldDirtyRegion.maxCol * cellSize.width) - dirtyRect.origin.x);
+	dirtyRect.size.height = ((fieldDirtyRegion.maxRow * cellSize.height) - dirtyRect.origin.y);
+	
+	// Convert the rect to the transformed coordinate system
+	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	
+	// FIXME: needs testing for correctness
+	[self setNeedsDisplayInRect:dirtyRect];
+	//[self setNeedsDisplay:YES];
 }
 @synthesize field;
 
