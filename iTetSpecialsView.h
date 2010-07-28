@@ -15,11 +15,12 @@
 @interface iTetSpecialsView : iTetThemedView
 {
 	NSArray* specials;
-	
 	NSInteger capacity;
+	NSAffineTransform* viewScaleTransform;
 }
 
 @property (readwrite, copy) NSArray* specials;
 @property (readwrite, assign) NSInteger capacity;
+@property (readwrite, retain) NSAffineTransform* viewScaleTransform;
 
 @end

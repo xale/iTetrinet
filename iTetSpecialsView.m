@@ -11,6 +11,10 @@
 #import "iTetSpecialsView.h"
 #import "iTetSpecials.h"
 
+#define ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH		1.0
+#define ITET_SPECIALS_VIEW_DIVIDER_LINE_WIDTH		0.5
+#define ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA	0.6
+
 @implementation iTetSpecialsView
 
 + (void)initialize
@@ -19,9 +23,21 @@
 	[self exposeBinding:@"capacity"];
 }
 
+- (void)awakeFromNib
+{
+	// Calculate the graphics context transform
+	NSRect backgroundRect = NSInsetRect([self bounds], ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH, ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH);
+	NSAffineTransform* newTransform = [NSAffineTransform transform];
+	[newTransform translateXBy:backgroundRect.origin.x
+						   yBy:backgroundRect.origin.y];
+	[newTransform scaleBy:(backgroundRect.size.height / [[self theme] cellSize].height)];
+	[self setViewScaleTransform:newTransform];
+}
+
 - (void)dealloc
 {
 	[specials release];
+	[viewScaleTransform release];
 	
 	[super dealloc];
 }
@@ -29,26 +45,23 @@
 #pragma mark -
 #pragma mark Drawing
 
-#define ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH		1.0
-#define ITET_SPECIALS_VIEW_DIVIDER_LINE_WIDTH		0.5
-#define ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA	0.6
-
 - (void)drawRect:(NSRect)rect
 {
 	// Calculate the size of the background
 	CGFloat borderWidth = ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH;
 	NSRect backgroundRect = NSInsetRect([self bounds], borderWidth, borderWidth);
 	
-	// If a specials capacity has been set, resize the background to indicate it
+	// Determine the maximum (integer) number of specials we can draw in the background bounds
+	NSInteger maxSpecials = (backgroundRect.size.width / backgroundRect.size.height);
+	
+	// If a specials capacity has been set, ensure that the maximum number of specials is equal or less
 	if ([self capacity] > 0)
 	{
-		// Calculate the width of the resized background (integer multiple of the rect's height)
-		CGFloat adjustedWidth = (backgroundRect.size.height * [self capacity]);
-		
-		// Check that the resized background is not too large to draw
-		if (adjustedWidth < backgroundRect.size.width)
-			backgroundRect.size.width = adjustedWidth;
+		maxSpecials = MIN([self capacity], maxSpecials);
 	}
+	
+	// Resize the background to exactly fit the maximum number of specials
+	backgroundRect.size.width = (backgroundRect.size.height * maxSpecials);
 	
 	// Fill the background with white
 	[[NSColor whiteColor] setFill];
@@ -80,40 +93,31 @@
 		NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
 		[graphicsContext saveGraphicsState];
 		
-		// Create a scale transform from the cell height to the height of the view
-		NSAffineTransform* scaleTransform = [NSAffineTransform transform];
-		[scaleTransform scaleBy:(backgroundRect.size.height / [[self theme] cellSize].height)];
-		
 		// Apply the transform to the graphics context
-		[scaleTransform concat];
-		
-		// Calculate the new background rect
-		backgroundRect.origin = [scaleTransform transformPoint:backgroundRect.origin];
-		backgroundRect.size = [scaleTransform transformSize:backgroundRect.size];
-		
-		// Get the image for the first special in the queue
-		NSImage* specialImage;
-		NSPoint drawPoint = NSMakePoint(NSMinX(backgroundRect), NSMinY(backgroundRect));
+		[[self viewScaleTransform] concat];
 		
 		// Draw the specials (in reverse order)
+		NSInteger specialNum = 0;
 		for (NSNumber* special in [specials reverseObjectEnumerator])
 		{
-			// Get the special's image
-			specialImage = [[self theme] imageForCellType:[special unsignedCharValue]];
+			// Get the next special's image
+			NSImage* specialImage = [[self theme] imageForCellType:[special unsignedCharValue]];
 			
 			// Draw the special
-			[specialImage drawAtPoint:drawPoint
+			[specialImage drawAtPoint:NSMakePoint((specialNum * [[self theme] cellSize].width), 0)
 							 fromRect:NSZeroRect
 							operation:NSCompositeSourceOver
 							 fraction:1.0];
 			
-			// Move the drawing point to the next position
-			drawPoint.x += [[self theme] cellSize].width;
-			
-			// Check that we are still on the view 
-			if (drawPoint.x > NSMaxX(backgroundRect))
+			// Keep track of the number of specials drawn
+			if (specialNum < maxSpecials)
+				specialNum++;
+			else
 				break;
 		}
+		
+		// Pop the graphics context
+		[graphicsContext restoreGraphicsState];
 		
 		// Highlight the active special
 		NSRect selectionRect = backgroundRect;
@@ -121,9 +125,6 @@
 		NSColor* highlightColor = [[NSColor selectedControlColor] colorWithAlphaComponent:ITET_SPECIALS_VIEW_HIGHLIGHT_COLOR_ALPHA];
 		[highlightColor setFill];
 		[NSBezierPath fillRect:selectionRect];
-		
-		// Pop the graphics context
-		[graphicsContext restoreGraphicsState];
 	}
 }
 
@@ -133,6 +134,25 @@
 - (BOOL)isOpaque
 {
 	return NO;
+}
+
+- (void)setTheme:(iTetTheme*)newTheme
+{
+	if ([newTheme isEqual:theme])
+		return;
+	
+	[super setTheme:newTheme];
+	
+	// Recalculate the graphics context transform, based on the theme's cellSize
+	NSRect backgroundRect = NSInsetRect([self bounds], ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH, ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH);
+	NSAffineTransform* newTransform = [NSAffineTransform transform];
+	[newTransform translateXBy:backgroundRect.origin.x
+						   yBy:backgroundRect.origin.y];
+	[newTransform scaleBy:(backgroundRect.size.height / [[self theme] cellSize].height)];
+	[self setViewScaleTransform:newTransform];
+	
+	// Just to be safe...
+	[self setNeedsDisplay:YES];
 }
 
 - (void)setSpecials:(NSArray*)newSpecials
@@ -152,5 +172,7 @@
 	[self setNeedsDisplay:YES];
 }
 @synthesize capacity;
+
+@synthesize viewScaleTransform;
 
 @end
