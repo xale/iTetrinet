@@ -46,7 +46,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 @interface iTetGameViewController (Private)
 
 - (void)moveCurrentBlockDown;
-- (void)solidifyCurrentBlock;
+- (void)solidifyBlock:(iTetBlock*)block;
 - (void)checkForLinesCleared:(iTetField*)field;
 - (void)moveNextBlockToField;
 - (void)useSpecial:(iTetSpecialType)special
@@ -639,28 +639,33 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)moveCurrentBlockDown
 {
-	// Attempt to move the block down
-	if ([[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]])
+	// Move the local player's block down
+	iTetBlock* movedBlock = [[LOCALPLAYER currentBlock] blockShiftedDown];
+	
+	// If the block solidifies, add the (unshifted) block to the field
+	if ([[LOCALPLAYER field] blockObstructed:movedBlock] != unobstructed)
 	{
-		// If the block solidifies, add it to the field
-		// Invalidate the old block timer (may already be nil)
+		// Invalidate the falling-block timer, if necessary
 		[blockTimer invalidate];
 		
 		// Add the block to the field
-		[self solidifyCurrentBlock];
+		[self solidifyBlock:[LOCALPLAYER currentBlock]];
+		
+		return;
 	}
-	// If the block hasn't solidified, check if we need a new fall timer
-	else if (blockTimer == nil)
-	{
-		// Re-create the fall timer
+	
+	// Otherwise, assign the shifted block to the local player
+	[LOCALPLAYER setCurrentBlock:movedBlock];
+	
+	// Check if we need a new fall timer
+	if (blockTimer == nil)
 		[self startBlockFallTimer];
-	}
 }
 
-- (void)solidifyCurrentBlock
+- (void)solidifyBlock:(iTetBlock*)block
 {
-	// Add the current block to the local player's field
-	iTetField* newField = [[LOCALPLAYER field] fieldBySolidifyingBlock:[LOCALPLAYER currentBlock]];
+	// Add the block to the local player's field
+	iTetField* newField = [[LOCALPLAYER field] fieldBySolidifyingBlock:block];
 	
 	// Attempt to clear lines on the field
 	NSInteger numLines = 0;
@@ -687,7 +692,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			}
 		}
 		
-	specialsfull:
+	specialsfull:;
 		
 		// Check whether to send lines to other players
 		if ([currentGameRules boolForKey:iTetGameRulesClassicRulesKey])
@@ -779,16 +784,19 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)moveNextBlockToField
 {
+	// Get the local player's next block, and prepare to move it to the field
 	iTetBlock* block = [LOCALPLAYER nextBlock];
 	
-	// Set the block's position to the top of the field
-	[block setRowPos:((ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [block initialRowOffset])];
-	
-	// Center the block
-	[block setColPos:(((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [block initialColumnOffset])];
+	// Calculate the block's starting position
+	IPSCoord blockStartPosition;
+	blockStartPosition.row = ((ITET_FIELD_HEIGHT - ITET_BLOCK_HEIGHT) + [block initialRowOffset]);
+	blockStartPosition.col = (((ITET_FIELD_WIDTH - ITET_BLOCK_WIDTH)/2) + [block initialColumnOffset]);
+	block = [iTetBlock blockWithType:[block type]
+						 orientation:[block orientation]
+							position:blockStartPosition];
 	
 	// Check if the block can be moved to the field
-	if ([[LOCALPLAYER field] blockObstructed:block])
+	if ([[LOCALPLAYER field] blockObstructed:block] != unobstructed)
 	{
 		// Player has lost
 		[self playerLost];
@@ -952,59 +960,139 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		return;
 	
 	iTetPlayer* targetPlayer = nil;
+	iTetMoveDirection moveDirection = moveRight;
+	iTetRotationDirection rotationDirection = rotateClockwise;
 	
 	// Perform the relevant action
 	switch (action)
 	{
 		case movePieceLeft:
-			[[LOCALPLAYER currentBlock] moveHorizontal:moveLeft
-											   onField:[LOCALPLAYER field]];
-			break;
-			
+			moveDirection = moveLeft;
+			// Fall through
 		case movePieceRight:
-			[[LOCALPLAYER currentBlock] moveHorizontal:moveRight
-											   onField:[LOCALPLAYER field]];
-			break;
+		{
+			// If there's no block on the field, do nothing
+			if ([LOCALPLAYER currentBlock] == nil)
+				break;
 			
+			// Attempt to move the local player's block
+			iTetBlock* movedBlock = [[LOCALPLAYER currentBlock] blockShiftedInDirection:moveDirection];
+			
+			// Check if the block's movement is prevented by the bounds or contents of the field
+			if ([[LOCALPLAYER field] blockObstructed:movedBlock] == unobstructed)
+				[LOCALPLAYER setCurrentBlock:movedBlock];
+			
+			break;
+		}
 		case rotatePieceCounterclockwise:
-			[[LOCALPLAYER currentBlock] rotate:rotateCounterclockwise
-									   onField:[LOCALPLAYER field]];
-			break;
-			
+			rotationDirection = rotateCounterclockwise;
+			// Fall through
 		case rotatePieceClockwise:
-			[[LOCALPLAYER currentBlock] rotate:rotateClockwise
-									   onField:[LOCALPLAYER field]];
-			break;
+		{
+			// If there's no block on the field, do nothing
+			if ([LOCALPLAYER currentBlock] == nil)
+				break;
 			
+			// Attempt to rotate the local player's block
+			iTetBlock* rotatedBlock = [[LOCALPLAYER currentBlock] blockRotatedInDirection:rotationDirection];
+			
+			// Check if the rotation is prevented by the bounds or contents of the field
+			switch ([[LOCALPLAYER field] blockObstructed:rotatedBlock])
+			{
+				case obstructVert:
+				{
+					// Attempt to shift the block down to accommodate rotation
+					rotatedBlock = [rotatedBlock blockShiftedDown];
+					if ([[LOCALPLAYER field] blockObstructed:rotatedBlock] == unobstructed)
+					{
+						// Assign the rotated and shifted block
+						[LOCALPLAYER setCurrentBlock:rotatedBlock];
+					}
+					break;
+				}	
+				case obstructHoriz:
+				{
+					// Attempt to shift the block horizontally to accommodate rotation
+					iTetBlock* shiftedBlock = rotatedBlock;
+					for (NSInteger i = 0; i < 2; i++)
+					{
+						// Shift the block left
+						shiftedBlock = [shiftedBlock blockShiftedInDirection:moveLeft];
+						
+						// Check if the block is now clear to rotate
+						if ([[LOCALPLAYER field] blockObstructed:shiftedBlock] == unobstructed)
+						{
+							// Assign the rotated and shifted block
+							[LOCALPLAYER setCurrentBlock:shiftedBlock];
+							goto successfulShift;
+						}
+					}
+					
+					shiftedBlock = rotatedBlock;
+					for (NSInteger i = 0; i < 2; i++)
+					{
+						// Shift the block right
+						shiftedBlock = [shiftedBlock blockShiftedInDirection:moveRight];
+						
+						// Check if the block is now clear to rotate
+						if ([[LOCALPLAYER field] blockObstructed:shiftedBlock] == unobstructed)
+						{
+							// Assign the rotated and shifted block
+							[LOCALPLAYER setCurrentBlock:shiftedBlock];
+							goto successfulShift;
+						}
+					}
+					
+				successfulShift:;
+					break;
+				}
+				default:
+					// No obstructions: assign the rotated block to the local player
+					[LOCALPLAYER setCurrentBlock:rotatedBlock];
+					break;
+			}
+			
+			break;
+		}
 		case movePieceDown:
-			// If there is a falling block on the field, move it down
-			if ([LOCALPLAYER currentBlock] != nil)
-			{
-				// Invalidate the fall timer ("move block down" method will create a new one)
-				[blockTimer invalidate];
-				blockTimer = nil;
-				
-				// Move the piece down
-				[self moveCurrentBlockDown];
-			}
-			break;
+		{
+			// If there's no block on the field, do nothing
+			if ([LOCALPLAYER currentBlock] == nil)
+				break;
 			
+			// Invalidate the fall timer ("move block down" method will create a new one)
+			[blockTimer invalidate];
+			blockTimer = nil;
+			
+			// Move the piece down
+			[self moveCurrentBlockDown];
+			
+			break;
+		}	
 		case dropPiece:
-			// If there is a falling block on the field, drop it
-			if ([LOCALPLAYER currentBlock] != nil)
-			{
-				// Invalidate the fall timer ("solidify block" method will create the next one)
-				[blockTimer invalidate];
-				blockTimer = nil;
-				
-				// Move the block down until it stops
-				while (![[LOCALPLAYER currentBlock] moveDownOnField:[LOCALPLAYER field]]);
-				
-				// Solidify the block
-				[self solidifyCurrentBlock];
-			}
-			break;
+		{
+			// If there's no block on the field, do nothing
+			if ([LOCALPLAYER currentBlock] == nil)
+				break;
 			
+			// Invalidate the fall timer ("solidify block" method will create the next one)
+			[blockTimer invalidate];
+			blockTimer = nil;
+			
+			// Move the block down until it stops
+			iTetBlock* droppingBlock = [LOCALPLAYER currentBlock];
+			iTetBlock* nextShift = [droppingBlock blockShiftedDown];
+			while ([[LOCALPLAYER field] blockObstructed:nextShift] == unobstructed)
+			{
+				droppingBlock = nextShift;
+				nextShift = [droppingBlock blockShiftedDown];
+			}
+			
+			// Solidify the block
+			[self solidifyBlock:droppingBlock];
+			
+			break;
+		}
 		case discardSpecial:
 			// Drop the first special from the local player's queue
 			if ([[LOCALPLAYER specialsQueue] count] > 0)
@@ -1348,7 +1436,7 @@ doCommandBySelector:(SEL)command
 	blockTimer = [NSTimer timerWithTimeInterval:TETRINET_NEXT_BLOCK_DELAY
 										 target:self
 									   selector:@selector(timerFired:)
-									   userInfo:[NSNumber numberWithInt:nextBlock]
+									   userInfo:[NSNumber numberWithInt:nextBlockTimer]
 										repeats:NO];
 	
 	// Attach the timer to the current run loop
@@ -1362,7 +1450,7 @@ doCommandBySelector:(SEL)command
 	blockTimer = [NSTimer timerWithTimeInterval:blockFallDelayForLevel([LOCALPLAYER level])
 										 target:self
 									   selector:@selector(timerFired:)
-									   userInfo:[NSNumber numberWithInt:blockFall]
+									   userInfo:[NSNumber numberWithInt:blockFallTimer]
 										repeats:YES];
 	
 	// Attach the timer to the current run loop
@@ -1387,7 +1475,7 @@ doCommandBySelector:(SEL)command
 - (void)resumeBlockTimer
 {
 	// Create a timer with a firing date calculated from the time recorded when the game was paused
-	BOOL timerRepeats = (lastTimerType == blockFall);
+	BOOL timerRepeats = (lastTimerType == blockFallTimer);
 	blockTimer = [[[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:timeUntilNextTimerFire]
 										   interval:blockFallDelayForLevel([LOCALPLAYER level])
 											 target:self
@@ -1404,11 +1492,11 @@ doCommandBySelector:(SEL)command
 {
 	switch ([[timer userInfo] intValue])
 	{
-		case nextBlock:
+		case nextBlockTimer:
 			[self moveNextBlockToField];
 			break;
 			
-		case blockFall:
+		case blockFallTimer:
 			[self moveCurrentBlockDown];
 			break;
 	}

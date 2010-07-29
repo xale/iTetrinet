@@ -146,8 +146,6 @@ done:;
 	// Otherwise, determine the portion of the view that needs to be redrawn
 	IPSRegion fieldDirtyRegion = [newField updateDirtyRegion];
 	
-	NSLog(@"DEBUG: -setNeedsDisplay: for region: %@", IPSStringFromRegion(fieldDirtyRegion));
-	
 	// If the field is unchanged, no redraw is necessary
 	if (IPSEqualRegions(fieldDirtyRegion, IPSEmptyRegion))
 		return;
@@ -167,13 +165,9 @@ done:;
 	dirtyRect.size.width = (fieldDirtyRegion.area.width * cellSize.width);
 	dirtyRect.size.height = (fieldDirtyRegion.area.height * cellSize.height);
 	
-	NSLog(@"         dirtyRect before transform: %@", NSStringFromRect(dirtyRect));
-	
 	// Convert the rect to the transformed coordinate system
 	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
 	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
-	
-	NSLog(@"          dirtyRect after transform: %@", NSStringFromRect(dirtyRect));
 	
 	[self setNeedsDisplayInRect:dirtyRect];
 }

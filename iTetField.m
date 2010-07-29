@@ -29,6 +29,9 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 
 @interface iTetField (Private)
 
+- (iTetObstructionState)cellObstructedAtRow:(NSInteger)row
+									 column:(NSInteger)col;
+
 - (void)shiftRow:(NSInteger)row
 		byAmount:(NSInteger)shiftAmount
      inDirection:(BOOL)shiftLeft;
@@ -244,9 +247,9 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block
 {
-	iTetObstructionState side = obstructNone;
-	
 	// For each cell in the block, check if it is obstructed on the field
+	iTetObstructionState side = unobstructed;
+	IPSCoord blockPosition = [block position];
 	for (NSInteger row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (NSInteger col = 0; col < ITET_BLOCK_WIDTH; col++)
@@ -255,8 +258,8 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 									 column:col];
 			if (cell != 0)
 			{
-				switch ([self cellObstructedAtRow:([block rowPos] + row)
-										   column:([block colPos] + col)])
+				switch ([self cellObstructedAtRow:(row + blockPosition.row)
+										   column:(col + blockPosition.col)])
 				{
 						// If obstructed vertically, return immediately
 					case obstructVert:
@@ -293,7 +296,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	if (contents[row][col])
 		return obstructVert;
 	
-	return obstructNone;
+	return unobstructed;
 }
 
 #pragma mark -
@@ -307,6 +310,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	NSMutableString* fieldstring = [NSMutableString string];
 	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
+	IPSCoord blockPosition = [block position];
 	uint8_t lastCell = 0;
 	for (NSInteger blockRow = 0; blockRow < ITET_BLOCK_HEIGHT; blockRow++)
 	{
@@ -317,7 +321,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 			if (cell != 0)
 			{
 				// Determine the coordinates of the field at which to add the cell
-				NSInteger fieldRow = ([block rowPos] + blockRow), fieldCol = ([block colPos] + blockCol);
+				NSInteger fieldRow = (blockPosition.row + blockRow), fieldCol = (blockPosition.col + blockCol);
 				
 				// Add this cell of the block to the field
 				(*newContents)[fieldRow][fieldCol] = cell;

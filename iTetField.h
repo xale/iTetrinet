@@ -19,7 +19,7 @@ typedef uint8_t FIELD[ITET_FIELD_HEIGHT][ITET_FIELD_WIDTH];
 
 typedef enum
 {
-	obstructNone =	0,
+	unobstructed =	0,
 	obstructVert =	1,
 	obstructHoriz =	2
 } iTetObstructionState;
@@ -75,10 +75,6 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 
 // Checks whether a block is in a valid position on the field
 - (iTetObstructionState)blockObstructed:(iTetBlock*)block;
-
-// Checks whether the specified cell is valid (i.e., on the field) and empty
-- (iTetObstructionState)cellObstructedAtRow:(NSInteger)row
-									 column:(NSInteger)col;
 
 // Returns a new field created by adding the cells of the specified block to the receiver's contents
 - (iTetField*)fieldBySolidifyingBlock:(iTetBlock*)block;

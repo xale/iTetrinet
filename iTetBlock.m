@@ -9,7 +9,6 @@
 //
 
 #import "iTetBlock.h"
-#import "iTetField.h"
 
 typedef uint8_t BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
 
@@ -143,24 +142,20 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 
 + (id)blockWithType:(iTetBlockType)blockType
 		orientation:(NSInteger)blockOrientation
-		rowPosition:(NSInteger)row
-     columnPosition:(NSInteger)column
+		   position:(IPSCoord)blockPosition
 {
 	return [[[self alloc] initWithType:blockType
 						   orientation:blockOrientation
-						   rowPosition:row
-						columnPosition:column] autorelease];
+							  position:blockPosition] autorelease];
 }
 
 - (id)initWithType:(iTetBlockType)blockType
 	   orientation:(NSInteger)blockOrientation
-	   rowPosition:(NSInteger)row
-	columnPosition:(NSInteger)col
+		  position:(IPSCoord)blockPosition
 {
 	type = blockType;
 	orientation = (blockOrientation % orientationCount[type]);
-	rowPos = row;
-	colPos = col;
+	position = blockPosition;
 	
 	return self;
 }
@@ -185,8 +180,7 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 {
 	return [[[self class] allocWithZone:zone] initWithType:type
 											   orientation:orientation
-											   rowPosition:rowPos
-											columnPosition:colPos];
+												  position:position];
 }
 
 + (id)randomBlockUsingBlockFrequencies:(NSArray*)blockFrequencies
@@ -206,6 +200,31 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 }
 
 #pragma mark -
+#pragma mark Moving / Rotation
+
+- (iTetBlock*)blockShiftedInDirection:(iTetMoveDirection)direction
+{
+	return [iTetBlock blockWithType:type
+						orientation:orientation
+						   position:IPSMakeCoord(position.row, (position.col + direction))];
+}
+
+- (iTetBlock*)blockShiftedDown
+{
+	return [iTetBlock blockWithType:type
+						orientation:orientation
+						   position:IPSMakeCoord((position.row - 1), position.col)];
+}
+
+- (iTetBlock*)blockRotatedInDirection:(iTetRotationDirection)direction
+{
+	NSInteger newOrientation = (orientation + direction + [self numOrientations]) % [self numOrientations];
+	return [iTetBlock blockWithType:type
+						orientation:newOrientation
+						   position:position];
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 - (uint8_t)cellAtRow:(NSInteger)row
@@ -214,102 +233,14 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 	return blocks[type][orientation][(ITET_BLOCK_WIDTH - 1) - row][col];
 }
 
-- (void)moveHorizontal:(iTetMoveDirection)direction
-			   onField:(iTetField*)field
-{
-	// Determine the block's new position
-	NSInteger newColPos = [self colPos] + direction;
-	
-	// Check if the block would be obstructed in the new position
-	if ([field blockObstructed:[iTetBlock blockWithType:type
-											orientation:[self orientation]
-											rowPosition:[self rowPos]
-										 columnPosition:newColPos]])
-	{
-		// Block obstructed
-		return;
-	}
-	
-	// Otherwise, move the block to the new position
-	[self setColPos:newColPos];
-}
-- (BOOL)moveDownOnField:(iTetField*)field
-{
-	// Determine the block's new position
-	NSInteger newRowPos = [self rowPos] - 1;
-	
-	// Check if the block would be obstructed in the new position
-	if ([field blockObstructed:[iTetBlock blockWithType:type
-											orientation:[self orientation]
-											rowPosition:newRowPos
-										 columnPosition:[self colPos]]])
-	{
-		// Block does not move down, but solidifies instead
-		return YES;
-	}
-	
-	// If unobstructed, move to new position
-	[self setRowPos:newRowPos];
-	
-	return NO;
-}
-@synthesize rowPos, colPos;
-
-- (void)rotate:(iTetRotationDirection)direction
-	   onField:(iTetField*)field
-{
-	// Determine the new orientation
-	NSInteger newOrientation = ([self orientation] + direction + [self numOrientations]) % [self numOrientations];
-	
-	// Check if the block would be obstructed in the new orientation
-	switch ([field blockObstructed:[iTetBlock blockWithType:type
-												orientation:newOrientation
-												rowPosition:[self rowPos]
-											 columnPosition:[self colPos]]])
-	{
-		case obstructVert:
-			// Attempt to shift the block down to accommodate rotation
-			if (![field blockObstructed:[iTetBlock blockWithType:type
-													 orientation:newOrientation
-													 rowPosition:([self rowPos] - 1)
-												  columnPosition:[self colPos]]])
-			{
-				[self setRowPos:([self rowPos] - 1)];
-				goto successfulShift;
-			}
-			// Still can't rotate, even after shift
-			return;
-			
-		case obstructHoriz:
-		{
-			// Attempt to shift the block horizontally to accommodate rotation
-			// (blatantly stolen from GTetrinet source)
-			NSInteger shifts[4] = {1, -1, 2, -2};
-			for (NSInteger i = 0; i < 4; i++)
-			{
-				if (![field blockObstructed:[iTetBlock blockWithType:type
-														 orientation:newOrientation
-														 rowPosition:[self rowPos]
-													  columnPosition:([self colPos] + shifts[i])]])
-				{
-					[self setColPos:([self colPos] + shifts[i])];
-					goto successfulShift;
-				}
-			}
-			// Still can't rotate, even after shifting
-			return;
-		}
-			
-		default:
-			// No obstructions; perform rotation
-			break;
-	}
-	
-	// If unobstructed, or if shifting was successful, change the orientation
-successfulShift:
-	[self setOrientation:newOrientation];
-}
+@synthesize type;
 @synthesize orientation;
+@synthesize position;
+
+- (NSString*)description
+{
+	return [NSString stringWithFormat:@"%@: type = %d, position = %@, orientation = %d", [super description], type, IPSStringFromCoord(position), orientation];
+}
 
 - (NSInteger)numOrientations
 {

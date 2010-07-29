@@ -27,8 +27,8 @@
 
 typedef enum
 {
-	nextBlock,
-	blockFall
+	nextBlockTimer,
+	blockFallTimer
 } iTetBlockTimerType;
 
 @interface iTetGameViewController : NSObject <NSUserInterfaceValidations>

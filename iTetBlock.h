@@ -9,8 +9,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
-@class iTetField;
+#import "IPSIntegerGeometry.h"
 
 #define ITET_BLOCK_WIDTH	4
 #define ITET_BLOCK_HEIGHT	4
@@ -47,18 +46,16 @@ typedef enum
 {
 	iTetBlockType type;
 	NSInteger orientation;
-	NSInteger rowPos, colPos;
+	IPSCoord position;
 }
 
 // Create blocks with specific types, orientations and positions
 + (id)blockWithType:(iTetBlockType)blockType
 		orientation:(NSInteger)blockOrientation
-		rowPosition:(NSInteger)row
-     columnPosition:(NSInteger)column;
+		   position:(IPSCoord)blockPosition;
 - (id)initWithType:(iTetBlockType)blockType
 	   orientation:(NSInteger)blockOrientation
-	   rowPosition:(NSInteger)row
-    columnPosition:(NSInteger)column;
+		  position:(IPSCoord)blockPosition;
 
 // Create blocks with specific types and orientations
 + (id)blockWithType:(iTetBlockType)blockType
@@ -71,21 +68,27 @@ typedef enum
 + (id)randomBlockUsingBlockFrequencies:(NSArray*)blockFrequencies;
 - (id)initWithRandomTypeAndOrientationUsingFrequencies:(NSArray*)blockFrequencies;
 
+// Returns a copy of the receiver, shifted horizontally in the specified direction
+- (iTetBlock*)blockShiftedInDirection:(iTetMoveDirection)direction;
+
+// Returns a copy of the receiver, shifted down by one row
+- (iTetBlock*)blockShiftedDown;
+
+// Returns a copy of the reveiver, rotated in the specified direction
+- (iTetBlock*)blockRotatedInDirection:(iTetRotationDirection)direction;
+
 // Returns the contents of this block at the specified cell
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col;
 
-// The block's position
-- (void)moveHorizontal:(iTetMoveDirection)direction
-			   onField:(iTetField*)field;
-- (BOOL)moveDownOnField:(iTetField*)field;
-@property (readwrite, assign) NSInteger rowPos;
-@property (readwrite, assign) NSInteger colPos;
+// Returns the block's type
+@property (readonly) iTetBlockType type;
 
-// The block's present orientation (rotation)
-- (void)rotate:(iTetRotationDirection)direction
-	   onField:(iTetField*)field;
-@property (readwrite, assign) NSInteger orientation;
+// Returns the block's orientation
+@property (readonly) NSInteger orientation;
+
+// Returns the block's position
+@property (readonly) IPSCoord position;
 
 // Returns the number of possible orientations for this block
 - (NSInteger)numOrientations;

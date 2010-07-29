@@ -41,9 +41,10 @@
 	// Draw the block to an image
 	NSImage* blockImage = [[self block] imageWithTheme:[self theme]];
 	
-	// Get the block's location
-	NSPoint blockLocation = NSMakePoint(([[self block] colPos] * [[self theme] cellSize].width),
-										([[self block] rowPos] * [[self theme] cellSize].height));
+	// Determine the location to draw the block
+	IPSCoord blockPosition = [[self block] position];
+	NSSize cellSize = [[self theme] cellSize];
+	NSPoint blockDrawLocation = NSMakePoint((blockPosition.col * cellSize.width), (blockPosition.row * cellSize.height));
 	
 	// Push the graphics context onto the stack
 	NSGraphicsContext* context = [NSGraphicsContext currentContext];
@@ -53,7 +54,7 @@
 	[[self viewScaleTransform] concat];
 	
 	// Draw the block image to the view
-	[blockImage drawAtPoint:blockLocation
+	[blockImage drawAtPoint:blockDrawLocation
 				   fromRect:NSZeroRect
 				  operation:NSCompositeSourceOver
 				   fraction:1.0];
@@ -87,27 +88,6 @@
 }
 
 #pragma mark -
-#pragma mark Key-Value Observing
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-					  ofObject:(id)object
-						change:(NSDictionary *)change
-					   context:(void *)context
-{
-	if ([object isKindOfClass:[iTetBlock class]])
-	{
-		// FIXME: WRITME: calculate dirty rect
-		[self setNeedsDisplay:YES];
-		return;
-	}
-	
-	[super observeValueForKeyPath:keyPath
-						 ofObject:object
-						   change:change
-						  context:context];
-}
-
-#pragma mark -
 #pragma mark Accessors
 
 - (BOOL)acceptsFirstResponder
@@ -117,37 +97,39 @@
 
 - (void)setBlock:(iTetBlock*)newBlock
 {
-	// Stop observing the old block
-	[block removeObserver:self forKeyPath:@"rowPos"];
-	[block removeObserver:self forKeyPath:@"colPos"];
-	[block removeObserver:self forKeyPath:@"orientation"];
-	
 	// Swap the new block for the old
+	iTetBlock* oldBlock = block;
 	[newBlock retain];
 	[block release];
 	block = newBlock;
 	
-	// Start observing the new block
-	[block addObserver:self forKeyPath:@"rowPos" options:0 context:NULL];
-	[block addObserver:self forKeyPath:@"colPos" options:0 context:NULL];
-	[block addObserver:self forKeyPath:@"orientation" options:0 context:NULL];
-	
-	// Calculate the rect of the view that needs to be redrawn
-	IPSRegion boundingRegion = [newBlock boundingRegion];
+	// Calculate the rect of the view occupied by the old block
+	IPSCoord blockPosition = [oldBlock position];
+	IPSRegion boundingRegion = [oldBlock boundingRegion];
 	NSSize cellSize = [[self theme] cellSize];
 	NSRect dirtyRect;
-	dirtyRect.origin.x = (([newBlock colPos] + boundingRegion.origin.col) * cellSize.width);
-	dirtyRect.origin.y = (([newBlock rowPos] + boundingRegion.origin.row) * cellSize.height);
+	dirtyRect.origin.x = ((blockPosition.col + boundingRegion.origin.col) * cellSize.width);
+	dirtyRect.origin.y = ((blockPosition.row + boundingRegion.origin.row) * cellSize.height);
 	dirtyRect.size.width = (boundingRegion.area.width * cellSize.width);
 	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
 	
 	// Convert to the transformed coordinate system
 	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
 	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
-	
-	// FIXME: not working
 	[self setNeedsDisplayInRect:dirtyRect];
-	//[self setNeedsDisplay:YES];
+	
+	// Calculate the rect of the view occupied by the new block
+	blockPosition = [newBlock position];
+	boundingRegion = [newBlock boundingRegion];
+	dirtyRect.origin.x = ((blockPosition.col + boundingRegion.origin.col) * cellSize.width);
+	dirtyRect.origin.y = ((blockPosition.row + boundingRegion.origin.row) * cellSize.height);
+	dirtyRect.size.width = (boundingRegion.area.width * cellSize.width);
+	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
+	
+	// Convert to the transformed coordinate system
+	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	[self setNeedsDisplayInRect:dirtyRect];
 }
 @synthesize block;
 
