@@ -126,6 +126,9 @@ extern NSString* const iTetUnchangedFieldstringPlaceholder;
 // Computes and sets the receiver's dirty region
 - (void)setUpdateDirtyRegionFromField:(iTetField*)field;
 
+// Returns the contents of the field
+- (FIELD*)contents;
+
 // Returns the contents of the cell at the specified coordinates on the field
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col;

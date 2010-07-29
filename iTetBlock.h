@@ -14,6 +14,8 @@
 #define ITET_BLOCK_WIDTH	4
 #define ITET_BLOCK_HEIGHT	4
 
+typedef uint8_t BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
+
 #define ITET_NUM_BLOCK_TYPES	7
 typedef enum
 {
@@ -77,7 +79,11 @@ typedef enum
 // Returns a copy of the reveiver, rotated in the specified direction
 - (iTetBlock*)blockRotatedInDirection:(iTetRotationDirection)direction;
 
-// Returns the contents of this block at the specified cell
+// Returns the contents of this block
+// Note that the returned array is inverted on the vertical axis; use [(ITET_BLOCK_HEIGHT - 1) - rowIndex] to access the row at a given index
+- (BLOCK*)contents;
+
+// Returns the contents of the block at the specified indexes
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col;
 

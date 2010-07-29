@@ -85,14 +85,14 @@
 	dirtyRegion.area.height = ceil(backgroundRect.size.height / cellSize.height);
 	
 	// Draw the updated region of the field contents
+	FIELD* fieldContents = [[self field] contents];
 	NSPoint drawPoint;
 	for (NSInteger row = IPSMinRow(dirtyRegion); row <= IPSMaxRow(dirtyRegion); row++)
 	{
 		for (NSInteger col = IPSMinCol(dirtyRegion); col <= IPSMaxCol(dirtyRegion); col++)
 		{
 			// Get the cell type
-			uint8_t cell = [[self field] cellAtRow:row
-											column:col];
+			uint8_t cell = (*fieldContents)[row][col];
 			
 			// If there is nothing to draw, skip to next iteration of the loop
 			if (cell == 0)

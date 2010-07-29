@@ -23,13 +23,13 @@
 	[image lockFocus];
 	
 	// For each occupied cell of the block, draw the fill for that region
+	BLOCK* contents = [self contents];
 	for (NSInteger row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
 		for (NSInteger col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
 			// Get the contents of this cell of the block
-			uint8_t cellType = [self cellAtRow:row
-										column:col];
+			uint8_t cellType = (*contents)[(ITET_BLOCK_HEIGHT - 1) - row][col];
 			
 			// If the cell is empty, skip to the next iteration of the loop
 			if (cellType == 0)

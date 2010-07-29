@@ -36,7 +36,6 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 		byAmount:(NSInteger)shiftAmount
      inDirection:(BOOL)shiftLeft;
 
-- (FIELD*)contents;
 - (NSString*)fullFieldstring;
 
 - (void)setUpdateFieldstring:(NSString*)fieldstring;

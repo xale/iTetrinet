@@ -10,8 +10,6 @@
 
 #import "iTetBlock.h"
 
-typedef uint8_t BLOCK[ITET_BLOCK_HEIGHT][ITET_BLOCK_WIDTH];
-
 static BLOCK bI[2] = {
 	{
 		{0,0,0,0},
@@ -226,6 +224,11 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 
 #pragma mark -
 #pragma mark Accessors
+
+- (BLOCK*)contents
+{
+	return &(blocks[type][orientation]);
+}
 
 - (uint8_t)cellAtRow:(NSInteger)row
 			  column:(NSInteger)col
