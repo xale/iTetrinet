@@ -434,9 +434,11 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	NSParameterAssert([specialFrequencies count] == 100);
 	
 	iTetField* newField = [iTetField fieldWithField:self];
+	FIELD* newContents = [newField contents];
+	
+	// Make sure the field deltas get calculated later
 	[newField setUpdateFieldstring:nil];
 	[newField setUpdateDirtyRegion:iTetUnknownDirtyRegion];
-	FIELD* newContents = [newField contents];
 	
 	if (count == 0)
 		return newField;
@@ -523,7 +525,9 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 		}
 		
 	nextspecial:; // Next iteration of special-adding loop
+		
 	}
+	
 abort:; // Unable to add more specials; bail
 	
 	return newField;
