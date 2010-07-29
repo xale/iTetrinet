@@ -110,7 +110,7 @@
 							 fraction:1.0];
 			
 			// Keep track of the number of specials drawn
-			if (specialNum < maxSpecials)
+			if (specialNum < (maxSpecials - 1))
 				specialNum++;
 			else
 				break;
