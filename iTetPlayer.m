@@ -35,7 +35,7 @@
 	playerNumber = number;
 	teamName = [team copy];
 	
-	field = [[iTetField alloc] initWithRandomContents];
+	field = [[iTetField alloc] init];
 	
 	return self;
 }
