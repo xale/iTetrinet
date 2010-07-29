@@ -59,15 +59,17 @@
 
 - (BOOL)acceptsFirstResponder
 {
-	// Themed views, by default, do not accept key input; the one exception is the local player's board, implemented in iTetLocalBoardView
+	// Themed views, by default, do not accept key input; the one exception is the local player's field, implemented in iTetLocalFieldView
 	return NO;
 }
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	[newTheme retain];
+	if ([newTheme isEqual:theme])
+		return;
+	
 	[theme release];
-	theme = newTheme;
+	theme = [newTheme retain];
 	
 	[self setNeedsDisplay:YES];
 }
