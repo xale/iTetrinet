@@ -637,6 +637,9 @@ willDisconnectWithError:(NSError*)error
 			// Set all players except the local player to "playing"
 			[playersController setAllRemotePlayersToPlaying];
 			
+			// Give the local player a "death field"
+			[[playersController localPlayer] setField:[iTetField fieldWithRandomContents]];
+			
 			// Set the game view controller's state as "playing"
 			[gameController setGameplayState:gamePlaying];
 			
