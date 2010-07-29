@@ -23,6 +23,7 @@ extern NSString* const iTetGameRulesSpecialsEnabledKey;
 extern NSString* const iTetGameRulesLinesPerSpecialKey;
 extern NSString* const iTetGameRulesSpecialsAddedKey;
 extern NSString* const iTetGameRulesSpecialCapacityKey;
+extern NSString* const iTetGameRulesCopyCollectedSpecialsKey;
 extern NSString* const iTetGameRulesBlockFrequenciesKey;
 extern NSString* const iTetGameRulesSpecialFrequenciesKey;
 extern NSString* const iTetGameRulesShowAverageLevelKey;

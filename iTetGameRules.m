@@ -24,6 +24,7 @@ NSString* const iTetGameRulesSpecialsEnabledKey =		@"iTetSpecialsEnabled";
 NSString* const iTetGameRulesLinesPerSpecialKey =		@"iTetLinesPerSpecial";
 NSString* const iTetGameRulesSpecialsAddedKey =			@"iTetSpecialsAdded";
 NSString* const iTetGameRulesSpecialCapacityKey =		@"iTetSpecialCapacity";
+NSString* const iTetGameRulesCopyCollectedSpecialsKey =	@"iTetCopyCollectedSpecials";
 NSString* const iTetGameRulesBlockFrequenciesKey =		@"iTetBlockFrequencies";
 NSString* const iTetGameRulesSpecialFrequenciesKey =	@"iTetSpecialFrequencies";
 NSString* const iTetGameRulesShowAverageLevelKey =		@"iTetShowAverageLevel";
@@ -86,6 +87,10 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	// Check whether specials are enabled
 	[rulesDict setBool:(([rulesDict integerForKey:iTetGameRulesLinesPerSpecialKey] > 0) && ([rulesDict integerForKey:iTetGameRulesSpecialsAddedKey] > 0))
 				forKey:iTetGameRulesSpecialsEnabledKey];
+	
+	// Make sure specials get copied when the player clears multiple lines
+	[rulesDict setBool:YES
+				forKey:iTetGameRulesCopyCollectedSpecialsKey];
 	
 	// Number of specials each player can hold in their "inventory"
 	[rulesDict setObject:[formatter numberFromString:[rulesArray objectAtIndex:6]]
@@ -190,15 +195,19 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	[rulesDict setInteger:3
 				   forKey:iTetGameRulesLevelIncreaseKey];
 	
-	// Five lines per special, one added at a time, queue capacity of 20
+	// Five lines per special, one added at a time, queue capacity of ten
 	[rulesDict setBool:YES
 				forKey:iTetGameRulesSpecialsEnabledKey];
 	[rulesDict setInteger:5
 				   forKey:iTetGameRulesLinesPerSpecialKey];
 	[rulesDict setInteger:1
 				   forKey:iTetGameRulesSpecialsAddedKey];
-	[rulesDict setInteger:20
+	[rulesDict setInteger:10
 				   forKey:iTetGameRulesSpecialCapacityKey];
+	
+	// Disable copying collected specials when multiple lines are cleared
+	[rulesDict setBool:NO
+				forKey:iTetGameRulesCopyCollectedSpecialsKey];
 	
 	// Disable the average level indicator (since this is meaningless)
 	[rulesDict setBool:NO

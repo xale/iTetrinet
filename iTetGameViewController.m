@@ -677,22 +677,38 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		// Add the lines to the player's counts
 		[LOCALPLAYER addLines:numLines];
 		
-		// For each line cleared, add a copy of each special in the cleared lines to the player's queue
-		for (NSInteger specialsAdded = 0; specialsAdded < numLines; specialsAdded++)
+		// If rules specify, copy each collected special for each line cleared
+		if ([currentGameRules boolForKey:iTetGameRulesCopyCollectedSpecialsKey])
 		{
-			// Add a copy of each special for each line cleared
+			for (NSInteger copiesAdded = 0; copiesAdded < numLines; copiesAdded++)
+			{
+				// Add a copy of each special for each line cleared
+				for (NSNumber* special in specials)
+				{
+					// Check if there is space in the queue
+					if ([[LOCALPLAYER specialsQueue] count] >= [currentGameRules unsignedIntegerForKey:iTetGameRulesSpecialCapacityKey])
+						goto specialsFull;
+					
+					// Add to player's queue
+					[LOCALPLAYER addSpecialToQueue:special];
+				}
+			}
+		}
+		// Otherwise, add only one copy of each special
+		else
+		{
 			for (NSNumber* special in specials)
 			{
 				// Check if there is space in the queue
 				if ([[LOCALPLAYER specialsQueue] count] >= [currentGameRules unsignedIntegerForKey:iTetGameRulesSpecialCapacityKey])
-					goto specialsfull;
+					goto specialsFull;
 				
 				// Add to player's queue
 				[LOCALPLAYER addSpecialToQueue:special];
 			}
 		}
 		
-	specialsfull:;
+	specialsFull:;
 		
 		// Check whether to send lines to other players
 		if ([currentGameRules boolForKey:iTetGameRulesClassicRulesKey])
