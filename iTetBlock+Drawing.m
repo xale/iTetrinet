@@ -15,7 +15,7 @@
 
 - (NSImage*)imageWithTheme:(iTetTheme*)theme
 {
-	// Create an NSImage to draw to
+	// Create an image to draw to
 	NSSize cellSize = [theme cellSize];
 	NSImage* image = [[[NSImage alloc] initWithSize:NSMakeSize((cellSize.width * ITET_BLOCK_WIDTH), (cellSize.height * ITET_BLOCK_HEIGHT))] autorelease];
 	
@@ -23,22 +23,24 @@
 	[image lockFocus];
 	
 	// For each occupied cell of the block, draw the fill for that region
-	NSInteger row, col;
-	uint8_t cellType;
-	NSImage* cellImage;
-	for (row = 0; row < ITET_BLOCK_HEIGHT; row++)
+	for (NSInteger row = 0; row < ITET_BLOCK_HEIGHT; row++)
 	{
-		for (col = 0; col < ITET_BLOCK_WIDTH; col++)
+		for (NSInteger col = 0; col < ITET_BLOCK_WIDTH; col++)
 		{
-			cellType = [self cellAtRow:row column:col];
-			if (cellType > 0)
-			{
-				cellImage = [theme imageForCellType:cellType];
-				[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
-							  fromRect:NSZeroRect
-							 operation:NSCompositeSourceOver
-							  fraction:1.0];
-			}
+			// Get the contents of this cell of the block
+			uint8_t cellType = [self cellAtRow:row
+										column:col];
+			
+			// If the cell is empty, skip to the next iteration of the loop
+			if (cellType == 0)
+				continue;
+			
+			// Otherwise, get the image for this cell color, and draw it to the block image
+			NSImage* cellImage = [theme imageForCellType:cellType];
+			[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
+						  fromRect:NSZeroRect
+						 operation:NSCompositeSourceOver
+						  fraction:1.0];
 		}
 	}
 	
