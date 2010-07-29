@@ -133,13 +133,13 @@
 	[block addObserver:self forKeyPath:@"orientation" options:0 context:NULL];
 	
 	// Calculate the rect of the view that needs to be redrawn
-	NSRect boundingRect = [newBlock boundingRect];
+	IPSRegion boundingRegion = [newBlock boundingRegion];
 	NSSize cellSize = [[self theme] cellSize];
 	NSRect dirtyRect;
-	dirtyRect.origin.x = (([newBlock colPos] + boundingRect.origin.x) * cellSize.width);
-	dirtyRect.origin.y = (([newBlock rowPos] + boundingRect.origin.y) * cellSize.height);
-	dirtyRect.size.width = (boundingRect.size.width * cellSize.width);
-	dirtyRect.size.height = (boundingRect.size.height * cellSize.height);
+	dirtyRect.origin.x = (([newBlock colPos] + boundingRegion.origin.col) * cellSize.width);
+	dirtyRect.origin.y = (([newBlock rowPos] + boundingRegion.origin.row) * cellSize.height);
+	dirtyRect.size.width = (boundingRegion.area.width * cellSize.width);
+	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
 	
 	// Convert to the transformed coordinate system
 	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];

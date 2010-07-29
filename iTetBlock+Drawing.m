@@ -49,43 +49,42 @@
 	return image;
 }
 
-// FIXME: convert to IPSRegions
-static NSRect ITET_I_BLOCK_RECTS[2] = {
-	{0, 2, 4, 1},	// Horizontal
-	{1, 0, 1, 4}	// Vertical
+static IPSRegion ITET_I_BLOCK_RECTS[2] = {
+	{2, 0, 1, 4},	// Horizontal
+	{0, 1, 4, 1}	// Vertical
 };
 
-static NSRect ITET_O_BLOCK_RECT = {1, 2, 2, 2};
+static IPSRegion ITET_O_BLOCK_RECT = {2, 1, 2, 2};
 
-static NSRect ITET_J_BLOCK_RECTS[4] = {
-	{0, 2, 3, 2},	// Protrusion on top
-	{1, 1, 2, 3},	// Right
-	{0, 1, 3, 2},	// Bottom
-	{0, 1, 2, 3}	// Left
+static IPSRegion ITET_J_BLOCK_RECTS[4] = {
+	{2, 0, 2, 3},	// Protrusion on top
+	{1, 1, 3, 2},	// Right
+	{1, 0, 2, 3},	// Bottom
+	{1, 0, 3, 2}	// Left
 };
 
-static NSRect ITET_L_BLOCK_RECTS[4] = {
-	{0, 2, 3, 2},	// Protrusion on top
-	{1, 1, 2, 3},	// Right
-	{0, 1, 3, 2},	// Bottom
-	{0, 1, 2, 3}	// Left
+static IPSRegion ITET_L_BLOCK_RECTS[4] = {
+	{2, 0, 2, 3},	// Protrusion on top
+	{1, 1, 3, 2},	// Right
+	{1, 0, 2, 3},	// Bottom
+	{1, 0, 3, 2}	// Left
 };
 
-static NSRect ITET_Z_BLOCK_RECTS[2] = {
-	{0, 2, 3, 2},	// Horizontal
-	{1, 1, 2, 3}	// Vertical
+static IPSRegion ITET_Z_BLOCK_RECTS[2] = {
+	{2, 0, 2, 3},	// Horizontal
+	{1, 1, 3, 2}	// Vertical
 };
 
-static NSRect ITET_S_BLOCK_RECTS[2] = {
-	{0, 2, 3, 2},	// Horizontal
-	{0, 1, 2, 3}	// Vertical
+static IPSRegion ITET_S_BLOCK_RECTS[2] = {
+	{2, 0, 2, 3},	// Horizontal
+	{1, 0, 3, 2}	// Vertical
 };
 
-static NSRect ITET_T_BLOCK_RECTS[4] = {
-	{0, 2, 3, 2},	// Protrusion on top
-	{1, 1, 2, 3},	// Right
-	{0, 1, 3, 2},	// Bottom
-	{0, 1, 2, 3}	// Left
+static IPSRegion ITET_T_BLOCK_RECTS[4] = {
+	{2, 0, 2, 3},	// Protrusion on top
+	{1, 1, 3, 2},	// Right
+	{1, 0, 2, 3},	// Bottom
+	{1, 0, 3, 2}	// Left
 };
 
 - (NSImage*)previewImageWithTheme:(iTetTheme*)theme
@@ -94,13 +93,14 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	NSImage* blockImage = [self imageWithTheme:theme];
 	
 	// Determine the area of the image to crop
-	NSRect blockRect = [self boundingRect];
+	IPSRegion boundingRegion = [self boundingRegion];
 	
 	// Scale the area to the same proportions as the default image size
-	blockRect.origin.x *= [theme cellSize].width;
-	blockRect.origin.y *= [theme cellSize].height;
-	blockRect.size.width *= [theme cellSize].width;
-	blockRect.size.height *= [theme cellSize].height;
+	NSRect blockRect;
+	blockRect.origin.x = (boundingRegion.origin.col * [theme cellSize].width);
+	blockRect.origin.y = (boundingRegion.origin.row * [theme cellSize].height);
+	blockRect.size.width = (boundingRegion.area.width * [theme cellSize].width);
+	blockRect.size.height = (boundingRegion.area.height * [theme cellSize].height);
 	
 	// Create a blank image of the final desired size
 	NSImage* previewImage = [[[NSImage alloc] initWithSize:blockRect.size] autorelease];
@@ -121,7 +121,7 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 	return previewImage;
 }
 
-- (NSRect)boundingRect
+- (IPSRegion)boundingRegion
 {
 	switch (type)
 	{
@@ -140,11 +140,11 @@ static NSRect ITET_T_BLOCK_RECTS[4] = {
 		case T_block:
 			return ITET_T_BLOCK_RECTS[orientation];
 		default:
-			NSAssert1(NO, @"iTetBlock -previewImageWithTheme: called with invalid block type: %d", type);
+			NSAssert1(NO, @"iTetBlock -boundingRegion called with invalid block type: %d", type);
 			break;
 	}
 	
-	return NSZeroRect;
+	return IPSEmptyRegion;
 }
 
 @end

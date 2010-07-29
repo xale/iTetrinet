@@ -20,19 +20,22 @@
 
 - (void)awakeFromNib
 {
-	// Calculate the graphics context transform
+	// Calculate the graphics context transform (and its inverse)
 	NSAffineTransform* newTransform = [NSAffineTransform transform];
 	NSSize viewSize = [self bounds].size;
 	NSSize backgroundSize = [[[self theme] background] size];
 	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
 					   yBy:(viewSize.height / backgroundSize.height)];
 	[self setViewScaleTransform:newTransform];
+	[newTransform invert];
+	[self setReverseTransform:newTransform];
 }
 
 - (void)dealloc
 {
 	[field release];
 	[viewScaleTransform release];
+	[reverseTransform release];
 	
 	[super dealloc];
 }
@@ -42,52 +45,67 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	// FIXME: WRITEME: redraw only dirty rect
-	
 	NSLog(@"DEBUG: field view drawRect: called with dirtyRect: %@", NSStringFromRect(dirtyRect));
 	
 	// Push the graphics context onto the stack
 	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
 	[graphicsContext saveGraphicsState];
 	
-	// Get the background image from the theme
-	NSImage* background = [[self theme] background];
-	
 	// Apply our scale transform to the graphics context
 	[[self viewScaleTransform] concat];
 	
-	// Draw the background
-	[background drawAtPoint:NSZeroPoint
-				   fromRect:NSZeroRect
-				  operation:NSCompositeCopy
-				   fraction:1.0];
+	// Get the background image from the theme
+	NSImage* background = [[self theme] background];
 	
-	// If we have no field contents to draw, we are finished
+	// If we have no field to draw, simply draw the background
 	if ([self field] == nil)
-		goto done;
-	
-	// Draw the field contents
-	uint8_t cell;
-	NSImage* cellImage;
-	NSPoint drawPoint = NSZeroPoint;
-	for (NSInteger row = 0; row < ITET_FIELD_HEIGHT; row++)
 	{
-		for (NSInteger col = 0; col < ITET_FIELD_WIDTH; col++)
+		[background drawAtPoint:NSZeroPoint
+					   fromRect:NSZeroRect
+					  operation:NSCompositeCopy
+					   fraction:1.0];
+		goto done;
+	}
+	
+	// Determine the region of the background to be drawn
+	NSRect backgroundRect;
+	backgroundRect.origin = [[self reverseTransform] transformPoint:dirtyRect.origin];
+	backgroundRect.size = [[self reverseTransform] transformSize:dirtyRect.size];
+	
+	// Draw the background for the dirty section of the view
+	[background drawInRect:backgroundRect
+				  fromRect:backgroundRect
+				 operation:NSCompositeCopy
+				  fraction:1.0];
+	
+	// Determine the region of the field that needs to be drawn
+	NSSize cellSize = [[self theme] cellSize];
+	IPSRegion dirtyRegion;
+	dirtyRegion.origin.col = floor(backgroundRect.origin.x / cellSize.width);
+	dirtyRegion.origin.row = floor(backgroundRect.origin.y / cellSize.height);
+	dirtyRegion.area.width = ceil(backgroundRect.size.width / cellSize.width);
+	dirtyRegion.area.height = ceil(backgroundRect.size.height / cellSize.height);
+	
+	// Draw the updated region of the field contents
+	NSPoint drawPoint;
+	for (NSInteger row = IPSMinRow(dirtyRegion); row <= IPSMaxRow(dirtyRegion); row++)
+	{
+		for (NSInteger col = IPSMinCol(dirtyRegion); col <= IPSMaxCol(dirtyRegion); col++)
 		{
 			// Get the cell type
-			cell = [[self field] cellAtRow:row
-									column:col];
+			uint8_t cell = [[self field] cellAtRow:row
+											column:col];
 			
-			// If there is nothing to draw, skip to next iteration of loop
+			// If there is nothing to draw, skip to next iteration of the loop
 			if (cell == 0)
 				continue;
 			
 			// Get the image for this cell
-			cellImage = [[self theme] imageForCellType:cell];
+			NSImage* cellImage = [[self theme] imageForCellType:cell];
 			
-			// Move the point at which to draw the cell
-			drawPoint.x = col * [[self theme] cellSize].height;
-			drawPoint.y = row * [[self theme] cellSize].width;
+			// Determine the point at which to draw the cell
+			drawPoint.x = col * cellSize.width;
+			drawPoint.y = row * cellSize.height;
 			
 			// Draw the cell
 			[cellImage drawAtPoint:drawPoint
@@ -118,8 +136,17 @@ done:;
 	[field release];
 	field = newField;
 	
-	// Determine the portion of the view that needs to be redrawn
+	// If there's no new field, redraw the empty view
+	if (newField == nil)
+	{
+		[self setNeedsDisplay:YES];
+		return;
+	}
+	
+	// Otherwise, determine the portion of the view that needs to be redrawn
 	IPSRegion fieldDirtyRegion = [newField updateDirtyRegion];
+	
+	NSLog(@"DEBUG: -setNeedsDisplay: for region: %@", IPSStringFromRegion(fieldDirtyRegion));
 	
 	// If the field is unchanged, no redraw is necessary
 	if (IPSEqualRegions(fieldDirtyRegion, IPSEmptyRegion))
@@ -135,18 +162,20 @@ done:;
 	// If the dirty region is only a portion of the field, calculate the corresponding view rect
 	NSSize cellSize = [[self theme] cellSize];
 	NSRect dirtyRect;
-	dirtyRect.origin.x = (fieldDirtyRegion.minCol * cellSize.width);
-	dirtyRect.origin.y = (fieldDirtyRegion.minRow * cellSize.height);
-	dirtyRect.size.width = ((fieldDirtyRegion.maxCol * cellSize.width) - dirtyRect.origin.x);
-	dirtyRect.size.height = ((fieldDirtyRegion.maxRow * cellSize.height) - dirtyRect.origin.y);
+	dirtyRect.origin.x = (fieldDirtyRegion.origin.col * cellSize.width);
+	dirtyRect.origin.y = (fieldDirtyRegion.origin.row * cellSize.height);
+	dirtyRect.size.width = (fieldDirtyRegion.area.width * cellSize.width);
+	dirtyRect.size.height = (fieldDirtyRegion.area.height * cellSize.height);
+	
+	NSLog(@"         dirtyRect before transform: %@", NSStringFromRect(dirtyRect));
 	
 	// Convert the rect to the transformed coordinate system
 	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
 	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
 	
-	// FIXME: needs testing for correctness
+	NSLog(@"          dirtyRect after transform: %@", NSStringFromRect(dirtyRect));
+	
 	[self setNeedsDisplayInRect:dirtyRect];
-	//[self setNeedsDisplay:YES];
 }
 @synthesize field;
 
@@ -164,11 +193,14 @@ done:;
 	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
 					   yBy:(viewSize.height / backgroundSize.height)];
 	[self setViewScaleTransform:newTransform];
+	[newTransform invert];
+	[self setReverseTransform:newTransform];
 	
 	// Just to be safe...
 	[self setNeedsDisplay:YES];
 }
 
 @synthesize viewScaleTransform;
+@synthesize reverseTransform;
 
 @end

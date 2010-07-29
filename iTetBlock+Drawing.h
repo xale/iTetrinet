@@ -10,6 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetBlock.h"
+#import "IPSIntegerGeometry.h"
 
 @class iTetTheme;
 
@@ -19,7 +20,6 @@
 
 - (NSImage*)previewImageWithTheme:(iTetTheme *)theme;
 
-// FIXME: convert to IPSRegion
-- (NSRect)boundingRect;
+- (IPSRegion)boundingRegion;
 
 @end

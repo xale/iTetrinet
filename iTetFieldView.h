@@ -19,9 +19,11 @@
 {
 	iTetField* field;
 	NSAffineTransform* viewScaleTransform;
+	NSAffineTransform* reverseTransform;
 }
 
 @property (readwrite, retain) iTetField* field;
-@property (readwrite, retain) NSAffineTransform* viewScaleTransform;
+@property (readwrite, copy) NSAffineTransform* viewScaleTransform;
+@property (readwrite, copy) NSAffineTransform* reverseTransform;
 
 @end

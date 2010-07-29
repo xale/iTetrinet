@@ -12,4 +12,6 @@
 
 const IPSCoord IPSZeroCoord = {0, 0};
 
-const IPSRegion IPSEmptyRegion = {NSIntegerMax, NSIntegerMax, NSIntegerMin, NSIntegerMin};
+const IPSArea IPSZeroArea = {0, 0};
+
+const IPSRegion IPSEmptyRegion = {{0, 0}, {0, 0}};

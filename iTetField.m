@@ -21,8 +21,8 @@
 char cellToPartialUpdateChar(uint8_t cellType);
 uint8_t partialUpdateCharToCell(char updateChar);
 
-const IPSRegion iTetUnknownDirtyRegion = {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH, -1, -1};
-const IPSRegion iTetFullFieldDirtyRegion = {0, 0, (ITET_FIELD_HEIGHT - 1), (ITET_FIELD_WIDTH - 1)};
+const IPSRegion iTetUnknownDirtyRegion =	{{ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH}, {0, 0}};
+const IPSRegion iTetFullFieldDirtyRegion =	{{0, 0}, {ITET_FIELD_HEIGHT, ITET_FIELD_WIDTH}};
 
 NSString* const iTetEmptyFieldstring =					@"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
 NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring";
@@ -109,12 +109,12 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 {
 	// Copy the existing field
 	[self initWithField:field];
-	updateDirtyRegion = iTetUnknownDirtyRegion;
 	
 	// Apply the partial update
 	// Convert the update string to ASCII
 	const char* update = [partialUpdate cStringUsingEncoding:NSASCIIStringEncoding];
 	NSUInteger length = [partialUpdate lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
 	// Get the first type of cell we are adding
 	char currentChar = update[0];
@@ -144,14 +144,15 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 			i++;
 			
 			// Keep track of the bounds of the region of the field that will need to be redrawn
-			updateDirtyRegion.minRow = MIN(updateDirtyRegion.minRow, row);
-			updateDirtyRegion.minCol = MIN(updateDirtyRegion.minCol, col);
-			updateDirtyRegion.maxRow = MAX(updateDirtyRegion.maxRow, row);
-			updateDirtyRegion.maxCol = MAX(updateDirtyRegion.maxCol, col);
+			minRow = MIN(minRow, row);
+			minCol = MIN(minCol, col);
+			maxRow = MAX(maxRow, row);
+			maxCol = MAX(maxCol, col);
 		}
 	}
 	
 	updateFieldstring = [partialUpdate copy];
+	updateDirtyRegion = IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol);
 	
 	return self;
 }
@@ -304,7 +305,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 	FIELD* newContents = [newField contents];
 	
 	NSMutableString* fieldstring = [NSMutableString string];
-	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
+	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
 	uint8_t lastCell = 0;
 	for (NSInteger blockRow = 0; blockRow < ITET_BLOCK_HEIGHT; blockRow++)
@@ -332,16 +333,16 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 				[fieldstring appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(fieldCol), ITET_CONVERT_PARTIAL_ROW(fieldRow)];
 				
 				// Keep track of the bounds of the region of the field that will need to be redrawn
-				dirtyRegion.minRow = MIN(dirtyRegion.minRow, fieldRow);
-				dirtyRegion.minCol = MIN(dirtyRegion.minCol, fieldCol);
-				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, fieldRow);
-				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, fieldCol);
+				minRow = MIN(minRow, fieldRow);
+				minCol = MIN(minCol, fieldCol);
+				maxRow = MAX(maxRow, fieldRow);
+				maxCol = MAX(maxCol, fieldCol);
 			}
 		}
 	}
 	
 	[newField setUpdateFieldstring:fieldstring];
-	[newField setUpdateDirtyRegion:dirtyRegion];
+	[newField setUpdateDirtyRegion:IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol)];
 	
 	return newField;
 }
@@ -611,7 +612,7 @@ abort:; // Unable to add more specials; bail
 	FIELD* newContents = [newField contents];
 	
 	NSMutableString* updatedCoordinates = [NSMutableString string];
-	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
+	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
 	// Clear ten random cells on the field
 	for (NSInteger cellsCleared = 0; cellsCleared < ITET_NUM_RANDOM_CLEARS; cellsCleared++)
@@ -629,10 +630,10 @@ abort:; // Unable to add more specials; bail
 			[updatedCoordinates appendFormat:@"%c%c", ITET_CONVERT_PARTIAL_FROM_COL(col), ITET_CONVERT_PARTIAL_ROW(row)];
 			
 			// Keep track of the bounds of the region of the field that will need to be redrawn
-			dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
-			dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
-			dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
-			dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+			minRow = MIN(minRow, row);
+			minCol = MIN(minCol, col);
+			maxRow = MAX(maxRow, row);
+			maxCol = MAX(maxCol, col);
 		}
 	}
 	
@@ -640,7 +641,7 @@ abort:; // Unable to add more specials; bail
 	if ([updatedCoordinates length] > 0)
 	{
 		[newField setUpdateFieldstring:[NSString stringWithFormat:@"%c%@", cellToPartialUpdateChar(0), updatedCoordinates]];
-		[newField setUpdateDirtyRegion:dirtyRegion];
+		[newField setUpdateDirtyRegion:IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol)];
 	}
 	
 	return newField;
@@ -857,14 +858,13 @@ cellfound:
 - (void)setUpdateDeltasFromField:(iTetField*)field
 {
 	NSInteger totalCellsChanged = 0;
+	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
 	IPSCoord updateCoordinates[ITET_TOTAL_CELL_TYPES][ITET_FIELD_WIDTH * ITET_FIELD_HEIGHT];
 	memset(&updateCoordinates, 0, sizeof(updateCoordinates));
 	
 	NSInteger cellTypeUpdateCount[ITET_TOTAL_CELL_TYPES];
 	memset(&cellTypeUpdateCount, 0, sizeof(cellTypeUpdateCount));
-	
-	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
 	
 	// Iterate over the fields
 	FIELD* otherContents = [field contents];
@@ -887,10 +887,10 @@ cellfound:
 				totalCellsChanged++;
 				
 				// Keep track of the bounds of the region of the field that will need to be redrawn
-				dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
-				dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
-				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
-				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+				minRow = MIN(minRow, row);
+				minCol = MIN(minCol, col);
+				maxRow = MAX(maxRow, row);
+				maxCol = MAX(maxCol, col);
 			}
 		}
 	}
@@ -919,7 +919,7 @@ cellfound:
 		[self setUpdateFieldstring:[self fullFieldstring]];
 		
 		// Keep the calculated dirty region; it may still be smaller than the whole field
-		[self setUpdateDirtyRegion:dirtyRegion];
+		[self setUpdateDirtyRegion:IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol)];
 		
 		return;
 	}
@@ -944,12 +944,12 @@ cellfound:
 	}
 	
 	[self setUpdateFieldstring:partialUpdate];
-	[self setUpdateDirtyRegion:dirtyRegion];
+	[self setUpdateDirtyRegion:IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol)];
 }
 
 - (void)setUpdateDirtyRegionFromField:(iTetField*)field
 {
-	IPSRegion dirtyRegion = iTetUnknownDirtyRegion;
+	NSInteger minRow = ITET_FIELD_HEIGHT, minCol = ITET_FIELD_WIDTH, maxRow = -1, maxCol = -1;
 	
 	// Iterate over the fields
 	FIELD* otherContents = [field contents];
@@ -962,19 +962,19 @@ cellfound:
 			if (cell != (*otherContents)[row][col])
 			{
 				// Keep track of the bounds of the region of the field that will need to be redrawn
-				dirtyRegion.minRow = MIN(dirtyRegion.minRow, row);
-				dirtyRegion.minCol = MIN(dirtyRegion.minCol, col);
-				dirtyRegion.maxRow = MAX(dirtyRegion.maxRow, row);
-				dirtyRegion.maxCol = MAX(dirtyRegion.maxCol, col);
+				minRow = MIN(minRow, row);
+				minCol = MIN(minCol, col);
+				maxRow = MAX(maxRow, row);
+				maxCol = MAX(maxCol, col);
 			}
 		}
 	}
 	
 	// Check if the fields are identical
-	if (IPSEqualRegions(dirtyRegion, iTetUnknownDirtyRegion))
+	if (minRow == ITET_FIELD_HEIGHT)
 		[self setUpdateDirtyRegion:IPSEmptyRegion];
 	else
-		[self setUpdateDirtyRegion:dirtyRegion];
+		[self setUpdateDirtyRegion:IPSMakeRegionFromBounds(minRow, minCol, maxRow, maxCol)];
 }
 
 - (FIELD*)contents
