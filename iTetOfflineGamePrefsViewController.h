@@ -16,4 +16,6 @@
 	
 }
 
+- (IBAction)resetToDefaultOfflineGameRules:(id)sender;
+
 @end

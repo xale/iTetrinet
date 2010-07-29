@@ -9,6 +9,8 @@
 //
 
 #import "iTetOfflineGamePrefsViewController.h"
+#import "iTetUserDefaults.h"
+#import "iTetGameRules.h"
 
 #define iTetOfflineGamePreferencesViewName	NSLocalizedStringFromTable(@"Offline Game Preferences", @"PreferencePanes", @"Title of the 'offline game preferences' preferences pane")
 
@@ -22,6 +24,12 @@
 	[self setTitle:iTetOfflineGamePreferencesViewName];
 	
 	return self;
+}
+
+- (IBAction)resetToDefaultOfflineGameRules:(id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setObject:[iTetGameRules defaultOfflineGameRules]
+											  forKey:iTetOfflineGameRulesPrefKey];
 }
 
 @end
