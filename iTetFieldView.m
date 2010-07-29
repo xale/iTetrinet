@@ -45,8 +45,6 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-	NSLog(@"DEBUG: field view drawRect: called with dirtyRect: %@", NSStringFromRect(dirtyRect));
-	
 	// Push the graphics context onto the stack
 	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
 	[graphicsContext saveGraphicsState];
