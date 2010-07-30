@@ -1630,15 +1630,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 			break;
 	}
 	
-	[self willChangeValueForKey:@"gameplayState"];
 	gameplayState = newState;
-	[self didChangeValueForKey:@"gameplayState"];
 }
 @synthesize gameplayState;
 
 - (BOOL)gameInProgress
 {
-	return ([self gameplayState] == gamePlaying) || ([self gameplayState] == gamePaused);
+	return ([self gameplayState] != gameNotPlaying);
 }
 
 - (void)setCurrentKeyConfiguration:(iTetKeyConfiguration*)config
@@ -1646,14 +1644,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level)
 	[config retain];
 	[currentKeyConfiguration release];
 	currentKeyConfiguration = config;
-}
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key
-{
-	if ([key isEqualToString:@"gameplayState"])
-		return NO;
-	
-	return [super automaticallyNotifiesObserversForKey:key];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString *)key
