@@ -977,23 +977,13 @@ willDisconnectWithError:(NSError*)error
 			break;
 	}
 	
-	[self willChangeValueForKey:@"connectionState"];
 	connectionState = newState;
-	[self didChangeValueForKey:@"connectionState"];
 }
 @synthesize connectionState;
 
 - (BOOL)connectionOpen
 {
 	return ([self connectionState] == connected);
-}
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString*)key
-{
-	if ([key isEqualToString:@"connectionState"])
-		return NO;
-	
-	return [super automaticallyNotifiesObserversForKey:key];
 }
 
 + (NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key
