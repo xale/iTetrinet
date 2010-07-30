@@ -183,7 +183,7 @@
 
 #define iTetChannelRightClickActionsMenuTitle		NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
 #define iTetJoinChannelActionMenuItemTitle			NSLocalizedStringFromTable(@"Join Channel", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
-#define iTetRefreshChannelListActionMenuItemTitle	NSLocalizedStringFromTable(@"Refresh Channel List", @"ChannelsViewController", @"Title of menut item in the contextual menu displayed when a user right- or control-clicks on the channels list that allows the user to refresh the list of channels")
+#define iTetRefreshChannelListActionMenuItemTitle	NSLocalizedStringFromTable(@"Refresh Channels List", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on the channels list that allows the user to refresh the list of channels")
 
 - (NSMenu*)tableView:(IPSContextMenuTableView*)tableView
 		menuForEvent:(NSEvent*)event
