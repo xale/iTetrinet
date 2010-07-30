@@ -401,7 +401,7 @@
 			name = Superclass;
 			sourceTree = "<group>";
 		};
-		6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */ = {
+		6A3ACC5110B7C7B900459D97 /* Value Transformers */ = {
 			isa = PBXGroup;
 			children = (
 				6A8E0CC3117642AD00A0F909 /* iTetCurrentChannelImageTransformer.h */,
@@ -417,7 +417,7 @@
 				6A0B2EA51124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.h */,
 				6A0B2EA61124B2890065BFA0 /* iTetWinlistEntryTypeImageTransformer.m */,
 			);
-			name = "NSValueTransformer Subclasses";
+			name = "Value Transformers";
 			sourceTree = "<group>";
 		};
 		6A3ACC5210B7C7CC00459D97 /* Caching */ = {
@@ -722,7 +722,7 @@
 			children = (
 				6AD266C4117E151D0081A245 /* Application Support Directory */,
 				6A26868F114F0EB5007B1420 /* AsyncSocket */,
-				6A3ACC5110B7C7B900459D97 /* NSValueTransformer Subclasses */,
+				6A3ACC5110B7C7B900459D97 /* Value Transformers */,
 				6AEBBF18113F1C1D003C997B /* Utility Categories */,
 				6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */,
 				6A7C86E511FF1F2C00649DAB /* IPSIntegerGeometry.h */,
