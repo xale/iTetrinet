@@ -140,7 +140,7 @@
 		// Create an alert
 		NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 		[alert setMessageText:iTetGameInProgressAlertTitle];
-		[alert setMessageText:iTetQuitWithGameInProgressAlertInformativeText];
+		[alert setInformativeText:iTetQuitWithGameInProgressAlertInformativeText];
 		[alert addButtonWithTitle:iTetQuitWithGameInProgressConfirmButtonTitle];
 		[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
 		
