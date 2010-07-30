@@ -217,7 +217,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (IBAction)startStopGame:(id)sender
 {
 	// Check if a game is already in progress
-	if ([self gameplayState] != gameNotPlaying)
+	if ([self gameInProgress])
 	{
 		// Confirm with user before ending game
 		// If this is an offline game, make sure the game is paused
@@ -460,7 +460,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if (itemAction == @selector(pauseResumeGame:))
 	{
 		// Enabled if there is a game in progress, and it is an offline game or an online game with the local player as operator
-		return (([self gameplayState] != gameNotPlaying) && ([self offlineGame] || [op isLocalPlayer]));
+		return (([self gameInProgress]) && ([self offlineGame] || [op isLocalPlayer]));
 	}
 	
 	return YES;

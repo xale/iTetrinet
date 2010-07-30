@@ -130,7 +130,7 @@
 	}
 	
 	// Check if there is an offline game in progress
-	if ([gameController gameplayState] != gameNotPlaying)
+	if ([gameController gameInProgress])
 	{
 		// Make note if the game was paused, pause if not
 		BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);

@@ -145,7 +145,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		case disconnected:
 		{
 			// Check if the user is playing an offline game
-			if ([gameController gameplayState] != gameNotPlaying)
+			if ([gameController gameInProgress])
 			{
 				// Make note if the game was paused, pause if not
 				BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);
@@ -364,7 +364,7 @@ didConnectToHost:(NSString*)hostname
 		return;
 	
 	// If there is a game in progress, end it
-	if ([gameController gameplayState] != gameNotPlaying)
+	if ([gameController gameInProgress])
 		[gameController endGame];
 	
 	// Change connection status, if necessary
@@ -379,7 +379,7 @@ didConnectToHost:(NSString*)hostname
 willDisconnectWithError:(NSError*)error
 {
 	// If there is a game in progress, end it
-	if ([gameController gameplayState] != gameNotPlaying)
+	if ([gameController gameInProgress])
 		[gameController endGame];
 	
 	// If an error occurred, handle as appropriate
