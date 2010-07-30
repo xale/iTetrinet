@@ -368,7 +368,7 @@ didConnectToHost:(NSString*)hostname
 		[gameController endGame];
 	
 	// Change connection status, if necessary
-	if ([self connectionState] == connected)
+	if ([self connectionOpen])
 		[self setConnectionState:disconnecting];
 	
 	// Tell the socket to disconnect

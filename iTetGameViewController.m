@@ -244,7 +244,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	else
 	{
 		// If we're connected to a server, send a "start game" message
-		if ([networkController connectionState] == connected)
+		if ([networkController connectionOpen])
 		{
 			iTetMessage* startMessage = [iTetMessage messageWithMessageType:startStopGameMessage];
 			[[startMessage contents] setInteger:[LOCALPLAYER playerNumber]
