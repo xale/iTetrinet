@@ -33,6 +33,7 @@
 #import "iTetKeyActions.h"
 #import "iTetKeyConfiguration.h"
 
+#import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
 
 #import "iTetCommonLocalizations.h"
@@ -44,6 +45,8 @@
 NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 @interface iTetGameViewController (Private)
+
+- (void)appendFormattedChatLine:(NSAttributedString*)line;
 
 - (void)moveCurrentBlockDown;
 - (void)solidifyBlock:(iTetBlock*)block;
@@ -467,21 +470,44 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark Chat
 
 - (void)appendChatLine:(NSString*)line
-		fromPlayerName:(NSString*)playerName
+			fromPlayer:(iTetPlayer*)player
 {
-	[self appendChatLine:[NSString stringWithFormat:@"%@: %@", playerName, line]];
+	// Create the string to add to the chat view, with the player's nickname and a colon before the message text
+	NSString* messageLine = [NSString stringWithFormat:@"%@: %@", [player nickname], line];
+	NSMutableAttributedString* formattedMessage = [NSMutableAttributedString attributedStringWithString:messageLine];
+	
+	// Bold the nickname and the colon
+	NSRange nameRange = NSMakeRange(0, ([[player nickname] length] + 1));
+	[formattedMessage applyFontTraits:NSBoldFontMask
+								range:nameRange];
+	
+	// If the player is the local player, change the color of the name
+	if ([player isLocalPlayer])
+	{
+		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextColorAttributes]
+								  range:nameRange];
+	}
+	
+	// Add the message to the chat view
+	[self appendFormattedChatLine:formattedMessage];
 }
 
-- (void)appendChatLine:(NSString*)line
+- (void)appendAnonymousChatLine:(NSString*)line
+{
+	// Add the message to the chat view, as an attributed string with no attributes
+	[self appendFormattedChatLine:[NSAttributedString attributedStringWithString:line]];
+}
+
+- (void)appendFormattedChatLine:(NSAttributedString*)line
 {
 	// If the chat view is not empty, add a line separator
 	if ([[chatView textStorage] length] > 0)
-		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSLineSeparatorCharacter];
+		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
 	
 	// Add the line
-	[[[chatView textStorage] mutableString] appendString:line];
+	[[chatView textStorage] appendAttributedString:line];
 	
-	// Scroll down
+	// Scroll the chat view to see the new line
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
 }
 

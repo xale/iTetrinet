@@ -602,24 +602,38 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Game Chat Message
 		case gameChatMessage:
 		{
-			// Check if the first space-delimited word of the message is or contains a player's name
+			// Split the chat message into space-delimited tokens
 			NSString* chatContents = [[message contents] objectForKey:iTetMessageChatContentsKey];
-			NSArray* words = [chatContents componentsSeparatedByString:@" "];
+			NSArray* tokens = [chatContents componentsSeparatedByString:@" "];
+			
+			// Check if the first token contains a player's nickname (by searching the players' nicknames for the longest matching substring)
+			iTetPlayer* bestMatch = nil;
+			NSUInteger bestMatchLength = 0;
 			for (iTetPlayer* player in [playersController playerList])
 			{
-				if ([[words objectAtIndex:0] rangeOfString:[player nickname]].location != NSNotFound)
+				// Search for this player's name as a substring of the first token
+				NSRange nameRange = [[tokens objectAtIndex:0] rangeOfString:[player nickname]];
+				
+				// If the name is present in the token, check if it's the best match yet
+				if ((nameRange.location != NSNotFound) && (nameRange.length > bestMatchLength))
 				{
-					// Add the message to the game chat view
-					[gameController appendChatLine:[[words subarrayWithRange:NSMakeRange(1, ([words count] - 1))] componentsJoinedByString:@" "]
-									fromPlayerName:[player nickname]];
-					goto playerfound;
+					bestMatch = player;
+					bestMatchLength = nameRange.length;
 				}
 			}
 			
-			// Otherwise, just dump the message on the game chat view
-			[gameController appendChatLine:chatContents];
+			if (bestMatch != nil)
+			{
+				// If we found a matching nickname, add the message to the game chat view, formatted with the player's nickname
+				[gameController appendChatLine:[[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))] componentsJoinedByString:@" "]
+									fromPlayer:bestMatch];
+			}
+			else
+			{
+				// Otherwise, just dump the entire message on the game chat view
+				[gameController appendAnonymousChatLine:chatContents];
+			}
 			
-		playerfound:
 			break;
 		}
 #pragma mark New Game Message

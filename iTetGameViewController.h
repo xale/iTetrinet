@@ -91,8 +91,8 @@ typedef enum
 - (IBAction)pauseResumeGame:(id)sender;
 
 - (void)appendChatLine:(NSString*)line
-		fromPlayerName:(NSString*)playerName;
-- (void)appendChatLine:(NSString*)line;
+			fromPlayer:(iTetPlayer*)playerName;
+- (void)appendAnonymousChatLine:(NSString*)line;
 - (void)clearChat;
 
 - (void)newGameWithPlayers:(NSArray*)players
