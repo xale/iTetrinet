@@ -2,7 +2,7 @@ The following files are exempt from the terms of this license:
 --------------------------------------------------------------
 The AsyncSocket Files (http://code.google.com/p/cocoaasyncsocket/):
 AsyncSocket.h
-AsyncSocket.m
+AsyncSocket.m (modified slightly, to allow sockets to run in the common run loop modes, to prevent blocking during user interface polling)
 Which are copyright (c) 2003 Dustin Voss, and are provided in the public domain,
 
 Elements from ~Sekkyumu's "Developer Icon Set" (http://Sekkyumu.deviantart.com/art/Developpers-Icons-63052312/):

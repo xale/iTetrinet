@@ -1483,7 +1483,7 @@ doCommandBySelector:(SEL)command
 	
 	// Attach the timer to the current run loop
 	[[NSRunLoop currentRunLoop] addTimer:blockTimer
-								 forMode:NSDefaultRunLoopMode];
+								 forMode:NSRunLoopCommonModes];
 }
 
 - (void)startBlockFallTimer
@@ -1497,7 +1497,7 @@ doCommandBySelector:(SEL)command
 	
 	// Attach the timer to the current run loop
 	[[NSRunLoop currentRunLoop] addTimer:blockTimer
-								 forMode:NSDefaultRunLoopMode];
+								 forMode:NSRunLoopCommonModes];
 }
 
 - (void)pauseBlockTimer
@@ -1527,7 +1527,7 @@ doCommandBySelector:(SEL)command
 	
 	// Attach the timer to the current run loop
 	[[NSRunLoop currentRunLoop] addTimer:blockTimer
-								 forMode:NSDefaultRunLoopMode];
+								 forMode:NSRunLoopCommonModes];
 }
 
 - (void)timerFired:(NSTimer*)timer

@@ -592,7 +592,7 @@ Failed:;
 		NSLog (@"AsyncSocket %p couldn't attach read stream to run-loop,", self);
 		goto Failed;
 	}
-	CFReadStreamScheduleWithRunLoop (theReadStream, theRunLoop, kCFRunLoopDefaultMode);
+	CFReadStreamScheduleWithRunLoop (theReadStream, theRunLoop, kCFRunLoopCommonModes);
 
 	// Make write stream non-blocking.
 	if (!CFWriteStreamSetClient (theWriteStream,
@@ -603,7 +603,7 @@ Failed:;
 		NSLog (@"AsyncSocket %p couldn't attach write stream to run-loop,", self);
 		goto Failed;
 	}
-	CFWriteStreamScheduleWithRunLoop (theWriteStream, theRunLoop, kCFRunLoopDefaultMode);
+	CFWriteStreamScheduleWithRunLoop (theWriteStream, theRunLoop, kCFRunLoopCommonModes);
 
 	return YES;
 
