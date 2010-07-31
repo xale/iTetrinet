@@ -13,6 +13,12 @@
 #import "NSColor+Comparisons.h"
 #import "NSUserDefaults+AdditionalTypes.h"
 
+NSString* const iTetCommandMessagePrefix =	@"/";
+NSString* const iTetActionMessagePrefix =	@"/me ";
+
+NSString* const iTetLocalActionMessageIndicator =	@"•";
+NSString* const iTetRemoteActionMessageIndicator =	@"*";
+
 #define iTetSilverTextColor		[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
 #define iTetGreenTextColor		[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:0.0 alpha:1.0]
 #define iTetOliveTextColor		[NSColor colorWithCalibratedRed:0.5 green:0.5 blue:0.0 alpha:1.0]

@@ -39,7 +39,6 @@ NSString* const iTetWinlistMessageFormat =					@"winlist %@";
 
 NSString* const iTetPLineChatMessageFormat =				@"pline %d %@";
 NSString* const iTetPLineActionMessageFormat =				@"plineact %d %@";
-NSString* const iTetGameChatMessageWithNicknameFormat =		@"gmsg <%@> %@";
 NSString* const iTetGameChatMessageFormat =					@"gmsg %@";
 NSString* const iTetJoinChannelMessageFormat =				@"pline %d /join #%@";
 
@@ -316,7 +315,7 @@ done:
 }
 
 #pragma mark -
-#pragma mark Accessors
+#pragma mark Outgoing Message Data
 
 - (NSData*)rawMessageData
 {
@@ -377,16 +376,8 @@ done:
 		{
 			NSString* chatContents = [[self contents] objectForKey:iTetMessageChatContentsKey];
 			NSParameterAssert(chatContents != nil);
-			NSString* playerNickname = [[self contents] objectForKey:iTetMessagePlayerNicknameKey];
-			if (playerNickname != nil)
-			{
-				messageContents = [NSString stringWithFormat:iTetGameChatMessageWithNicknameFormat, playerNickname, chatContents];
-			}
-			else
-			{
-				messageContents = [NSString stringWithFormat:iTetGameChatMessageFormat, chatContents];
-			}
 			
+			messageContents = [NSString stringWithFormat:iTetGameChatMessageFormat, chatContents];
 			break;
 		}	
 		case joinChannelMessage:
@@ -519,6 +510,9 @@ done:
 	// Convert the encoded message to a data object before returning
 	return [encodedMessage messageData];
 }
+
+#pragma mark -
+#pragma mark Accessors
 
 + (NSDictionary*)messageDesignations
 {

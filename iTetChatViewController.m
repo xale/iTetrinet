@@ -45,9 +45,6 @@
 #pragma mark -
 #pragma mark Interface Actions
 
-NSString* const iTetCommandMessagePrefix =	@"/";
-NSString* const iTetActionMessagePrefix =	@"/me ";
-
 - (IBAction)submitChatMessage:(id)sender
 {
 	// Check if there is a message to send
@@ -118,8 +115,6 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
 }
 
-NSString* const iTetActionMessageIndicator =	@"•";
-
 - (void)appendChatLine:(NSAttributedString*)line
 			fromPlayer:(iTetPlayer*)player
 				action:(BOOL)isAction
@@ -128,7 +123,7 @@ NSString* const iTetActionMessageIndicator =	@"•";
 	if (isAction)
 	{
 		// Begin the message line with a dot (to indicate an action)
-		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:iTetActionMessageIndicator] autorelease];
+		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:iTetLocalActionMessageIndicator] autorelease];
 		
 		// Append the player's name (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];

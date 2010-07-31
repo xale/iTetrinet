@@ -40,6 +40,12 @@ typedef enum
 
 #define ITET_HIGHEST_ATTR_CODE	31
 
+extern NSString* const iTetCommandMessagePrefix;
+extern NSString* const iTetActionMessagePrefix;
+
+extern NSString* const iTetLocalActionMessageIndicator;
+extern NSString* const iTetRemoteActionMessageIndicator;
+
 @interface iTetTextAttributes : NSObject
 
 // Returns an NSCharacterSet containing all characters used as formatting data in the TetriNET protocol

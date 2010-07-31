@@ -602,37 +602,8 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Game Chat Message
 		case gameChatMessage:
 		{
-			// Split the chat message into space-delimited tokens
-			NSString* chatContents = [[message contents] objectForKey:iTetMessageChatContentsKey];
-			NSArray* tokens = [chatContents componentsSeparatedByString:@" "];
-			
-			// Check if the first token contains a player's nickname (by searching the players' nicknames for the longest matching substring)
-			iTetPlayer* bestMatch = nil;
-			NSUInteger bestMatchLength = 0;
-			for (iTetPlayer* player in [playersController playerList])
-			{
-				// Search for this player's name as a substring of the first token
-				NSRange nameRange = [[tokens objectAtIndex:0] rangeOfString:[player nickname]];
-				
-				// If the name is present in the token, check if it's the best match yet
-				if ((nameRange.location != NSNotFound) && (nameRange.length > bestMatchLength))
-				{
-					bestMatch = player;
-					bestMatchLength = nameRange.length;
-				}
-			}
-			
-			if (bestMatch != nil)
-			{
-				// If we found a matching nickname, add the message to the game chat view, formatted with the player's nickname
-				[gameController appendChatLine:[[tokens subarrayWithRange:NSMakeRange(1, ([tokens count] - 1))] componentsJoinedByString:@" "]
-									fromPlayer:bestMatch];
-			}
-			else
-			{
-				// Otherwise, just dump the entire message on the game chat view
-				[gameController appendAnonymousChatLine:chatContents];
-			}
+			// Hand the message to the game controller for processing
+			[gameController chatMessageReceived:[[message contents] objectForKey:iTetMessageChatContentsKey]];
 			
 			break;
 		}

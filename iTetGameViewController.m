@@ -46,6 +46,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 @interface iTetGameViewController (Private)
 
+- (void)appendChatLine:(NSString*)line
+			fromPlayer:(iTetPlayer*)playerName
+				action:(BOOL)isActionMessage;
+- (void)appendAnonymousChatLine:(NSString*)line;
 - (void)appendFormattedChatLine:(NSAttributedString*)line;
 
 - (void)moveCurrentBlockDown;
@@ -349,11 +353,25 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if ([messageText length] == 0)
 		return;
 	
+	// Check if the first word of the message is "/me"
+	NSString* textToSend = nil;
+	if ([messageText hasPrefix:iTetActionMessagePrefix])
+	{
+		// Trim the emote command
+		messageText = [messageText substringFromIndex:[iTetActionMessagePrefix length]];
+		
+		// Format the message a la GTetrinet's emote messages
+		textToSend = [NSString stringWithFormat:@"%@ %@ %@", iTetRemoteActionMessageIndicator, [LOCALPLAYER nickname], messageText];
+	}
+	else
+	{
+		// Add the player's name and a colon
+		textToSend = [NSString stringWithFormat:@"%@: %@", [LOCALPLAYER nickname], messageText];
+	}
+	
 	// Create a message
 	iTetMessage* message = [iTetMessage messageWithMessageType:gameChatMessage];
-	[[message contents] setObject:[LOCALPLAYER nickname]
-						   forKey:iTetMessagePlayerNicknameKey];
-	[[message contents] setObject:messageText
+	[[message contents] setObject:textToSend
 						   forKey:iTetMessageChatContentsKey];
 	[networkController sendMessage:message];
 	
@@ -469,14 +487,80 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark -
 #pragma mark Chat
 
+- (void)chatMessageReceived:(NSString*)messageContents
+{
+	// Split the chat message into space-delimited tokens
+	NSArray* tokens = [messageContents componentsSeparatedByString:@" "];
+	
+	// Get the first word of the message, so we can check if it's a player's name
+	NSString* nameToken = [tokens objectAtIndex:0];
+	NSRange remainingRange = NSMakeRange(1, ([tokens count] - 1));
+	BOOL actionMessage = NO;
+	
+	// Check if the first token is (or starts with) an asterisk (indicates a "/me" action message)
+	if ([nameToken isEqualTo:iTetRemoteActionMessageIndicator])
+	{
+		nameToken = [tokens objectAtIndex:1];
+		remainingRange = NSMakeRange(2, ([tokens count] - 2));
+		actionMessage = YES;
+	}
+	else if ([nameToken rangeOfString:iTetRemoteActionMessageIndicator].location == 0)
+	{
+		nameToken = [[tokens objectAtIndex:0] substringFromIndex:1];
+		actionMessage = YES;
+	}
+	
+	// Check if the first token contains a player's nickname (by searching the players' nicknames for the longest matching substring)
+	iTetPlayer* bestMatch = nil;
+	NSUInteger bestMatchLength = 0;
+	for (iTetPlayer* player in [playersController playerList])
+	{
+		// Search for this player's name as a substring of the first token
+		NSRange nameRange = [nameToken rangeOfString:[player nickname]];
+		
+		// If the name is present in the token, check if it's the best match yet
+		if ((nameRange.location != NSNotFound) && (nameRange.length > bestMatchLength))
+		{
+			bestMatch = player;
+			bestMatchLength = nameRange.length;
+		}
+	}
+	
+	if (bestMatch != nil)
+	{
+		// If we found a matching nickname, format the message as a text or action message, beginning with the player's nickname
+		[self appendChatLine:[[tokens subarrayWithRange:remainingRange] componentsJoinedByString:@" "]
+				  fromPlayer:bestMatch
+					  action:actionMessage];
+	}
+	else
+	{
+		// Otherwise, just dump the entire message to the chat box
+		[self appendAnonymousChatLine:messageContents];
+	}
+}
+
 - (void)appendChatLine:(NSString*)line
 			fromPlayer:(iTetPlayer*)player
+				action:(BOOL)isActionMessage
 {
-	// Create the string to add to the chat view, with the player's nickname and a colon before the message text
-	NSString* messageLine = [NSString stringWithFormat:@"%@: %@", [player nickname], line];
+	// Create the string to add to the chat view
+	NSString* messageLine = nil;
+	if (isActionMessage)
+	{
+		// If the message is an action message, format it as such, with a dot before the player's name
+		messageLine = [NSString stringWithFormat:@"%@%@ %@", iTetLocalActionMessageIndicator, [player nickname], line];
+	}
+	else
+	{
+		// Otherwise, just insert a colon between the player's name and the message
+		messageLine = [NSString stringWithFormat:@"%@: %@", [player nickname], line];
+	}
+	
+	// Wrap the message in a attributed string, so we can add attributes
 	NSMutableAttributedString* formattedMessage = [NSMutableAttributedString attributedStringWithString:messageLine];
 	
-	// Bold the nickname and the colon
+	// Bold the nickname and the colon or dot
 	NSRange nameRange = NSMakeRange(0, ([[player nickname] length] + 1));
 	[formattedMessage applyFontTraits:NSBoldFontMask
 								range:nameRange];
