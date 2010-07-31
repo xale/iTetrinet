@@ -365,8 +365,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 	else
 	{
-		// Add the player's name and a colon
-		textToSend = [NSString stringWithFormat:@"%@: %@", [LOCALPLAYER nickname], messageText];
+		// Add the player's name in angle brackets, a la GTetrinet's chat messages
+		textToSend = [NSString stringWithFormat:@"<%@> %@", [LOCALPLAYER nickname], messageText];
 	}
 	
 	// Create a message
