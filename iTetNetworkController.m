@@ -456,8 +456,10 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
-#define iTetPlayerJoinedEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
-#define iTetPlayerLeftEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"NetworkController", @"Status message appended to the chat view when a player joins a new team")
+#define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"NetworkController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
 
 - (void)messageReceived:(iTetMessage*)message
 {
@@ -525,7 +527,7 @@ willDisconnectWithError:(NSError*)error
 			iTetMessage* replyMessage = [iTetMessage messageWithMessageType:playerTeamMessage];
 			[[replyMessage contents] setInteger:playerNumber
 										 forKey:iTetMessagePlayerNumberKey];
-			[[replyMessage contents] setObject:[currentServer playerTeamName]
+			[[replyMessage contents] setObject:[[playersController localPlayer] teamName]
 										forKey:iTetMessagePlayerTeamNameKey];
 			[self sendMessage:replyMessage];
 			
@@ -579,11 +581,33 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark Player Team Message
 		case playerTeamMessage:
-			// Change the specified player's team name
-			[playersController setTeamName:[[message contents] objectForKey:iTetMessagePlayerTeamNameKey]
-						   forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
-			break;
+		{
+			// Get the player number and nickname
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			NSString* playerName = [[playersController playerNumber:playerNumber] nickname];
 			
+			// Check if the player is already has a team, and if so, add a status message to the chat view
+			NSString* teamName = [[playersController playerNumber:playerNumber] teamName];
+			if ([teamName length] > 0)
+			{
+				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, playerName, teamName]];
+			}
+			
+			// Get the new team name (if any)
+			teamName = [[message contents] objectForKey:iTetMessagePlayerTeamNameKey];
+			
+			// Change the specified player's team name
+			[playersController setTeamName:teamName
+						   forPlayerNumber:playerNumber];
+			
+			// If the player is joining a team, append another status message to the chat view
+			if ([teamName length] > 0)
+			{
+				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, playerName, teamName]];
+			}
+			
+			break;
+		}
 #pragma mark Winlist Message
 		case winlistMessage:
 			// Pass the winlist entries to the winlist controller
