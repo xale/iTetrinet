@@ -540,12 +540,12 @@ willDisconnectWithError:(NSError*)error
 		case playerJoinMessage:
 		{
 			// Check that this isn't an echo of our own join event
-			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			if (playerNumber == [[playersController localPlayer] playerNumber])
-				break;
+			NSString* nickname = [[message contents] objectForKey:iTetMessagePlayerNicknameKey];
+			if ([nickname isEqualToString:[[playersController localPlayer] nickname]])
+				 break;
 			
 			// Add a new player with the specified name and number
-			NSString* nickname = [[message contents] objectForKey:iTetMessagePlayerNicknameKey];
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
 			[playersController addPlayerWithNumber:playerNumber
 										  nickname:nickname];
 			
