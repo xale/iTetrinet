@@ -15,6 +15,7 @@ Pause Blue Button.png
 Play Blue Button.png
 Play Green Button.png
 Stop Red Button.png
+Users.png
 Which are copyright (c) 2007-2010 ~Sekkyumu, and are provided for use in any software project, but may not be resold individually or as a pack,
 
 And the "default" theme from GTetrinet (http://gtetrinet.sourceforge.net/):

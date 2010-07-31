@@ -9,6 +9,15 @@
 //
 
 #import "iTetPlayersController.h"
+
+#import "iTetWindowController.h"
+#import "iTetNetworkController.h"
+
+#import "iTetMessage.h"
+#import "NSDictionary+AdditionalTypes.h"
+
+#import "iTetServerInfo.h"
+
 #import "iTetPlayer.h"
 #import "iTetLocalPlayer.h"
 #import "iTetServerPlayer.h"
@@ -36,6 +45,79 @@
 	
 	[super dealloc];
 }
+
+#pragma mark -
+#pragma mark Interface Actions
+
+- (IBAction)changeTeamName:(id)sender
+{
+	// Run the "change team name" sheet
+	[NSApp beginSheet:teamNameSheet
+	   modalForWindow:[windowController window]
+	    modalDelegate:self
+	   didEndSelector:@selector(changeTeamNameSheetDidEnd:returnCode:contextInfo:)
+		  contextInfo:NULL];
+}
+
+- (IBAction)closeTeamNameSheet:(id)sender
+{
+	[NSApp endSheet:teamNameSheet
+		 returnCode:[sender tag]];
+}
+
+- (void)changeTeamNameSheetDidEnd:(NSWindow*)sheet
+					   returnCode:(NSInteger)returnCode
+					  contextInfo:(void*)contextInfo
+{
+	// If the user pressed "cancel" do nothing
+	if (returnCode == 0)
+	{
+		// Clear the text field
+		[teamNameField setStringValue:[NSString string]];
+		
+		[sheet orderOut:self];
+		return;
+	}
+	
+	// Otherwise, get the team name from the field
+	NSString* newTeam = [teamNameField stringValue];
+	[sheet orderOut:self];
+	
+	// Check that the name is not nil, and remove any spaces
+	if (newTeam == nil)
+		newTeam = [NSString string];
+	newTeam = [iTetServerInfo serverSanitizedName:newTeam];
+	
+	// Change the local player's team name
+	[localPlayer setTeamName:newTeam];
+	
+	// Send the team name to the server
+	iTetMessage* message = [iTetMessage messageWithMessageType:playerTeamMessage];
+	[[message contents] setInteger:[localPlayer playerNumber]
+							forKey:iTetMessagePlayerNumberKey];
+	[[message contents] setObject:newTeam
+						   forKey:iTetMessagePlayerTeamNameKey];
+	[networkController sendMessage:message];
+}
+
+#pragma mark -
+#pragma mark Interface Validations
+
+- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+{
+	// Determine the element's action
+	SEL action = [item action];
+	
+	if (action == @selector(changeTeamName:))
+	{
+		return ([networkController connectionOpen] && ![localPlayer isPlaying]);
+	}
+	
+	return YES;
+}
+
+#pragma mark -
+#pragma mark Accessors
 
 - (void)createLocalPlayerWithNumber:(NSInteger)number
 						   nickname:(NSString*)nickname

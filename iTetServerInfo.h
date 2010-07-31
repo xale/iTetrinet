@@ -52,6 +52,8 @@ extern NSString* const iTet114GameVersionName;
 		  protocol:(iTetProtocolType)p
 	   gameVersion:(iTetGameVersion)version;
 
++ (NSString*)serverSanitizedName:(NSString*)inputString;
+
 @property (readwrite, copy) NSString* serverName;
 @property (readwrite, copy) NSString* serverAddress;
 @property (readwrite, copy) NSString* playerNickname;

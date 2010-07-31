@@ -14,13 +14,25 @@
 @class iTetLocalPlayer;
 @class iTetServerPlayer;
 
-@interface iTetPlayersController : NSObject
+@class iTetWindowController;
+@class iTetNetworkController;
+
+@interface iTetPlayersController : NSObject <NSUserInterfaceValidations>
 {
+	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetNetworkController* networkController;
+	
+	IBOutlet NSWindow* teamNameSheet;
+	IBOutlet NSTextField* teamNameField;
+	
 	NSMutableArray* players;
 	NSInteger playerCount;
 	iTetLocalPlayer* localPlayer;
 	iTetServerPlayer* serverPlayer;
 }
+
+- (IBAction)changeTeamName:(id)sender;
+- (IBAction)closeTeamNameSheet:(id)sender;
 
 - (void)createLocalPlayerWithNumber:(NSInteger)number
 						   nickname:(NSString*)nickname

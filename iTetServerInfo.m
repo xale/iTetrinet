@@ -18,12 +18,6 @@ NSString* const iTetTetrifastProtocolName =	@"Tetrifast";
 NSString* const iTet113GameVersionName =	@"1.13";
 NSString* const iTet114GameVersionName =	@"1.14";
 
-@interface iTetServerInfo (Private)
-
-- (NSString*)sanitizedName:(NSString*)inputString;
-
-@end
-
 @implementation iTetServerInfo
 
 #define iTetExampleTetriNETServerName	NSLocalizedStringFromTable(@"Example TetriNET Server", @"ServerInfo", @"Name for example TetriNET server")
@@ -174,7 +168,7 @@ NSString* const iTetDefaultServerReservedName =	@"SERVER";
 	}
 	
 	// Strip/sanitize whitespace
-	newNickname = [self sanitizedName:newNickname];
+	newNickname = [iTetServerInfo serverSanitizedName:newNickname];
 	
 	// Check that the nickname is not blank
 	if ([newNickname length] <= 0)
@@ -234,13 +228,13 @@ bail:
 	}
 	
 	// Sanitize any whitespace characters
-	*newValue = [self sanitizedName:newTeamName];
+	*newValue = [iTetServerInfo serverSanitizedName:newTeamName];
 	
 	// Team name is valid
 	return YES;
 }
 
-- (NSString*)sanitizedName:(NSString*)inputString
++ (NSString*)serverSanitizedName:(NSString*)inputString
 {
 	// Strip whitespace from the ends of the name
 	inputString = [inputString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
