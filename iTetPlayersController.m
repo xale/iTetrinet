@@ -158,7 +158,7 @@
 	// Check that the assigned slot is not already occupied
 	if ([self playerNumber:number] != nil)
 	{
-		NSAssert2(NO,@"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
+		NSAssert2(NO, @"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
 		return;
 	}
 	
