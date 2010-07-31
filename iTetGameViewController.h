@@ -85,10 +85,10 @@ typedef enum
 	iTetBlockTimerType lastTimerType;
 }
 
-- (IBAction)submitChatMessage:(id)sender;
 - (IBAction)startStopGame:(id)sender;
 - (IBAction)forfeitGame:(id)sender;
 - (IBAction)pauseResumeGame:(id)sender;
+- (IBAction)submitChatMessage:(id)sender;
 
 - (void)chatMessageReceived:(NSString*)messageContents;
 - (void)clearChat;
