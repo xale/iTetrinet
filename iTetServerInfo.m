@@ -25,9 +25,18 @@ NSString* const iTet114GameVersionName =	@"1.14";
 #define iTetExampleServerAddress		NSLocalizedStringFromTable(@"www.example.com", @"ServerInfo", @"Example server address (need not be a valid address)")
 #define iTetExampleTeamName				NSLocalizedStringFromTable(@"MyTeam", @"ServerInfo", @"Example name for player's team (must not contain spaces)")
 
+NSString* const iTetTetrinetUSServerName =		@"TetriNET.us";
+NSString* const iTetTetrinetUSServerAddress =	@"www.tetrinet.us";
+
 + (NSArray*)defaultServers
 {
 	return [NSArray arrayWithObjects:
+			[iTetServerInfo serverInfoWithName:iTetTetrinetUSServerName
+									   address:iTetTetrinetUSServerAddress
+								playerNickname:NSUserName()
+								playerTeamName:iTetExampleTeamName
+									  protocol:tetrinetProtocol
+								   gameVersion:version113];
 			[iTetServerInfo serverInfoWithName:iTetExampleTetriNETServerName
 									   address:iTetExampleServerAddress
 								playerNickname:NSUserName()
