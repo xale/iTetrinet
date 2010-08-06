@@ -135,8 +135,16 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			// Change connection state
 			[self setConnectionState:canceled];
 			
-			// Abort connection
-			[self disconnect];
+			if ([gameSocket isConnected])
+			{
+				// If the socket has already opened a connection to the server, disconnect
+				[self disconnect];
+			}
+			else
+			{
+				// Otherwise, reset the connection state
+				[self setConnectionState:disconnected];
+			}
 			
 			break;
 		}
