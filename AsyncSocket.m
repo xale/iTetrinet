@@ -71,7 +71,6 @@ enum AsyncSocketFlags
 - (NSError *) getSocketError;
 - (NSError *) getReadTimeoutError;
 - (NSError *) getWriteTimeoutError;
-- (NSError *) errorFromCFStreamError:(CFStreamError)err;
 - (void) maybeScheduleDisconnect;
 - (void) doBytesAvailable;
 - (void) completeCurrentRead;
@@ -822,20 +821,18 @@ Failed:;
 
 - (NSError *) getStreamError
 {
-	CFStreamError err;
+	NSError* err;
+	
 	if (theReadStream != NULL)
 	{
-		err = CFReadStreamGetError (theReadStream);
-		if (err.error != 0) return [self errorFromCFStreamError: err];
+		err = (NSError*)CFReadStreamCopyError(theReadStream);
 	}
-	
 	if (theWriteStream != NULL)
 	{
-		err = CFWriteStreamGetError (theWriteStream);
-		if (err.error != 0) return [self errorFromCFStreamError: err];
+		err = (NSError*)CFWriteStreamCopyError(theWriteStream);
 	}
 	
-	return nil;
+	return [err autorelease];
 }
 
 // Unfortunately, CFSocket offers no feedback on its errors.
@@ -889,43 +886,6 @@ Failed:;
 	return [NSError errorWithDomain: AsyncSocketErrorDomain
 							   code: AsyncSocketWriteTimeoutError
 						   userInfo: info];
-}
-
-- (NSError *) errorFromCFStreamError:(CFStreamError)err
-{
-	if (err.domain == 0 && err.error == 0) return nil;
-	
-	// Can't use switch; these constants aren't int literals.
-	NSString *domain = @"CFStreamError (unlisted domain)";
-	NSString *message = nil;
-	if      (err.domain == kCFStreamErrorDomainPOSIX)
-		domain = NSPOSIXErrorDomain;
-	else if (err.domain == kCFStreamErrorDomainMacOSStatus)
-		domain = NSOSStatusErrorDomain;
-	else if (err.domain == kCFStreamErrorDomainMach)
-		domain = NSMachErrorDomain;
-	else if (err.domain == kCFStreamErrorDomainNetDB)
-	{
-		domain = @"kCFStreamErrorDomainNetDB";
-		message = [NSString stringWithCString: gai_strerror(err.error)
-									 encoding: NSASCIIStringEncoding];
-	}
-	else if (err.domain == kCFStreamErrorDomainNetServices)
-		domain = @"kCFStreamErrorDomainNetServices";
-	else if (err.domain == kCFStreamErrorDomainSOCKS)
-		domain = @"kCFStreamErrorDomainSOCKS";
-	else if (err.domain == kCFStreamErrorDomainSystemConfiguration)
-		domain = @"kCFStreamErrorDomainSystemConfiguration";
-	else if (err.domain == kCFStreamErrorDomainSSL)
-		domain = @"kCFStreamErrorDomainSSL";
-	
-	NSDictionary *info = nil;
-	if (message != nil)
-	{
-		info = [NSDictionary dictionaryWithObjectsAndKeys:
-				message, NSLocalizedDescriptionKey, nil];
-	}
-	return [NSError errorWithDomain:domain code:err.error userInfo:info];
 }
 
 #pragma mark -
@@ -1305,8 +1265,9 @@ Failed:;
 
 		if (error)
 		{
-			CFStreamError err = CFReadStreamGetError (theReadStream);
-			[self closeWithError: [self errorFromCFStreamError:err]];
+			NSError* err = (NSError*)CFReadStreamCopyError(theReadStream);
+			[self closeWithError:err];
+			[err release];
 			return;
 		}
 	}
@@ -1422,8 +1383,9 @@ Failed:;
 
 		if (error)
 		{
-			CFStreamError err = CFWriteStreamGetError (theWriteStream);
-			[self closeWithError: [self errorFromCFStreamError:err]];
+			NSError* err = (NSError*)CFWriteStreamCopyError(theWriteStream);
+			[self closeWithError:err];
+			[err release];
 			return;
 		}
 	}
@@ -1490,7 +1452,7 @@ Failed:;
 
 - (void) doCFReadStreamCallback:(CFStreamEventType)type forStream:(CFReadStreamRef)stream
 {
-	CFStreamError err;
+	NSError* err;
 	switch (type)
 	{
 		case kCFStreamEventOpenCompleted:
@@ -1501,8 +1463,9 @@ Failed:;
 			break;
 		case kCFStreamEventErrorOccurred:
 		case kCFStreamEventEndEncountered:
-			err = CFReadStreamGetError (theReadStream);
-			[self closeWithError: [self errorFromCFStreamError:err]];
+			err = (NSError*)CFReadStreamCopyError(theReadStream);
+			[self closeWithError:err];
+			[err release];
 			break;
 		default:
 			NSLog (@"AsyncSocket %p received unexpected CFReadStream callback, CFStreamEventType %d.", self, type);
@@ -1511,7 +1474,7 @@ Failed:;
 
 - (void) doCFWriteStreamCallback:(CFStreamEventType)type forStream:(CFWriteStreamRef)stream
 {
-	CFStreamError err;
+	NSError* err;
 	switch (type)
 	{
 		case kCFStreamEventOpenCompleted:
@@ -1522,8 +1485,9 @@ Failed:;
 			break;
 		case kCFStreamEventErrorOccurred:
 		case kCFStreamEventEndEncountered:
-			err = CFWriteStreamGetError (theWriteStream);
-			[self closeWithError: [self errorFromCFStreamError:err]];
+			err = (NSError*)CFWriteStreamCopyError(theWriteStream);
+			[self closeWithError:err];
+			[err release];
 			break;
 		default:
 			NSLog (@"AsyncSocket %p received unexpected CFWriteStream callback, CFStreamEventType %d.", self, type);
