@@ -10,7 +10,7 @@
 
 
 #pragma mark Button Titles
-#define iTetOkayButtonTitle				NSLocalizedStringFromTable(@"Okay", @"Common", @"Title of 'okay' button for general alert dialogs")
+#define iTetOKButtonTitle				NSLocalizedStringFromTable(@"OK", @"Common", @"Title of 'OK' button for general alert dialogs")
 #define iTetCancelButtonTitle			NSLocalizedStringFromTable(@"Cancel", @"Common", @"Title of 'cancel' button for general alert dialogs")
 #define iTetDeleteButtonTitle			NSLocalizedStringFromTable(@"Delete", @"Common", @"Title of 'delete' button on 'confirm deletion?' alert dialogs")
 #define iTetDoNotSaveButtonTitle		NSLocalizedStringFromTable(@"Don't Save", @"Common", @"Title of 'don't save' button on 'confirm quit without saving?' alert dialogs")

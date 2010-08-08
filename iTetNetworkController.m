@@ -804,7 +804,7 @@ willDisconnectWithError:(NSError*)error
 	
 	// Add the error information to the alert, along with an "Okay" button
 	[alert setInformativeText:errorText];
-	[alert addButtonWithTitle:iTetOkayButtonTitle];
+	[alert addButtonWithTitle:iTetOKButtonTitle];
 	
 	// Run the error as a sheet
 	[alert beginSheetModalForWindow:[windowController window]

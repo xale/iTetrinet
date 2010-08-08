@@ -114,7 +114,7 @@
 		// Configure with the error message
 		[alert setMessageText:iTetThemeLoadFailedAlertTitle];
 		[alert setInformativeText:[NSString stringWithFormat:iTetThemeLoadFailedAlertInformativeText, themeFile]];
-		[alert addButtonWithTitle:iTetOkayButtonTitle];
+		[alert addButtonWithTitle:iTetOKButtonTitle];
 		
 		// Dismiss the old sheet
 		[openSheet orderOut:self];
@@ -136,7 +136,7 @@
 		// Configure with the error message
 		[alert setMessageText:iTetDuplicateThemeAlertTitle];
 		[alert setInformativeText:[NSString stringWithFormat:iTetDuplicateDefaultThemeAlertInformativeText, [newTheme themeName]]];
-		[alert addButtonWithTitle:iTetOkayButtonTitle];
+		[alert addButtonWithTitle:iTetOKButtonTitle];
 		
 		// Dismiss the old sheet
 		[openSheet orderOut:self];
