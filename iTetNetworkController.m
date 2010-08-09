@@ -9,6 +9,9 @@
 //
 
 #import "iTetNetworkController.h"
+
+#import <netdb.h>
+
 #import "iTetWindowController.h"
 #import "iTetPlayersController.h"
 #import "iTetGameViewController.h"
@@ -751,13 +754,20 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Errors
 
 #define iTetConnectionErrorAlertTitle					NSLocalizedStringFromTable(@"Connection error", @"NetworkController", @"Title of alert displayed when an error occurs while connecting or connected to a server")
-#define iTetConnectionRefusedErrorAlertInformativeText	NSLocalizedStringFromTable(@"Connection refused. Check the server address and try again.", @"NetworkController", @"Informative text on alert displayed in the event of a 'connection refused' error when connecting to a server, and suggesting the user check the server address and retry")
-#define iTetHostUnreachableErrorAlertInformativeText	NSLocalizedStringFromTable(@"Could not connect to server. Check that your computer is connected to the internet, then check the server address and try again.", @"NetworkController", @"Informative text on alert displayed in the event of a 'host unreachable' error when connecting to a server, suggesting the user check the computer's network status and the host address before retrying")
-#define iTetPOSIXNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A connection error occurred:", @"NetworkController", @"Informative text prefixing information displayed on a generic connection error alert")
+#define iTetConnectionRefusedErrorAlertInformativeText	NSLocalizedStringFromTable(@"Connection refused.", @"NetworkController", @"Informative text on alert displayed in the event of a 'connection refused' error when connecting to a server")
+#define iTetHostUnreachableErrorAlertInformativeText	NSLocalizedStringFromTable(@"Could not open a connection to the server.", @"NetworkController", @"Informative text on alert displayed in the event of a 'host unreachable' error when connecting to a server")
+#define iTetPOSIXNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A connection error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a generic connection error")
+#define iTetUnknownHostErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not find the server.", @"NetworkController", @"Informative text on alert displayed in the event that a DNS lookup on a server name returns no results")
+#define iTetServerLookupErrorAlertInformativeText		NSLocalizedStringFromTable(@"An error occurred while trying to find the server.", @"NetworkController", @"Informative text on alert displayed when a DNS lookup causes an error, prior to the error code")
+#define iTetLocalNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A local network error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a local network problem")
 #define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not log in to server:", @"NetworkController", @"Informative text prefixing a reason received when a server won't allow the user to log in")
 #define iTetUnknownNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"An unknown error occurred:", @"NetworkController", @"Informative text prefixing information about an unknown connection error")
-#define iTetErrorDomainLabel							NSLocalizedStringFromTable(@"Error domain:", @"NetworkController", @"Label for the domain of an unknown connection error")
-#define iTetErrorCodeLabel								NSLocalizedStringFromTable(@"Error code:", @"NetworkController", @"Label for the code of an unknown connection error")
+
+#define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that the computer at the address is hosting a server and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
+#define iTetCheckNetworkRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that your computer is connected to the internet, or check the server address and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check his or her computer's network state and the server address before retrying")
+
+#define iTetErrorDomainLabelFormat						NSLocalizedStringFromTable(@"Error domain: %@", @"NetworkController", @"Label for the domain of an unknown connection error")
+#define iTetErrorCodeLabelFormat						NSLocalizedStringFromTable(@"Error code: %d", @"NetworkController", @"Label for the code of an unknown connection error")
 
 - (void)handleError:(NSError*)error
 {
@@ -767,40 +777,79 @@ willDisconnectWithError:(NSError*)error
 	// Create an alert
 	NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 	[alert setMessageText:iTetConnectionErrorAlertTitle];
+	NSMutableArray* errorTextLines = [NSMutableArray array];
 	
 	// Determine the type of error
-	NSString* errorText;
-	if ([[error domain] isEqualToString:NSPOSIXErrorDomain])
+	NSString* errorDomain = [error domain];
+	NSInteger errorCode = [error code];
+	if ([errorDomain isEqualToString:NSPOSIXErrorDomain])
 	{
-		switch ([error code])
+		switch (errorCode)
 		{
 			case ECONNREFUSED:
-				errorText = iTetConnectionRefusedErrorAlertInformativeText;
+				[errorTextLines addObject:iTetConnectionRefusedErrorAlertInformativeText];
+				[errorTextLines addObject:iTetCheckServerRecoverySuggestionText];
 				break;
 			case EHOSTUNREACH:
-				errorText = iTetHostUnreachableErrorAlertInformativeText;
+				[errorTextLines addObject:iTetHostUnreachableErrorAlertInformativeText];
+				[errorTextLines addObject:iTetCheckNetworkRecoverySuggestionText];
 				break;
 			default:
-				errorText = [NSString stringWithFormat:@"%@%C%@", iTetPOSIXNetworkErrorAlertInformativeText, NSLineSeparatorCharacter, [error localizedDescription]];
+				[errorTextLines addObject:iTetPOSIXNetworkErrorAlertInformativeText];
+				[errorTextLines addObject:[error localizedDescription]];
 				break;
 		}
 	}
-	else if ([[error domain] isEqualToString:iTetNetworkErrorDomain])
+	else if ([errorDomain isEqualToString:(NSString*)kCFErrorDomainCFNetwork])
 	{
-		switch ([error code])
+		switch (errorCode)
+		{
+			case kCFHostErrorUnknown:
+			{
+				int addrInfoErrorCode = [[[error userInfo] objectForKey:(NSString*)kCFGetAddrInfoFailureKey] intValue];
+				switch (addrInfoErrorCode)
+				{
+					case EAI_NONAME:
+						[errorTextLines addObject:iTetUnknownHostErrorAlertInformativeText];
+						[errorTextLines addObject:iTetCheckNetworkRecoverySuggestionText];
+						break;
+					default:
+						[errorTextLines addObject:iTetServerLookupErrorAlertInformativeText];
+						[errorTextLines addObject:[NSString stringWithFormat:iTetErrorCodeLabelFormat, addrInfoErrorCode]];
+						break;
+				}
+				break;
+			}
+			default:
+				[errorTextLines addObject:iTetLocalNetworkErrorAlertInformativeText];
+				[errorTextLines addObject:[error localizedDescription]];
+				break;
+		}
+	}
+	else if ([errorDomain isEqualToString:iTetNetworkErrorDomain])
+	{
+		switch (errorCode)
 		{
 			case iTetNoConnectingError:
-				errorText = [NSString stringWithFormat:@"%@%C%@", iTetNoConnectingErrorAlertInformativeText, NSLineSeparatorCharacter, [error localizedFailureReason]];
+				[errorTextLines addObject:iTetNoConnectingErrorAlertInformativeText];
+				[errorTextLines addObject:[error localizedFailureReason]];
 				break;
 			default:
-				errorText = [NSString stringWithFormat:@"%@%C%@ %@%C%@ %d", iTetUnknownNetworkErrorAlertInformativeText, NSLineSeparatorCharacter, iTetErrorDomainLabel, [error domain], NSLineSeparatorCharacter, iTetErrorCodeLabel, [error code]];
+				[errorTextLines addObject:iTetUnknownNetworkErrorAlertInformativeText];
+				[errorTextLines addObject:[NSString stringWithFormat:iTetErrorDomainLabelFormat, errorDomain]];
+				[errorTextLines addObject:[NSString stringWithFormat:iTetErrorCodeLabelFormat, errorCode]];
 				break;
 		}
 	}
 	else
 	{
-		errorText = [NSString stringWithFormat:@"%@%C%@ %@%C%@ %d", iTetUnknownNetworkErrorAlertInformativeText, NSLineSeparatorCharacter, iTetErrorDomainLabel, [error domain], NSLineSeparatorCharacter, iTetErrorCodeLabel, [error code]];
+		[errorTextLines addObject:iTetUnknownNetworkErrorAlertInformativeText];
+		[errorTextLines addObject:[NSString stringWithFormat:iTetErrorDomainLabelFormat, errorDomain]];
+		[errorTextLines addObject:[NSString stringWithFormat:iTetErrorCodeLabelFormat, errorCode]];
 	}
+	
+	// Compose the lines of the error message into a single string, joined by line separators
+	NSString* errorText = [errorTextLines componentsJoinedByString:[NSString stringWithFormat:@"%C", NSLineSeparatorCharacter]];
 	
 	// Add the error information to the alert, along with an "Okay" button
 	[alert setInformativeText:errorText];
