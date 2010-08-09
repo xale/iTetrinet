@@ -240,7 +240,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 		}
 		else
 		{
-			[contents setObject:[NSString string]
+			[contents setObject:[NSArray array]
 						 forKey:iTetMessageWinlistArrayKey];
 		}
 	}
