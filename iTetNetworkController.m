@@ -467,6 +467,8 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
+#define iTetNoConnectingUnspecifiedReasonPlaceHolder	NSLocalizedStringFromTable(@"(No reason given)", @"NetworkController", @"Placeholder for informational text when a server refuses the user's login, but provides no reason with the rejection message")
+
 #define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
 #define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
 #define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"NetworkController", @"Status message appended to the chat view when a player joins a new team")
@@ -481,15 +483,28 @@ willDisconnectWithError:(NSError*)error
 #pragma mark No Connecting (Error) Message
 		case noConnectingMessage:
 		{
-			// Create an error, using the reason provided by the server
-			NSDictionary* info = [NSDictionary dictionaryWithObject:[[message contents] objectForKey:iTetMessageNoConnectingReasonKey]
-															 forKey:NSLocalizedFailureReasonErrorKey];
+			// Check if the server provided a reason for rejecting the connection
+			NSString* reason = [[message contents] objectForKey:iTetMessageNoConnectingReasonKey];
+			NSDictionary* info;
+			if ([reason length] > 0)
+			{
+				info = [NSDictionary dictionaryWithObject:reason
+												   forKey:NSLocalizedFailureReasonErrorKey];
+			}
+			else
+			{
+				info = [NSDictionary dictionaryWithObject:iTetNoConnectingUnspecifiedReasonPlaceHolder
+												   forKey:NSLocalizedFailureReasonErrorKey];
+			}
+			
+			// Create an error
 			NSError* error = [NSError errorWithDomain:iTetNetworkErrorDomain
 												 code:iTetNoConnectingError
 											 userInfo:info];
 			
 			// Pass the error to our own error-handling method
 			[self handleError:error];
+			
 			break;
 		}
 #pragma mark Server Heartbeat
@@ -508,6 +523,7 @@ willDisconnectWithError:(NSError*)error
 			[[replyMessage contents] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey]
 										forKey:iTetMessageClientVersionKey];
 			[self sendMessage:replyMessage];
+			
 			break;
 		}	
 #pragma mark Player Number Message
@@ -760,7 +776,7 @@ willDisconnectWithError:(NSError*)error
 #define iTetUnknownHostErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not find the server.", @"NetworkController", @"Informative text on alert displayed in the event that a DNS lookup on a server name returns no results")
 #define iTetServerLookupErrorAlertInformativeText		NSLocalizedStringFromTable(@"An error occurred while trying to find the server.", @"NetworkController", @"Informative text on alert displayed when a DNS lookup causes an error, prior to the error code")
 #define iTetLocalNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A local network error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a local network problem")
-#define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not log in to server:", @"NetworkController", @"Informative text prefixing a reason received when a server won't allow the user to log in")
+#define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"Server refused login:", @"NetworkController", @"Informative text prefixing a reason received from a server when it won't allow the user to log in")
 #define iTetUnknownNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"An unknown error occurred:", @"NetworkController", @"Informative text prefixing information about an unknown connection error")
 
 #define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that the computer at the address is hosting a server and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
