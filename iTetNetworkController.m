@@ -321,15 +321,21 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Attempt to open a connection to the server
 	NSError* error;
-	BOOL connectionSuccessful = [gameSocket connectToHost:[currentServer serverAddress]
-												   onPort:iTetGameNetworkPort
-													error:&error];
+	BOOL success = [gameSocket connectToHost:[currentServer serverAddress]
+									  onPort:iTetGameNetworkPort
+									   error:&error];
 	
-	// If the connection fails, determine the error
-	if (!connectionSuccessful)
+	// If the socket refuses to attempt a connection, determine why
+	if (!success)
 	{
 		[self handleError:error];
+		return;
 	}
+	
+	// Otherwise, enqueue an initial read operation, with a timeout
+	[gameSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
+				   withTimeout:[[NSUserDefaults standardUserDefaults] doubleForKey:iTetConnectionTimeoutPrefKey]
+						   tag:0];
 }
 
 - (void)onSocket:(AsyncSocket*)socket
@@ -358,11 +364,6 @@ didConnectToHost:(NSString*)hostname
 	
 	// Change the connection state
 	[self setConnectionState:login];
-	
-	// Start reading data
-	[gameSocket readDataToData:[NSData dataWithByte:iTetNetworkTerminatorCharacter]
-				   withTimeout:-1
-						   tag:0];
 }
 
 #pragma mark -
@@ -776,10 +777,11 @@ willDisconnectWithError:(NSError*)error
 #define iTetUnknownHostErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not find the server.", @"NetworkController", @"Informative text on alert displayed in the event that a DNS lookup on a server name returns no results")
 #define iTetServerLookupErrorAlertInformativeText		NSLocalizedStringFromTable(@"An error occurred while trying to find the server.", @"NetworkController", @"Informative text on alert displayed when a DNS lookup causes an error, prior to the error code")
 #define iTetLocalNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A local network error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a local network problem")
+#define iTetConnectionTimeoutAlertInformativeText		NSLocalizedStringFromTable(@"The connection timed out.", @"NetworkController", @"Informative text on alert displayed when connecting to a server fails due to timeout")
 #define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"Server refused login:", @"NetworkController", @"Informative text prefixing a reason received from a server when it won't allow the user to log in")
 #define iTetUnknownNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"An unknown error occurred:", @"NetworkController", @"Informative text prefixing information about an unknown connection error")
 
-#define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that the computer at the address is hosting a server and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
+#define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"Check the address of the server you are attempting to connect to and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
 #define iTetCheckNetworkRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that your computer is connected to the internet, or check the server address and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check his or her computer's network state and the server address before retrying")
 
 #define iTetErrorDomainLabelFormat						NSLocalizedStringFromTable(@"Error domain: %@", @"NetworkController", @"Label for the domain of an unknown connection error")
@@ -839,6 +841,21 @@ willDisconnectWithError:(NSError*)error
 			default:
 				[errorTextLines addObject:iTetLocalNetworkErrorAlertInformativeText];
 				[errorTextLines addObject:[error localizedDescription]];
+				break;
+		}
+	}
+	else if ([errorDomain isEqualToString:AsyncSocketErrorDomain])
+	{
+		switch (errorCode)
+		{
+			case AsyncSocketReadTimeoutError:
+				[errorTextLines addObject:iTetConnectionTimeoutAlertInformativeText];
+				[errorTextLines addObject:iTetCheckServerRecoverySuggestionText];
+				break;
+			default:
+				[errorTextLines addObject:iTetUnknownNetworkErrorAlertInformativeText];
+				[errorTextLines addObject:[NSString stringWithFormat:iTetErrorDomainLabelFormat, errorDomain]];
+				[errorTextLines addObject:[NSString stringWithFormat:iTetErrorCodeLabelFormat, errorCode]];
 				break;
 		}
 	}
