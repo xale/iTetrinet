@@ -145,6 +145,10 @@
 
 - (void)stopQueriesAndDisconnect
 {
+	// Abort queries
+	channelQueryStatus = noQuery;
+	playerQueryStatus = noQuery;
+	
 	// Disconnect from the server
 	[querySocket disconnect];
 	[self setCurrentServer:nil];
@@ -316,8 +320,12 @@ didConnectToHost:(NSString*)host
 	 didReadData:(NSData*)data
 		 withTag:(long)tag
 {
-	// If we have determined that the server doesn't support the query protocol, don't bother reading the message
+	// If we have determined that the server doesn't support the query protocol, disregard the message
 	if (!serverSupportsQueries)
+		return;
+	
+	// If there aren't any queries in progress, disregard the message
+	if ((channelQueryStatus == noQuery) && (playerQueryStatus == noQuery))
 		return;
 	
 	// Trim the terminator character from the end of the data
@@ -432,13 +440,22 @@ willDisconnectWithError:(NSError*)error
 {
 	// If an error occurred, abort quietly, but make note that the server doesn't support the Query protocol
 	if (error != nil)
+	{
 		serverSupportsQueries = NO;
+		channelQueryStatus = noQuery;
+		playerQueryStatus = noQuery;
+	}
 }
 
 - (void)onSocketDidDisconnect:(AsyncSocket*)socket
 {
-	channelQueryStatus = noQuery;
-	playerQueryStatus = noQuery;
+	// If we have been disconnected before a query was completed, attempt to reconnect
+	if ((channelQueryStatus != noQuery) || (playerQueryStatus != noQuery))
+	{
+		[querySocket connectToHost:[currentServer serverAddress]
+							onPort:iTetQueryNetworkPort
+							 error:NULL];
+	}
 }
 
 #pragma mark -
