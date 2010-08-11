@@ -127,11 +127,7 @@
 	iTetCheckPlayerNumber(number);
 	
 	// Check that the assigned slot is not already occupied
-	if ([self playerNumber:number] != nil)
-	{
-		NSAssert2(NO,@"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
-		return;
-	}
+	NSAssert2(([self playerNumber:number] == nil),@"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -156,11 +152,7 @@
 	iTetCheckPlayerNumber(number);
 	
 	// Check that the assigned slot is not already occupied
-	if ([self playerNumber:number] != nil)
-	{
-		NSAssert2(NO, @"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
-		return;
-	}
+	NSAssert2(([self playerNumber:number] == nil), @"local player assigned to occupied player slot: %d (%@)", number, [self playerNumber:number]);
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -187,11 +179,7 @@
 	iTetCheckPlayerNumber(number);
 	
 	// Check that the slot is not already occupied
-	if ([self playerNumber:number] != nil)
-	{
-		NSAssert3(NO, @"new player '%@' assigned to occupied player slot: %d (%@)", nick, number, [self playerNumber:number]);
-		return;
-	}
+	NSAssert3(([self playerNumber:number] == nil), @"new player '%@' assigned to occupied player slot: %d (%@)", nick, number, [self playerNumber:number]);
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -253,11 +241,7 @@
 	// Sanity checks
 	NSParameterAssert(player != nil);
 	iTetCheckPlayerNumber([player playerNumber]);
-	if ([self playerNumber:[player playerNumber]] == nil)
-	{
-		NSAssert2(NO, @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);
-		return;
-	}
+	NSAssert2(([self playerNumber:[player playerNumber]] != nil), @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);
 	
 	[self willChangeValueForKey:@"playerList"];
 	

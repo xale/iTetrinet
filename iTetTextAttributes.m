@@ -103,7 +103,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 											   forKey:NSUnderlineStyleAttributeName];
 	}
 	
-	NSAssert1(NO, @"invalid attribute code in iTetTextAttributes +textAttributeForCode: '%d'", attributeCode);
+	NSAssert1(NO, @"invalid attribute code in iTetTextAttributes +chatTextAttributeForCode: '%d'", attributeCode);
 	
 	return nil;
 }

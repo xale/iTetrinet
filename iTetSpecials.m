@@ -202,7 +202,7 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"iTetSpecialIsPositive() called on invalid special type: %c (%d)", type, type);
+	NSAssert2(NO, @"iTetSpecials +specialIsPositive: called on invalid special type: %c (%d)", type, type);
 	return NO;
 }
 
