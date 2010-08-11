@@ -1452,6 +1452,10 @@ Failed:;
 
 - (void) doCFReadStreamCallback:(CFStreamEventType)type forStream:(CFReadStreamRef)stream
 {
+	// If the read stream has already been released, disregard
+	if (theReadStream == NULL)
+		return;
+	
 	NSError* err;
 	switch (type)
 	{
@@ -1474,6 +1478,10 @@ Failed:;
 
 - (void) doCFWriteStreamCallback:(CFStreamEventType)type forStream:(CFWriteStreamRef)stream
 {
+	// If the write stream has already been released, disregard
+	if (theWriteStream == NULL)
+		return;
+	
 	NSError* err;
 	switch (type)
 	{
