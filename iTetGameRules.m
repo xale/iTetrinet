@@ -209,14 +209,6 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	[rulesDict setBool:NO
 				forKey:iTetGameRulesCopyCollectedSpecialsKey];
 	
-	// Disable the average level indicator (since this is meaningless)
-	[rulesDict setBool:NO
-				forKey:iTetGameRulesShowAverageLevelKey];
-	
-	// Disable classic rules (again, this is more-or-less irrelevant)
-	[rulesDict setBool:NO
-				forKey:iTetGameRulesClassicRulesKey];
-	
 	// Even block distribution
 	[rulesDict setObject:[self defaultOfflineBlockFrequencies]
 				  forKey:iTetGameRulesBlockFrequenciesKey];
@@ -224,6 +216,14 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	// Predetermined "offline mode" specials distribution
 	[rulesDict setObject:[self defaultOfflineSpecialFrequencies]
 				  forKey:iTetGameRulesSpecialFrequenciesKey];
+	
+	// Disable the average level indicator (since this is meaningless)
+	[rulesDict setBool:NO
+				forKey:iTetGameRulesShowAverageLevelKey];
+	
+	// Enable "classic rules" (this allows us to record multiple-line clears)
+	[rulesDict setBool:YES
+				forKey:iTetGameRulesClassicRulesKey];
 	
 	// Return the dictionary of rules
 	return rulesDict;
