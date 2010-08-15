@@ -27,6 +27,8 @@
 
 #import "iTetLocalPlayer.h"
 
+#import "iTetField.h"
+
 #import "iTetGameRules.h"
 
 #import "NSData+SingleByte.h"

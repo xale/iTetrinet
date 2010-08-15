@@ -11,14 +11,10 @@
 #import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
 #import "NSString+MessageData.h"
+#import "NSAttributedString+Convenience.h"
 #import "NSColor+Comparisons.h"
 
 @implementation NSAttributedString (TetrinetTextAttributes)
-
-+ (id)attributedStringWithString:(NSString*)string
-{
-	return [[[self alloc] initWithString:string] autorelease];
-}
 
 + (id)attributedStringWithPlineMessageContents:(NSString*)messageContents
 {

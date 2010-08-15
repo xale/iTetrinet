@@ -49,6 +49,8 @@
 		6A7DC210115047080068584D /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7DC20F115047080068584D /* iTetWindowController.m */; };
 		6A7E20A41184036100FBFC8A /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A21184036100FBFC8A /* gtetblocks.png */; };
 		6A7E20A51184036100FBFC8A /* GTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A7E20A31184036100FBFC8A /* GTetrinetTheme.cfg */; };
+		6A7F54D512187D6F00D2CD50 /* iTetPlayer+GameEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7F54D412187D6F00D2CD50 /* iTetPlayer+GameEvents.m */; };
+		6A7F54D81218806800D2CD50 /* NSAttributedString+Convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7F54D71218806800D2CD50 /* NSAttributedString+Convenience.m */; };
 		6A851CF511E7D0A900A384C2 /* iTetRandomBlockGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A851CF411E7D0A900A384C2 /* iTetRandomBlockGenerator.m */; };
 		6A851D2B11E7DBAC00A384C2 /* iTetSequencedBlockGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A851D2A11E7DBAC00A384C2 /* iTetSequencedBlockGenerator.m */; };
 		6A8E0CB7117641F700A0F909 /* Current Channel Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A8E0CB6117641F700A0F909 /* Current Channel Icon.png */; };
@@ -178,6 +180,10 @@
 		6A7DC20F115047080068584D /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
 		6A7E20A21184036100FBFC8A /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
 		6A7E20A31184036100FBFC8A /* GTetrinetTheme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GTetrinetTheme.cfg; sourceTree = "<group>"; };
+		6A7F54D312187D6F00D2CD50 /* iTetPlayer+GameEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "iTetPlayer+GameEvents.h"; sourceTree = "<group>"; };
+		6A7F54D412187D6F00D2CD50 /* iTetPlayer+GameEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "iTetPlayer+GameEvents.m"; sourceTree = "<group>"; };
+		6A7F54D61218806800D2CD50 /* NSAttributedString+Convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Convenience.h"; sourceTree = "<group>"; };
+		6A7F54D71218806800D2CD50 /* NSAttributedString+Convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+Convenience.m"; sourceTree = "<group>"; };
 		6A851CF311E7D0A900A384C2 /* iTetRandomBlockGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetRandomBlockGenerator.h; sourceTree = "<group>"; };
 		6A851CF411E7D0A900A384C2 /* iTetRandomBlockGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetRandomBlockGenerator.m; sourceTree = "<group>"; };
 		6A851D2911E7DBAC00A384C2 /* iTetSequencedBlockGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetSequencedBlockGenerator.h; sourceTree = "<group>"; };
@@ -457,6 +463,8 @@
 				6A4D9156111269700052BC28 /* iTetLocalPlayer.m */,
 				6A1042D6116C47AF007438B9 /* iTetServerPlayer.h */,
 				6A1042D7116C47AF007438B9 /* iTetServerPlayer.m */,
+				6A7F54D312187D6F00D2CD50 /* iTetPlayer+GameEvents.h */,
+				6A7F54D412187D6F00D2CD50 /* iTetPlayer+GameEvents.m */,
 			);
 			name = Players;
 			sourceTree = "<group>";
@@ -671,6 +679,8 @@
 			children = (
 				6AFD63E611D695A300202465 /* Addional Types Support */,
 				6A3ACC5210B7C7CC00459D97 /* Caching */,
+				6A7F54D61218806800D2CD50 /* NSAttributedString+Convenience.h */,
+				6A7F54D71218806800D2CD50 /* NSAttributedString+Convenience.m */,
 				6A6957E81121214C00B01FB6 /* NSColor+Comparisons.h */,
 				6A6957E91121214C00B01FB6 /* NSColor+Comparisons.m */,
 				6A387E31113F4D0C0074A5F6 /* NSData+Subdata.h */,
@@ -903,6 +913,8 @@
 				6A851D2B11E7DBAC00A384C2 /* iTetSequencedBlockGenerator.m in Sources */,
 				6AA8FDCA11E942E100EF5746 /* iTetGameVersionTransformer.m in Sources */,
 				6A7C86E711FF1F2C00649DAB /* IPSIntegerGeometry.m in Sources */,
+				6A7F54D512187D6F00D2CD50 /* iTetPlayer+GameEvents.m in Sources */,
+				6A7F54D81218806800D2CD50 /* NSAttributedString+Convenience.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,10 +1025,8 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
@@ -1025,6 +1035,7 @@
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
@@ -1037,10 +1048,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BLOCK_ASSERTIONS;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;

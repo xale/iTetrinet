@@ -63,7 +63,14 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[self defaultTextColor], NSForegroundColorAttributeName,
 			[self gameActionsTextFont], NSFontAttributeName,
-			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
+			nil];
+}
+
++ (NSDictionary*)boldFontGameActionsTextAttributes
+{
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[self defaultTextColor], NSForegroundColorAttributeName,
+			[self boldGameActionsTextFont], NSFontAttributeName,
 			nil];
 }
 
@@ -72,7 +79,6 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			[self defaultTextColor], NSForegroundColorAttributeName,
 			[self channelsListTextFont], NSFontAttributeName,
-			[NSNumber numberWithInt:NSUnderlineStyleNone], NSUnderlineStyleAttributeName,
 			nil];
 }
 
@@ -301,6 +307,12 @@ NSString* const iTetGameActionsTextFontName =	@"Lucida Grande";
 {
 	return [NSFont fontWithName:iTetGameActionsTextFontName
 						   size:iTetGameActionsTextFontSize];
+}
+
++ (NSFont*)boldGameActionsTextFont
+{
+	return [[NSFontManager sharedFontManager] convertFont:[self gameActionsTextFont]
+											  toHaveTrait:NSBoldFontMask];
 }
 
 NSString* const iTetChannelsListTextFontName =	@"Lucida Grande";

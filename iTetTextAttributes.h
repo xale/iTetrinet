@@ -60,6 +60,9 @@ extern NSString* const iTetRemoteActionMessageIndicator;
 // Returns a dictionary containing the default text attributes for the game actions list
 + (NSDictionary*)defaultGameActionsTextAttributes;
 
+// Returns a dictionary containing a bolded version of the text attributes for the game actions list
++ (NSDictionary*)boldFontGameActionsTextAttributes;
+
 // Returns a dictionary containing the default text attributes for the channels list
 + (NSDictionary*)defaultChannelsListTextAttributes;
 
@@ -90,8 +93,9 @@ extern NSString* const iTetRemoteActionMessageIndicator;
 + (NSFont*)italicChatTextFont;
 + (NSFont*)boldItalicChatTextFont;
 
-// Returns the font used in the game actions list
+// Returns the fonts used in the game actions list
 + (NSFont*)gameActionsTextFont;
++ (NSFont*)boldGameActionsTextFont;
 
 // Returns the font used in the channels list
 + (NSFont*)channelsListTextFont;

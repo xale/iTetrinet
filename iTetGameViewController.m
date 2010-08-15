@@ -20,6 +20,7 @@
 #import "iTetGameRules.h"
 #import "iTetLocalPlayer.h"
 #import "iTetServerPlayer.h"
+#import "iTetPlayer+GameEvents.h"
 #import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
@@ -33,7 +34,7 @@
 #import "iTetKeyActions.h"
 #import "iTetKeyConfiguration.h"
 
-#import "NSAttributedString+TetrinetTextAttributes.h"
+#import "NSAttributedString+Convenience.h"
 #import "iTetTextAttributes.h"
 
 #import "iTetCommonLocalizations.h"
@@ -67,6 +68,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		   toPlayer:(iTetPlayer*)target;
 - (void)sendLines:(NSInteger)lines;
 
+- (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecialType)special
+									 usedOnPlayer:(iTetPlayer*)target
+										 byPlayer:(iTetPlayer*)sender
+							  localPlayerAffected:(BOOL)localEffect;
+- (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
+								   sentToPlayer:(iTetPlayer*)target
+									   byPlayer:(iTetPlayer*)sender;
 - (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
 
@@ -1382,22 +1390,6 @@ doCommandBySelector:(SEL)command
 	}
 }
 
-#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
-#define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
-
-#define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ added to %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
-#define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"1 Line", @"GameViewController", @"Token for event description messages describing a single line to be added to a player's field")
-#define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"%d Lines", @"GameViewController", @"Token format for event description messages describing multiple lines to be added to a player's field")
-
-#define iTetDoubleClearEventDescription			NSLocalizedStringFromTable(@"Double", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes two lines simultaneously in an offline game")
-#define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"Triple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
-#define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"Quadruple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
-
-#define iTetServerSenderPlaceholderName			NSLocalizedStringFromTable(@"Server", @"GameViewController", @"Placeholder string used in event description messages on the 'game actions' list when specials are used or lines are added by the server")
-#define iTetTargetAllPlaceholderName			NSLocalizedStringFromTable(@"All", @"GameViewController", @"Placeholder string used in event description messages on the 'game actions' list when a special is used on or lines are added to all players in the game")
-
-#define iTetEventBackgroundColorFraction	(0.15)
-
 - (void)specialUsed:(iTetSpecialType)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target
@@ -1419,149 +1411,179 @@ doCommandBySelector:(SEL)command
 			  fromSender:sender];
 	}
 	
-	// Add a description of the event to the list of actions
-	NSString* senderName = nil;
-	NSString* targetName = nil;
-	NSMutableAttributedString* desc = nil;
-	NSColor* textColor = nil;
-	NSRange attributeRange;
-	
-	// Check if this was a "use on self" event
-	BOOL selfEvent = NO;
-	if (![sender isServerPlayer] && [target isEqual:sender])
-		selfEvent = YES;
-	
-	// Determine the sender player's name
-	if ([sender isServerPlayer])
-		senderName = iTetServerSenderPlaceholderName;
-	else
-		senderName = [sender nickname];
-	
-	// Determine the target player's name
-	if (!selfEvent)
+	// Record the event in the game actions list
+	NSInteger linesAdded = [iTetSpecials classicLinesForSpecialType:special];
+	if (linesAdded > 0)
 	{
-		if ([target playerNumber] == 0)
-			targetName = iTetTargetAllPlaceholderName;
-		else
-			targetName = [target nickname];
-	}
-	
-	// Determine if the special is a classic-style line add
-	NSInteger numLinesAdded = [iTetSpecials classicLinesForSpecialType:special];
-	if (numLinesAdded > 0)
-	{
-		// Describe the number of lines added
-		NSString* linesDesc;
-		if (![self offlineGame])
-		{
-			if (numLinesAdded > 1)
-				linesDesc = [NSString stringWithFormat:iTetMultipleLinesAddedFormat, numLinesAdded];
-			else
-				linesDesc = iTetOneLineAddedFormat;
-			
-			// Create the description string
-			desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, linesDesc, targetName, senderName]
-														  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
-		}
-		else
-		{
-			// If this is an offline game, describe the event as a multiple-line clear ("double", "triple", "quad")
-			switch (special)
-			{
-				case classicStyle1:
-					linesDesc = iTetDoubleClearEventDescription;
-					break;
-				case classicStyle2:
-					linesDesc = iTetTripleClearEventDescription;
-					break;
-				case classicStyle4:
-					linesDesc = iTetQuadrupleClearEventDescription;
-					break;
-				default:
-					NSAssert2(NO, @"Invalid special type for lines-cleared description in gameViewController: %c (%d)", special, special);
-					break;
-			}
-			
-			// Create the description string
-			desc = [[NSMutableAttributedString alloc] initWithString:linesDesc
-														  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
-		}
-		
-		// Find the highlight range
-		attributeRange = [[desc string] rangeOfString:linesDesc];
-		
-		// Use the "lines added" highlight color
-		textColor = [iTetTextAttributes linesAddedDescriptionTextColor];
+		[self appendEventDescription:[self eventDescriptionForLines:[iTetSpecials classicLinesForSpecialType:special]
+													   sentToPlayer:target
+														   byPlayer:sender]];
 	}
 	else
 	{
-		// Otherwise, get the name of the special used
-		NSString* specialName = [iTetSpecials nameForSpecialType:special];
-		
-		// Create the description string
-		if (![self offlineGame])
-		{
-			if (selfEvent)
-			{
-				desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSelfSpecialEventDescriptionFormat, specialName, senderName]
-															  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
-			}
-			else
-			{
-				desc = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, specialName, targetName, senderName]
-															  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
-			}
-		}
-		else
-		{
-			desc = [[NSMutableAttributedString alloc] initWithString:specialName
-														  attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
-		}
-
-		// Find the highlight range and color
-		attributeRange = [[desc string] rangeOfString:specialName];
-		if ([iTetSpecials specialIsPositive:special])
-			textColor = [iTetTextAttributes goodSpecialDescriptionTextColor];
-		else
-			textColor = [iTetTextAttributes badSpecialDescriptionTextColor];
+		[self appendEventDescription:[self eventDescriptionForSpecial:special
+														 usedOnPlayer:target
+															 byPlayer:sender
+												  localPlayerAffected:localPlayerAffected]];
 	}
-	
-	// Apply bold and color to the chosen highlight range
-	[desc applyFontTraits:NSBoldFontMask
-					range:attributeRange];
-	[desc addAttributes:[NSDictionary dictionaryWithObject:textColor
-													forKey:NSForegroundColorAttributeName]
-				  range:attributeRange];
-	
-	// Bold the sender and (if applicable) target names
-	if (![self offlineGame])
-	{
-		[desc applyFontTraits:NSBoldFontMask
-						range:[[desc string] rangeOfString:senderName
-												   options:NSBackwardsSearch]];
-		if (!selfEvent)
-		{
-			[desc applyFontTraits:NSBoldFontMask
-							range:[[desc string] rangeOfString:targetName]];
-		}
-	}
-	
-	// If the local player was affected, add a background color
-	if (localPlayerAffected)
-	{
-		[desc addAttributes:[NSDictionary dictionaryWithObject:[[NSColor whiteColor] blendedColorWithFraction:iTetEventBackgroundColorFraction
-																									  ofColor:textColor]
-														forKey:NSBackgroundColorAttributeName]
-					  range:NSMakeRange(0, [desc length])];
-	}
-	
-	// Record the event
-	[self appendEventDescription:desc];
-	[desc release];
 }
 
 #pragma mark -
 #pragma mark Event Descriptions
+
+#define iTetEventBackgroundColorFraction	(0.15)
+
+#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
+#define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
+
+NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{special}";
+NSString* const iTetTargetNameFormatSpecifier =			@"%{target}";
+NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
+
+- (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecialType)special
+									 usedOnPlayer:(iTetPlayer*)target
+										 byPlayer:(iTetPlayer*)sender
+							  localPlayerAffected:(BOOL)localEffect
+{
+	// Choose a color to describe special, depending on whether its effects are positive or negative
+	NSColor* specialDescriptionTextColor = nil;
+	if ([iTetSpecials specialIsPositive:special])
+		specialDescriptionTextColor = [iTetTextAttributes goodSpecialDescriptionTextColor];
+	else
+		specialDescriptionTextColor = [iTetTextAttributes badSpecialDescriptionTextColor];
+	
+	// Create the description of the special used
+	NSDictionary* specialDescriptionAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+												  [iTetTextAttributes boldGameActionsTextFont], NSFontAttributeName,
+												  specialDescriptionTextColor, NSForegroundColorAttributeName,
+												  nil];
+	NSAttributedString* specialDescription = [NSAttributedString attributedStringWithString:[iTetSpecials nameForSpecialType:special]
+																				 attributes:specialDescriptionAttributes];
+	
+	// If this is an offline game, simply use the name of the special as the description
+	if ([self offlineGame])
+		return specialDescription;
+	
+	// Otherwise, build a more complicated description message
+	// Check if this was a "use-on-self" event
+	BOOL selfEvent = ([target isEqual:sender] && ![sender isServerPlayer]);
+	
+	// Determine the sender player's name
+	NSAttributedString* senderName = [sender senderEventDescriptionNickname];
+	
+	// Determine the target player's name
+	NSAttributedString* targetName = nil;
+	if (!selfEvent)
+		targetName = [target targetEventDescriptionNickname];
+	
+	// Create the event description
+	NSMutableAttributedString* description = nil;
+	if (selfEvent)
+	{
+		description = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:iTetSelfSpecialEventDescriptionFormat, iTetSpecialDescriptionFormatSpecifier, iTetSenderNameFormatSpecifier]
+																 attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
+	}
+	else
+	{
+		description = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:iTetSpecialEventDescriptionFormat, iTetSpecialDescriptionFormatSpecifier, iTetTargetNameFormatSpecifier, iTetSenderNameFormatSpecifier]
+																 attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
+	}
+	
+	// Insert the special description and player name(s)
+	[description replaceCharactersInRange:[[description string] rangeOfString:iTetSpecialDescriptionFormatSpecifier]
+					 withAttributedString:specialDescription];
+	[description replaceCharactersInRange:[[description string] rangeOfString:iTetSenderNameFormatSpecifier]
+					 withAttributedString:senderName];
+	if (!selfEvent)
+	{
+		[description replaceCharactersInRange:[[description string] rangeOfString:iTetTargetNameFormatSpecifier]
+						 withAttributedString:targetName];
+	}
+	
+	// If the local player was affected by the special, add a background highlight
+	if (localEffect)
+	{
+		[description addAttribute:NSBackgroundColorAttributeName
+							value:[[NSColor whiteColor] blendedColorWithFraction:iTetEventBackgroundColorFraction
+																		 ofColor:specialDescriptionTextColor]
+							range:NSMakeRange(0, [description length])];
+	}
+	
+	return [NSAttributedString attributedStringWithAttributedString:description];
+}
+
+#define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ added to %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
+
+#define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"1 Line", @"GameViewController", @"Token for event description messages describing a single line to be added to a player's field")
+#define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"%d Lines", @"GameViewController", @"Token format for event description messages describing multiple lines to be added to a player's field")
+
+#define iTetDoubleClearEventDescription			NSLocalizedStringFromTable(@"Double", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes two lines simultaneously in an offline game")
+#define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"Triple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
+#define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"Quadruple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
+
+NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{lines}";
+
+- (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
+								   sentToPlayer:(iTetPlayer*)target
+									   byPlayer:(iTetPlayer*)sender
+{
+	NSDictionary* linesDescriptionAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+												[iTetTextAttributes boldGameActionsTextFont], NSFontAttributeName,
+												[iTetTextAttributes linesAddedDescriptionTextColor], NSForegroundColorAttributeName,
+												nil];
+	
+	// If this is an offline game, use a simplified description format
+	if ([self offlineGame])
+	{
+		// Determine the number of lines cleared
+		switch (numLines)
+		{
+			case 1:
+				return [NSAttributedString attributedStringWithString:iTetDoubleClearEventDescription
+														   attributes:linesDescriptionAttributes];
+			case 2:
+				return [NSAttributedString attributedStringWithString:iTetTripleClearEventDescription
+														   attributes:linesDescriptionAttributes];
+			case 4:
+				return [NSAttributedString attributedStringWithString:iTetQuadrupleClearEventDescription
+														   attributes:linesDescriptionAttributes];
+			default:
+				NSAssert1(NO, @"GameViewController -eventDescriptionForLines: called with invalid number of lines: %d", numLines);
+				return nil;
+		}
+	}
+	
+	// Get the sender and target names
+	NSAttributedString* senderName = [sender senderEventDescriptionNickname];
+	NSAttributedString* targetName = [target targetEventDescriptionNickname];
+	
+	// Create a description of the number of lines added
+	NSAttributedString* linesDescription = nil;
+	if (numLines > 1)
+	{
+		linesDescription = [NSAttributedString attributedStringWithString:[NSString stringWithFormat:iTetMultipleLinesAddedFormat, numLines]
+															   attributes:linesDescriptionAttributes];
+	}
+	else
+	{
+		linesDescription = [NSAttributedString attributedStringWithString:iTetOneLineAddedFormat
+															   attributes:linesDescriptionAttributes];
+	}
+	
+	// Create the event description
+	NSMutableAttributedString* description = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:iTetLinesAddedEventDescriptionFormat, iTetLinesDescriptionFormatSpecifier, iTetTargetNameFormatSpecifier, iTetSenderNameFormatSpecifier]
+																						attributes:[iTetTextAttributes defaultGameActionsTextAttributes]];
+	
+	// Insert the description of the lines added and the player names
+	[description replaceCharactersInRange:[[description string] rangeOfString:iTetLinesDescriptionFormatSpecifier]
+					 withAttributedString:linesDescription];
+	[description replaceCharactersInRange:[[description string] rangeOfString:iTetSenderNameFormatSpecifier]
+					 withAttributedString:senderName];
+	[description replaceCharactersInRange:[[description string] rangeOfString:iTetTargetNameFormatSpecifier]
+					 withAttributedString:targetName];
+	
+	return [NSAttributedString attributedStringWithAttributedString:description];
+}
 
 - (void)appendEventDescription:(NSAttributedString*)description
 {

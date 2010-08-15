@@ -9,7 +9,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetField.h"
+
+@class iTetField;
 
 #define ITET_MAX_PLAYERS	(6)
 #define iTetCheckPlayerNumber(n) NSParameterAssert(((n) > 0) && ((n) <= ITET_MAX_PLAYERS))

@@ -9,6 +9,7 @@
 //
 
 #import "iTetLocalPlayer.h"
+#import "iTetField.h"
 #import "iTetBlock.h"
 
 @implementation iTetLocalPlayer
