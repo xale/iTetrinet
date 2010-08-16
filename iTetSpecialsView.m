@@ -9,7 +9,7 @@
 //
 
 #import "iTetSpecialsView.h"
-#import "iTetSpecials.h"
+#import "NSNumber+iTetSpecials.h"
 
 #define ITET_SPECIALS_VIEW_BORDER_LINE_WIDTH		1.0
 #define ITET_SPECIALS_VIEW_DIVIDER_LINE_WIDTH		0.5
@@ -101,7 +101,7 @@
 		for (NSNumber* special in [specials reverseObjectEnumerator])
 		{
 			// Get the next special's image
-			NSImage* specialImage = [[self theme] imageForCellType:[special unsignedCharValue]];
+			NSImage* specialImage = [[self theme] imageForCellType:[special specialCellValue]];
 			
 			// Draw the special
 			[specialImage drawAtPoint:NSMakePoint((specialNum * [[self theme] cellSize].width), 0)

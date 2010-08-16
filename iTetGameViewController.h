@@ -9,7 +9,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetSpecials.h"
 #import "iTetGameplayState.h"
 
 @class iTetWindowController;
@@ -101,7 +100,7 @@ typedef enum
 
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player;
-- (void)specialUsed:(iTetSpecialType)special
+- (void)specialUsed:(NSNumber*)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;
 

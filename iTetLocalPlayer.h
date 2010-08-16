@@ -10,10 +10,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetPlayer.h"
-#import "iTetSpecials.h"
 
 @class iTetBlock;
-@class Queue;
 
 @interface iTetLocalPlayer : iTetPlayer
 {
@@ -29,7 +27,7 @@
 - (void)addLines:(NSInteger)lines;
 - (void)resetLinesCleared;
 - (void)addSpecialToQueue:(NSNumber*)special;
-- (iTetSpecialType)dequeueNextSpecial;
+- (NSNumber*)dequeueNextSpecial;
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;

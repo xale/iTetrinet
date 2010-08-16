@@ -9,7 +9,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetSpecials.h"
 #import "IPSIntegerGeometry.h"
 
 #define ITET_FIELD_WIDTH	12

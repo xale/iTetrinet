@@ -4305,41 +4305,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.nextSpecial</string>
-						<reference key="source" ref="1003838065"/>
-						<reference key="destination" ref="28388600"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="1003838065"/>
-							<reference key="NSDestination" ref="28388600"/>
-							<string key="NSLabel">value: localPlayer.nextSpecial</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.nextSpecial</string>
-							<object class="NSDictionary" key="NSOptions">
-								<bool key="EncodedWithXMLCoder">YES</bool>
-								<object class="NSArray" key="dict.sortedKeys">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>NSMultipleValuesPlaceholder</string>
-									<string>NSNoSelectionPlaceholder</string>
-									<string>NSNotApplicablePlaceholder</string>
-									<string>NSNullPlaceholder</string>
-									<string>NSValueTransformerName</string>
-								</object>
-								<object class="NSMutableArray" key="dict.values">
-									<bool key="EncodedWithXMLCoder">YES</bool>
-									<string>No Specials</string>
-									<string>No Specials</string>
-									<string>No Specials</string>
-									<string>No Specials</string>
-									<string>TetrinetSpecialNameTransformer</string>
-								</object>
-							</object>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">1368</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: remotePlayer1.playerNumber</string>
 						<reference key="source" ref="512262620"/>
 						<reference key="destination" ref="28388600"/>
@@ -5874,6 +5839,41 @@
 						<reference key="destination" ref="547177939"/>
 					</object>
 					<int key="connectionID">1765</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: localPlayer.nextSpecial</string>
+						<reference key="source" ref="1003838065"/>
+						<reference key="destination" ref="28388600"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="1003838065"/>
+							<reference key="NSDestination" ref="28388600"/>
+							<string key="NSLabel">value: localPlayer.nextSpecial</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">localPlayer.nextSpecial</string>
+							<object class="NSDictionary" key="NSOptions">
+								<bool key="EncodedWithXMLCoder">YES</bool>
+								<object class="NSArray" key="dict.sortedKeys">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>NSMultipleValuesPlaceholder</string>
+									<string>NSNoSelectionPlaceholder</string>
+									<string>NSNotApplicablePlaceholder</string>
+									<string>NSNullPlaceholder</string>
+									<string>NSValueTransformerName</string>
+								</object>
+								<object class="NSMutableArray" key="dict.values">
+									<bool key="EncodedWithXMLCoder">YES</bool>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>No Specials</string>
+									<string>TetrinetSpecialNameTransformer</string>
+								</object>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">1769</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -8141,9 +8141,9 @@
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{521, 267}, {850, 713}}</string>
+					<string>{{481, 267}, {850, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{521, 267}, {850, 713}}</string>
+					<string>{{481, 267}, {850, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -8332,7 +8332,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1765</int>
+			<int key="maxID">1769</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

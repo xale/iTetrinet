@@ -69,7 +69,7 @@ extern NSString* const iTetMessagePauseResumeRequestTypeKey;
 
 extern NSString* const iTetMessageFieldstringKey;
 extern NSString* const iTetMessageLevelNumberKey;
-extern NSString* const iTetMessageSpecialTypeKey;
+extern NSString* const iTetMessageSpecialKey;
 
 BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t);
 

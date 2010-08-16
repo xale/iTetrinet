@@ -9,7 +9,7 @@
 //
 
 #import "iTetSpecialNameTransformer.h"
-#import "iTetSpecials.h"
+#import "NSNumber+iTetSpecials.h"
 
 NSString* const iTetSpecialNameTransformerName = @"TetrinetSpecialNameTransformer";
 
@@ -31,11 +31,9 @@ NSString* const iTetSpecialNameTransformerName = @"TetrinetSpecialNameTransforme
 	if (![value isKindOfClass:[NSNumber class]])
 		return nil;
 	
-	// Get the integer value; cast to the enum type iTetSpecialType
-	iTetSpecialType type = (iTetSpecialType)[value intValue];
-	
-	// Return the appropriate string representation
-	return [iTetSpecials nameForSpecialType:type];
+	// Return the appropriate string representation of the special
+	NSNumber* specialValue = (NSNumber*)value;
+	return [specialValue specialDisplayName];
 }
 
 @end

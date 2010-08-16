@@ -12,7 +12,7 @@
 
 #import "iTetPlayer.h"
 #import "iTetField.h"
-#import "iTetSpecials.h"
+#import "NSNumber+iTetSpecials.h"
 #import "iTetServerInfo.h"
 
 #import "NSAttributedString+TetrinetTextAttributes.h"
@@ -80,7 +80,7 @@ NSString* const iTetMessagePauseResumeRequestTypeKey =	@"iTetPauseResumeState";
 
 NSString* const iTetMessageFieldstringKey =				@"iTetFieldstring";
 NSString* const iTetMessageLevelNumberKey =				@"iTetLevelNumber";
-NSString* const iTetMessageSpecialTypeKey =				@"iTetSpecialType";
+NSString* const iTetMessageSpecialKey =					@"iTetSpecial";
 
 BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 {
@@ -306,8 +306,8 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	// Special type ("special used" messages)
 	if (type == specialUsedMessage)
 	{
-		[contents setInt:[iTetSpecials specialTypeFromMessageName:[messageContents objectAtIndex:2]]
-				  forKey:iTetMessageSpecialTypeKey];
+		[contents setObject:[NSNumber numberWithSpecialFromMessageName:[messageContents objectAtIndex:2]]
+					 forKey:iTetMessageSpecialKey];
 	}
 	
 done:
@@ -431,11 +431,10 @@ done:
 			iTetCheckPlayerNumber(playerNumber);
 			NSNumber* targetPlayerNumber = [[self contents] objectForKey:iTetMessageTargetPlayerNumberKey];
 			NSParameterAssert(targetPlayerNumber != nil);	// Not using "checkPlayerNumber" macro, since target may be '0' (all players)
-			NSNumber* specialType = [[self contents] objectForKey:iTetMessageSpecialTypeKey];
-			NSParameterAssert(specialType != nil);
+			NSNumber* special = [[self contents] objectForKey:iTetMessageSpecialKey];
+			NSParameterAssert(special != nil);
 			
-			NSString* specialName = [iTetSpecials messageNameForSpecialType:[specialType intValue]];
-			messageContents = [NSString stringWithFormat:iTetSpecialUsedMessageFormat, [targetPlayerNumber integerValue], specialName, playerNumber];
+			messageContents = [NSString stringWithFormat:iTetSpecialUsedMessageFormat, [targetPlayerNumber integerValue], [special specialMessageName], playerNumber];
 			break;
 		}	
 		case playerLostMessage:

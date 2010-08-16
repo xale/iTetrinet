@@ -85,11 +85,11 @@
 	[self didChangeValueForKey:@"specialsQueue"];
 }
 
-- (iTetSpecialType)dequeueNextSpecial
+- (NSNumber*)dequeueNextSpecial
 {
 	// Treat the end of the array as the "front" of the queue
 	// Get the next special from the queue
-	iTetSpecialType special = [[[self specialsQueue] lastObject] intValue];
+	NSNumber* special = [[self specialsQueue] lastObject];
 	
 	[self willChangeValueForKey:@"specialsQueue"];
 	

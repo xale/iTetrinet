@@ -746,7 +746,7 @@ willDisconnectWithError:(NSError*)error
 		case specialUsedMessage:
 		{
 			// Pass to game controller
-			[gameController specialUsed:[[message contents] intForKey:iTetMessageSpecialTypeKey]
+			[gameController specialUsed:[[message contents] objectForKey:iTetMessageSpecialKey]
 							   byPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]
 							   onPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessageTargetPlayerNumberKey]]];
 			break;

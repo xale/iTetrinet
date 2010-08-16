@@ -13,7 +13,7 @@
 
 #import "iTetField.h"
 #import "iTetBlock.h"
-#import "iTetSpecials.h"
+#import "NSNumber+iTetSpecials.h"
 
 #import "iTetUserDefaults.h"
 #import "NSUserDefaults+AdditionalTypes.h"
@@ -547,9 +547,9 @@ shouldProceedAfterError:(NSError*)error
 	}
 	
 	// If the cell is a special, return the image for that special type
-	uint8_t num = [iTetSpecials numberForSpecialType:(iTetSpecialType)cellType];
-	if (num > 0)
-		return [specialImages objectAtIndex:(num - 1)];
+	NSNumber* cellAsSpecial = [NSNumber numberWithSpecialFromCellValue:cellType];
+	if ([cellAsSpecial specialTypeValue] != invalidSpecial)
+		return [specialImages objectAtIndex:([cellAsSpecial specialIndexNumber] - 1)];
 	
 	// Invalid cell type
 	NSAssert1(NO, @"image requested for invalid cell type: %d", cellType);

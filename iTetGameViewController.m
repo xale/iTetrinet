@@ -24,6 +24,7 @@
 #import "iTetServerInfo.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
+#import "NSNumber+iTetSpecials.h"
 #import "iTetSequencedBlockGenerator.h"
 
 #import "iTetLocalFieldView.h"
@@ -57,18 +58,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 - (void)solidifyBlock:(iTetBlock*)block;
 - (void)checkForLinesCleared:(iTetField*)field;
 - (void)moveNextBlockToField;
-- (void)useSpecial:(iTetSpecialType)special
+- (void)useSpecial:(NSNumber*)special
 		  onTarget:(iTetPlayer*)target
 		fromSender:(iTetPlayer*)sender;
 - (void)playerLost;
 
 - (void)sendFieldUpdate;
 - (void)sendCurrentLevel;
-- (void)sendSpecial:(iTetSpecialType)special
+- (void)sendSpecial:(NSNumber*)special
 		   toPlayer:(iTetPlayer*)target;
 - (void)sendLines:(NSInteger)lines;
 
-- (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecialType)special
+- (NSAttributedString*)eventDescriptionForSpecial:(NSNumber*)special
 									 usedOnPlayer:(iTetPlayer*)target
 										 byPlayer:(iTetPlayer*)sender
 							  localPlayerAffected:(BOOL)localEffect;
@@ -796,24 +797,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[LOCALPLAYER addLines:numLines];
 		
 		// If rules specify, copy each collected special for each line cleared
+		NSInteger copiesToAdd = 1;
 		if ([currentGameRules boolForKey:iTetGameRulesCopyCollectedSpecialsKey])
-		{
-			for (NSInteger copiesAdded = 0; copiesAdded < numLines; copiesAdded++)
-			{
-				// Add a copy of each special for each line cleared
-				for (NSNumber* special in specials)
-				{
-					// Check if there is space in the queue
-					if ([[LOCALPLAYER specialsQueue] count] >= [currentGameRules unsignedIntegerForKey:iTetGameRulesSpecialCapacityKey])
-						goto specialsFull;
-					
-					// Add to player's queue
-					[LOCALPLAYER addSpecialToQueue:special];
-				}
-			}
-		}
-		// Otherwise, add only one copy of each special
-		else
+			copiesToAdd = numLines;
+		for (NSInteger copiesAdded = 0; copiesAdded < copiesToAdd; copiesAdded++)
 		{
 			for (NSNumber* special in specials)
 			{
@@ -947,7 +934,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self startBlockFallTimer];
 }
 
-- (void)useSpecial:(iTetSpecialType)special
+- (void)useSpecial:(NSNumber*)special
 		  onTarget:(iTetPlayer*)target
 		fromSender:(iTetPlayer*)sender
 {
@@ -955,7 +942,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	BOOL playerLost = NO;
 	
 	// Determine the type of special and its effect on the field
-	switch (special)
+	switch ([special specialTypeValue])
 	{
 		case addLine:
 			// Add a line to the field
@@ -1014,7 +1001,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		case classicStyle2:
 		case classicStyle4:
 			// Add line(s) to the field
-			newField = [[LOCALPLAYER field] fieldByAddingLines:[iTetSpecials classicLinesForSpecialType:special]
+			newField = [[LOCALPLAYER field] fieldByAddingLines:[special specialNumberOfClassicLinesValue]
 														 style:classicStyle 
 													playerLost:&playerLost];
 			break;
@@ -1335,7 +1322,7 @@ doCommandBySelector:(SEL)command
 	[networkController sendMessage:message];
 }
 
-- (void)sendSpecial:(iTetSpecialType)special
+- (void)sendSpecial:(NSNumber*)special
 		   toPlayer:(iTetPlayer*)target
 {
 	// If this isn't an offline game, send a message to the server
@@ -1346,8 +1333,8 @@ doCommandBySelector:(SEL)command
 								forKey:iTetMessagePlayerNumberKey];
 		[[message contents] setInteger:((target != nil) ? [target playerNumber] : 0)
 								forKey:iTetMessageTargetPlayerNumberKey];
-		[[message contents] setInt:special
-							forKey:iTetMessageSpecialTypeKey];
+		[[message contents] setObject:special
+							   forKey:iTetMessageSpecialKey];
 		
 		[networkController sendMessage:message];
 	}
@@ -1361,7 +1348,7 @@ doCommandBySelector:(SEL)command
 - (void)sendLines:(NSInteger)lines
 {
 	// Convert the lines to a special, and send to everyone
-	[self sendSpecial:[iTetSpecials specialTypeForClassicLines:lines]
+	[self sendSpecial:[NSNumber numberWithSpecialFromClassicLines:lines]
 			 toPlayer:[playersController serverPlayer]];
 }
 
@@ -1390,7 +1377,7 @@ doCommandBySelector:(SEL)command
 	}
 }
 
-- (void)specialUsed:(iTetSpecialType)special
+- (void)specialUsed:(NSNumber*)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target
 {
@@ -1400,7 +1387,7 @@ doCommandBySelector:(SEL)command
 	// - the special targets all players, and was not sent by the local player
 	BOOL localPlayerAffected = ([LOCALPLAYER isPlaying] &&
 								([target isLocalPlayer] ||
-								 ((special == switchField) && [sender isLocalPlayer]) ||
+								 (([special specialTypeValue] == switchField) && [sender isLocalPlayer]) ||
 								 (([target playerNumber] == 0) && ![sender isLocalPlayer])));
 	
 	// Perform the action, if applicable
@@ -1412,10 +1399,9 @@ doCommandBySelector:(SEL)command
 	}
 	
 	// Record the event in the game actions list
-	NSInteger linesAdded = [iTetSpecials classicLinesForSpecialType:special];
-	if (linesAdded > 0)
+	if ([special isClassicStyleAddSpecial])
 	{
-		[self appendEventDescription:[self eventDescriptionForLines:[iTetSpecials classicLinesForSpecialType:special]
+		[self appendEventDescription:[self eventDescriptionForLines:[special specialNumberOfClassicLinesValue]
 													   sentToPlayer:target
 														   byPlayer:sender]];
 	}
@@ -1440,14 +1426,14 @@ NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{special}";
 NSString* const iTetTargetNameFormatSpecifier =			@"%{target}";
 NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
 
-- (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecialType)special
+- (NSAttributedString*)eventDescriptionForSpecial:(NSNumber*)special
 									 usedOnPlayer:(iTetPlayer*)target
 										 byPlayer:(iTetPlayer*)sender
 							  localPlayerAffected:(BOOL)localEffect
 {
 	// Choose a color to describe special, depending on whether its effects are positive or negative
 	NSColor* specialDescriptionTextColor = nil;
-	if ([iTetSpecials specialIsPositive:special])
+	if ([special isPositiveSpecial])
 		specialDescriptionTextColor = [iTetTextAttributes goodSpecialDescriptionTextColor];
 	else
 		specialDescriptionTextColor = [iTetTextAttributes badSpecialDescriptionTextColor];
@@ -1457,7 +1443,7 @@ NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
 												  [iTetTextAttributes boldGameActionsTextFont], NSFontAttributeName,
 												  specialDescriptionTextColor, NSForegroundColorAttributeName,
 												  nil];
-	NSAttributedString* specialDescription = [NSAttributedString attributedStringWithString:[iTetSpecials nameForSpecialType:special]
+	NSAttributedString* specialDescription = [NSAttributedString attributedStringWithString:[special specialDisplayName]
 																				 attributes:specialDescriptionAttributes];
 	
 	// If this is an offline game, simply use the name of the special as the description
