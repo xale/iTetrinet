@@ -12,6 +12,7 @@
 #import "iTetPlayer.h"
 
 @class iTetBlock;
+@class iTetSpecial;
 
 @interface iTetLocalPlayer : iTetPlayer
 {
@@ -26,13 +27,13 @@
 
 - (void)addLines:(NSInteger)lines;
 - (void)resetLinesCleared;
-- (void)addSpecialToQueue:(NSNumber*)special;
-- (NSNumber*)dequeueNextSpecial;
+- (void)addSpecialToQueue:(iTetSpecial*)special;
+- (iTetSpecial*)dequeueNextSpecial;
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
 @property (readwrite, retain) NSMutableArray* specialsQueue;
-@property (readonly) NSNumber* nextSpecial;
+@property (readonly) iTetSpecial* nextSpecial;
 @property (readwrite, assign) NSInteger linesCleared;
 @property (readwrite, assign) NSInteger linesSinceLastLevel;
 @property (readwrite, assign) NSInteger linesSinceLastSpecials;

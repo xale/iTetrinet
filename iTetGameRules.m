@@ -10,7 +10,7 @@
 
 #import "iTetGameRules.h"
 #import "iTetBlock.h"
-#import "NSNumber+iTetSpecials.h"
+#import "iTetSpecial.h"
 #import "NSDictionary+AdditionalTypes.h"
 
 NSString* const iTetGameRulesOfflineGameKey =			@"iTetOfflineGame";
@@ -113,7 +113,8 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	freq = [rulesArray objectAtIndex:8];
 	for (currentChar.location = 0; currentChar.location < 100; currentChar.location++)
 	{
-		[temp addObject:[NSNumber numberWithSpecialAtIndexNumber:[[freq substringWithRange:currentChar] intValue]]];
+		iTetSpecial* special = [iTetSpecial specialFromIndexNumber:[[freq substringWithRange:currentChar] intValue]];
+		[temp addObject:[NSNumber numberWithInt:[special type]]];
 	}
 	[rulesDict setObject:[NSArray arrayWithArray:temp]
 				  forKey:iTetGameRulesSpecialFrequenciesKey];
@@ -253,12 +254,12 @@ NSString* const iTetGameRulesBlockGeneratorSeedKey =	@"iTetBlockGeneratorSeed";
 	// Add specific quantities of the "good" types of specials
 	// Clearline (most common)
 	for (NSInteger count = 0; count < 80; count++)
-		[frequencies addObject:[NSNumber numberWithSpecialType:clearLine]];
+		[frequencies addObject:[NSNumber numberWithInt:clearLine]];
 	// Nuke and gravity (rarer)
 	for (NSInteger count = 0; count < 10; count++)
-		[frequencies addObject:[NSNumber numberWithSpecialType:nukeField]];
+		[frequencies addObject:[NSNumber numberWithInt:nukeField]];
 	for (NSInteger count = 0; count < 10; count++)
-		[frequencies addObject:[NSNumber numberWithSpecialType:gravity]];
+		[frequencies addObject:[NSNumber numberWithInt:gravity]];
 	
 	return [NSArray arrayWithArray:frequencies];
 }

@@ -213,7 +213,7 @@ NSString* const iTetDefaultServerReservedName =	@"SERVER";
 		goto bail;
 	}
 	
-bail:
+bail:;
 	// If the nickname is invalid, and an error address has been provided, create an error object
 	if (!validName && (error != NULL))
 	{

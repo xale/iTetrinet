@@ -10,7 +10,7 @@
 
 #import "iTetField.h"
 #import "iTetBlock.h"
-#import "NSNumber+iTetSpecials.h"
+#import "iTetSpecial.h"
 
 #define ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX	33
 
@@ -390,7 +390,7 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 				{
 					cell = contents[row][col];
 					if (cell > ITET_NUM_CELL_COLORS)
-						[specials addObject:[NSNumber numberWithSpecialFromCellValue:cell]];
+						[specials addObject:[iTetSpecial specialFromCellValue:cell]];
 				}
 			}
 		}
@@ -477,7 +477,8 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 						if (cellsLeftToSkip == 0)
 						{
 							// Replace the cell with a random special
-							(*newContents)[row][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] specialCellValue];
+							iTetSpecial* special = [iTetSpecial specialWithType:[[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] intValue]];
+							(*newContents)[row][col] = [special cellValue];
 							
 							// Decrement the number of non-special cells remaining
 							numNonSpecialCells--;
@@ -513,7 +514,8 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 				if (row == ITET_FIELD_HEIGHT)
 				{
 					// Add the new special to the bottom row
-					(*newContents)[0][col] = [[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] specialCellValue];
+					iTetSpecial* special = [iTetSpecial specialWithType:[[specialFrequencies objectAtIndex:(random() % [specialFrequencies count])] intValue]];
+					(*newContents)[0][col] = [special cellValue];
 					
 					// Go to the next iteration of the special-adding loop
 					goto nextspecial;
@@ -672,8 +674,8 @@ abort:; // Unable to add more specials; bail
 			}
 		}
 	}
-cellfound:
 	
+cellfound:;
 	// Return a copy of the field, shifted down by the appropriate amount
 	return [self fieldByShiftingContentsDownByAmount:rowsToShift];
 }
@@ -1040,11 +1042,11 @@ cellfound:
 char cellToPartialUpdateChar(uint8_t cellType)
 {
 	// Check if this cell is a valid special
-	NSNumber* cellAsSpecial = [NSNumber numberWithSpecialFromCellValue:cellType];
+	iTetSpecial* cellAsSpecial = [iTetSpecial specialFromCellValue:cellType];
 	
 	// If it is, index from ASCII 39 (')
-	if ([cellAsSpecial specialTypeValue] != invalidSpecial)
-		return ([cellAsSpecial specialIndexNumber] + (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS));
+	if ([cellAsSpecial type] != invalidSpecial)
+		return ([cellAsSpecial indexNumber] + (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS));
 	
 	// Normal cells are indexed from ASCII 33 ('!')
 	return (cellType + ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);
@@ -1053,9 +1055,9 @@ char cellToPartialUpdateChar(uint8_t cellType)
 uint8_t partialUpdateCharToCell(char updateChar)
 {
 	// Check to see if the update character maps to a special type
-	NSNumber* cellAsSpecial = [NSNumber numberWithSpecialAtIndexNumber:(updateChar - (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS))];
-	if ([cellAsSpecial specialTypeValue] != invalidSpecial)
-		return [cellAsSpecial specialCellValue];
+	iTetSpecial* cellAsSpecial = [iTetSpecial specialFromIndexNumber:(updateChar - (ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX + ITET_NUM_CELL_COLORS))];
+	if ([cellAsSpecial type] != invalidSpecial)
+		return [cellAsSpecial cellValue];
 	
 	// Otherwise, reverse-index from ASCII 33 to get the normal cell type
 	return (updateChar - ITET_PARTIAL_UPDATE_CELL_ZERO_INDEX);

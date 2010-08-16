@@ -1,14 +1,14 @@
 //
-//  NSNumber+iTetSpecials.m
+//  iTetSpecial.m
 //  iTetrinet
 //
-//  Created by Alex Heinz on 10/8/09.
-//  Copyright (c) 2009-2010 Alex Heinz (xale@acm.jhu.edu)
+//  Created by Alex Heinz on 8/16/10.
+//  Copyright (c) 2010 Alex Heinz (xale@acm.jhu.edu)
 //  This is free software, presented under the MIT License
 //  See the included license.txt for more information
 //
 
-#include "NSNumber+iTetSpecials.h"
+#import "iTetSpecial.h"
 
 #define iTetAddLineSpecialName			NSLocalizedStringFromTable(@"Add Line", @"Specials", @"Name of the 'add line' special block")
 #define iTetClearLineSpecialName		NSLocalizedStringFromTable(@"Clear Line", @"Specials", @"Name of the 'clear line' special block")
@@ -23,16 +23,23 @@
 
 NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 
-@implementation NSNumber (iTetSpecials)
+@implementation iTetSpecial
 
-+ (NSNumber*)numberWithSpecialType:(iTetSpecialType)specialType
++ (id)specialWithType:(iTetSpecialType)specialType
 {
-	return [NSNumber numberWithInt:specialType];
+	return [[[self alloc] initWithType:specialType] autorelease];
 }
 
-+ (NSNumber*)numberWithSpecialFromCellValue:(uint8_t)specialCellValue;
+- (id)initWithType:(iTetSpecialType)specialType
 {
-	switch ((iTetSpecialType)specialCellValue)
+	type = specialType;
+	
+	return self;
+}
+
++ (id)specialFromCellValue:(uint8_t)specialCellValue
+{
+	switch (specialCellValue)
 	{
 		case addLine:
 		case clearLine:
@@ -43,101 +50,77 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 		case gravity:
 		case quakeField:
 		case blockBomb:
-			return [NSNumber numberWithInt:(iTetSpecialType)specialCellValue];
+			return [self specialWithType:specialCellValue];
 		default:
 			break;
 	}
 	
-	return [NSNumber numberWithInt:invalidSpecial];
+	return [self specialWithType:invalidSpecial];
 }
 
-+ (NSNumber*)numberWithSpecialAtIndexNumber:(uint8_t)specialNumber;
++ (id)specialFromIndexNumber:(uint8_t)specialIndexNumber
 {
-	switch (specialNumber)
+	switch (specialIndexNumber)
 	{
 		case 1:
-			return [NSNumber numberWithInt:addLine];
+			return [self specialWithType:addLine];
 		case 2:
-			return [NSNumber numberWithInt:clearLine];
+			return [self specialWithType:clearLine];
 		case 3:
-			return [NSNumber numberWithInt:nukeField];
+			return [self specialWithType:nukeField];
 		case 4:
-			return [NSNumber numberWithInt:randomClear];
+			return [self specialWithType:randomClear];
 		case 5:
-			return [NSNumber numberWithInt:switchField];
+			return [self specialWithType:switchField];
 		case 6:
-			return [NSNumber numberWithInt:clearSpecials];
+			return [self specialWithType:clearSpecials];
 		case 7:
-			return [NSNumber numberWithInt:gravity];
+			return [self specialWithType:gravity];
 		case 8:
-			return [NSNumber numberWithInt:quakeField];
+			return [self specialWithType:quakeField];
 		case 9:
-			return [NSNumber numberWithInt:blockBomb];
+			return [self specialWithType:blockBomb];
 		default:
 			break;
 	}
 	
-	return [NSNumber numberWithInt:invalidSpecial];
+	return [self specialWithType:invalidSpecial];
 }
 
-+ (NSNumber*)numberWithSpecialFromMessageName:(NSString*)specialMessageName
++ (id)specialFromMessageName:(NSString*)specialMessageName
 {
 	// Check if this is a classic-style add
 	if ([specialMessageName rangeOfString:iTetClassicStyleAddSpecialPrefix].location == 0)
-		return [NSNumber numberWithInt:(iTetSpecialType)[specialMessageName characterAtIndex:2]];
+		return [self specialWithType:[specialMessageName characterAtIndex:2]];
 	
-	return [NSNumber numberWithInt:(iTetSpecialType)[specialMessageName characterAtIndex:0]];
+	return [self specialWithType:[specialMessageName characterAtIndex:0]];
 }
 
-+ (NSNumber*)numberWithSpecialFromClassicLines:(NSInteger)numLines
++ (id)specialFromClassicLines:(NSInteger)numLines
 {
 	switch (numLines)
 	{
 		case 1:
-			return [NSNumber numberWithInt:classicStyle1];
+			return [self specialWithType:classicStyle1];
 		case 2:
-			return [NSNumber numberWithInt:classicStyle2];
+			return [self specialWithType:classicStyle2];
 		case 4:
-			return [NSNumber numberWithInt:classicStyle4];
+			return [self specialWithType:classicStyle4];
 		default:
 			break;
 	}
 	
-	return [NSNumber numberWithInt:invalidSpecial];
+	return [self specialWithType:invalidSpecial];
 }
 
 #pragma mark -
 #pragma mark Accessors
 
-- (iTetSpecialType)specialTypeValue
-{
-	int type = [self intValue];
-	switch ((iTetSpecialType)type)
-	{
-		case addLine:
-		case clearLine:
-		case nukeField:
-		case randomClear:
-		case switchField:
-		case clearSpecials:
-		case gravity:
-		case quakeField:
-		case blockBomb:
-		case classicStyle1:
-		case classicStyle2:
-		case classicStyle4:
-			return (iTetSpecialType)type;
-		default:
-			break;
-	}
-	
-	return invalidSpecial;
-}
+@synthesize type;
 
-- (uint8_t)specialCellValue
+- (uint8_t)cellValue
 {
-	int type = [self intValue];
-	switch ((iTetSpecialType)type)
+	switch (type)
 	{
 		case addLine:
 		case clearLine:
@@ -153,15 +136,14 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"specialCellValue requested for invalid special type: %c (%d)", type, type);
+	NSAssert2(NO, @"cellValue requested for invalid special type: %@ (%d)", [self displayName], type);
 	
 	return 0;
 }
 
-- (uint8_t)specialIndexNumber
+- (uint8_t)indexNumber
 {
-	int type = [self intValue];
-	switch ((iTetSpecialType)type)
+	switch (type)
 	{
 		case addLine:
 			return 1;
@@ -185,14 +167,14 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"specialIndexNumber requested for invalid special type: %c (%d)", type, type);
+	NSAssert2(NO, @"indexNumber requested for invalid special type: %@ (%d)", [self displayName], type);
 	
 	return 0;
 }
 
-- (NSString*)specialDisplayName
+- (NSString*)displayName
 {
-	switch ([self specialTypeValue])
+	switch (type)
 	{
 		case addLine:
 			return iTetAddLineSpecialName;
@@ -220,9 +202,8 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 	return iTetInvalidOrNoneSpecialName;
 }
 
-- (NSString*)specialMessageName
+- (NSString*)messageName
 {
-	iTetSpecialType type = [self specialTypeValue];
 	switch (type)
 	{
 		case classicStyle1:
@@ -245,14 +226,14 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"specialMessageName requested for invalid special type: %c (%d)", type, type);
+	NSAssert2(NO, @"messageName requested for invalid special type: %@ (%d)", [self displayName], type);
 	
 	return nil;
 }
 
-- (BOOL)isClassicStyleAddSpecial
+- (BOOL)isClassicStyleAdd
 {
-	switch ([self specialTypeValue])
+	switch (type)
 	{
 		case classicStyle1:
 		case classicStyle2:
@@ -265,9 +246,9 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 	return NO;
 }
 
-- (NSInteger)specialNumberOfClassicLinesValue
+- (NSInteger)numberOfClassicLines
 {
-	switch ([self specialTypeValue])
+	switch (type)
 	{
 		case classicStyle1:
 			return 1;
@@ -279,14 +260,14 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"specialNumberOfClassicLinesValue requested for invalid special type: %c (%d)", [self specialTypeValue], [self specialTypeValue]);
+	NSAssert2(NO, @"numberOfClassicLines requested for invalid special type: %@ (%d)", [self displayName], type);
 	
 	return 0;
 }
 
-- (BOOL)isPositiveSpecial
+- (BOOL)hasPositiveEffect
 {
-	switch ([self specialTypeValue])
+	switch (type)
 	{
 		case addLine:
 		case randomClear:
@@ -305,7 +286,7 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"isPositiveSpecial requested for invalid special type: %c (%d)", [self specialTypeValue], [self specialTypeValue]);
+	NSAssert2(NO, @"hasPositiveEffect requested for invalid special type: %@ (%d)", [self displayName], type);
 	
 	return NO;
 }

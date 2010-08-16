@@ -12,7 +12,7 @@
 
 #import "iTetPlayer.h"
 #import "iTetField.h"
-#import "NSNumber+iTetSpecials.h"
+#import "iTetSpecial.h"
 #import "iTetServerInfo.h"
 
 #import "NSAttributedString+TetrinetTextAttributes.h"
@@ -306,11 +306,11 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	// Special type ("special used" messages)
 	if (type == specialUsedMessage)
 	{
-		[contents setObject:[NSNumber numberWithSpecialFromMessageName:[messageContents objectAtIndex:2]]
+		[contents setObject:[iTetSpecial specialFromMessageName:[messageContents objectAtIndex:2]]
 					 forKey:iTetMessageSpecialKey];
 	}
 	
-done:
+done:;
 	return self;
 }
 
@@ -431,10 +431,10 @@ done:
 			iTetCheckPlayerNumber(playerNumber);
 			NSNumber* targetPlayerNumber = [[self contents] objectForKey:iTetMessageTargetPlayerNumberKey];
 			NSParameterAssert(targetPlayerNumber != nil);	// Not using "checkPlayerNumber" macro, since target may be '0' (all players)
-			NSNumber* special = [[self contents] objectForKey:iTetMessageSpecialKey];
+			iTetSpecial* special = [[self contents] objectForKey:iTetMessageSpecialKey];
 			NSParameterAssert(special != nil);
 			
-			messageContents = [NSString stringWithFormat:iTetSpecialUsedMessageFormat, [targetPlayerNumber integerValue], [special specialMessageName], playerNumber];
+			messageContents = [NSString stringWithFormat:iTetSpecialUsedMessageFormat, [targetPlayerNumber integerValue], [special messageName], playerNumber];
 			break;
 		}	
 		case playerLostMessage:

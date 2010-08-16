@@ -13,7 +13,7 @@
 
 #import "iTetField.h"
 #import "iTetBlock.h"
-#import "NSNumber+iTetSpecials.h"
+#import "iTetSpecial.h"
 
 #import "iTetUserDefaults.h"
 #import "NSUserDefaults+AdditionalTypes.h"
@@ -444,7 +444,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	[[iTetTheme themeCache] setObject:self
 							   forKey:[self themeFilePath]];
 	
-abort:
+abort:;
 	if (error != nil)
 	{
 		// FIXME: present error dialog to user
@@ -547,9 +547,9 @@ shouldProceedAfterError:(NSError*)error
 	}
 	
 	// If the cell is a special, return the image for that special type
-	NSNumber* cellAsSpecial = [NSNumber numberWithSpecialFromCellValue:cellType];
-	if ([cellAsSpecial specialTypeValue] != invalidSpecial)
-		return [specialImages objectAtIndex:([cellAsSpecial specialIndexNumber] - 1)];
+	iTetSpecial* cellAsSpecial = [iTetSpecial specialFromCellValue:cellType];
+	if ([cellAsSpecial type] != invalidSpecial)
+		return [specialImages objectAtIndex:([cellAsSpecial indexNumber] - 1)];
 	
 	// Invalid cell type
 	NSAssert1(NO, @"image requested for invalid cell type: %d", cellType);

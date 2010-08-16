@@ -20,6 +20,7 @@
 @class iTetSpecialsView;
 @class IPSScalableLevelIndicator;
 @class iTetPlayer;
+@class iTetSpecial;
 @class iTetServerInfo;
 @class iTetRandomBlockGenerator;
 @class iTetKeyConfiguration;
@@ -100,7 +101,7 @@ typedef enum
 
 - (void)fieldstringReceived:(NSString*)fieldstring
 				  forPlayer:(iTetPlayer*)player;
-- (void)specialUsed:(NSNumber*)special
+- (void)specialUsed:(iTetSpecial*)special
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target;
 

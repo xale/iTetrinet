@@ -23,7 +23,6 @@
 #import "iTetGameStateImageTransformer.h"
 #import "iTetGameVersionTransformer.h"
 #import "iTetProtocolTransformer.h"
-#import "iTetSpecialNameTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
 
 #import "iTetCommonLocalizations.h"
@@ -50,10 +49,6 @@
 	transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer
 									forName:iTetProtocolTransformerName];
-	// Special code/number to name
-	transformer = [[[iTetSpecialNameTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetSpecialNameTransformerName];
 	// Winlist entry type to image
 	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
 	[NSValueTransformer setValueTransformer:transformer

@@ -11,6 +11,7 @@
 #import "iTetLocalPlayer.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
+#import "iTetSpecial.h"
 
 @implementation iTetLocalPlayer
 
@@ -71,7 +72,7 @@
 
 #pragma mark Specials
 
-- (void)addSpecialToQueue:(NSNumber*)special
+- (void)addSpecialToQueue:(iTetSpecial*)special
 {
 	// Choose a random index between zero and the end of the queue, inclusive
 	NSInteger index = random() % ([specialsQueue count] + 1);
@@ -85,11 +86,11 @@
 	[self didChangeValueForKey:@"specialsQueue"];
 }
 
-- (NSNumber*)dequeueNextSpecial
+- (iTetSpecial*)dequeueNextSpecial
 {
 	// Treat the end of the array as the "front" of the queue
 	// Get the next special from the queue
-	NSNumber* special = [[self specialsQueue] lastObject];
+	iTetSpecial* special = [[self specialsQueue] lastObject];
 	
 	[self willChangeValueForKey:@"specialsQueue"];
 	
@@ -120,7 +121,7 @@
 }
 @synthesize specialsQueue;
 
-- (NSNumber*)nextSpecial
+- (iTetSpecial*)nextSpecial
 {
 	return [[self specialsQueue] lastObject];
 }

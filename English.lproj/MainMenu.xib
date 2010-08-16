@@ -12,10 +12,10 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1748"/>
 			<integer value="573"/>
+			<integer value="501"/>
+			<integer value="1748"/>
 			<integer value="29"/>
-			<integer value="451"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5842,15 +5842,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: localPlayer.nextSpecial</string>
+						<string key="label">value: localPlayer.nextSpecial.displayName</string>
 						<reference key="source" ref="1003838065"/>
 						<reference key="destination" ref="28388600"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1003838065"/>
 							<reference key="NSDestination" ref="28388600"/>
-							<string key="NSLabel">value: localPlayer.nextSpecial</string>
+							<string key="NSLabel">value: localPlayer.nextSpecial.displayName</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">localPlayer.nextSpecial</string>
+							<string key="NSKeyPath">localPlayer.nextSpecial.displayName</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -5859,7 +5859,6 @@
 									<string>NSNoSelectionPlaceholder</string>
 									<string>NSNotApplicablePlaceholder</string>
 									<string>NSNullPlaceholder</string>
-									<string>NSValueTransformerName</string>
 								</object>
 								<object class="NSMutableArray" key="dict.values">
 									<bool key="EncodedWithXMLCoder">YES</bool>
@@ -5867,13 +5866,12 @@
 									<string>No Specials</string>
 									<string>No Specials</string>
 									<string>No Specials</string>
-									<string>TetrinetSpecialNameTransformer</string>
 								</object>
 							</object>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
-					<int key="connectionID">1769</int>
+					<int key="connectionID">1771</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -8332,7 +8330,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1769</int>
+			<int key="maxID">1771</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
