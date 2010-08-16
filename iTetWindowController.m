@@ -28,13 +28,6 @@
 
 #import "iTetCommonLocalizations.h"
 
-@interface iTetWindowController (Private)
-
-- (void)checkPreferencesBeforeClosing;
-
-@end
-
-
 @implementation iTetWindowController
 
 + (void)initialize
