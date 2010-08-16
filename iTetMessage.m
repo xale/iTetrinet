@@ -34,6 +34,7 @@ NSString* const iTetTetrinetPlayerNumberMessageFormat =		@"playernum %d";		// Te
 NSString* const iTetTetrifastPlayerNumberMessageFormat =	@")#)(!@(*3 %d";		// Tetrifast protocol
 NSString* const iTetPlayerJoinMessageFormat =				@"playerjoin %d %@";
 NSString* const iTetPlayerLeaveMessageFormat =				@"playerleave %d";
+NSString* const iTetPlayerKickMessageFormat =				@"kick %d";
 NSString* const iTetPlayerTeamMessageFormat =				@"team %d %@";
 NSString* const iTetWinlistMessageFormat =					@"winlist %@";
 
@@ -85,8 +86,8 @@ NSString* const iTetMessageSpecialKey =					@"iTetSpecial";
 BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 {
 	return ((t == tetrinetPlayerNumberMessage) || (t == tetrifastPlayerNumberMessage) || (t == playerJoinMessage) || (t == playerLeaveMessage) ||
-			(t == playerTeamMessage) || (t == plineChatMessage) || (t == plineActionMessage) || (t == fieldstringMessage) ||
-			(t == levelUpdateMessage) || (t == playerLostMessage) || (t == playerWonMessage));
+			(t == playerKickMessage) || (t == playerTeamMessage) || (t == plineChatMessage) || (t == plineActionMessage) ||
+			(t == fieldstringMessage) || (t == levelUpdateMessage) || (t == playerLostMessage) || (t == playerWonMessage));
 }
 
 #pragma mark -
@@ -165,7 +166,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 		[self release];
 		return nil;
 	}
-	type = (iTetMessageType)[typeSearchResult intValue];
+	type = [typeSearchResult intValue];
 	contents = [[NSMutableDictionary alloc] init];
 	
 	// Create a decimal number formatter
@@ -535,6 +536,8 @@ done:;
 					  forKey:[iTetPlayerJoinMessageFormat messageDesignation]];
 			[messages setInt:playerLeaveMessage
 					  forKey:[iTetPlayerLeaveMessageFormat messageDesignation]];
+			[messages setInt:playerKickMessage
+					  forKey:[iTetPlayerKickMessageFormat messageDesignation]];
 			[messages setInt:playerTeamMessage
 					  forKey:[iTetPlayerTeamMessageFormat messageDesignation]];
 			[messages setInt:winlistMessage

@@ -25,6 +25,7 @@ typedef enum
 	tetrifastPlayerNumberMessage,
 	playerJoinMessage,
 	playerLeaveMessage,
+	playerKickMessage,
 	playerTeamMessage,
 	winlistMessage,
 	

@@ -474,6 +474,8 @@ willDisconnectWithError:(NSError*)error
 
 #define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
 #define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"You have been kicked from the server", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
+#define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
 #define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"NetworkController", @"Status message appended to the chat view when a player joins a new team")
 #define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"NetworkController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
 
@@ -590,13 +592,13 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Leave Message
 		case playerLeaveMessage:
 		{
-			// If this message refers to the local player, ignore
-			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			if (playerNumber == [[playersController localPlayer] playerNumber])
-				break;
-			
 			// Look up the player in question
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
 			iTetPlayer* player = [playersController playerNumber:playerNumber];
+			
+			// If this message refers to the local player, ignore
+			if ([player isLocalPlayer])
+				break;
 			
 			// Append a status message
 			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, [player nickname]]];
@@ -608,6 +610,21 @@ willDisconnectWithError:(NSError*)error
 			[channelsController refreshChannelList:self];
 			
 			break;
+		}
+#pragma mark Player Kick Message
+		case playerKickMessage:
+		{
+			// Look up the player in question
+			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
+			iTetPlayer* player = [playersController playerNumber:playerNumber];
+			
+			// Append a status message, explaining that the player has been kicked
+			if ([player isLocalPlayer])
+				[chatController appendStatusMessage:[NSString stringWithFormat:iTetLocalPlayerKickedStatusMessage]];
+			else
+				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerKickedStatusMessageFormat, [player nickname]]];
+			 
+			// No further action is necessary; server will either close the connection, or report that the player has left
 		}
 #pragma mark Player Team Message
 		case playerTeamMessage:
