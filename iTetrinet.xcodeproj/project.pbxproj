@@ -310,7 +310,7 @@
 				6A96B57810098E97003D353E /* Model */,
 				6A96B57A10098ED8003D353E /* View */,
 				6A96B57C10098F29003D353E /* Controller */,
-				6AFDE346100AA7C600BED4A0 /* Miscellaneous */,
+				6AFDE346100AA7C600BED4A0 /* Utility */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -373,11 +373,7 @@
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				6A734F2F118B0DE5005E2776 /* PreferencesWindow.xib */,
-				6A734F31118B0DE5005E2776 /* GeneralPrefsView.xib */,
-				6A734F33118B0DE5005E2776 /* ThemesPrefsView.xib */,
-				6A734F35118B0DE5005E2776 /* ServersPrefsView.xib */,
-				6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */,
-				6A674D5111D5420900A267DB /* OfflineGamePrefsView.xib */,
+				6A4F33231218F9BB00EBF3A0 /* Preference Panes */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -469,6 +465,97 @@
 			name = Players;
 			sourceTree = "<group>";
 		};
+		6A4F331E1218F90C00EBF3A0 /* Servers and Channels */ = {
+			isa = PBXGroup;
+			children = (
+				6A96B55E10098E88003D353E /* iTetChannelInfo.h */,
+				6A96B55F10098E88003D353E /* iTetChannelInfo.m */,
+				6A96B56210098E88003D353E /* iTetServerInfo.h */,
+				6A96B56310098E88003D353E /* iTetServerInfo.m */,
+			);
+			name = "Servers and Channels";
+			sourceTree = "<group>";
+		};
+		6A4F331F1218F93100EBF3A0 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				6A96B56710098E88003D353E /* iTetTheme.h */,
+				6A96B56810098E88003D353E /* iTetTheme.m */,
+				6AEFEEC511207D51006A89CA /* iTetWinlistEntry.h */,
+				6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */,
+				6ADEE88F1181DCD10087FE8C /* iTetUserDefaults.h */,
+				6ADEE8901181DCD10087FE8C /* iTetUserDefaults.m */,
+			);
+			name = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		6A4F33201218F94B00EBF3A0 /* Top-Level Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				6A7DC20E115047080068584D /* iTetWindowController.h */,
+				6A7DC20F115047080068584D /* iTetWindowController.m */,
+				6A2687D2114F131A007B1420 /* iTetPlayersController.h */,
+				6A2687D3114F131A007B1420 /* iTetPlayersController.m */,
+				6A96B5F8100992F1003D353E /* iTetNetworkController.h */,
+				6A96B5F9100992F1003D353E /* iTetNetworkController.m */,
+				6A4A3749101BB32500F27DE9 /* View Controllers */,
+			);
+			name = "Top-Level Controllers";
+			sourceTree = "<group>";
+		};
+		6A4F33211218F96A00EBF3A0 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */,
+				6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */,
+			);
+			name = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		6A4F33221218F9A700EBF3A0 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */,
+				6A7C86E511FF1F2C00649DAB /* IPSIntegerGeometry.h */,
+				6A7C86E611FF1F2C00649DAB /* IPSIntegerGeometry.m */,
+			);
+			name = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		6A4F33231218F9BB00EBF3A0 /* Preference Panes */ = {
+			isa = PBXGroup;
+			children = (
+				6A734F31118B0DE5005E2776 /* GeneralPrefsView.xib */,
+				6A734F33118B0DE5005E2776 /* ThemesPrefsView.xib */,
+				6A734F35118B0DE5005E2776 /* ServersPrefsView.xib */,
+				6A734F37118B0DE5005E2776 /* KeyboardPrefsView.xib */,
+				6A674D5111D5420900A267DB /* OfflineGamePrefsView.xib */,
+			);
+			name = "Preference Panes";
+			sourceTree = "<group>";
+		};
+		6A4F33241218F9E900EBF3A0 /* Drawing Categories */ = {
+			isa = PBXGroup;
+			children = (
+				6A96B55610098E88003D353E /* iTetBlock+Drawing.h */,
+				6A96B55710098E88003D353E /* iTetBlock+Drawing.m */,
+			);
+			name = "Drawing Categories";
+			sourceTree = "<group>";
+		};
+		6A4F33251218FA0E00EBF3A0 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */,
+				6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */,
+				6A08A4F51177748F007105D4 /* IPSContextMenuTableView.h */,
+				6A08A4F61177748F007105D4 /* IPSContextMenuTableView.m */,
+				6ACE517D115FB47C00F394BE /* IPSScalableLevelIndicator.h */,
+				6ACE517E115FB47C00F394BE /* IPSScalableLevelIndicator.m */,
+			);
+			name = Miscellaneous;
+			sourceTree = "<group>";
+		};
 		6A772C491020011F00AAA2B8 /* Array Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -522,17 +609,8 @@
 				6A96B57910098EAC003D353E /* Game Objects */,
 				6AFBE88910AC634C008336EC /* Key Bindings */,
 				6AEBBF5D113F2F81003C997B /* Text Attributes */,
-				6A96B55E10098E88003D353E /* iTetChannelInfo.h */,
-				6A96B55F10098E88003D353E /* iTetChannelInfo.m */,
-				6A96B56210098E88003D353E /* iTetServerInfo.h */,
-				6A96B56310098E88003D353E /* iTetServerInfo.m */,
-				6A96B56710098E88003D353E /* iTetTheme.h */,
-				6A96B56810098E88003D353E /* iTetTheme.m */,
-				6AEFEEC511207D51006A89CA /* iTetWinlistEntry.h */,
-				6AEFEEC611207D51006A89CA /* iTetWinlistEntry.m */,
-				6AE061A3116EB19C00B59BFD /* iTetGameplayState.h */,
-				6ADEE88F1181DCD10087FE8C /* iTetUserDefaults.h */,
-				6ADEE8901181DCD10087FE8C /* iTetUserDefaults.m */,
+				6A4F331E1218F90C00EBF3A0 /* Servers and Channels */,
+				6A4F331F1218F93100EBF3A0 /* Miscellaneous */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -549,6 +627,7 @@
 				6A96B55910098E88003D353E /* iTetBlock.m */,
 				6A96B56410098E88003D353E /* NSNumber+iTetSpecials.h */,
 				6AFCE0F4108771310090F3DF /* NSNumber+iTetSpecials.m */,
+				6AE061A3116EB19C00B59BFD /* iTetGameplayState.h */,
 			);
 			name = "Game Objects";
 			sourceTree = "<group>";
@@ -557,14 +636,8 @@
 			isa = PBXGroup;
 			children = (
 				6A934974100C44D700A7CF51 /* Themed Views */,
-				6A96B55610098E88003D353E /* iTetBlock+Drawing.h */,
-				6A96B55710098E88003D353E /* iTetBlock+Drawing.m */,
-				6AEB7F7A10891D7C00A8BCFD /* iTetKeyView.h */,
-				6AEB7F7B10891D7C00A8BCFD /* iTetKeyView.m */,
-				6A08A4F51177748F007105D4 /* IPSContextMenuTableView.h */,
-				6A08A4F61177748F007105D4 /* IPSContextMenuTableView.m */,
-				6ACE517D115FB47C00F394BE /* IPSScalableLevelIndicator.h */,
-				6ACE517E115FB47C00F394BE /* IPSScalableLevelIndicator.m */,
+				6A4F33241218F9E900EBF3A0 /* Drawing Categories */,
+				6A4F33251218FA0E00EBF3A0 /* Miscellaneous */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -572,17 +645,10 @@
 		6A96B57C10098F29003D353E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6A4F33201218F94B00EBF3A0 /* Top-Level Controllers */,
 				6A772C491020011F00AAA2B8 /* Array Controllers */,
 				6AB76D51101D141700734661 /* Preferences Window Controllers */,
-				6A4A3749101BB32500F27DE9 /* View Controllers */,
-				6A7DC20E115047080068584D /* iTetWindowController.h */,
-				6A7DC20F115047080068584D /* iTetWindowController.m */,
-				6A2687D2114F131A007B1420 /* iTetPlayersController.h */,
-				6A2687D3114F131A007B1420 /* iTetPlayersController.m */,
-				6A96B5F8100992F1003D353E /* iTetNetworkController.h */,
-				6A96B5F9100992F1003D353E /* iTetNetworkController.m */,
-				6A39FB0D111FB346000373E2 /* iTetTextAttributesController.h */,
-				6A39FB0E111FB346000373E2 /* iTetTextAttributesController.m */,
+				6A4F33211218F96A00EBF3A0 /* Miscellaneous */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -674,7 +740,7 @@
 			name = "Application Support Directory";
 			sourceTree = "<group>";
 		};
-		6AEBBF18113F1C1D003C997B /* Utility Categories */ = {
+		6AEBBF18113F1C1D003C997B /* Support Categories */ = {
 			isa = PBXGroup;
 			children = (
 				6AFD63E611D695A300202465 /* Addional Types Support */,
@@ -692,7 +758,7 @@
 				6ACF192711DBA0B400AF4961 /* NSString+QuotedComponents.h */,
 				6ACF192811DBA0B400AF4961 /* NSString+QuotedComponents.m */,
 			);
-			name = "Utility Categories";
+			name = "Support Categories";
 			sourceTree = "<group>";
 		};
 		6AEBBF5D113F2F81003C997B /* Text Attributes */ = {
@@ -730,18 +796,16 @@
 			name = "Addional Types Support";
 			sourceTree = "<group>";
 		};
-		6AFDE346100AA7C600BED4A0 /* Miscellaneous */ = {
+		6AFDE346100AA7C600BED4A0 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
 				6AD266C4117E151D0081A245 /* Application Support Directory */,
 				6A26868F114F0EB5007B1420 /* AsyncSocket */,
 				6A3ACC5110B7C7B900459D97 /* Value Transformers */,
-				6AEBBF18113F1C1D003C997B /* Utility Categories */,
-				6A176BED11AB5C7D007F3D1B /* iTetCommonLocalizations.h */,
-				6A7C86E511FF1F2C00649DAB /* IPSIntegerGeometry.h */,
-				6A7C86E611FF1F2C00649DAB /* IPSIntegerGeometry.m */,
+				6AEBBF18113F1C1D003C997B /* Support Categories */,
+				6A4F33221218F9A700EBF3A0 /* Miscellaneous */,
 			);
-			name = Miscellaneous;
+			name = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
