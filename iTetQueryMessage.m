@@ -94,7 +94,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	}
 	
 	contents = [[NSMutableDictionary alloc] initWithCapacity:[messageTokens count]];
-	NSNumberFormatter* decFormat = [[NSNumberFormatter alloc] init];
+	NSNumberFormatter* decFormat = [[[NSNumberFormatter alloc] init] autorelease];
 	[decFormat setNumberStyle:NSNumberFormatterDecimalStyle];
 	
 	// Determine message type by the number of tokens in the message
@@ -110,8 +110,8 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 		// Channel description (minus any HTML formatting)
 		NSString* description = [NSString stringWithFormat:@"<p>%@</p>", [messageTokens objectAtIndex:1]];
 		NSError* parseError = nil;
-		NSXMLElement* html = [[NSXMLElement alloc] initWithXMLString:description
-															   error:&parseError];
+		NSXMLElement* html = [[[NSXMLElement alloc] initWithXMLString:description
+																error:&parseError] autorelease];
 		if (parseError != nil)
 		{
 			// If the description can't be parsed as HTML, treat it as unformatted text
@@ -121,8 +121,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 		else
 		{
 			// Convert to a raw string, stripping HTML formatting
-			description = [[html stringValue] retain];
-			[html release];
+			description = [html stringValue];
 		}
 		[contents setObject:description
 					 forKey:iTetQueryMessageChannelDescriptionKey];

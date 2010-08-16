@@ -821,18 +821,17 @@ Failed:;
 
 - (NSError *) getStreamError
 {
-	NSError* err;
-	
+	NSError* err = nil;
 	if (theReadStream != NULL)
 	{
-		err = (NSError*)CFReadStreamCopyError(theReadStream);
+		err = [(NSError*)CFReadStreamCopyError(theReadStream) autorelease];
 	}
 	if (theWriteStream != NULL)
 	{
-		err = (NSError*)CFWriteStreamCopyError(theWriteStream);
+		err = [(NSError*)CFWriteStreamCopyError(theWriteStream) autorelease];
 	}
 	
-	return [err autorelease];
+	return err;
 }
 
 // Unfortunately, CFSocket offers no feedback on its errors.

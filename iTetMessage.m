@@ -169,7 +169,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	contents = [[NSMutableDictionary alloc] init];
 	
 	// Create a decimal number formatter
-	NSNumberFormatter* decFormat = [[NSNumberFormatter alloc] init];
+	NSNumberFormatter* decFormat = [[[NSNumberFormatter alloc] init] autorelease];
 	[decFormat setNumberStyle:NSNumberFormatterDecimalStyle];
 	
 	// Read the message's contents
