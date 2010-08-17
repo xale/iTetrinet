@@ -12,10 +12,8 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="573"/>
-			<integer value="501"/>
-			<integer value="1748"/>
 			<integer value="29"/>
+			<integer value="451"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -462,14 +460,14 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">25</int>
 								</object>
-								<object class="NSMenuItem" id="490177843">
+								<object class="NSMenuItem" id="108375207">
 									<reference key="NSMenu" ref="505467887"/>
-									<string key="NSTitle">Lime</string>
+									<string key="NSTitle">Olive</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
-									<int key="NSTag">14</int>
+									<int key="NSTag">18</int>
 								</object>
 								<object class="NSMenuItem" id="509209273">
 									<reference key="NSMenu" ref="505467887"/>
@@ -481,23 +479,14 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">12</int>
 								</object>
-								<object class="NSMenuItem" id="108375207">
+								<object class="NSMenuItem" id="490177843">
 									<reference key="NSMenu" ref="505467887"/>
-									<string key="NSTitle">Olive</string>
+									<string key="NSTitle">Lime</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
-									<int key="NSTag">18</int>
-								</object>
-								<object class="NSMenuItem" id="778771625">
-									<reference key="NSMenu" ref="505467887"/>
-									<string key="NSTitle">Teal</string>
-									<string key="NSKeyEquiv"/>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="35465992"/>
-									<reference key="NSMixedImage" ref="502551668"/>
-									<int key="NSTag">23</int>
+									<int key="NSTag">14</int>
 								</object>
 								<object class="NSMenuItem" id="452887826">
 									<reference key="NSMenu" ref="505467887"/>
@@ -507,6 +496,15 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">3</int>
+								</object>
+								<object class="NSMenuItem" id="778771625">
+									<reference key="NSMenu" ref="505467887"/>
+									<string key="NSTitle">Teal</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+									<int key="NSTag">23</int>
 								</object>
 								<object class="NSMenuItem" id="388935883">
 									<reference key="NSMenu" ref="505467887"/>
@@ -537,15 +535,6 @@
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">19</int>
 								</object>
-								<object class="NSMenuItem" id="218533574">
-									<reference key="NSMenu" ref="505467887"/>
-									<string key="NSTitle">Maroon</string>
-									<string key="NSKeyEquiv"/>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="35465992"/>
-									<reference key="NSMixedImage" ref="502551668"/>
-									<int key="NSTag">16</int>
-								</object>
 								<object class="NSMenuItem" id="7065614">
 									<reference key="NSMenu" ref="505467887"/>
 									<string key="NSTitle">Magenta</string>
@@ -554,6 +543,15 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 									<int key="NSTag">8</int>
+								</object>
+								<object class="NSMenuItem" id="218533574">
+									<reference key="NSMenu" ref="505467887"/>
+									<string key="NSTitle">Maroon</string>
+									<string key="NSKeyEquiv"/>
+									<int key="NSMnemonicLoc">2147483647</int>
+									<reference key="NSOnImage" ref="35465992"/>
+									<reference key="NSMixedImage" ref="502551668"/>
+									<int key="NSTag">16</int>
 								</object>
 							</object>
 						</object>
@@ -1809,7 +1807,7 @@
 														<reference key="NSDocView" ref="1054741480"/>
 														<reference key="NSBGColor" ref="1150383"/>
 														<object class="NSCursor" key="NSCursor">
-															<string key="NSHotSpot">{1, -1}</string>
+															<string key="NSHotSpot">{1, 1}</string>
 															<int key="NSCursorType">0</int>
 														</object>
 														<int key="NScvFlags">4</int>
@@ -2905,7 +2903,7 @@
 				<string key="NSWindowContentMaxSize">{400, 127}</string>
 				<string key="NSWindowContentMinSize">{400, 127}</string>
 				<object class="NSView" key="NSWindowView" id="854105788">
-					<reference key="NSNextResponder"/>
+					<nil key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2985,14 +2983,13 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{400, 127}</string>
-					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{400, 149}</string>
 				<string key="NSMaxSize">{400, 149}</string>
 			</object>
 			<object class="NSScrollView" id="530930803">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -3165,7 +3162,6 @@
 						</object>
 						<string key="NSFrame">{{1, 17}, {591, 228}}</string>
 						<reference key="NSSuperview" ref="530930803"/>
-						<reference key="NSNextKeyView" ref="591874403"/>
 						<reference key="NSDocView" ref="591874403"/>
 						<reference key="NSBGColor" ref="205996634"/>
 						<int key="NScvFlags">4</int>
@@ -3199,7 +3195,6 @@
 						</object>
 						<string key="NSFrame">{{1, 0}, {591, 17}}</string>
 						<reference key="NSSuperview" ref="530930803"/>
-						<reference key="NSNextKeyView" ref="378564253"/>
 						<reference key="NSDocView" ref="378564253"/>
 						<reference key="NSBGColor" ref="205996634"/>
 						<int key="NScvFlags">4</int>
@@ -3207,8 +3202,6 @@
 					<reference ref="1027030428"/>
 				</object>
 				<string key="NSFrameSize">{608, 261}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSNextKeyView" ref="539964874"/>
 				<int key="NSsFlags">50</int>
 				<reference key="NSVScroller" ref="886207654"/>
 				<reference key="NSHScroller" ref="883610311"/>
@@ -3237,9 +3230,6 @@
 			</object>
 			<object class="NSCustomObject" id="515573689">
 				<string key="NSClassName">iTetNetworkController</string>
-			</object>
-			<object class="NSCustomObject" id="462083609">
-				<string key="NSClassName">iTetTextAttributesController</string>
 			</object>
 			<object class="NSCustomObject" id="755631768">
 				<string key="NSClassName">NSFontManager</string>
@@ -3750,14 +3740,6 @@
 						<reference key="destination" ref="701483452"/>
 					</object>
 					<int key="connectionID">1070</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">partylineMessageField</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="82022787"/>
-					</object>
-					<int key="connectionID">1125</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -5036,134 +5018,6 @@
 					<int key="connectionID">1558</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="293440545"/>
-					</object>
-					<int key="connectionID">1575</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="587839684"/>
-					</object>
-					<int key="connectionID">1576</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="303638361"/>
-					</object>
-					<int key="connectionID">1577</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="526164153"/>
-					</object>
-					<int key="connectionID">1578</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="444333331"/>
-					</object>
-					<int key="connectionID">1579</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="452887826"/>
-					</object>
-					<int key="connectionID">1580</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="509209273"/>
-					</object>
-					<int key="connectionID">1581</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="218533574"/>
-					</object>
-					<int key="connectionID">1582</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="479697763"/>
-					</object>
-					<int key="connectionID">1583</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="240487402"/>
-					</object>
-					<int key="connectionID">1584</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="835399760"/>
-					</object>
-					<int key="connectionID">1585</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="490177843"/>
-					</object>
-					<int key="connectionID">1586</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="388935883"/>
-					</object>
-					<int key="connectionID">1587</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="108375207"/>
-					</object>
-					<int key="connectionID">1588</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="778771625"/>
-					</object>
-					<int key="connectionID">1589</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">changeTextColor:</string>
-						<reference key="source" ref="462083609"/>
-						<reference key="destination" ref="7065614"/>
-					</object>
-					<int key="connectionID">1590</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">chatController</string>
 						<reference key="source" ref="964681874"/>
@@ -5872,6 +5726,134 @@
 						</object>
 					</object>
 					<int key="connectionID">1771</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="835399760"/>
+					</object>
+					<int key="connectionID">1772</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="444333331"/>
+					</object>
+					<int key="connectionID">1774</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="240487402"/>
+					</object>
+					<int key="connectionID">1776</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="303638361"/>
+					</object>
+					<int key="connectionID">1777</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="479697763"/>
+					</object>
+					<int key="connectionID">1779</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="587839684"/>
+					</object>
+					<int key="connectionID">1780</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="490177843"/>
+					</object>
+					<int key="connectionID">1781</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="509209273"/>
+					</object>
+					<int key="connectionID">1782</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="108375207"/>
+					</object>
+					<int key="connectionID">1783</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="778771625"/>
+					</object>
+					<int key="connectionID">1784</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="452887826"/>
+					</object>
+					<int key="connectionID">1785</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="388935883"/>
+					</object>
+					<int key="connectionID">1786</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="526164153"/>
+					</object>
+					<int key="connectionID">1787</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="293440545"/>
+					</object>
+					<int key="connectionID">1788</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="218533574"/>
+					</object>
+					<int key="connectionID">1789</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">changeTextColor:</string>
+						<reference key="source" ref="814200211"/>
+						<reference key="destination" ref="7065614"/>
+					</object>
+					<int key="connectionID">1790</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -7137,12 +7119,6 @@
 						<reference key="parent" ref="720053764"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">1104</int>
-						<reference key="object" ref="462083609"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Text Attributes Controller</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">1129</int>
 						<reference key="object" ref="644695880"/>
 						<object class="NSMutableArray" key="children">
@@ -7410,16 +7386,16 @@
 							<reference ref="479697763"/>
 							<reference ref="587839684"/>
 							<reference ref="490177843"/>
-							<reference ref="509209273"/>
-							<reference ref="108375207"/>
 							<reference ref="778771625"/>
-							<reference ref="452887826"/>
 							<reference ref="388935883"/>
 							<reference ref="526164153"/>
 							<reference ref="293440545"/>
-							<reference ref="218533574"/>
 							<reference ref="7065614"/>
 							<reference ref="540423220"/>
+							<reference ref="108375207"/>
+							<reference ref="509209273"/>
+							<reference ref="452887826"/>
+							<reference ref="218533574"/>
 						</object>
 						<reference key="parent" ref="375900233"/>
 					</object>
@@ -8051,7 +8027,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{274, 443}, {157, 393}}</string>
+					<string>{{241, 443}, {157, 393}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8083,9 +8059,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{453, 485}, {400, 127}}</string>
+					<string>{{122, 528}, {400, 127}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{453, 485}, {400, 127}}</string>
+					<string>{{122, 528}, {400, 127}}</string>
 					<boolean value="NO"/>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
@@ -8134,14 +8110,14 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{80, 836}, {392, 20}}</string>
+					<string>{{47, 836}, {392, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
 					<string>{{6, 978}, {478, 20}}</string>
-					<string>{{481, 267}, {850, 713}}</string>
+					<string>{{129, 87}, {850, 713}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{481, 267}, {850, 713}}</string>
+					<string>{{129, 87}, {850, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="YES"/>
@@ -8330,7 +8306,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1771</int>
+			<int key="maxID">1790</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -8422,8 +8398,17 @@
 					<string key="className">iTetChatViewController</string>
 					<string key="superclassName">NSObject</string>
 					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">submitChatMessage:</string>
-						<string key="NS.object.0">id</string>
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>changeTextColor:</string>
+							<string>submitChatMessage:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -8643,22 +8628,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">iTetSpecialsView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">iTetTextAttributesController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">changeTextColor:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">partylineMessageField</string>
-						<string key="NS.object.0">NSTextField</string>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">iTetTextAttributesController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
@@ -9158,6 +9127,13 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Foundation.framework/Headers/NSURLDownload.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">Growl.framework/Headers/GrowlApplicationBridge.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

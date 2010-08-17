@@ -15,7 +15,7 @@
 
 @class iTetPlayer;
 
-@interface iTetChatViewController : NSObject
+@interface iTetChatViewController : NSObject <NSUserInterfaceValidations>
 {
 	// Top-level controllers
 	IBOutlet iTetPlayersController* playersController;
@@ -27,6 +27,7 @@
 }
 
 - (IBAction)submitChatMessage:(id)sender;
+- (IBAction)changeTextColor:(id)sender;
 
 - (void)clearChat;
 - (void)appendChatLine:(NSAttributedString*)line;
