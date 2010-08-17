@@ -5,6 +5,10 @@ AsyncSocket.h
 AsyncSocket.m (modified slightly, to allow sockets to run in the common run loop modes, to prevent blocking during user interface polling, and updated to use newer error-handling API)
 Which are copyright (c) 2003 Dustin Voss, and are provided in the public domain,
 
+The Growl Framework (http://www.growl.info/)
+Which is copyright (c) 2004 The Growl Project, and provided under a BSD License,
+(see http://growl.info/documentation/developer/bsd-license.txt)
+
 Elements from ~Sekkyumu's "Developer Icon Set" (http://Sekkyumu.deviantart.com/art/Developpers-Icons-63052312/):
 Cancel Red Button.png
 Eject Blue Button.png

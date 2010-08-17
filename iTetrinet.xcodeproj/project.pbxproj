@@ -79,6 +79,9 @@
 		6AB76D5B101D145000734661 /* iTetPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D55101D145000734661 /* iTetPreferencesWindowController.m */; };
 		6AB76D5C101D145000734661 /* iTetServersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D57101D145000734661 /* iTetServersViewController.m */; };
 		6AB76D5D101D145000734661 /* iTetThemesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AB76D59101D145000734661 /* iTetThemesViewController.m */; };
+		6AC067FE121ADF7C004CF9B7 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC067FD121ADF7C004CF9B7 /* Growl.framework */; };
+		6AC06806121ADF85004CF9B7 /* Growl.framework in Copy Bundled Frameworks */ = {isa = PBXBuildFile; fileRef = 6AC067FD121ADF7C004CF9B7 /* Growl.framework */; };
+		6AC06817121ADFEF004CF9B7 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6AC06816121ADFEF004CF9B7 /* license.txt */; };
 		6AC2397C1044A5D0006D3C83 /* iTetProtocolTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */; };
 		6AC7653E10CDB86B005B98E1 /* Pause Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */; };
 		6AC7653F10CDB86B005B98E1 /* Play Blue Button.png in Resources */ = {isa = PBXBuildFile; fileRef = 6AC7653D10CDB86B005B98E1 /* Play Blue Button.png */; };
@@ -109,6 +112,20 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6AC067E6121ADE73004CF9B7 /* Copy Bundled Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6AC06806121ADF85004CF9B7 /* Growl.framework in Copy Bundled Frameworks */,
+			);
+			name = "Copy Bundled Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -235,6 +252,8 @@
 		6AB76DAD101D178800734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GeneralPrefsView.xib; sourceTree = "<group>"; };
 		6AB76DB0101D17AE00734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ThemesPrefsView.xib; sourceTree = "<group>"; };
 		6AB76DB6101D17EE00734661 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ServersPrefsView.xib; sourceTree = "<group>"; };
+		6AC067FD121ADF7C004CF9B7 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
+		6AC06816121ADFEF004CF9B7 /* license.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = license.txt; sourceTree = "<group>"; };
 		6AC2397A1044A5D0006D3C83 /* iTetProtocolTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetProtocolTransformer.h; sourceTree = "<group>"; };
 		6AC2397B1044A5D0006D3C83 /* iTetProtocolTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetProtocolTransformer.m; sourceTree = "<group>"; };
 		6AC7653C10CDB86B005B98E1 /* Pause Blue Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Pause Blue Button.png"; sourceTree = "<group>"; };
@@ -295,6 +314,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				6A2687D8114F152D007B1420 /* CoreServices.framework in Frameworks */,
+				6AC067FE121ADF7C004CF9B7 /* Growl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +337,7 @@
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				6A2687D7114F152D007B1420 /* CoreServices.framework */,
+				6AC067FD121ADF7C004CF9B7 /* Growl.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -364,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				6A8EEEDF115439020050339E /* Credits.rtf */,
+				6AC06816121ADFEF004CF9B7 /* license.txt */,
 				6A96B59710099001003D353E /* Images */,
 				6A96B5981009900C003D353E /* Themes */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -811,6 +833,7 @@
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "iTetrinet" */;
 			buildPhases = (
 				8D1107290486CEB800E47090 /* Resources */,
+				6AC067E6121ADE73004CF9B7 /* Copy Bundled Frameworks */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				6A0ECC3E1197963A007FD308 /* Internationalize Source Code */,
@@ -879,6 +902,7 @@
 				6A674D5211D5420900A267DB /* OfflineGamePrefsView.xib in Resources */,
 				6A674DD011D5B7F000A267DB /* No Network.png in Resources */,
 				6A3BE2581203DA3C009FF886 /* Users.png in Resources */,
+				6AC06817121ADFEF004CF9B7 /* license.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,6 +1106,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iTetrinet_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
@@ -1119,6 +1147,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iTetrinet_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
@@ -1157,6 +1189,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iTetrinet_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
@@ -1169,6 +1205,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iTetrinet_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
@@ -1181,6 +1221,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = iTetrinet_Prefix.pch;
