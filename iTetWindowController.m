@@ -25,6 +25,8 @@
 #import "iTetProtocolTransformer.h"
 #import "iTetWinlistEntryTypeImageTransformer.h"
 
+#import "iTetGrowlController.h"
+
 #import "iTetCommonLocalizations.h"
 
 @implementation iTetWindowController
@@ -62,6 +64,9 @@
 											  forEdge:NSMinYEdge];
 	[window setContentBorderThickness:25
 							  forEdge:NSMinYEdge];
+	
+	// Set up the Growl delegate
+	[GrowlApplicationBridge setGrowlDelegate:[iTetGrowlController sharedGrowlController]];
 }
 
 - (void)dealloc

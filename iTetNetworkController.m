@@ -18,6 +18,7 @@
 #import "iTetChatViewController.h"
 #import "iTetChannelsViewController.h"
 #import "iTetWinlistViewController.h"
+#import "iTetGrowlController.h"
 #import "iTetUserDefaults.h"
 
 #import "AsyncSocket.h"
@@ -584,6 +585,9 @@ willDisconnectWithError:(NSError*)error
 			// Add a status message to the chat view
 			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, nickname]];
 			
+			// Post a Growl notification
+			[[iTetGrowlController sharedGrowlController] postJoinNotificationForPlayer:[playersController playerNumber:playerNumber]];
+			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];
 			
@@ -602,6 +606,9 @@ willDisconnectWithError:(NSError*)error
 			
 			// Append a status message
 			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, [player nickname]]];
+			
+			// Post a Growl notification
+			[[iTetGrowlController sharedGrowlController] postLeaveNotificationForPlayer:player];
 			
 			// Remove the player from the game
 			[playersController removePlayer:player];
@@ -647,10 +654,11 @@ willDisconnectWithError:(NSError*)error
 			[playersController setTeamName:teamName
 						   forPlayerNumber:playerNumber];
 			
-			// If the player is joining a team, append another status message to the chat view
+			// If the player is joining a team, append a status message to the chat view, and post a Growl notification
 			if ([teamName length] > 0)
 			{
 				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, playerName, teamName]];
+				[[iTetGrowlController sharedGrowlController] postTeamChangeNotificationForPlayer:[playersController playerNumber:playerNumber]];
 			}
 			
 			break;
