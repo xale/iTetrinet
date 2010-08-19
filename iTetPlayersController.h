@@ -47,15 +47,15 @@
 - (void)setLevel:(NSInteger)level
  forPlayerNumber:(NSInteger)playerNumber;
 - (void)setAllRemotePlayersToPlaying;
-- (void)removePlayer:(iTetPlayer*)player;
+- (void)removePlayerNumber:(NSInteger)playerNumber;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)playerNumber;
-- (iTetPlayer*)operatorPlayer;
 
 @property (readonly) NSArray* playerList;
 @property (readonly) NSNumber* averagePlayerLevel;
 @property (readwrite, retain) iTetLocalPlayer* localPlayer;
 @property (readonly) iTetServerPlayer* serverPlayer;
+@property (readonly) iTetPlayer* operatorPlayer;
 @property (readonly) iTetPlayer* remotePlayer1;
 @property (readonly) iTetPlayer* remotePlayer2;
 @property (readonly) iTetPlayer* remotePlayer3;

@@ -259,23 +259,22 @@
 	}
 }
 
-- (void)removePlayer:(iTetPlayer*)player
+- (void)removePlayerNumber:(NSInteger)playerNumber
 {
 	// Sanity checks
-	NSParameterAssert(player != nil);
-	iTetCheckPlayerNumber([player playerNumber]);
-	NSAssert2(([self playerNumber:[player playerNumber]] != nil), @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);
+	iTetCheckPlayerNumber(playerNumber);
+	NSAssert2(([self playerNumber:playerNumber] != nil), @"attempt to remove player in empty player slot: %d (%@)", playerNumber, [self playerNumber:playerNumber]);
 	
 	// Post a notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerLeftEventNotificationName
 														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:[player nickname]
+													  userInfo:[NSDictionary dictionaryWithObject:[[self playerNumber:playerNumber] nickname]
 																						   forKey:iTetNotificationPlayerNicknameKey]];
 	
 	[self willChangeValueForKey:@"playerList"];
 	
 	// Remove the player
-	[players replaceObjectAtIndex:([player playerNumber] - 1)
+	[players replaceObjectAtIndex:(playerNumber - 1)
 					   withObject:[NSNull null]];
 	
 	// Update player count
@@ -330,6 +329,19 @@
 @synthesize localPlayer;
 @synthesize serverPlayer;
 
+- (iTetPlayer*)operatorPlayer
+{
+	// Return the player with the lowest player number (first player in the array)
+	for (NSInteger index = 0; index < ITET_MAX_PLAYERS; index++)
+	{
+		id player = [players objectAtIndex:index];
+		if ([player isKindOfClass:[iTetPlayer class]])
+			return (iTetPlayer*)player;
+	}
+	
+	return nil;
+}
+
 -(iTetPlayer*)remotePlayer1
 {
 	return [self remotePlayerNumber:1];
@@ -372,6 +384,10 @@
 	{
 		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"playerList", @"localPlayer", nil]];
 	}
+	else if ([key isEqualToString:@"operatorPlayer"])
+	{
+		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"playerList", @"localPlayer", nil]];
+	}
 	else if ([key isEqualToString:@"averagePlayerLevel"])
 	{
 		keys = [keys setByAddingObjectsFromSet:[NSSet setWithObjects:@"localPlayer.level", @"remotePlayer1.level", @"remotePlayer2.level", @"remotePlayer3.level", @"remotePlayer4.level", @"remotePlayer5.level", @"localPlayer.isPlaying", @"remotePlayer1.isPlaying", @"remotePlayer2.isPlaying", @"remotePlayer3.isPlaying", @"remotePlayer4.isPlaying", @"remotePlayer5.isPlaying", nil]];
@@ -394,18 +410,6 @@
 		return nil;
 	
 	return (iTetPlayer*)player;
-}
-
-- (iTetPlayer*)operatorPlayer
-{
-	// Return the player with the lowest player number (first player in the array)
-	for (NSInteger index = 0; index < ITET_MAX_PLAYERS; index++)
-	{
-		if ([[players objectAtIndex:index] isKindOfClass:[iTetPlayer class]])
-			return [players objectAtIndex:index];
-	}
-	
-	return nil;
 }
 
 @end

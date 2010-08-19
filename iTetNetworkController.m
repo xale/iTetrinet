@@ -582,16 +582,15 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Leave Message
 		case playerLeaveMessage:
 		{
-			// Look up the player in question
+			// Get the player number
 			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			iTetPlayer* player = [playersController playerNumber:playerNumber];
 			
 			// If this message refers to the local player, ignore
-			if ([player isLocalPlayer])
+			if (playerNumber == [[playersController localPlayer] playerNumber])
 				break;
 			
 			// Remove the player from the game
-			[playersController removePlayer:player];
+			[playersController removePlayerNumber:playerNumber];
 			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];

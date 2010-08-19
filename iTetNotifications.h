@@ -13,9 +13,11 @@
 #pragma mark Notification Names
 extern NSString* const iTetPlayerJoinedEventNotificationName;
 extern NSString* const iTetPlayerLeftEventNotificationName;
+extern NSString* const iTetPlayerKickedEventNotificationName;
 extern NSString* const iTetPlayerTeamChangeEventNotificationName;
 
 #pragma mark userInfo Dictionary Keys
 extern NSString* const iTetNotificationPlayerNicknameKey;
+extern NSString* const iTetNotificationIsLocalPlayerKey;
 extern NSString* const iTetNotificationOldTeamNameKey;
 extern NSString* const iTetNotificationNewTeamNameKey;
