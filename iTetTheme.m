@@ -108,7 +108,7 @@ NSArray* defaultThemes = nil;
 	if (![self parseThemeFile])
 	{
 		[self release];
-		return [NSNull null];
+		return [[NSNull null] retain];
 	}
 	
 	// Load and clip the images from the sheet
