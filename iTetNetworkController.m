@@ -19,24 +19,21 @@
 #import "iTetChannelsViewController.h"
 #import "iTetWinlistViewController.h"
 #import "iTetGrowlController.h"
-#import "iTetUserDefaults.h"
 
 #import "AsyncSocket.h"
 #import "iTetServerInfo.h"
-
 #import "iTetMessage.h"
 
 #import "iTetLocalPlayer.h"
-
 #import "iTetField.h"
-
 #import "iTetGameRules.h"
+
+#import "iTetUserDefaults.h"
+#import "iTetCommonLocalizations.h"
 
 #import "NSData+SingleByte.h"
 #import "NSData+Subdata.h"
 #import "NSDictionary+AdditionalTypes.h"
-
-#import "iTetCommonLocalizations.h"
 
 #ifdef _ITETRINET_DEBUG
 #import "NSString+MessageData.h"
@@ -473,12 +470,8 @@ willDisconnectWithError:(NSError*)error
 
 #define iTetNoConnectingUnspecifiedReasonPlaceHolder	NSLocalizedStringFromTable(@"(No reason given)", @"NetworkController", @"Placeholder for informational text when a server refuses the user's login, but provides no reason with the rejection message")
 
-#define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"NetworkController", @"Status message appended to the chat view when a player joins the channel")
-#define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"NetworkController", @"Status message appended to the chat view when a player leaves the channel")
 #define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"You have been kicked from the server", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
 #define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
-#define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"NetworkController", @"Status message appended to the chat view when a player joins a new team")
-#define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"NetworkController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
 
 - (void)messageReceived:(iTetMessage*)message
 {
@@ -578,15 +571,8 @@ willDisconnectWithError:(NSError*)error
 				 break;
 			
 			// Add a new player with the specified name and number
-			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			[playersController addPlayerWithNumber:playerNumber
+			[playersController addPlayerWithNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]
 										  nickname:nickname];
-			
-			// Add a status message to the chat view
-			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, nickname]];
-			
-			// Post a Growl notification
-			[[iTetGrowlController sharedGrowlController] postJoinNotificationForPlayer:[playersController playerNumber:playerNumber]];
 			
 			// Refresh the channel list
 			[channelsController refreshChannelList:self];
@@ -603,12 +589,6 @@ willDisconnectWithError:(NSError*)error
 			// If this message refers to the local player, ignore
 			if ([player isLocalPlayer])
 				break;
-			
-			// Append a status message
-			[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, [player nickname]]];
-			
-			// Post a Growl notification
-			[[iTetGrowlController sharedGrowlController] postLeaveNotificationForPlayer:player];
 			
 			// Remove the player from the game
 			[playersController removePlayer:player];
@@ -636,30 +616,9 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Team Message
 		case playerTeamMessage:
 		{
-			// Get the player number and nickname
-			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			NSString* playerName = [[playersController playerNumber:playerNumber] nickname];
-			
-			// Check if the player is already has a team, and if so, add a status message to the chat view
-			NSString* teamName = [[playersController playerNumber:playerNumber] teamName];
-			if ([teamName length] > 0)
-			{
-				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, playerName, teamName]];
-			}
-			
-			// Get the new team name (if any)
-			teamName = [[message contents] objectForKey:iTetMessagePlayerTeamNameKey];
-			
 			// Change the specified player's team name
-			[playersController setTeamName:teamName
-						   forPlayerNumber:playerNumber];
-			
-			// If the player is joining a team, append a status message to the chat view, and post a Growl notification
-			if ([teamName length] > 0)
-			{
-				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, playerName, teamName]];
-				[[iTetGrowlController sharedGrowlController] postTeamChangeNotificationForPlayer:[playersController playerNumber:playerNumber]];
-			}
+			[playersController setTeamName:[[message contents] objectForKey:iTetMessagePlayerTeamNameKey]
+						   forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
 			
 			break;
 		}

@@ -65,7 +65,7 @@
 	[window setContentBorderThickness:25
 							  forEdge:NSMinYEdge];
 	
-	// Set up the Growl delegate
+	// Set up the Growl controller/delegate
 	[GrowlApplicationBridge setGrowlDelegate:[iTetGrowlController sharedGrowlController]];
 }
 

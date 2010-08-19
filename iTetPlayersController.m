@@ -18,6 +18,8 @@
 
 #import "iTetServerInfo.h"
 
+#import "iTetNotifications.h"
+
 #import "iTetPlayer.h"
 #import "iTetLocalPlayer.h"
 #import "iTetServerPlayer.h"
@@ -192,6 +194,12 @@
 	playerCount++;
 	
 	[self didChangeValueForKey:@"playerList"];
+	
+	// Post a notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerJoinedEventNotificationName
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:nick
+																						   forKey:iTetNotificationPlayerNicknameKey]];
 }
 
 - (void)setTeamName:(NSString*)teamName
@@ -200,9 +208,24 @@
 	// Sanity check
 	iTetCheckPlayerNumber(number);
 	
+	// Find the player in question
+	iTetPlayer* player = [self playerNumber:number];
+	
+	// Post a notification of the team change
+	NSDictionary* infoDict = [NSDictionary dictionaryWithObjectsAndKeys:
+							  [player nickname], iTetNotificationPlayerNicknameKey,
+							  [player teamName], iTetNotificationOldTeamNameKey,
+							  teamName, iTetNotificationNewTeamNameKey,
+							  nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerTeamChangeEventNotificationName
+														object:self
+													  userInfo:infoDict];
+	
+
 	[self willChangeValueForKey:@"playerList"];
 	
-	[[self playerNumber:number] setTeamName:teamName];
+	// Change the player's team
+	[player setTeamName:teamName];
 	
 	[self didChangeValueForKey:@"playerList"];
 }
@@ -242,6 +265,12 @@
 	NSParameterAssert(player != nil);
 	iTetCheckPlayerNumber([player playerNumber]);
 	NSAssert2(([self playerNumber:[player playerNumber]] != nil), @"attempt to remove player in empty player slot: %d (%@)", [player playerNumber], player);
+	
+	// Post a notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerLeftEventNotificationName
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:[player nickname]
+																						   forKey:iTetNotificationPlayerNicknameKey]];
 	
 	[self willChangeValueForKey:@"playerList"];
 	

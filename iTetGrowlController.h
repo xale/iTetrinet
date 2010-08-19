@@ -11,15 +11,12 @@
 #import <Cocoa/Cocoa.h>
 #import <Growl/Growl.h>
 
-@class iTetPlayer;
-
 @interface iTetGrowlController : NSObject <GrowlApplicationBridgeDelegate>
 
 + (iTetGrowlController*)sharedGrowlController;
 
-- (void)postJoinNotificationForPlayer:(iTetPlayer*)player;
-- (void)postLeaveNotificationForPlayer:(iTetPlayer*)player;
-- (void)postTeamChangeNotificationForPlayer:(iTetPlayer*)player;
-// FIXME: WRITEME: more notification types
+- (void)postGrowlNotificationWithTitle:(NSString*)title
+						   description:(NSString*)description
+					  notificationName:(NSString*)name;
 
 @end

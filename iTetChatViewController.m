@@ -21,6 +21,7 @@
 #import "NSAttributedString+TetrinetTextAttributes.h"
 #import "iTetTextAttributes.h"
 
+#import "iTetNotifications.h"
 #import "iTetUserDefaults.h"
 
 #import "NSDictionary+AdditionalTypes.h"
@@ -36,10 +37,44 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];	
 }
 
+- (id)init
+{
+	// Register for player-event notifications
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	
+	// Player joined
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerJoinedEventNotificationName
+			 object:nil];
+	
+	// Player left
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerLeftEventNotificationName
+			 object:nil];
+	
+	// Player changed team
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerTeamChangeEventNotificationName
+			 object:nil];
+	
+	return self;
+}
+
 - (void)awakeFromNib
 {
 	// Clear the chat text
 	[self clearChat];
+}
+
+- (void)dealloc
+{
+	// De-register for player-event notifications
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[super dealloc];
 }
 
 #pragma mark -
@@ -133,6 +168,59 @@
 		return ([messageField currentEditor] != nil);
 	
 	return YES;
+}
+
+#pragma mark -
+#pragma mark Player Event Notifications
+
+#define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"ChatViewController", @"Status message appended to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"ChatViewController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player joins a new team")
+#define iTetPlayerSwitchedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has switched to team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player changes from one team to another")
+#define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
+
+- (void)playerEventNotification:(NSNotification*)notification
+{
+	// Determine the type of event, and append the appropriate status message to the chat view
+	NSString* eventType = [notification name];
+	NSString* nickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	if ([eventType isEqualToString:iTetPlayerJoinedEventNotificationName])
+	{
+		// Player joined
+		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, nickname]];
+	}
+	else if ([eventType isEqualToString:iTetPlayerLeftEventNotificationName])
+	{
+		// Player left
+		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, nickname]];
+	}
+	else if ([eventType isEqualToString:iTetPlayerTeamChangeEventNotificationName])
+	{
+		// Player team-change
+		// Get the new and old team names
+		NSString* oldTeamName = [[notification userInfo] objectForKey:iTetNotificationOldTeamNameKey];
+		NSString* newTeamName = [[notification userInfo] objectForKey:iTetNotificationNewTeamNameKey];
+		
+		// Check if the player is joining a team, switching teams, or leaving a team
+		if ([oldTeamName length] > 0)
+		{
+			if ([newTeamName length] > 0)
+			{
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerSwitchedTeamEventStatusMessageFormat, nickname, newTeamName]];
+			}
+			else
+			{
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, nickname, oldTeamName]];
+			}
+		}
+		else
+		{
+			if ([newTeamName length] > 0)
+			{
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, nickname, newTeamName]];
+			}
+		}
+	}
 }
 
 #pragma mark -

@@ -91,6 +91,7 @@
 		6ACE517F115FB47C00F394BE /* IPSScalableLevelIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACE517E115FB47C00F394BE /* IPSScalableLevelIndicator.m */; };
 		6ACF192911DBA0B400AF4961 /* NSString+QuotedComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ACF192811DBA0B400AF4961 /* NSString+QuotedComponents.m */; };
 		6AD266CA117E155F0081A245 /* IPSApplicationSupportDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AD266C9117E155F0081A245 /* IPSApplicationSupportDirectory.m */; };
+		6ADD26D9121C7A370021D1F3 /* iTetNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADD26D8121C7A370021D1F3 /* iTetNotifications.m */; };
 		6ADDDB3B111A86C9004EEE61 /* iTetBlocks_Mono.png in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */; };
 		6ADDDB3C111A86C9004EEE61 /* theme_mono.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */; };
 		6ADEE8911181DCD10087FE8C /* iTetUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ADEE8901181DCD10087FE8C /* iTetUserDefaults.m */; };
@@ -270,6 +271,8 @@
 		6ACF192811DBA0B400AF4961 /* NSString+QuotedComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+QuotedComponents.m"; sourceTree = "<group>"; };
 		6AD266C8117E155F0081A245 /* IPSApplicationSupportDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPSApplicationSupportDirectory.h; sourceTree = "<group>"; };
 		6AD266C9117E155F0081A245 /* IPSApplicationSupportDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPSApplicationSupportDirectory.m; sourceTree = "<group>"; };
+		6ADD26D7121C7A370021D1F3 /* iTetNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNotifications.h; sourceTree = "<group>"; };
+		6ADD26D8121C7A370021D1F3 /* iTetNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNotifications.m; sourceTree = "<group>"; };
 		6ADDDB39111A86C9004EEE61 /* iTetBlocks_Mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_Mono.png; sourceTree = "<group>"; };
 		6ADDDB3A111A86C9004EEE61 /* theme_mono.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_mono.cfg; sourceTree = "<group>"; };
 		6ADEE88F1181DCD10087FE8C /* iTetUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetUserDefaults.h; sourceTree = "<group>"; };
@@ -505,6 +508,8 @@
 		6A4F331F1218F93100EBF3A0 /* Miscellaneous */ = {
 			isa = PBXGroup;
 			children = (
+				6ADD26D7121C7A370021D1F3 /* iTetNotifications.h */,
+				6ADD26D8121C7A370021D1F3 /* iTetNotifications.m */,
 				6A96B56710098E88003D353E /* iTetTheme.h */,
 				6A96B56810098E88003D353E /* iTetTheme.m */,
 				6AEFEEC511207D51006A89CA /* iTetWinlistEntry.h */,
@@ -997,6 +1002,7 @@
 				6A7F54D81218806800D2CD50 /* NSAttributedString+Convenience.m in Sources */,
 				6A16952E1219701200731950 /* iTetSpecial.m in Sources */,
 				6AA869D7121C1F0C003A6808 /* iTetGrowlController.m in Sources */,
+				6ADD26D9121C7A370021D1F3 /* iTetNotifications.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

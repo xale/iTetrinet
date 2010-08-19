@@ -9,13 +9,13 @@
 //
 
 #import "iTetGrowlController.h"
-#import "iTetPlayer.h"
+#import "iTetNotifications.h"
 
 static iTetGrowlController* sharedController = nil;
 
 NSString* const iTetPlayerJoinedGrowlNotificationName =			@"com.indiepennant.iTetrinet.playerJoinedGrowlNotification";
 NSString* const iTetPlayerLeftGrowlNotificationName =			@"com.indiepennant.iTetrinet.playerLeftGrowlNotification";
-NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.iTetrinet.playerChangedTeamGrowlNotification";
+NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.iTetrinet.playerTeamChangedGrowlNotification";
 // FIXME: WRITEME: more notification types
 
 @interface iTetGrowlController (Private)
@@ -27,6 +27,40 @@ NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.
 @end
 
 @implementation iTetGrowlController
+
+- (id)init
+{
+	// Register for player-event notifications
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	
+	// Player joined
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerJoinedEventNotificationName
+			 object:nil];
+	
+	// Player left
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerLeftEventNotificationName
+			 object:nil];
+	
+	// Player changed team
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerTeamChangeEventNotificationName
+			 object:nil];
+	
+	return self;
+}
+
+- (void)dealloc
+{
+	// De-register for player-event notifications
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[super dealloc];
+}
 
 #pragma mark -
 #pragma mark Singleton Overrides
@@ -101,13 +135,13 @@ NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.
 	return [NSArray arrayWithObjects:
 			iTetPlayerJoinedGrowlNotificationName,
 			iTetPlayerLeftGrowlNotificationName,
-			iTetPlayerChangedTeamGrowlNotificationName,
+			iTetPlayerTeamChangedGrowlNotificationName,
 			nil];
 }
 
 #define iTetPlayerJoinedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Joined Channel", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a new player joins the local player's channel")
 #define iTetPlayerLeftGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Left Channel", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when another player leaves the local player's channel")
-#define iTetPlayerChangedTeamGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
+#define iTetPlayerTeamChangedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
 // FIXME: WRITEME: more notification types
 
 - (NSDictionary*)humanReadableNotificationNames
@@ -115,13 +149,13 @@ NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			iTetPlayerJoinedGrowlNotificationHumanReadableName, iTetPlayerJoinedGrowlNotificationName,
 			iTetPlayerLeftGrowlNotificationHumanReadableName, iTetPlayerLeftGrowlNotificationName,
-			iTetPlayerChangedTeamGrowlNotificationHumanReadableName, iTetPlayerChangedTeamGrowlNotificationName,
+			iTetPlayerTeamChangedGrowlNotificationHumanReadableName, iTetPlayerTeamChangedGrowlNotificationName,
 			nil];
 }
 
 #define iTetPlayerJoinedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a new player joins your channel", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player joined' notification will be displayed")
 #define iTetPlayerLeftGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a player leaves your channel", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player left' notification will be displayed")
-#define iTetPlayerChangedTeamGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a player in your channel changes teams", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
+#define iTetPlayerTeamChangedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a player in your channel changes teams", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
 // FIXME: WRITEME: more notification types
 
 - (NSDictionary*)notificationDescriptions
@@ -129,7 +163,7 @@ NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 			iTetPlayerJoinedGrowlNotificationPreferencesDescription, iTetPlayerJoinedGrowlNotificationName,
 			iTetPlayerLeftGrowlNotificationPreferencesDescription, iTetPlayerLeftGrowlNotificationName,
-			iTetPlayerChangedTeamGrowlNotificationPreferencesDescription, iTetPlayerChangedTeamGrowlNotificationName,
+			iTetPlayerTeamChangedGrowlNotificationPreferencesDescription, iTetPlayerTeamChangedGrowlNotificationName,
 			nil];
 }
 
@@ -144,41 +178,75 @@ NSString* const iTetPlayerChangedTeamGrowlNotificationName =	@"com.indiepennant.
 #define iTetPlayerJoinedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Joined Channel", @"GrowlController", @"Title (first line) of the Growl notification displayed when a new player joins the local player's channel")
 #define iTetPlayerJoinedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has joined the channel", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a new player joins the local player's channel")
 
-- (void)postJoinNotificationForPlayer:(iTetPlayer*)player
-{
-	[GrowlApplicationBridge notifyWithTitle:iTetPlayerJoinedGrowlNotificationTitle
-								description:[NSString stringWithFormat:iTetPlayerJoinedGrowlNotificationMessageFormat, [player nickname]]
-						   notificationName:iTetPlayerJoinedGrowlNotificationName
-								   iconData:nil
-								   priority:0
-								   isSticky:NO
-							   clickContext:nil];
-}
-
 #define iTetPlayerLeftGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Left Channel", @"GrowlController", @"Title (first line) of the Growl notification displayed when another player leaves the local player's channel")
 #define iTetPlayerLeftGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has left the channel", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player leaves the local player's channel")
 
-- (void)postLeaveNotificationForPlayer:(iTetPlayer*)player
+#define iTetPlayerTeamChangedGrowlNotificationTitle				NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Title (first line) of the Growl notification displayed when a player in the local player's channel changes his or her team")
+#define iTetPlayerJoinedTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel joins a team")
+#define iTetPlayerSwitchedTeamGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has switched to team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel changes from one team to another")
+#define iTetPlayerLeftTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel leaves his or her team")
+
+- (void)playerEventNotification:(NSNotification*)notification
 {
-	[GrowlApplicationBridge notifyWithTitle:iTetPlayerLeftGrowlNotificationTitle
-								description:[NSString stringWithFormat:iTetPlayerLeftGrowlNotificationMessageFormat, [player nickname]]
-						   notificationName:iTetPlayerLeftGrowlNotificationName
-								   iconData:nil
-								   priority:0
-								   isSticky:NO
-							   clickContext:nil];
+	// Determine the type of event, and append the appropriate status message to the chat view
+	NSString* eventType = [notification name];
+	NSString* nickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	if ([eventType isEqualToString:iTetPlayerJoinedEventNotificationName])
+	{
+		// Player joined
+		[self postGrowlNotificationWithTitle:iTetPlayerJoinedGrowlNotificationTitle
+								 description:[NSString stringWithFormat:iTetPlayerJoinedGrowlNotificationMessageFormat, nickname]
+							notificationName:iTetPlayerJoinedGrowlNotificationName];
+	}
+	else if ([eventType isEqualToString:iTetPlayerLeftEventNotificationName])
+	{
+		// Player left
+		[self postGrowlNotificationWithTitle:iTetPlayerLeftGrowlNotificationTitle
+								 description:[NSString stringWithFormat:iTetPlayerLeftGrowlNotificationMessageFormat, nickname]
+							notificationName:iTetPlayerLeftGrowlNotificationName];
+	}
+	else if ([eventType isEqualToString:iTetPlayerTeamChangeEventNotificationName])
+	{
+		// Player team-change
+		// Get the new and old team names
+		NSString* oldTeamName = [[notification userInfo] objectForKey:iTetNotificationOldTeamNameKey];
+		NSString* newTeamName = [[notification userInfo] objectForKey:iTetNotificationNewTeamNameKey];
+		
+		// Check if the player is joining a team, switching teams, or leaving a team
+		if ([oldTeamName length] > 0)
+		{
+			if ([newTeamName length] > 0)
+			{
+				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
+										 description:[NSString stringWithFormat:iTetPlayerSwitchedTeamGrowlNotificationMessageFormat, nickname, newTeamName]
+									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
+			}
+			else
+			{
+				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
+										 description:[NSString stringWithFormat:iTetPlayerLeftTeamGrowlNotificationMessageFormat, nickname, oldTeamName]
+									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
+			}
+		}
+		else
+		{
+			if ([newTeamName length] > 0)
+			{
+				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
+										 description:[NSString stringWithFormat:iTetPlayerJoinedTeamGrowlNotificationMessageFormat, nickname, newTeamName]
+									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
+			}
+		}
+	}
 }
 
-#define iTetPlayerChangedTeamGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Title (first line) of the Growl notification displayed when a player in the local player's channel changes his or her team")
-#define iTetPlayerJoinedTeamGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel joins a team")
-#define iTetPlayerLeftTeamGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has left team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel leaves his or her team")
-
-- (void)postTeamChangeNotificationForPlayer:(iTetPlayer*)player
+- (void)postGrowlNotificationWithTitle:(NSString*)title
+						   description:(NSString*)description
+					  notificationName:(NSString*)name
 {
-	// FIXME: handle "left team" events
-	[GrowlApplicationBridge notifyWithTitle:iTetPlayerChangedTeamGrowlNotificationTitle
-								description:[NSString stringWithFormat:iTetPlayerJoinedTeamGrowlNotificationMessageFormat, [player nickname], [player teamName]]
-						   notificationName:iTetPlayerChangedTeamGrowlNotificationName
+	[GrowlApplicationBridge notifyWithTitle:title
+								description:description
+						   notificationName:name
 								   iconData:nil
 								   priority:0
 								   isSticky:NO
