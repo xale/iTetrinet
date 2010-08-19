@@ -19,6 +19,6 @@
 	iTetTheme* theme;
 }
 
-@property (readwrite, retain) iTetTheme* theme;
+@property (readwrite, nonatomic, retain) iTetTheme* theme;
 
 @end

@@ -32,7 +32,7 @@
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;
-@property (readwrite, retain) NSMutableArray* specialsQueue;
+@property (readwrite, nonatomic, retain) NSMutableArray* specialsQueue;
 @property (readonly) iTetSpecial* nextSpecial;
 @property (readwrite, assign) NSInteger linesCleared;
 @property (readwrite, assign) NSInteger linesSinceLastLevel;

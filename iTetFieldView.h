@@ -22,7 +22,7 @@
 	NSAffineTransform* reverseTransform;
 }
 
-@property (readwrite, retain) iTetField* field;
+@property (readwrite, nonatomic, retain) iTetField* field;
 @property (readwrite, copy) NSAffineTransform* viewScaleTransform;
 @property (readwrite, copy) NSAffineTransform* reverseTransform;
 

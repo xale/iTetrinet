@@ -106,7 +106,7 @@ typedef enum
 		   onPlayer:(iTetPlayer*)target;
 
 @property (readwrite, retain) NSDictionary* currentGameRules;
-@property (readwrite, assign) iTetGameplayState gameplayState;
+@property (readwrite, nonatomic, assign) iTetGameplayState gameplayState;
 @property (readonly) BOOL gameInProgress;
 
 @end
