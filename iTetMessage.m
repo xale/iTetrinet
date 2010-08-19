@@ -221,7 +221,7 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	{
 		if ([messageContents count] >= 3)
 		{	
-			[contents setObject:[messageContents objectAtIndex:2]
+			[contents setObject:[[messageContents subarrayWithRange:NSMakeRange(2, ([messageContents count] - 2))] componentsJoinedByString:@" "]
 						 forKey:iTetMessagePlayerTeamNameKey];
 		}
 		else

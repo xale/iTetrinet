@@ -171,7 +171,7 @@ NSString* const iTetDefaultServerReservedName =	@"SERVER";
 - (BOOL)validatePlayerNickname:(id*)newValue
 						 error:(NSError**)error
 {
-	// Check that the new value is not nil, or blank
+	// Check that the nickname is not nil, or blank
 	NSString* newNickname = (NSString*)*newValue;
 	BOOL validName = YES;
 	NSString* errorMessage = nil;
@@ -184,9 +184,9 @@ NSString* const iTetDefaultServerReservedName =	@"SERVER";
 	}
 	
 	// Strip/sanitize whitespace
-	newNickname = [iTetServerInfo serverSanitizedName:newNickname];
+	newNickname = [iTetServerInfo serverSanitizedNickname:newNickname];
 	
-	// Check that the nickname is not blank
+	// Check that the stripped nickname is not blank
 	if ([newNickname length] <= 0)
 	{
 		// Blank nickname
@@ -243,25 +243,31 @@ bail:;
 		return YES;
 	}
 	
-	// Sanitize any whitespace characters
-	*newValue = [iTetServerInfo serverSanitizedName:newTeamName];
+	// Strip leading and trailing whitespace (may also result in a blank team name)
+	*newValue = [iTetServerInfo serverSanitizedTeamName:newTeamName];
 	
 	// Team name is valid
 	return YES;
 }
 
-+ (NSString*)serverSanitizedName:(NSString*)inputString
++ (NSString*)serverSanitizedNickname:(NSString*)nickname
 {
 	// Strip whitespace from the ends of the name
-	inputString = [inputString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	nickname = [nickname stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	
 	// Split the name on any internal whitespace characters
-	NSArray* nameTokens = [inputString componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	NSArray* nameTokens = [nickname componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	
 	// Re-join the name with underscores
-	inputString = [nameTokens componentsJoinedByString:@"_"];
+	nickname = [nameTokens componentsJoinedByString:@"_"];
 	
-	return inputString;
+	return nickname;
+}
+
++ (NSString*)serverSanitizedTeamName:(NSString*)teamName
+{
+	// Strip whitespace from the ends of the name
+	return [teamName stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
 #pragma mark -
