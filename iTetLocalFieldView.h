@@ -25,7 +25,7 @@
 
 - (void)keyEvent:(NSEvent*)keyEvent;
 
-@property (readwrite, retain) iTetBlock* block;
+@property (readwrite, nonatomic, retain) iTetBlock* block;
 
 @end
 

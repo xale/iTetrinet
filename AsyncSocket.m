@@ -445,7 +445,7 @@ Failed:;
 {
 	NSData *resultData = nil;
 	
-	struct addrinfo hints = {0}, *result;
+	struct addrinfo hints = {0,0,0,0,0,0,0,0}, *result;
 	hints.ai_family	 = PF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_protocol = IPPROTO_TCP;
@@ -1247,7 +1247,7 @@ Failed:;
 				else
 				{
 					// Done when (sized) buffer is full.
-					done = ([theCurrentRead->buffer length] == theCurrentRead->bytesDone);
+					done = ([theCurrentRead->buffer length] == (NSUInteger)theCurrentRead->bytesDone);
 				}
 			}
 			// else readAllAvailable doesn't end until all readable is read.
@@ -1371,7 +1371,7 @@ Failed:;
 
 			// Is packet done?
 			theCurrentWrite->bytesDone += bytesWritten;
-			done = ([theCurrentWrite->buffer length] == theCurrentWrite->bytesDone);
+			done = ([theCurrentWrite->buffer length] == (NSUInteger)theCurrentWrite->bytesDone);
 		}
 
 		if (done)
@@ -1444,7 +1444,7 @@ Failed:;
 			[self doAcceptWithSocket: *((CFSocketNativeHandle *)pData)];
 			break;
 		default:
-			NSLog (@"AsyncSocket %p received unexpected CFSocketCallBackType %d.", self, type);
+			NSLog (@"AsyncSocket %p received unexpected CFSocketCallBackType %lu.", self, type);
 			break;
 	}
 }
@@ -1471,7 +1471,7 @@ Failed:;
 			[err release];
 			break;
 		default:
-			NSLog (@"AsyncSocket %p received unexpected CFReadStream callback, CFStreamEventType %d.", self, type);
+			NSLog (@"AsyncSocket %p received unexpected CFReadStream callback, CFStreamEventType %lu.", self, type);
 	}
 }
 
@@ -1497,7 +1497,7 @@ Failed:;
 			[err release];
 			break;
 		default:
-			NSLog (@"AsyncSocket %p received unexpected CFWriteStream callback, CFStreamEventType %d.", self, type);
+			NSLog (@"AsyncSocket %p received unexpected CFWriteStream callback, CFStreamEventType %lu.", self, type);
 	}
 }
 

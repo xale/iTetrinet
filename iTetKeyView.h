@@ -25,9 +25,9 @@
 
 - (void)setRepresentedKey:(iTetKeyNamePair*)keyName;
 
-@property (readwrite, assign) iTetGameAction associatedAction;
-@property (readwrite, retain) NSImage* currentKeyImage;
-@property (readwrite, assign) BOOL highlighted;
+@property (readwrite, nonatomic, assign) iTetGameAction associatedAction;
+@property (readwrite, nonatomic, retain) NSImage* currentKeyImage;
+@property (readwrite, nonatomic, assign) BOOL highlighted;
 
 @end
 

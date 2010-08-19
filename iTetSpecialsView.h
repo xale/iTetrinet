@@ -19,8 +19,8 @@
 	NSAffineTransform* viewScaleTransform;
 }
 
-@property (readwrite, copy) NSArray* specials;
-@property (readwrite, assign) NSInteger capacity;
+@property (readwrite, nonatomic, copy) NSArray* specials;
+@property (readwrite, nonatomic, assign) NSInteger capacity;
 @property (readwrite, retain) NSAffineTransform* viewScaleTransform;
 
 @end
