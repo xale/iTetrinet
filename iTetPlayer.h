@@ -24,6 +24,8 @@
 	BOOL playing;
 	iTetField* field;
 	NSInteger level;
+	
+	BOOL kicked;
 }
 
 + (id)playerWithNickname:(NSString*)nick
@@ -49,5 +51,6 @@
 @property (readwrite, assign, getter=isPlaying) BOOL playing;
 @property (readwrite, nonatomic, retain) iTetField* field;
 @property (readwrite, assign) NSInteger level;
+@property (readwrite, assign, getter=isKicked) BOOL kicked;
 
 @end

@@ -126,5 +126,6 @@
 }
 @synthesize field;
 @synthesize level;
+@synthesize kicked;
 
 @end

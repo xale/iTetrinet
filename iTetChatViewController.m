@@ -54,6 +54,12 @@
 			   name:iTetPlayerLeftEventNotificationName
 			 object:nil];
 	
+	// Player kicked
+	[nc addObserver:self
+		   selector:@selector(playerEventNotification:)
+			   name:iTetPlayerKickedEventNotificationName
+			 object:nil];
+	
 	// Player changed team
 	[nc addObserver:self
 		   selector:@selector(playerEventNotification:)
@@ -178,6 +184,8 @@
 #define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player joins a new team")
 #define iTetPlayerSwitchedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has switched to team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player changes from one team to another")
 #define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
+#define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"You have been kicked from the server", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
+#define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
 
 - (void)playerEventNotification:(NSNotification*)notification
 {
@@ -194,6 +202,15 @@
 		// Player left
 		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, nickname]];
 	}
+	else if ([eventType isEqualToString:iTetPlayerKickedEventNotificationName])
+	{
+		// Player left
+		// Determine if the local player is being kicked
+		if ([[notification userInfo] boolForKey:iTetNotificationIsLocalPlayerKey])
+			[self appendStatusMessage:iTetLocalPlayerKickedStatusMessage];
+		else
+			[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerKickedStatusMessageFormat, nickname]];
+	}
 	else if ([eventType isEqualToString:iTetPlayerTeamChangeEventNotificationName])
 	{
 		// Player team-change
@@ -205,20 +222,14 @@
 		if ([oldTeamName length] > 0)
 		{
 			if ([newTeamName length] > 0)
-			{
 				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerSwitchedTeamEventStatusMessageFormat, nickname, newTeamName]];
-			}
 			else
-			{
 				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, nickname, oldTeamName]];
-			}
 		}
 		else
 		{
 			if ([newTeamName length] > 0)
-			{
 				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, nickname, newTeamName]];
-			}
 		}
 	}
 }

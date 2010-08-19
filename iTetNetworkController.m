@@ -470,9 +470,6 @@ willDisconnectWithError:(NSError*)error
 
 #define iTetNoConnectingUnspecifiedReasonPlaceHolder	NSLocalizedStringFromTable(@"(No reason given)", @"NetworkController", @"Placeholder for informational text when a server refuses the user's login, but provides no reason with the rejection message")
 
-#define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"You have been kicked from the server", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
-#define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
-
 - (void)messageReceived:(iTetMessage*)message
 {
 	// Determine the nature of the message
@@ -508,10 +505,12 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark Server Heartbeat
 		case heartbeatMessage:
+		{
 			// Send a keepalive message
 			[self sendMessage:[iTetMessage messageWithMessageType:heartbeatMessage]];
-			break;
 			
+			break;
+		}
 #pragma mark Client Info Request
 		case clientInfoRequestMessage:
 		{
@@ -600,17 +599,10 @@ willDisconnectWithError:(NSError*)error
 #pragma mark Player Kick Message
 		case playerKickMessage:
 		{
-			// Look up the player in question
-			NSInteger playerNumber = [[message contents] integerForKey:iTetMessagePlayerNumberKey];
-			iTetPlayer* player = [playersController playerNumber:playerNumber];
+			// Kick the specified player
+			[playersController kickPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
 			
-			// Append a status message, explaining that the player has been kicked
-			if ([player isLocalPlayer])
-				[chatController appendStatusMessage:[NSString stringWithFormat:iTetLocalPlayerKickedStatusMessage]];
-			else
-				[chatController appendStatusMessage:[NSString stringWithFormat:iTetPlayerKickedStatusMessageFormat, [player nickname]]];
-			 
-			// No further action is necessary; server will either close the connection, or report that the player has left
+			break;
 		}
 #pragma mark Player Team Message
 		case playerTeamMessage:
@@ -623,19 +615,23 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark Winlist Message
 		case winlistMessage:
+		{
 			// Pass the winlist entries to the winlist controller
 			[winlistController parseWinlist:[[message contents] objectForKey:iTetMessageWinlistArrayKey]];
-			break;
 			
+			break;
+		}
 #pragma mark Partyline Messages
 		case plineChatMessage:
 		case plineActionMessage:
+		{
 			// Add the message to the chat controller
 			[chatController appendChatLine:[[message contents] objectForKey:iTetMessageChatContentsKey]
 								fromPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]
 									action:(type == plineActionMessage)];
-			break;
 			
+			break;
+		}
 #pragma mark Game Chat Message
 		case gameChatMessage:
 		{
@@ -647,15 +643,18 @@ willDisconnectWithError:(NSError*)error
 #pragma mark New Game Message
 		case tetrinetNewGameMessage:
 		case tetrifastNewGameMessage:
+		{
 			// Tell the gameController to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
 										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
 																	withGameType:[currentServer protocol]
 																	 gameVersion:[currentServer gameVersion]]];
-			break;
 			
+			break;
+		}
 #pragma mark Server In-Game Message
 		case inGameMessage:
+		{
 			// Set all players except the local player to "playing"
 			[playersController setAllRemotePlayersToPlaying];
 			
@@ -666,7 +665,7 @@ willDisconnectWithError:(NSError*)error
 			[gameController setGameplayState:gamePlaying];
 			
 			break;
-			
+		}
 #pragma mark Pause/Resume Game Message
 		case pauseResumeGameMessage:
 		{
@@ -692,6 +691,7 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark End of Game Message
 		case endGameMessage:
+		{
 			// End the game
 			[gameController endGame];
 			
@@ -703,13 +703,14 @@ willDisconnectWithError:(NSError*)error
 			[channelsController refreshChannelList:self];
 			
 			break;
-			
+		}
 #pragma mark Fieldstring Message
 		case fieldstringMessage:
 		{
 			// Pass to the game controller
 			[gameController fieldstringReceived:[[message contents] objectForKey:iTetMessageFieldstringKey]
 									  forPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]];
+			
 			break;
 		}
 #pragma mark Level Update Message
@@ -723,6 +724,7 @@ willDisconnectWithError:(NSError*)error
 			// Otherwise, update the specified player's level
 			[playersController setLevel:[[message contents] integerForKey:iTetMessageLevelNumberKey]
 						forPlayerNumber:playerNumber];
+			
 			break;
 		}
 #pragma mark Special Used/Lines Received Message
@@ -732,15 +734,18 @@ willDisconnectWithError:(NSError*)error
 			[gameController specialUsed:[[message contents] objectForKey:iTetMessageSpecialKey]
 							   byPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]
 							   onPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessageTargetPlayerNumberKey]]];
+			
 			break;
 		}
 #pragma mark Player Lost Message
 		case playerLostMessage:
+		{
 			// Set the player to "not playing"
 			[playersController setPlayerIsPlaying:NO
 								  forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
-			break;
 			
+			break;
+		}
 #pragma mark Player Won Message
 		case playerWonMessage:
 			// Does nothing

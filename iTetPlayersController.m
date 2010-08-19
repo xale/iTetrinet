@@ -259,17 +259,45 @@
 	}
 }
 
+- (void)kickPlayerNumber:(NSInteger)playerNumber
+{
+	// Sanity checks
+	iTetCheckPlayerNumber(playerNumber);
+	NSAssert1(([self playerNumber:playerNumber] != nil), @"attempt to kick player in empty player slot: %d", playerNumber);
+	
+	// Get the player in question
+	iTetPlayer* player = [self playerNumber:playerNumber];
+	
+	// Mark the player as "kicked", so that we don't have to report when the server disconnects them
+	[player setKicked:YES];
+	
+	// Post a notification
+	NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
+						  [player nickname], iTetNotificationPlayerNicknameKey,
+						  [NSNumber numberWithBool:[player isLocalPlayer]], iTetNotificationIsLocalPlayerKey,
+						  nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerKickedEventNotificationName
+														object:self
+													  userInfo:info];
+}
+
 - (void)removePlayerNumber:(NSInteger)playerNumber
 {
 	// Sanity checks
 	iTetCheckPlayerNumber(playerNumber);
-	NSAssert2(([self playerNumber:playerNumber] != nil), @"attempt to remove player in empty player slot: %d (%@)", playerNumber, [self playerNumber:playerNumber]);
+	NSAssert1(([self playerNumber:playerNumber] != nil), @"attempt to remove player in empty player slot: %d", playerNumber);
 	
-	// Post a notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerLeftEventNotificationName
-														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:[[self playerNumber:playerNumber] nickname]
-																						   forKey:iTetNotificationPlayerNicknameKey]];
+	// Get the player in question
+	iTetPlayer* player = [self playerNumber:playerNumber];
+	
+	// If the player hasn't been kicked, post a "player left" notification
+	if (![player isKicked])
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerLeftEventNotificationName
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[[self playerNumber:playerNumber] nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
+	}
 	
 	[self willChangeValueForKey:@"playerList"];
 	

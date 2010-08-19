@@ -47,6 +47,7 @@
 - (void)setLevel:(NSInteger)level
  forPlayerNumber:(NSInteger)playerNumber;
 - (void)setAllRemotePlayersToPlaying;
+- (void)kickPlayerNumber:(NSInteger)playerNumber;
 - (void)removePlayerNumber:(NSInteger)playerNumber;
 - (void)removeAllPlayers;
 - (iTetPlayer*)playerNumber:(NSInteger)playerNumber;
