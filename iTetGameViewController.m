@@ -12,6 +12,8 @@
 
 #import "iTetWindowController.h"
 #import "iTetPlayersController.h"
+
+#import "iTetNotifications.h"
 #import "iTetUserDefaults.h"
 
 #import "iTetNetworkController.h"
@@ -715,6 +717,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 }
 
+#define ITET_END_GAME_NOTIFICATION_DELAY	0.5
+
 - (void)endGame
 {
 	// Set the game state to "not playing"
@@ -739,6 +743,51 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[self setCurrentGameRules:nil];
 	[blockGenerator release];
 	blockGenerator = nil;
+	
+	// If this is not an offline game, post a notification
+	if (![self offlineGame])
+	{
+		// Determine if we have a designated winner
+		iTetPlayer* winner = [playersController lastWinningPlayer];
+		if (winner != nil)
+		{
+			// Post a notification
+			[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotification
+																object:self
+															  userInfo:[NSDictionary dictionaryWithObject:[winner nickname]
+																								   forKey:iTetNotificationPlayerNicknameKey]];
+		}
+		else
+		{
+			// Some servers send the winning player _after_ the end of the game, so we'll wait a short time to see if the message arrives
+			// FIXME: this is extremely fragile, and will break on high-ping servers; I'm not sure I see any other way to do it, however
+			[self performSelector:@selector(endOfGameNotificationDelayTimeout)
+					   withObject:nil
+					   afterDelay:ITET_END_GAME_NOTIFICATION_DELAY];
+		}
+	}
+}
+
+- (void)endOfGameNotificationDelayTimeout
+{
+	// Check if we have a winning player _now_
+	iTetPlayer* winner = [playersController lastWinningPlayer];
+	if (winner != nil)
+	{
+		// Post a notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotification
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[winner nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
+	}
+	else
+	{
+		// No winning player; assume that the game has been forcibly ended by the operator player
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameEndedEventNotificationName
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
+	}
 }
 
 #pragma mark -

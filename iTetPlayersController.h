@@ -29,6 +29,7 @@
 	NSInteger playerCount;
 	iTetLocalPlayer* localPlayer;
 	iTetServerPlayer* serverPlayer;
+	iTetPlayer* lastWinningPlayer;
 }
 
 - (IBAction)changeTeamName:(id)sender;
@@ -56,6 +57,7 @@
 @property (readonly) NSNumber* averagePlayerLevel;
 @property (readwrite, retain) iTetLocalPlayer* localPlayer;
 @property (readonly) iTetServerPlayer* serverPlayer;
+@property (readwrite, retain) iTetPlayer* lastWinningPlayer;
 @property (readonly) iTetPlayer* operatorPlayer;
 @property (readonly) iTetPlayer* remotePlayer1;
 @property (readonly) iTetPlayer* remotePlayer2;

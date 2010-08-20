@@ -39,7 +39,7 @@ static iTetGrowlController* sharedController = nil;
 
 - (id)init
 {
-	// Register for player-event notifications
+	// Register for event notifications
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 	
 	// Player joined
@@ -64,6 +64,18 @@ static iTetGrowlController* sharedController = nil;
 	[nc addObserver:self
 		   selector:@selector(playerEventNotification:)
 			   name:iTetPlayerTeamChangeEventNotificationName
+			 object:nil];
+	
+	// Game ended
+	[nc addObserver:self
+		   selector:@selector(gameEventNotification:)
+			   name:iTetGameEndedEventNotificationName
+			 object:nil];
+	
+	// Player won
+	[nc addObserver:self
+		   selector:@selector(gameEventNotification:)
+			   name:iTetGamePlayerWonEventNotification
 			 object:nil];
 	
 	return self;
@@ -149,6 +161,7 @@ NSString* const iTetPlayerJoinedGrowlNotificationName =			@"com.indiepennant.iTe
 NSString* const iTetPlayerLeftGrowlNotificationName =			@"com.indiepennant.iTetrinet.playerLeftGrowlNotification";
 NSString* const iTetPlayerKickedGrowlNotificationName =			@"com.indiepennant.iTetrinet.playerKickedGrowlNotification";
 NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.iTetrinet.playerTeamChangedGrowlNotification";
+NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetrinet.gameEndedGrowlNotification";
 // FIXME: WRITEME: more notification types
 
 - (NSArray*)allNotificationNames
@@ -158,6 +171,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 			iTetPlayerLeftGrowlNotificationName,
 			iTetPlayerKickedGrowlNotificationName,
 			iTetPlayerTeamChangedGrowlNotificationName,
+			iTetGameEndedGrowlNotificationName,
 			nil];
 }
 
@@ -165,6 +179,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 #define iTetPlayerLeftGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Left Channel", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when another player leaves the local player's channel")
 #define iTetPlayerKickedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Kicked", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel is kicked from the server")
 #define iTetPlayerTeamChangedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
+#define iTetGameEndedGrowlNotificationHumanReadableName			NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game ends")
 // FIXME: WRITEME: more notification types
 
 - (NSDictionary*)humanReadableNotificationNames
@@ -174,6 +189,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 			iTetPlayerLeftGrowlNotificationHumanReadableName, iTetPlayerLeftGrowlNotificationName,
 			iTetPlayerKickedGrowlNotificationHumanReadableName, iTetPlayerKickedGrowlNotificationName,
 			iTetPlayerTeamChangedGrowlNotificationHumanReadableName, iTetPlayerTeamChangedGrowlNotificationName,
+			iTetGameEndedGrowlNotificationHumanReadableName, iTetGameEndedGrowlNotificationName,
 			nil];
 }
 
@@ -181,6 +197,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 #define iTetPlayerLeftGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a player leaves your channel", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player left' notification will be displayed")
 #define iTetPlayerKickedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a player in your channel is kicked", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player kicked' notification will be displayed")
 #define iTetPlayerTeamChangedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a player in your channel changes teams", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
+#define iTetGameEndedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a game ends", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game ended' notification will be displayed")
 // FIXME: WRITEME: more notification types
 
 - (NSDictionary*)notificationDescriptions
@@ -190,6 +207,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 			iTetPlayerLeftGrowlNotificationPreferencesDescription, iTetPlayerLeftGrowlNotificationName,
 			iTetPlayerKickedGrowlNotificationPreferencesDescription, iTetPlayerKickedGrowlNotificationName,
 			iTetPlayerTeamChangedGrowlNotificationPreferencesDescription, iTetPlayerTeamChangedGrowlNotificationName,
+			iTetGameEndedGrowlNotificationPreferencesDescription, iTetGameEndedGrowlNotificationName,
 			nil];
 }
 
@@ -219,7 +237,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 
 - (void)playerEventNotification:(NSNotification*)notification
 {
-	// Determine the type of event, and append the appropriate status message to the chat view
+	// Determine the type of event, and post an appropriate Growl notification
 	NSString* eventType = [notification name];
 	NSString* nickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
 	if ([eventType isEqualToString:iTetPlayerJoinedEventNotificationName])
@@ -288,6 +306,31 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 	}
 }
 
+#define iTetGameEndedGrowlNotificationTitle				NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Title (first line) of Growl notification displayed when a game ends")
+#define iTetGameEndedGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the operator ends the current game in progress")
+#define iTetGamePlayerWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning player")
+
+- (void)gameEventNotification:(NSNotification*)notification
+{
+	// Determine the type of event, and post an appropriate Growl notification
+	NSString* eventType = [notification name];
+	NSString* playerNickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	if ([eventType isEqualToString:iTetGameEndedEventNotificationName])
+	{
+		// Game ended (stopped by operator, as opposed to a win by elimination of other players)
+		[self postGrowlNotificationWithTitle:iTetGameEndedGrowlNotificationTitle
+								 description:[NSString stringWithFormat:iTetGameEndedGrowlNotificationMessageFormat, playerNickname]
+							notificationName:iTetGameEndedGrowlNotificationName];
+	}
+	else if ([eventType isEqualToString:iTetGamePlayerWonEventNotification])
+	{
+		// Game ended, with winning player
+		[self postGrowlNotificationWithTitle:iTetGameEndedGrowlNotificationTitle
+								 description:[NSString stringWithFormat:iTetGamePlayerWonGrowlNotificationMessageFormat, playerNickname]
+							notificationName:iTetGameEndedGrowlNotificationName];
+	}
+}
+
 - (void)postGrowlNotificationWithTitle:(NSString*)title
 						   description:(NSString*)description
 					  notificationName:(NSString*)name
@@ -297,6 +340,7 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 	if (![defaults boolForKey:iTetEnableGrowlNotificationsPrefKey] || ([NSApp isActive] && [defaults boolForKey:iTetGrowlBackgroundOnlyPrefKey]))
 		return;
 	
+	// By default, iTetrinet's notifications use the default icon, have normal priority, are not sticky, and do not respond to clicks
 	[GrowlApplicationBridge notifyWithTitle:title
 								description:description
 						   notificationName:name

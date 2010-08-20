@@ -44,6 +44,7 @@
 	[players release];
 	[localPlayer release];
 	[serverPlayer release];
+	[lastWinningPlayer release];
 	
 	[super dealloc];
 }
@@ -313,8 +314,9 @@
 
 - (void)removeAllPlayers
 {
-	// Remove the local player
+	// Remove the local player, and the last designated winner
 	[self setLocalPlayer:nil];
+	[self setLastWinningPlayer:nil];
 	
 	[self willChangeValueForKey:@"playerList"];
 	
@@ -356,6 +358,7 @@
 
 @synthesize localPlayer;
 @synthesize serverPlayer;
+@synthesize lastWinningPlayer;
 
 - (iTetPlayer*)operatorPlayer
 {

@@ -650,11 +650,14 @@ willDisconnectWithError:(NSError*)error
 		case tetrinetNewGameMessage:
 		case tetrifastNewGameMessage:
 		{
-			// Tell the gameController to start the game
+			// Tell the game controller to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
 										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
 																	withGameType:[currentServer protocol]
 																	 gameVersion:[currentServer gameVersion]]];
+			
+			// Clear the last designated winning player
+			[playersController setLastWinningPlayer:nil];
 			
 			break;
 		}
@@ -663,6 +666,9 @@ willDisconnectWithError:(NSError*)error
 		{
 			// Set all players except the local player to "playing"
 			[playersController setAllRemotePlayersToPlaying];
+			
+			// Clear the last designated winning player
+			[playersController setLastWinningPlayer:nil];
 			
 			// Give the local player a "death field"
 			[[playersController localPlayer] setField:[iTetField fieldWithRandomContents]];
@@ -754,9 +760,12 @@ willDisconnectWithError:(NSError*)error
 		}
 #pragma mark Player Won Message
 		case playerWonMessage:
-			// Does nothing
-			break;
+		{
+			// Designate the game's winner
+			[playersController setLastWinningPlayer:[playersController playerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]]];
 			
+			break;
+		}
 		default:
 			NSAssert2(NO, @"invalid message type in NetworkController -messageReceived: %d; contents: %@", type, [message contents]);
 			break;

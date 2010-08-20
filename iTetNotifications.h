@@ -11,11 +11,19 @@
 #import <Cocoa/Cocoa.h>
 
 #pragma mark Notification Names
+#pragma mark Player Events
 extern NSString* const iTetPlayerJoinedEventNotificationName;
 extern NSString* const iTetPlayerLeftEventNotificationName;
 extern NSString* const iTetPlayerKickedEventNotificationName;
 extern NSString* const iTetPlayerTeamChangeEventNotificationName;
 
+#pragma mark Game Events
+extern NSString* const iTetGameStartedEventNotificationName;
+extern NSString* const iTetGameEndedEventNotificationName;
+extern NSString* const iTetGamePlayerLostEventNotification;
+extern NSString* const iTetGamePlayerWonEventNotification;
+
+#pragma mark -
 #pragma mark userInfo Dictionary Keys
 extern NSString* const iTetNotificationPlayerNicknameKey;
 extern NSString* const iTetNotificationIsLocalPlayerKey;

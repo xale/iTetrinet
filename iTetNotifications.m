@@ -15,6 +15,10 @@ NSString* const iTetPlayerJoinedEventNotificationName =		@"com.indiepennant.iTet
 NSString* const iTetPlayerLeftEventNotificationName =		@"com.indiepennant.iTetrinet.playerLeftEventNotification";
 NSString* const iTetPlayerKickedEventNotificationName =		@"com.indiepennant.iTetrinet.playerKickedEventNotification";
 NSString* const iTetPlayerTeamChangeEventNotificationName =	@"com.indiepennant.iTetrinet.playerTeamChangedEventNotification";
+NSString* const iTetGameStartedEventNotificationName =		@"com.indiepennant.iTetrinet.gameStartedEventNotification";
+NSString* const iTetGameEndedEventNotificationName =		@"com.indiepennant.iTetrinet.gameEndedEventNotification";
+NSString* const iTetGamePlayerLostEventNotification =		@"com.indiepennant.iTetrinet.gamePlayerLostEventNotification";
+NSString* const iTetGamePlayerWonEventNotification =		@"com.indiepennant.iTetrinet.gamePlayerWonEventNotification";
 
 #pragma mark userInfo Dictionary Keys
 NSString* const iTetNotificationPlayerNicknameKey =	@"iTetPlayerName";
