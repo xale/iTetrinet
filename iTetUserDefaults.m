@@ -20,3 +20,5 @@ NSString* const iTetThemesSelectionPrefKey =			@"iTetThemesSelection";
 NSString* const iTetKeyConfigsListPrefKey =				@"iTetKeyConfigsList";
 NSString* const iTetCurrentKeyConfigNumberPrefKey =		@"iTetCurrentKeyConfigNumber";
 NSString* const iTetOfflineGameRulesPrefKey =			@"iTetOfflineGameRules";
+NSString* const iTetEnableGrowlNotificationsPrefKey =	@"iTetEnableGrowlNotifications";
+NSString* const iTetGrowlBackgroundOnlyPrefKey =		@"iTetGrowlBackgroundOnly";

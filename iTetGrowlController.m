@@ -9,7 +9,9 @@
 //
 
 #import "iTetGrowlController.h"
+
 #import "iTetNotifications.h"
+#import "iTetUserDefaults.h"
 
 #import "NSDictionary+AdditionalTypes.h"
 
@@ -24,6 +26,16 @@ static iTetGrowlController* sharedController = nil;
 @end
 
 @implementation iTetGrowlController
+
++ (void)initialize
+{
+	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+	[defaults setBool:YES
+			   forKey:iTetEnableGrowlNotificationsPrefKey];
+	[defaults setBool:NO
+			   forKey:iTetGrowlBackgroundOnlyPrefKey];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
 
 - (id)init
 {
@@ -280,6 +292,11 @@ NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.
 						   description:(NSString*)description
 					  notificationName:(NSString*)name
 {
+	// If notifications are disabled, or enabled for background only and the app is in the foreground, skip sending the notification
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	if (![defaults boolForKey:iTetEnableGrowlNotificationsPrefKey] || ([NSApp isActive] && [defaults boolForKey:iTetGrowlBackgroundOnlyPrefKey]))
+		return;
+	
 	[GrowlApplicationBridge notifyWithTitle:title
 								description:description
 						   notificationName:name

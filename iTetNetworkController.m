@@ -62,10 +62,10 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
 	[defaults setObject:[NSNumber numberWithDouble:5.0]
 				 forKey:iTetConnectionTimeoutPrefKey];
-	[defaults setObject:[NSNumber numberWithBool:YES]
-				 forKey:iTetAutoSwitchChatOnConnectPrefKey];
-	[defaults setObject:[NSNumber numberWithBool:YES]
-				 forKey:iTetAutoSwitchChatAfterGamePrefKey];
+	[defaults setBool:YES
+			   forKey:iTetAutoSwitchChatOnConnectPrefKey];
+	[defaults setBool:YES
+			   forKey:iTetAutoSwitchChatAfterGamePrefKey];
 	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
 				 forKey:iTetServersListPrefKey];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];

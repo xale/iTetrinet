@@ -20,3 +20,5 @@ extern NSString* const iTetServersListPrefKey;
 extern NSString* const iTetKeyConfigsListPrefKey;
 extern NSString* const iTetCurrentKeyConfigNumberPrefKey;
 extern NSString* const iTetOfflineGameRulesPrefKey;
+extern NSString* const iTetEnableGrowlNotificationsPrefKey;
+extern NSString* const iTetGrowlBackgroundOnlyPrefKey;
