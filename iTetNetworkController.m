@@ -417,18 +417,21 @@ willDisconnectWithError:(NSError*)error
 - (void)sendMessage:(iTetMessage*)message
 {
 #ifdef _ITETRINET_DEBUG
-	NSString* messageString = [NSString stringWithMessageData:[message rawMessageData]];
-	NSMutableString* debugString = [NSMutableString string];
-	unichar character;
-	for (NSUInteger i = 0; i < [messageString length]; i++)
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableMessageLogging"])
 	{
-		character = [messageString characterAtIndex:i];
-		if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
-			[debugString appendFormat:@"<\\%02u>", (int)character];
-		else
-			[debugString appendFormat:@"%C", character];
+		NSString* messageString = [NSString stringWithMessageData:[message rawMessageData]];
+		NSMutableString* debugString = [NSMutableString string];
+		unichar character;
+		for (NSUInteger i = 0; i < [messageString length]; i++)
+		{
+			character = [messageString characterAtIndex:i];
+			if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
+				[debugString appendFormat:@"<\\%02u>", (int)character];
+			else
+				[debugString appendFormat:@"%C", character];
+		}
+		NSLog(@"DEBUG:    sending outgoing message: '%@'", debugString);
 	}
-	NSLog(@"DEBUG:    sending outgoing message: '%@'", debugString);
 #endif
 	
 	// Append the delimiter byte and send the message
@@ -442,18 +445,21 @@ willDisconnectWithError:(NSError*)error
 		 withTag:(long)tag
 {
 #ifdef _ITETRINET_DEBUG
-	NSString* messageContents = [NSString stringWithMessageData:[data subdataToIndex:([data length] - 1)]];
-	NSMutableString* debugString = [NSMutableString string];
-	unichar character;
-	for (NSUInteger i = 0; i < [messageContents length]; i++)
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableMessageLogging"])
 	{
-		character = [messageContents characterAtIndex:i];
-		if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
-			[debugString appendFormat:@"<\\%02u>", character];
-		else
-			[debugString appendFormat:@"%C", character];
+		NSString* messageContents = [NSString stringWithMessageData:[data subdataToIndex:([data length] - 1)]];
+		NSMutableString* debugString = [NSMutableString string];
+		unichar character;
+		for (NSUInteger i = 0; i < [messageContents length]; i++)
+		{
+			character = [messageContents characterAtIndex:i];
+			if ([[iTetTextAttributes chatTextAttributeCharacterSet] characterIsMember:character])
+				[debugString appendFormat:@"<\\%02u>", character];
+			else
+				[debugString appendFormat:@"%C", character];
+		}
+		NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
 	}
-	NSLog(@"DEBUG:   received incoming message: '%@'", debugString);
 #endif
 	
 	// Convert the data to a message, after trimming the delimiter byte

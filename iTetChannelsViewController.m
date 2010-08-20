@@ -275,7 +275,8 @@
 {
 	NSData* messageData = [message rawMessageData];
 #ifdef _ITETRINET_DEBUG
-	NSLog(@"DEBUG:       sending query message: '%@'", [NSString stringWithMessageData:messageData]);
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableQueryLogging"])
+		NSLog(@"DEBUG:       sending query message: '%@'", [NSString stringWithMessageData:messageData]);
 #endif
 	
 	// Append a terminator byte and enqueue the message for sending
@@ -332,7 +333,8 @@ didConnectToHost:(NSString*)host
 	data = [data subdataToIndex:([data length] - 1)];
 	
 #ifdef _ITETRINET_DEBUG
-	NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableQueryLogging"])
+		NSLog(@"DEBUG: query message data received: '%@'", [NSString stringWithMessageData:data]);
 #endif
 	
 	// Attempt to parse the data as a Query response message

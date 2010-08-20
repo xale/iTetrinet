@@ -191,7 +191,8 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 - (void)keyDown:(NSEvent*)keyEvent
 {
 #ifdef _ITETRINET_DEBUG
-	NSLog(@"DEBUG: iTetKeyView -keyDown:<%@>", keyEvent);
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableKeyViewLogging"])
+		NSLog(@"DEBUG: iTetKeyView -keyDown:<%@>", keyEvent);
 #endif
 	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:keyEvent]];
 }
@@ -199,7 +200,8 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 - (void)flagsChanged:(NSEvent*)modifierEvent
 {
 #ifdef _ITETRINET_DEBUG
-	NSLog(@"DEBUG: iTetKeyView -flagsChanged:<%@>", modifierEvent);
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"enableKeyViewLogging"])
+		NSLog(@"DEBUG: iTetKeyView -flagsChanged:<%@>", modifierEvent);
 #endif
 	[self keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:modifierEvent]];
 }
