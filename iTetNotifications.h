@@ -19,6 +19,8 @@ extern NSString* const iTetPlayerTeamChangeEventNotificationName;
 
 #pragma mark Game Events
 extern NSString* const iTetGameStartedEventNotificationName;
+extern NSString* const iTetGamePausedEventNotificationName;
+extern NSString* const iTetGameResumedEventNotificationName;
 extern NSString* const iTetGameEndedEventNotificationName;
 extern NSString* const iTetGamePlayerLostEventNotification;
 extern NSString* const iTetGamePlayerWonEventNotification;

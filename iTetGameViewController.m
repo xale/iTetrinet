@@ -696,12 +696,21 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if ([self gameplayState] == gamePaused)
 		return;
 	
-	// Set the game state to "paused"
-	[self setGameplayState:gamePaused];
-	
 	// If the local player is still in the game, pause the current block timer
 	if ([LOCALPLAYER isPlaying])
 		[self pauseBlockTimer];
+	
+	// Set the game state to "paused"
+	[self setGameplayState:gamePaused];
+	
+	// Post a notification
+	if (![self offlineGame])
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePausedEventNotificationName
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
+	}
 }
 
 - (void)resumeGame
@@ -709,9 +718,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// If the game is not paused, do nothing
 	if ([self gameplayState] != gamePaused)
 		return;
-	
-	// Set the game state to "playing"
-	[self setGameplayState:gamePlaying];
 	
 	// If the local player is in the game, resume the block timer, and give the field first responder status
 	if ([LOCALPLAYER isPlaying])
@@ -723,6 +729,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		
 		// Give the local player's field first responder status
 		[[windowController window] makeFirstResponder:localFieldView];
+	}
+	
+	// Set the game state to "playing"
+	[self setGameplayState:gamePlaying];
+	
+	// Post a notification
+	if (![self offlineGame])
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameResumedEventNotificationName
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
 	}
 }
 
