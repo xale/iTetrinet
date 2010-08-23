@@ -28,7 +28,7 @@
 - (void)addLines:(NSInteger)lines;
 - (void)resetLinesCleared;
 - (void)addSpecialToQueue:(iTetSpecial*)special;
-- (iTetSpecial*)dequeueNextSpecial;
+- (void)dequeueNextSpecial;
 
 @property (readwrite, retain) iTetBlock* currentBlock;
 @property (readwrite, retain) iTetBlock* nextBlock;

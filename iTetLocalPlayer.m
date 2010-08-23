@@ -86,21 +86,14 @@
 	[self didChangeValueForKey:@"specialsQueue"];
 }
 
-- (iTetSpecial*)dequeueNextSpecial
+- (void)dequeueNextSpecial
 {
-	// Treat the end of the array as the "front" of the queue
-	// Get the next special from the queue
-	iTetSpecial* special = [[self specialsQueue] lastObject];
-	
 	[self willChangeValueForKey:@"specialsQueue"];
 	
-	// Remove the special from the queue
+	// Remove the special from the queue, treating the end of the array as the "front" of the queue
 	[[self specialsQueue] removeLastObject];
 	
 	[self didChangeValueForKey:@"specialsQueue"];
-	
-	// Return the special
-	return special;
 }
 
 - (void)setSpecialsQueue:(NSMutableArray*)specials

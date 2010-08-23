@@ -1253,8 +1253,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// If we have a target and a special to send, send the special
 	if ((targetPlayer != nil) && [targetPlayer isPlaying] && ([[LOCALPLAYER specialsQueue] count] > 0))
 	{
-		[self sendSpecial:[LOCALPLAYER dequeueNextSpecial]
+		[self sendSpecial:[LOCALPLAYER nextSpecial]
 				 toPlayer:targetPlayer];
+		[LOCALPLAYER dequeueNextSpecial];
+
 	}
 }
 
