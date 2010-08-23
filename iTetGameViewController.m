@@ -679,6 +679,15 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
+	
+	// Post a notification
+	if (![self offlineGame])
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameStartedEventNotificationName
+															object:self
+														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
+																							   forKey:iTetNotificationPlayerNicknameKey]];
+	}
 }
 
 - (void)pauseGame
@@ -717,32 +726,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 }
 
-#define ITET_END_GAME_NOTIFICATION_DELAY	0.5
+#define ITET_END_GAME_NOTIFICATION_DELAY	0.3
 
 - (void)endGame
 {
 	// Set the game state to "not playing"
 	[self setGameplayState:gameNotPlaying];
-	
-	// Set all players to "not playing"
-	for (iTetPlayer* player in [playersController playerList])
-		[player setPlaying:NO];
-	
-	// Invalidate the block timer
-	[blockTimer invalidate];
-	blockTimer = nil;
-	
-	// Clear the falling block
-	[LOCALPLAYER setCurrentBlock:nil];
-	
-	// If we have been playing a local game, remove the local player
-	if ([self offlineGame])
-		[playersController setLocalPlayer:nil];
-	
-	// Clear the game rules
-	[self setCurrentGameRules:nil];
-	[blockGenerator release];
-	blockGenerator = nil;
 	
 	// If this is not an offline game, post a notification
 	if (![self offlineGame])
@@ -766,6 +755,26 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 					   afterDelay:ITET_END_GAME_NOTIFICATION_DELAY];
 		}
 	}
+	
+	// Set all players to "not playing"
+	for (iTetPlayer* player in [playersController playerList])
+		[player setPlaying:NO];
+	
+	// Invalidate the block timer
+	[blockTimer invalidate];
+	blockTimer = nil;
+	
+	// Clear the falling block
+	[LOCALPLAYER setCurrentBlock:nil];
+	
+	// If we have been playing a local game, remove the local player
+	if ([self offlineGame])
+		[playersController setLocalPlayer:nil];
+	
+	// Clear the game rules
+	[self setCurrentGameRules:nil];
+	[blockGenerator release];
+	blockGenerator = nil;
 }
 
 - (void)endOfGameNotificationDelayTimeout

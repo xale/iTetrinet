@@ -15,8 +15,4 @@
 
 + (iTetGrowlController*)sharedGrowlController;
 
-- (void)postGrowlNotificationWithTitle:(NSString*)title
-						   description:(NSString*)description
-					  notificationName:(NSString*)name;
-
 @end
