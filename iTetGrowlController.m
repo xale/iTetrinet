@@ -34,9 +34,9 @@ static iTetGrowlController* sharedController = nil;
 + (void)initialize
 {
 	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
-	[defaults setBool:YES
+	[defaults setBool:[GrowlApplicationBridge isGrowlInstalled]
 			   forKey:iTetEnableGrowlNotificationsPrefKey];
-	[defaults setBool:NO
+	[defaults setBool:YES
 			   forKey:iTetGrowlBackgroundOnlyPrefKey];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
