@@ -22,12 +22,11 @@ extern NSString* const iTetGameStartedEventNotificationName;
 extern NSString* const iTetGamePausedEventNotificationName;
 extern NSString* const iTetGameResumedEventNotificationName;
 extern NSString* const iTetGameEndedEventNotificationName;
-extern NSString* const iTetGamePlayerLostEventNotification;
-extern NSString* const iTetGamePlayerWonEventNotification;
+extern NSString* const iTetGamePlayerLostEventNotificationName;
+extern NSString* const iTetGamePlayerWonEventNotificationName;
 
 #pragma mark -
 #pragma mark userInfo Dictionary Keys
-extern NSString* const iTetNotificationPlayerNicknameKey;
-extern NSString* const iTetNotificationIsLocalPlayerKey;
+extern NSString* const iTetNotificationPlayerKey;
 extern NSString* const iTetNotificationOldTeamNameKey;
 extern NSString* const iTetNotificationNewTeamNameKey;

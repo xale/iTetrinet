@@ -685,8 +685,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameStartedEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:[playersController operatorPlayer]
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 }
 
@@ -708,8 +708,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePausedEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:[playersController operatorPlayer]
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 }
 
@@ -739,8 +739,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameResumedEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:[playersController operatorPlayer]
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 }
 
@@ -759,10 +759,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		if (winner != nil)
 		{
 			// Post a notification
-			[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotification
+			[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotificationName
 																object:self
-															  userInfo:[NSDictionary dictionaryWithObject:[winner nickname]
-																								   forKey:iTetNotificationPlayerNicknameKey]];
+															  userInfo:[NSDictionary dictionaryWithObject:winner
+																								   forKey:iTetNotificationPlayerKey]];
 		}
 		else
 		{
@@ -802,18 +802,18 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	if (winner != nil)
 	{
 		// Post a notification
-		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotification
+		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerWonEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[winner nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:winner
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 	else
 	{
 		// No winning player; assume that the game has been forcibly ended by the operator player
 		[[NSNotificationCenter defaultCenter] postNotificationName:iTetGameEndedEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[[playersController operatorPlayer] nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:[playersController operatorPlayer]
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 }
 

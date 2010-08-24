@@ -191,29 +191,41 @@
 {
 	// Determine the type of event, and append the appropriate status message to the chat view
 	NSString* eventType = [notification name];
-	NSString* nickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	iTetPlayer* player = [[notification userInfo] objectForKey:iTetNotificationPlayerKey];
 	if ([eventType isEqualToString:iTetPlayerJoinedEventNotificationName])
 	{
 		// Player joined
-		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, nickname]];
+		// Ignore notifications about the local player
+		if ([player isLocalPlayer])
+			return;
+		
+		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedEventStatusMessageFormat, [player nickname]]];
 	}
 	else if ([eventType isEqualToString:iTetPlayerLeftEventNotificationName])
 	{
 		// Player left
-		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, nickname]];
+		// Ignore notifications about the local player
+		if ([player isLocalPlayer])
+			return;
+		
+		[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftEventStatusMessageFormat, [player nickname]]];
 	}
 	else if ([eventType isEqualToString:iTetPlayerKickedEventNotificationName])
 	{
 		// Player left
 		// Determine if the local player is being kicked
-		if ([[notification userInfo] boolForKey:iTetNotificationIsLocalPlayerKey])
+		if ([player isLocalPlayer])
 			[self appendStatusMessage:iTetLocalPlayerKickedStatusMessage];
 		else
-			[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerKickedStatusMessageFormat, nickname]];
+			[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerKickedStatusMessageFormat, [player nickname]]];
 	}
 	else if ([eventType isEqualToString:iTetPlayerTeamChangeEventNotificationName])
 	{
 		// Player team-change
+		// If this is a notification about the local player, (which shouldn't happen, but some servers might be strange) ignore it
+		if ([player isLocalPlayer])
+			return;
+		
 		// Get the new and old team names
 		NSString* oldTeamName = [[notification userInfo] objectForKey:iTetNotificationOldTeamNameKey];
 		NSString* newTeamName = [[notification userInfo] objectForKey:iTetNotificationNewTeamNameKey];
@@ -222,14 +234,14 @@
 		if ([oldTeamName length] > 0)
 		{
 			if ([newTeamName length] > 0)
-				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerSwitchedTeamEventStatusMessageFormat, nickname, newTeamName]];
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerSwitchedTeamEventStatusMessageFormat, [player nickname], newTeamName]];
 			else
-				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, nickname, oldTeamName]];
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerLeftTeamEventStatusMessageFormat, [player nickname], oldTeamName]];
 		}
 		else
 		{
 			if ([newTeamName length] > 0)
-				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, nickname, newTeamName]];
+				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, [player nickname], newTeamName]];
 		}
 	}
 }

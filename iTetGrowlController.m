@@ -10,6 +10,8 @@
 
 #import "iTetGrowlController.h"
 
+#import "iTetPlayer.h"
+
 #import "iTetNotifications.h"
 #import "iTetUserDefaults.h"
 
@@ -88,16 +90,22 @@ static iTetGrowlController* sharedController = nil;
 			   name:iTetGameResumedEventNotificationName
 			 object:nil];
 	
-	// Game ended
+	// Player eliminated (lost)
 	[nc addObserver:self
 		   selector:@selector(gameEventNotification:)
-			   name:iTetGameEndedEventNotificationName
+			   name:iTetGamePlayerLostEventNotificationName
 			 object:nil];
 	
 	// Player won
 	[nc addObserver:self
 		   selector:@selector(gameEventNotification:)
-			   name:iTetGamePlayerWonEventNotification
+			   name:iTetGamePlayerWonEventNotificationName
+			 object:nil];
+	
+	// Game ended
+	[nc addObserver:self
+		   selector:@selector(gameEventNotification:)
+			   name:iTetGameEndedEventNotificationName
 			 object:nil];
 	
 	return self;
@@ -185,6 +193,7 @@ NSString* const iTetPlayerKickedGrowlNotificationName =			@"com.indiepennant.iTe
 NSString* const iTetPlayerTeamChangedGrowlNotificationName =	@"com.indiepennant.iTetrinet.playerTeamChangedGrowlNotification";
 NSString* const iTetGameStartedGrowlNotificationName =			@"com.indiepennant.iTetrinet.gameStartedGrowlNotification";
 NSString* const iTetGamePausedResumedGrowlNotificationName =	@"com.indiepennant.iTetrinet.gamePauseResumeGrowlNotification";
+NSString* const iTetGamePlayerLostGrowlNotificationName =		@"com.indiepennant.iTetrinet.gamePlayerLostGrowlNotification";
 NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetrinet.gameEndedGrowlNotification";
 // FIXME: WRITEME: more notification types
 
@@ -197,6 +206,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 			iTetPlayerTeamChangedGrowlNotificationName,
 			iTetGameStartedGrowlNotificationName,
 			iTetGamePausedResumedGrowlNotificationName,
+			iTetGamePlayerLostGrowlNotificationName,
 			iTetGameEndedGrowlNotificationName,
 			nil];
 }
@@ -207,6 +217,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 #define iTetPlayerTeamChangedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
 #define iTetGameStartedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Game Started", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game starts")
 #define iTetGamePausedResumedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Game Paused/Resumed", @"GrowlController", @"Name used in Growl System Preferences pane for the notifications displayed when a game is paused or resumed")
+#define iTetGamePlayerLostGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Lost", @"GrowlController", "Name used in Growl System Preferences pan for the notification displayed when a player is eliminated from (loses) a game")
 #define iTetGameEndedGrowlNotificationHumanReadableName			NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game ends")
 // FIXME: WRITEME: more notification types
 
@@ -219,6 +230,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 			iTetPlayerTeamChangedGrowlNotificationHumanReadableName, iTetPlayerTeamChangedGrowlNotificationName,
 			iTetGameStartedGrowlNotificationHumanReadableName, iTetGameStartedGrowlNotificationName,
 			iTetGamePausedResumedGrowlNotificationHumanReadableName, iTetGamePausedResumedGrowlNotificationName,
+			iTetGamePlayerLostGrowlNotificationHumanReadableName, iTetGamePlayerLostGrowlNotificationName,
 			iTetGameEndedGrowlNotificationHumanReadableName, iTetGameEndedGrowlNotificationName,
 			nil];
 }
@@ -229,6 +241,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 #define iTetPlayerTeamChangedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a player in your channel changes teams", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
 #define iTetGameStartedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a game starts", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game started' notification will be displayed")
 #define iTetGamePausedResumedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a game is paused or resumed", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game paused' and 'game resumed' notifications will be displayed")
+#define iTetGamePlayerLostGrowlNotificationPreferencesDescription		NSLocalizedStringFromTable(@"When a player is eliminated from a game", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player lost' notification will be displayed")
 #define iTetGameEndedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a game ends", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game ended' notification will be displayed")
 // FIXME: WRITEME: more notification types
 
@@ -241,6 +254,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 			iTetPlayerTeamChangedGrowlNotificationPreferencesDescription, iTetPlayerTeamChangedGrowlNotificationName,
 			iTetGameStartedGrowlNotificationPreferencesDescription, iTetGameStartedGrowlNotificationName,
 			iTetGamePausedResumedGrowlNotificationPreferencesDescription, iTetGamePausedResumedGrowlNotificationName,
+			iTetGamePlayerLostGrowlNotificationPreferencesDescription, iTetGamePlayerLostGrowlNotificationName,
 			iTetGameEndedGrowlNotificationPreferencesDescription, iTetGameEndedGrowlNotificationName,
 			nil];
 }
@@ -273,26 +287,34 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 {
 	// Determine the type of event, and post an appropriate Growl notification
 	NSString* eventType = [notification name];
-	NSString* nickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	iTetPlayer* player = [[notification userInfo] objectForKey:iTetNotificationPlayerKey];
 	if ([eventType isEqualToString:iTetPlayerJoinedEventNotificationName])
 	{
 		// Player joined
+		// Ignore notifications about the local player
+		if ([player isLocalPlayer])
+			return;
+		
 		[self postGrowlNotificationWithTitle:iTetPlayerJoinedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetPlayerJoinedGrowlNotificationMessageFormat, nickname]
+								 description:[NSString stringWithFormat:iTetPlayerJoinedGrowlNotificationMessageFormat, [player nickname]]
 							notificationName:iTetPlayerJoinedGrowlNotificationName];
 	}
 	else if ([eventType isEqualToString:iTetPlayerLeftEventNotificationName])
 	{
 		// Player left
+		// Ignore notifications about the local player
+		if ([player isLocalPlayer])
+			return;
+		
 		[self postGrowlNotificationWithTitle:iTetPlayerLeftGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetPlayerLeftGrowlNotificationMessageFormat, nickname]
+								 description:[NSString stringWithFormat:iTetPlayerLeftGrowlNotificationMessageFormat, [player nickname]]
 							notificationName:iTetPlayerLeftGrowlNotificationName];
 	}
 	else if ([eventType isEqualToString:iTetPlayerKickedEventNotificationName])
 	{
 		// Player kicked
 		// Determine if the local player is being kicked
-		if ([[notification userInfo] boolForKey:iTetNotificationIsLocalPlayerKey])
+		if ([player isLocalPlayer])
 		{
 			[self postGrowlNotificationWithTitle:iTetLocalPlayerKickedGrowlNotificationTitle
 									 description:iTetLocalPlayerKickedGrowlNotificationMessage
@@ -301,96 +323,154 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 		else
 		{
 			[self postGrowlNotificationWithTitle:iTetPlayerKickedGrowlNotificationTitle
-									 description:[NSString stringWithFormat:iTetPlayerKickedGrowlNotificationMessageFormat, nickname]
+									 description:[NSString stringWithFormat:iTetPlayerKickedGrowlNotificationMessageFormat, [player nickname]]
 								notificationName:iTetPlayerKickedGrowlNotificationName];
 		}
 	}
 	else if ([eventType isEqualToString:iTetPlayerTeamChangeEventNotificationName])
 	{
 		// Player team-change
+		// Ignore notifications about the local player
+		if ([player isLocalPlayer])
+			return;
+		
 		// Get the new and old team names
 		NSString* oldTeamName = [[notification userInfo] objectForKey:iTetNotificationOldTeamNameKey];
 		NSString* newTeamName = [[notification userInfo] objectForKey:iTetNotificationNewTeamNameKey];
 		
 		// Check if the player is joining a team, switching teams, or leaving a team
+		NSString* description = nil;
 		if ([oldTeamName length] > 0)
 		{
 			if ([newTeamName length] > 0)
-			{
-				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
-										 description:[NSString stringWithFormat:iTetPlayerSwitchedTeamGrowlNotificationMessageFormat, nickname, newTeamName]
-									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
-			}
+				description = [NSString stringWithFormat:iTetPlayerSwitchedTeamGrowlNotificationMessageFormat, [player nickname], newTeamName];
 			else
-			{
-				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
-										 description:[NSString stringWithFormat:iTetPlayerLeftTeamGrowlNotificationMessageFormat, nickname, oldTeamName]
-									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
-			}
+				description = [NSString stringWithFormat:iTetPlayerLeftTeamGrowlNotificationMessageFormat, [player nickname], oldTeamName];
 		}
 		else
 		{
 			if ([newTeamName length] > 0)
-			{
-				[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
-										 description:[NSString stringWithFormat:iTetPlayerJoinedTeamGrowlNotificationMessageFormat, nickname, newTeamName]
-									notificationName:iTetPlayerTeamChangedGrowlNotificationName];
-			}
+				description = [NSString stringWithFormat:iTetPlayerJoinedTeamGrowlNotificationMessageFormat, [player nickname], newTeamName];
+		}
+		
+		if (description != nil)
+		{
+			[self postGrowlNotificationWithTitle:iTetPlayerTeamChangedGrowlNotificationTitle
+									 description:description
+								notificationName:iTetPlayerTeamChangedGrowlNotificationName];
 		}
 	}
 }
 
 #define iTetGameStartedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Started", @"GrowlController", @"Title (first line) of Growl notification displayed when a game begins")
-#define iTetGameStartedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ started a new game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the channel operator starts a game")
+#define iTetGameStartedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ started a new game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player starts a game")
+#define iTetGameStartedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"You started a new game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player starts a game")
 
 #define iTetGamePausedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Paused", @"GrowlController", @"Title (first line) of Growl notification displayed when a game is paused")
-#define iTetGamePausedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ paused the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the channel operator pauses the game in progress")
+#define iTetGamePausedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ paused the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player pauses the game in progress")
+#define iTetGamePausedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"You paused the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player pauses the game in progress")
 
 #define iTetGameResumedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Resumed", @"GrowlController", @"Title (first line) of Growl notification displayed when a paused game is resumed")
-#define iTetGameResumedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ resumed the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the channel operator resumes a paused game")
+#define iTetGameResumedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ resumed the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player resumes a paused game")
+#define iTetGameResumedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"You resumed the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player resumes a paused game")
+
+#define iTetGamePlayerLostGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Eliminated", @"GrowlController", @"Title (first line) of Growl notification displayed when another player is eliminated from (loses) the game in progress")
+#define iTetGamePlayerLostGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has been eliminated from the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player is eliminated from (loses) the game in progress")
+#define iTetGameLocalPlayerLostGrowlNotificationTitle		NSLocalizedStringFromTable(@"Eliminated", @"GrowlController", @"Title (first line) of Growl notification displayed when the local player is eliminated from (loses) the game in progress")
+#define iTetGameLocalPlayerLostGrowlNotificationMessage		NSLocalizedStringFromTable(@"You have been eliminated from the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player is eliminated from (loses) the game in progress")
 
 #define iTetGameEndedGrowlNotificationTitle				NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Title (first line) of Growl notification displayed when a game ends")
 #define iTetGameEndedGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the operator ends the current game in progress")
+#define iTetGameEndedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"You stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player ends the current game in progress")
 #define iTetGamePlayerWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning player")
+#define iTetGameLocalPlayerWonGrowlNotificationMessage	NSLocalizedStringFromTable(@"You have won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with the local player as the winner")
 
 - (void)gameEventNotification:(NSNotification*)notification
 {
 	// Determine the type of event, and post an appropriate Growl notification
 	NSString* eventType = [notification name];
-	NSString* playerNickname = [[notification userInfo] objectForKey:iTetNotificationPlayerNicknameKey];
+	iTetPlayer* player = [[notification userInfo] objectForKey:iTetNotificationPlayerKey];
+	NSString* description = nil;
 	if ([eventType isEqualToString:iTetGameStartedEventNotificationName])
 	{
 		// Game started
+		// Check if the local player started the game
+		if ([player isLocalPlayer])
+			description = iTetGameStartedLocalGrowlNotificationMessage;
+		else
+			description = [NSString stringWithFormat:iTetGameStartedGrowlNotificationMessageFormat, [player nickname]];
+		
 		[self postGrowlNotificationWithTitle:iTetGameStartedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetGameStartedGrowlNotificationMessageFormat, playerNickname]
+								 description:description
 							notificationName:iTetGameStartedGrowlNotificationName];
 	}
 	else if ([eventType isEqualToString:iTetGamePausedEventNotificationName])
 	{
-		// Game ended (stopped by operator, as opposed to a win by elimination of other players)
+		// Game paused
+		// Check if the local player paused the game
+		if ([player isLocalPlayer])
+			description = iTetGamePausedLocalGrowlNotificationMessage;
+		else
+			description = [NSString stringWithFormat:iTetGamePausedGrowlNotificationMessageFormat, [player nickname]];
+		
 		[self postGrowlNotificationWithTitle:iTetGamePausedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetGamePausedGrowlNotificationMessageFormat, playerNickname]
+								 description:description
 							notificationName:iTetGamePausedResumedGrowlNotificationName];
 	}
 	else if ([eventType isEqualToString:iTetGameResumedEventNotificationName])
 	{
-		// Game ended (stopped by operator, as opposed to a win by elimination of other players)
+		// Game resumed
+		// Check if the local player resumed the game
+		if ([player isLocalPlayer])
+			description = iTetGameResumedLocalGrowlNotificationMessage;
+		else
+			description = [NSString stringWithFormat:iTetGameResumedGrowlNotificationMessageFormat, [player nickname]];
+		
 		[self postGrowlNotificationWithTitle:iTetGameResumedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetGameResumedGrowlNotificationMessageFormat, playerNickname]
+								 description:description
 							notificationName:iTetGamePausedResumedGrowlNotificationName];
+	}
+	else if ([eventType isEqualToString:iTetGamePlayerLostEventNotificationName])
+	{
+		// Player eliminated from (lost) game
+		// Check if the losing player is the local player
+		if ([player isLocalPlayer])
+		{
+			[self postGrowlNotificationWithTitle:iTetGameLocalPlayerLostGrowlNotificationTitle
+									 description:iTetGameLocalPlayerLostGrowlNotificationMessage
+								notificationName:iTetGamePlayerLostGrowlNotificationName];
+		}
+		else
+		{
+			[self postGrowlNotificationWithTitle:iTetGamePlayerLostGrowlNotificationTitle
+									 description:[NSString stringWithFormat:iTetGamePlayerLostGrowlNotificationMessageFormat, [player nickname]]
+								notificationName:iTetGamePlayerLostGrowlNotificationName];
+		}
 	}
 	else if ([eventType isEqualToString:iTetGameEndedEventNotificationName])
 	{
 		// Game ended (stopped by operator, as opposed to a win by elimination of other players)
+		// Check if the operator is the local player
+		if ([player isLocalPlayer])
+			description = iTetGameEndedLocalGrowlNotificationMessage;
+		else
+			description = [NSString stringWithFormat:iTetGameEndedGrowlNotificationMessageFormat, [player nickname]];
+		
 		[self postGrowlNotificationWithTitle:iTetGameEndedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetGameEndedGrowlNotificationMessageFormat, playerNickname]
+								 description:description
 							notificationName:iTetGameEndedGrowlNotificationName];
 	}
-	else if ([eventType isEqualToString:iTetGamePlayerWonEventNotification])
+	else if ([eventType isEqualToString:iTetGamePlayerWonEventNotificationName])
 	{
 		// Game ended, with winning player
+		// Determine if the local player is the winner
+		if ([player isLocalPlayer])
+			description = iTetGameLocalPlayerWonGrowlNotificationMessage;
+		else
+			description = [NSString stringWithFormat:iTetGamePlayerWonGrowlNotificationMessageFormat, [player nickname]];
+		
 		[self postGrowlNotificationWithTitle:iTetGameEndedGrowlNotificationTitle
-								 description:[NSString stringWithFormat:iTetGamePlayerWonGrowlNotificationMessageFormat, playerNickname]
+								 description:description
 							notificationName:iTetGameEndedGrowlNotificationName];
 	}
 }

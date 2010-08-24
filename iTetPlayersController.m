@@ -199,8 +199,8 @@
 	// Post a notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerJoinedEventNotificationName
 														object:self
-													  userInfo:[NSDictionary dictionaryWithObject:nick
-																						   forKey:iTetNotificationPlayerNicknameKey]];
+													  userInfo:[NSDictionary dictionaryWithObject:[self playerNumber:number]
+																						   forKey:iTetNotificationPlayerKey]];
 }
 
 - (void)setTeamName:(NSString*)teamName
@@ -214,7 +214,7 @@
 	
 	// Post a notification of the team change
 	NSDictionary* infoDict = [NSDictionary dictionaryWithObjectsAndKeys:
-							  [player nickname], iTetNotificationPlayerNicknameKey,
+							  player, iTetNotificationPlayerKey,
 							  [player teamName], iTetNotificationOldTeamNameKey,
 							  teamName, iTetNotificationNewTeamNameKey,
 							  nil];
@@ -246,7 +246,14 @@
 	iTetCheckPlayerNumber(number);
 	
 	// Change the player's "playing" status
-	[[self playerNumber:number] setPlaying:NO];
+	iTetPlayer* player = [self playerNumber:number];
+	[player setPlaying:NO];
+	
+	// Post a notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:iTetGamePlayerLostEventNotificationName
+														object:self
+													  userInfo:[NSDictionary dictionaryWithObject:player
+																						   forKey:iTetNotificationPlayerKey]];
 }
 
 - (void)setGameStartedForAllRemotePlayers
@@ -273,13 +280,10 @@
 	[player setKicked:YES];
 	
 	// Post a notification
-	NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys:
-						  [player nickname], iTetNotificationPlayerNicknameKey,
-						  [NSNumber numberWithBool:[player isLocalPlayer]], iTetNotificationIsLocalPlayerKey,
-						  nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerKickedEventNotificationName
 														object:self
-													  userInfo:info];
+													  userInfo:[NSDictionary dictionaryWithObject:player
+																						   forKey:iTetNotificationPlayerKey]];
 }
 
 - (void)removePlayerNumber:(NSInteger)playerNumber
@@ -296,8 +300,8 @@
 	{
 		[[NSNotificationCenter defaultCenter] postNotificationName:iTetPlayerLeftEventNotificationName
 															object:self
-														  userInfo:[NSDictionary dictionaryWithObject:[[self playerNumber:playerNumber] nickname]
-																							   forKey:iTetNotificationPlayerNicknameKey]];
+														  userInfo:[NSDictionary dictionaryWithObject:player
+																							   forKey:iTetNotificationPlayerKey]];
 	}
 	
 	[self willChangeValueForKey:@"playerList"];

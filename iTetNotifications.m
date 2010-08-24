@@ -19,11 +19,10 @@ NSString* const iTetGameStartedEventNotificationName =		@"com.indiepennant.iTetr
 NSString* const iTetGamePausedEventNotificationName =		@"com.indiepennant.iTetrinet.gamePausedEventNotification";
 NSString* const iTetGameResumedEventNotificationName =		@"com.indiepennant.iTetrinet.gameResumedEventNotification";
 NSString* const iTetGameEndedEventNotificationName =		@"com.indiepennant.iTetrinet.gameEndedEventNotification";
-NSString* const iTetGamePlayerLostEventNotification =		@"com.indiepennant.iTetrinet.gamePlayerLostEventNotification";
-NSString* const iTetGamePlayerWonEventNotification =		@"com.indiepennant.iTetrinet.gamePlayerWonEventNotification";
+NSString* const iTetGamePlayerLostEventNotificationName =		@"com.indiepennant.iTetrinet.gamePlayerLostEventNotification";
+NSString* const iTetGamePlayerWonEventNotificationName =		@"com.indiepennant.iTetrinet.gamePlayerWonEventNotification";
 
 #pragma mark userInfo Dictionary Keys
-NSString* const iTetNotificationPlayerNicknameKey =	@"iTetPlayerName";
-NSString* const iTetNotificationIsLocalPlayerKey =	@"iTetIsLocalPlayer";
-NSString* const iTetNotificationOldTeamNameKey =	@"iTetOldTeamName";
-NSString* const iTetNotificationNewTeamNameKey =	@"iTetNewTeamName";
+NSString* const iTetNotificationPlayerKey =			@"iTetNotificationPlayer";
+NSString* const iTetNotificationOldTeamNameKey =	@"iTetNotificationOldTeamName";
+NSString* const iTetNotificationNewTeamNameKey =	@"iTetNotificationNewTeamName";
