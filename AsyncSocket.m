@@ -56,7 +56,7 @@ enum AsyncSocketFlags
 - (BOOL) createStreamsToHost:(NSString *)hostname onPort:(UInt16)port error:(NSError **)errPtr;
 - (NSData *) sockaddrFromString:(NSString *)addrStr port:(UInt16)port error:(NSError **)errPtr;
 - (BOOL) setSocketFromStreamsAndReturnError:(NSError **)errPtr;
-- (CFSocketRef) createAcceptSocketForAddress:(NSData *)addr error:(NSError **)errPtr;
+- (CFSocketRef) newAcceptSocketForAddress:(NSData *)addr error:(NSError **)errPtr;
 - (void) attachAcceptSockets;
 - (BOOL) attachStreamsToRunLoop:(NSRunLoop *)runLoop error:(NSError **)errPtr;
 - (BOOL) configureStreamsAndReturnError:(NSError **)errPtr;
@@ -365,13 +365,13 @@ static void MyCFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType 
 
 	if (address)
 	{
-		theSocket = [self createAcceptSocketForAddress:address error:errPtr];
+		theSocket = [self newAcceptSocketForAddress:address error:errPtr];
 		if (theSocket == NULL) goto Failed;
 	}
 	
 	if (address6)
 	{
-		theSocket6 = [self createAcceptSocketForAddress:address6 error:errPtr];
+		theSocket6 = [self newAcceptSocketForAddress:address6 error:errPtr];
 		if (theSocket6 == NULL) goto Failed;
 	}
 	
@@ -486,7 +486,7 @@ Failed:;
 }
 
 // Creates the accept sockets. Returns true if either IPv4 or IPv6 is created. If either is missing, an error is returned (even though the method may return true).
-- (CFSocketRef) createAcceptSocketForAddress:(NSData *)addr error:(NSError **)errPtr
+- (CFSocketRef) newAcceptSocketForAddress:(NSData *)addr error:(NSError **)errPtr
 {
 	struct sockaddr *pSockAddr = (struct sockaddr *)[addr bytes];
 	int addressFamily = pSockAddr->sa_family;
