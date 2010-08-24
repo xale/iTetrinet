@@ -43,11 +43,10 @@
 				   nickname:(NSString*)nick;
 - (void)setTeamName:(NSString*)teamName
 	forPlayerNumber:(NSInteger)playerNumber;
-- (void)setPlayerIsPlaying:(BOOL)playing
-		   forPlayerNumber:(NSInteger)playerNumber;
 - (void)setLevel:(NSInteger)level
  forPlayerNumber:(NSInteger)playerNumber;
-- (void)setAllRemotePlayersToPlaying;
+- (void)setGameStartedForAllRemotePlayers;
+- (void)setGameLostForPlayerNumber:(NSInteger)playerNumber;
 - (void)kickPlayerNumber:(NSInteger)playerNumber;
 - (void)removePlayerNumber:(NSInteger)playerNumber;
 - (void)removeAllPlayers;

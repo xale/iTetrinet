@@ -231,15 +231,6 @@
 	[self didChangeValueForKey:@"playerList"];
 }
 
-- (void)setPlayerIsPlaying:(BOOL)playing
-		   forPlayerNumber:(NSInteger)number
-{
-	// Sanity check
-	iTetCheckPlayerNumber(number);
-	
-	[[self playerNumber:number] setPlaying:playing];
-}
-
 - (void)setLevel:(NSInteger)level
  forPlayerNumber:(NSInteger)number
 {
@@ -249,7 +240,16 @@
 	[[self playerNumber:number] setLevel:level];
 }
 
-- (void)setAllRemotePlayersToPlaying
+- (void)setGameLostForPlayerNumber:(NSInteger)number
+{
+	// Sanity check
+	iTetCheckPlayerNumber(number);
+	
+	// Change the player's "playing" status
+	[[self playerNumber:number] setPlaying:NO];
+}
+
+- (void)setGameStartedForAllRemotePlayers
 {
 	// Iterate through all objects in the player list
 	for (id player in players)

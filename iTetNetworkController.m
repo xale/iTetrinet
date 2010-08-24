@@ -665,7 +665,7 @@ willDisconnectWithError:(NSError*)error
 		case inGameMessage:
 		{
 			// Set all players except the local player to "playing"
-			[playersController setAllRemotePlayersToPlaying];
+			[playersController setGameStartedForAllRemotePlayers];
 			
 			// Clear the last designated winning player
 			[playersController setLastWinningPlayer:nil];
@@ -753,8 +753,7 @@ willDisconnectWithError:(NSError*)error
 		case playerLostMessage:
 		{
 			// Set the player to "not playing"
-			[playersController setPlayerIsPlaying:NO
-								  forPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
+			[playersController setGameLostForPlayerNumber:[[message contents] integerForKey:iTetMessagePlayerNumberKey]];
 			
 			break;
 		}
