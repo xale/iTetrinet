@@ -1041,6 +1041,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Give the player a randomly-filled field
 	[LOCALPLAYER setField:[iTetField fieldWithRandomContents]];
+	[self sendFieldUpdate];
 	
 	// Clear the player's specials queue
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray array]];
@@ -1052,12 +1053,11 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	[blockTimer invalidate];
 	blockTimer = nil;
 	
-	// Send a "player lost" message to the server, along with the "death field"
+	// Send a "player lost" message to the server
 	iTetMessage* message = [iTetMessage messageWithMessageType:playerLostMessage];
 	[[message contents] setInteger:[LOCALPLAYER playerNumber]
 							forKey:iTetMessagePlayerNumberKey];
 	[networkController sendMessage:message];
-	[self sendFieldUpdate];
 }
 
 #pragma mark iTetLocalFieldView Event Delegate Methods
