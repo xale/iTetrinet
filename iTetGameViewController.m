@@ -1332,7 +1332,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		[self sendSpecial:[LOCALPLAYER nextSpecial]
 				 toPlayer:targetPlayer];
 		[LOCALPLAYER dequeueNextSpecial];
-
 	}
 }
 
