@@ -1265,7 +1265,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		   textView:(NSTextView *)textView
 doCommandBySelector:(SEL)command
 {
-	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
+	// If this is a 'tab' or 'backtab' (shift-tab) keypress, do nothing, instead of changing the first responder
 	if ([control isEqual:messageField] && ((command == @selector(insertTab:)) || (command == @selector(insertBacktab:))))
 		return YES;
 	
@@ -1423,9 +1423,10 @@ doCommandBySelector:(SEL)command
 #define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
 #define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
 
-NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{special}";
-NSString* const iTetTargetNameFormatSpecifier =			@"%{target}";
-NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
+// These format specifiers are used as placeholders for the attributed-string descriptions of the specials and players; they must contain whitespace, to ensure that they cannot ever collide with a player's name
+NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{ special }";
+NSString* const iTetTargetNameFormatSpecifier =			@"%{ target }";
+NSString* const iTetSenderNameFormatSpecifier =			@"%{ sender }";
 
 - (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecial*)special
 									 usedOnPlayer:(iTetPlayer*)target
@@ -1508,7 +1509,8 @@ NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
 #define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"Triple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
 #define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"Quadruple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
 
-NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{lines}";
+// (See comment about format specifiers, above)
+NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 
 - (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
 								   sentToPlayer:(iTetPlayer*)target
