@@ -342,49 +342,68 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 	return NO;
 }
 
+#define iTetEscapeKeyPrintedName	NSLocalizedStringFromTable(@"Escape", @"Keyboard", @"The capitalized full name of the escape key")
+#define iTetSpacebarPrintedName		NSLocalizedStringFromTable(@"Space", @"Keyboard", @"The capitalized name of the spacebar")
+#define iTetTabKeyPrintedName		NSLocalizedStringFromTable(@"Tab", @"Keyboard", @"The capitalized name of the tab key")
+#define iTetReturnKeyPrintedName	NSLocalizedStringFromTable(@"Return", @"Keyboard", @"The capitalized full name of the return key")
+#define iTetEnterKeyPrintedName		NSLocalizedStringFromTable(@"Enter", @"Keyboard", @"The capitalized full name of the enter key")
+#define iTetDeleteKeyPrintedName	NSLocalizedStringFromTable(@"Delete", @"Keyboard", @"The capitalized full name of the delete key")
+
+#define iTetCapsLockKeyPrintedName	NSLocalizedStringFromTable(@"Caps Lock", @"Keyboard", @"The capitalized full name of the caps lock key")
+#define iTetShiftKeyPrintedName		NSLocalizedStringFromTable(@"Shift", @"Keyboard", @"The capitalized full name of the shift modifier key")
+#define iTetControlKeyPrintedName	NSLocalizedStringFromTable(@"Control", @"Keyboard", @"The capitalized full name of the control modifier key")
+#define iTetOptionKeyPrintedName	NSLocalizedStringFromTable(@"Option", @"Keyboard", @"The capitalized full name of the option modifier key")
+#define iTetCommandKeyPrintedName	NSLocalizedStringFromTable(@"Command", @"Keyboard", @"The capitalized full name of the command modifier key")
+
+#define iTetNumpadPrintedNameFormat	NSLocalizedStringFromTable(@"Numpad %@", @"Keyboard", @"Format for printed name of keys on the numeric keypad")
+
 - (NSString*)printedName
 {
 	NSString* name = nil;
 	
 	if ([[self keyName] isEqualToString:iTetEscapeKeyPlaceholderString])
 	{
-		name = @"Escape";
+		name = iTetEscapeKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetSpacebarPlaceholderString])
 	{
-		name = @"Space";
+		name = iTetSpacebarPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetTabKeyPlaceholderString])
 	{
-		name = @"Tab";
+		name = iTetTabKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetReturnKeyPlaceholderString])
 	{
-		name = @"Return";
+		name = iTetReturnKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetEnterKeyPlaceholderString])
 	{
-		name = @"Enter";
+		name = iTetEnterKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetDeleteKeyPlaceholderString])
 	{
-		name = @"Delete";
+		name = iTetDeleteKeyPrintedName;
+	}
+	else if ([[self keyName] isEqualToString:iTetCapsLockKeyPlaceholderString])
+	{
+		name = iTetCapsLockKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetShiftKeyPlaceholderString])
 	{
-		name = @"Shift";
+		name = iTetShiftKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetControlKeyPlaceholderString])
 	{
-		name = @"Control";
+		name = iTetControlKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetAltOptionKeyPlaceholderString])
 	{
-		name = @"Option";
+		name = iTetOptionKeyPrintedName;
 	}
 	else if ([[self keyName] isEqualToString:iTetCommandKeyPlaceholderString])
 	{
-		name = @"Command";
+		name = iTetCommandKeyPrintedName;
 	}
 	else
 	{
@@ -392,7 +411,7 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 	}
 	
 	if ([self isNumpadKey] && ![self isArrowKey])
-		return [NSString stringWithFormat:@"Numpad %@", name];
+		return [NSString stringWithFormat:iTetNumpadPrintedNameFormat, name];
 	
 	return name;
 }
