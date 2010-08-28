@@ -162,7 +162,6 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 			keyString = iTetDownArrowKeyPlaceholderString;
 			break;
 	}
-	// FIXME: Additional non-printing keys?
 	
 	return keyString;
 }
@@ -180,14 +179,8 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 {
 	// Check which modifier key has been pressed
 	NSUInteger flags = [modifierEvent modifierFlags];
-	if ((flags & NSAlphaShiftKeyMask) || (flags & NSShiftKeyMask))
+	if (flags & NSShiftKeyMask)
 	{
-		// Differentiate between shift and caps lock
-		if ([modifierEvent keyCode] == CapsLockKeyCode)
-		{
-			return iTetCapsLockKeyPlaceholderString;
-		}
-		
 		return iTetShiftKeyPlaceholderString;
 	}
 	if (flags & NSCommandKeyMask)
@@ -201,6 +194,11 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	else if (flags & NSControlKeyMask)
 	{
 		return iTetControlKeyPlaceholderString;
+	}
+	else if ([modifierEvent keyCode] == CapsLockKeyCode)
+	{
+		// Caps lock needs to be detected on both "on" and "off" presses, hence the direct key-code comparison
+		return iTetCapsLockKeyPlaceholderString;
 	}
 	
 	return iTetUnknownModifierPlaceholderString;
