@@ -660,9 +660,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Create the first block to add to the field
 	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];
 	
-	// Move the block to the field
-	[self moveNextBlockToField];
-	
 	// Create a new specials queue for the local player
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[rules integerForKey:iTetGameRulesSpecialCapacityKey]]];
 	
@@ -677,6 +674,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
+	
+	// If this is a Tetrifast game, move the block to the field immediately; otherwise, start a timer
+	if ([currentGameRules intForKey:iTetGameRulesGameTypeKey] == tetrifastProtocol)
+		[self moveNextBlockToField];
+	else
+		[self startNextBlockTimer];
 }
 
 - (void)pauseGame
