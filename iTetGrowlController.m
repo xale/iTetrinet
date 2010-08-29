@@ -383,6 +383,7 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 #define iTetGameEndedGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the operator ends the current game in progress")
 #define iTetGameEndedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"You stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player ends the current game in progress")
 #define iTetGamePlayerWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning player")
+#define iTetGameTeamWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"Team %@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning team")
 #define iTetGameLocalPlayerWonGrowlNotificationMessage	NSLocalizedStringFromTable(@"You have won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with the local player as the winner")
 
 - (void)gameEventNotification:(NSNotification*)notification
@@ -463,11 +464,19 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 	else if ([eventType isEqualToString:iTetGamePlayerWonEventNotificationName])
 	{
 		// Game ended, with winning player
-		// Determine if the local player is the winner
-		if ([player isLocalPlayer])
-			description = iTetGameLocalPlayerWonGrowlNotificationMessage;
+		// Determine if the winning player is on a team
+		if ([[player teamName] length] > 0)
+		{
+			description = [NSString stringWithFormat:iTetGameTeamWonGrowlNotificationMessageFormat, [player teamName]];
+		}
 		else
-			description = [NSString stringWithFormat:iTetGamePlayerWonGrowlNotificationMessageFormat, [player nickname]];
+		{
+			// Determine if the local player is the winner
+			if ([player isLocalPlayer])
+				description = iTetGameLocalPlayerWonGrowlNotificationMessage;
+			else
+				description = [NSString stringWithFormat:iTetGamePlayerWonGrowlNotificationMessageFormat, [player nickname]];
+		}
 		
 		[self postGrowlNotificationWithTitle:iTetGameEndedGrowlNotificationTitle
 								 description:description
