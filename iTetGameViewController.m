@@ -77,7 +77,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 							  localPlayerAffected:(BOOL)localEffect;
 - (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
 								   sentToPlayer:(iTetPlayer*)target
-									   byPlayer:(iTetPlayer*)sender;
+									   byPlayer:(iTetPlayer*)sender
+							localPlayerAffected:(BOOL)localEffect;
 - (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
 
@@ -662,9 +663,6 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Create the first block to add to the field
 	[LOCALPLAYER setNextBlock:[blockGenerator generateNextBlock]];
 	
-	// Move the block to the field
-	[self moveNextBlockToField];
-	
 	// Create a new specials queue for the local player
 	[LOCALPLAYER setSpecialsQueue:[NSMutableArray arrayWithCapacity:[rules integerForKey:iTetGameRulesSpecialCapacityKey]]];
 	
@@ -679,6 +677,12 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	
 	// Set the game state to "playing"
 	[self setGameplayState:gamePlaying];
+	
+	// If this is a Tetrifast game, move the block to the field immediately; otherwise, start a timer
+	if ([currentGameRules intForKey:iTetGameRulesGameTypeKey] == tetrifastProtocol)
+		[self moveNextBlockToField];
+	else
+		[self startNextBlockTimer];
 	
 	// Post a notification
 	if (![self offlineGame])
@@ -1341,7 +1345,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 		   textView:(NSTextView *)textView
 doCommandBySelector:(SEL)command
 {
-	// If this is a 'tab' or 'backtab' keypress, do nothing, instead of changing the first responder
+	// If this is a 'tab' or 'backtab' (shift-tab) keypress, do nothing, instead of changing the first responder
 	if ([control isEqual:messageField] && ((command == @selector(insertTab:)) || (command == @selector(insertBacktab:))))
 		return YES;
 	
@@ -1458,14 +1462,16 @@ doCommandBySelector:(SEL)command
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target
 {
-	// Check if this action affects the local player; i.e., if the local player is playing and any of the following are true:
+	// Check if this action affects the local player; i.e., if the local player is playing, and any of the following are true:
 	// - the local player is the target
 	// - the special is a switchfield and the local player sent it
-	// - the special targets all players, and was not sent by the local player
+	// - the special targets all players, and was not sent by the local player, or a member of the local player's team
 	BOOL localPlayerAffected = ([LOCALPLAYER isPlaying] &&
-								([target isLocalPlayer] ||
+								(([target isLocalPlayer]) ||
 								 (([special type] == switchField) && [sender isLocalPlayer]) ||
-								 (([target playerNumber] == 0) && ![sender isLocalPlayer])));
+								 (([target playerNumber] == 0) &&
+								  (![sender isLocalPlayer]) &&
+								  (([[sender teamName] length] == 0) || ![[sender teamName] isEqualToString:[LOCALPLAYER teamName]]))));
 	
 	// Perform the action, if applicable
 	if (localPlayerAffected)
@@ -1480,7 +1486,8 @@ doCommandBySelector:(SEL)command
 	{
 		[self appendEventDescription:[self eventDescriptionForLines:[special numberOfClassicLines]
 													   sentToPlayer:target
-														   byPlayer:sender]];
+														   byPlayer:sender
+												localPlayerAffected:localPlayerAffected]];
 	}
 	else
 	{
@@ -1499,9 +1506,10 @@ doCommandBySelector:(SEL)command
 #define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
 #define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
 
-NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{special}";
-NSString* const iTetTargetNameFormatSpecifier =			@"%{target}";
-NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
+// These format specifiers are used as placeholders for the attributed-string descriptions of the specials and players; they must contain whitespace, to ensure that they cannot ever collide with a player's name
+NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{ special }";
+NSString* const iTetTargetNameFormatSpecifier =			@"%{ target }";
+NSString* const iTetSenderNameFormatSpecifier =			@"%{ sender }";
 
 - (NSAttributedString*)eventDescriptionForSpecial:(iTetSpecial*)special
 									 usedOnPlayer:(iTetPlayer*)target
@@ -1584,11 +1592,13 @@ NSString* const iTetSenderNameFormatSpecifier =			@"%{sender}";
 #define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"Triple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
 #define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"Quadruple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
 
-NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{lines}";
+// (See comment about format specifiers, above)
+NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 
 - (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
 								   sentToPlayer:(iTetPlayer*)target
 									   byPlayer:(iTetPlayer*)sender
+							localPlayerAffected:(BOOL)localEffect
 {
 	NSDictionary* linesDescriptionAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
 												[iTetTextAttributes boldGameActionsTextFont], NSFontAttributeName,
@@ -1644,6 +1654,15 @@ NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{lines}";
 					 withAttributedString:senderName];
 	[description replaceCharactersInRange:[[description string] rangeOfString:iTetTargetNameFormatSpecifier]
 					 withAttributedString:targetName];
+	
+	// If the local player received the lines, add a background highlight
+	if (localEffect)
+	{
+		[description addAttribute:NSBackgroundColorAttributeName
+							value:[[NSColor whiteColor] blendedColorWithFraction:iTetEventBackgroundColorFraction
+																		 ofColor:[linesDescriptionAttributes objectForKey:NSForegroundColorAttributeName]]
+							range:NSMakeRange(0, [description length])];
+	}
 	
 	return [NSAttributedString attributedStringWithAttributedString:description];
 }

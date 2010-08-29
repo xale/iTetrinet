@@ -24,6 +24,7 @@
 #import "iTetNotifications.h"
 #import "iTetUserDefaults.h"
 
+#import "NSAttributedString+Convenience.h"
 #import "NSDictionary+AdditionalTypes.h"
 
 @implementation iTetChatViewController
@@ -276,7 +277,7 @@
 	if (isAction)
 	{
 		// Begin the message line with a dot (to indicate an action)
-		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:iTetLocalActionMessageIndicator] autorelease];
+		formattedMessage = [NSMutableAttributedString attributedStringWithString:iTetLocalActionMessageIndicator];
 		
 		// Append the player's name (and a space)
 		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];
@@ -284,7 +285,7 @@
 	else
 	{
 		// Begin the mesasge line with the player's name, followed by a colon and a space
-		formattedMessage = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@: ", [player nickname]]] autorelease];
+		formattedMessage = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:@"%@: ", [player nickname]]];
 	}
 	
 	// Format the name in bold
