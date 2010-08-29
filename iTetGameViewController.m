@@ -75,7 +75,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 							  localPlayerAffected:(BOOL)localEffect;
 - (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
 								   sentToPlayer:(iTetPlayer*)target
-									   byPlayer:(iTetPlayer*)sender;
+									   byPlayer:(iTetPlayer*)sender
+							localPlayerAffected:(BOOL)localEffect;
 - (void)appendEventDescription:(NSAttributedString*)description;
 - (void)clearActions;
 
@@ -1385,14 +1386,16 @@ doCommandBySelector:(SEL)command
 		   byPlayer:(iTetPlayer*)sender
 		   onPlayer:(iTetPlayer*)target
 {
-	// Check if this action affects the local player; i.e., if the local player is playing and any of the following are true:
+	// Check if this action affects the local player; i.e., if the local player is playing, and any of the following are true:
 	// - the local player is the target
 	// - the special is a switchfield and the local player sent it
-	// - the special targets all players, and was not sent by the local player
+	// - the special targets all players, and was not sent by the local player, or a member of the local player's team
 	BOOL localPlayerAffected = ([LOCALPLAYER isPlaying] &&
-								([target isLocalPlayer] ||
+								(([target isLocalPlayer]) ||
 								 (([special type] == switchField) && [sender isLocalPlayer]) ||
-								 (([target playerNumber] == 0) && ![sender isLocalPlayer])));
+								 (([target playerNumber] == 0) &&
+								  (![sender isLocalPlayer]) &&
+								  (([[sender teamName] length] == 0) || ![[sender teamName] isEqualToString:[LOCALPLAYER teamName]]))));
 	
 	// Perform the action, if applicable
 	if (localPlayerAffected)
@@ -1407,7 +1410,8 @@ doCommandBySelector:(SEL)command
 	{
 		[self appendEventDescription:[self eventDescriptionForLines:[special numberOfClassicLines]
 													   sentToPlayer:target
-														   byPlayer:sender]];
+														   byPlayer:sender
+												localPlayerAffected:localPlayerAffected]];
 	}
 	else
 	{
@@ -1518,6 +1522,7 @@ NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 - (NSAttributedString*)eventDescriptionForLines:(NSInteger)numLines
 								   sentToPlayer:(iTetPlayer*)target
 									   byPlayer:(iTetPlayer*)sender
+							localPlayerAffected:(BOOL)localEffect
 {
 	NSDictionary* linesDescriptionAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
 												[iTetTextAttributes boldGameActionsTextFont], NSFontAttributeName,
@@ -1573,6 +1578,15 @@ NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 					 withAttributedString:senderName];
 	[description replaceCharactersInRange:[[description string] rangeOfString:iTetTargetNameFormatSpecifier]
 					 withAttributedString:targetName];
+	
+	// If the local player received the lines, add a background highlight
+	if (localEffect)
+	{
+		[description addAttribute:NSBackgroundColorAttributeName
+							value:[[NSColor whiteColor] blendedColorWithFraction:iTetEventBackgroundColorFraction
+																		 ofColor:[linesDescriptionAttributes objectForKey:NSForegroundColorAttributeName]]
+							range:NSMakeRange(0, [description length])];
+	}
 	
 	return [NSAttributedString attributedStringWithAttributedString:description];
 }
