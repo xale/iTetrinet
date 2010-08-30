@@ -46,6 +46,8 @@ extern NSString* const iTetActionMessagePrefix;
 extern NSString* const iTetLocalActionMessageIndicator;
 extern NSString* const iTetRemoteActionMessageIndicator;
 
+extern NSString* const iTetLocalPlayerNicknameAttributeName;
+
 @interface iTetTextAttributes : NSObject
 
 // Returns an NSCharacterSet containing all characters used as formatting data in the TetriNET protocol
@@ -54,8 +56,8 @@ extern NSString* const iTetRemoteActionMessageIndicator;
 // Returns a dictionary containing the default text attributes for the partyline message view
 + (NSDictionary*)defaultChatTextAttributes;
 
-// Returns a dictionary containing the text color attributes used to highlight the local player's name on the partyline message view
-+ (NSDictionary*)localPlayerNameTextColorAttributes;
+// Returns a dictionary containing the text attributes used to highlight the local player's name on the partyline message view
++ (NSDictionary*)localPlayerNameTextAttributes;
 
 // Returns a dictionary containing the default text attributes for the game actions list
 + (NSDictionary*)defaultGameActionsTextAttributes;

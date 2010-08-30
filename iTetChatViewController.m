@@ -74,10 +74,20 @@
 {
 	// Clear the chat text
 	[self clearChat];
+	
+	// Register for notifications of changes to the local player's nickname-highlight color
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+															  forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]
+																 options:0
+																 context:NULL];
 }
 
 - (void)dealloc
 {
+	// De-register for user defaults notifications
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
+																 forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]];
+	
 	// De-register for player-event notifications
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -226,7 +236,7 @@
 	// If the player is the local player, change the color of the name
 	if ([player isLocalPlayer])
 	{
-		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextColorAttributes]
+		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextAttributes]
 								  range:nameRange];
 	}
 	
@@ -324,6 +334,37 @@
 		{
 			if ([newTeamName length] > 0)
 				[self appendStatusMessage:[NSString stringWithFormat:iTetPlayerJoinedTeamEventStatusMessageFormat, [player nickname], newTeamName]];
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark Key/Value Observation
+
+- (void)observeValueForKeyPath:(NSString*)keyPath
+					  ofObject:(id)object
+						change:(NSDictionary*)change
+					   context:(void *)context
+{
+	// Change to local player's nickname-highlight color; update colors on the chat view
+	// Enumerate all the ranges of the text field contents that are highlighted
+	NSMutableAttributedString* chatText = [chatView textStorage];
+	NSRange fullRange = NSMakeRange(0, [chatText length]);
+	NSRange attributeRange = NSMakeRange(0, 0);
+	for (NSUInteger index = 0; index < NSMaxRange(fullRange); index = (NSMaxRange(attributeRange) + 1))
+	{
+		// Get the attributes for this range
+		NSDictionary* attributes = [chatText attributesAtIndex:index
+										 longestEffectiveRange:&attributeRange
+													   inRange:fullRange];
+		
+		// Check if this range contains an attribute indicating the highlighted nickname
+		if ([attributes objectForKey:iTetLocalPlayerNicknameAttributeName] != nil)
+		{
+			// Change the the highlight color
+			[chatText addAttribute:NSForegroundColorAttributeName
+							 value:[iTetTextAttributes localPlayerNameTextColor]
+							 range:attributeRange];
 		}
 	}
 }

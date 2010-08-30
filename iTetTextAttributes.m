@@ -19,6 +19,8 @@ NSString* const iTetActionMessagePrefix =	@"/me ";
 NSString* const iTetLocalActionMessageIndicator =	@"•";
 NSString* const iTetRemoteActionMessageIndicator =	@"*";
 
+NSString* const iTetLocalPlayerNicknameAttributeName =	@"com.indiepennant.iTetrinet.localPlayerNameAttribute";
+
 #define iTetSilverTextColor		[NSColor colorWithCalibratedRed:0.75 green:0.75 blue:0.75 alpha:1.0]
 #define iTetGreenTextColor		[NSColor colorWithCalibratedRed:0.0 green:0.5 blue:0.0 alpha:1.0]
 #define iTetOliveTextColor		[NSColor colorWithCalibratedRed:0.5 green:0.5 blue:0.0 alpha:1.0]
@@ -52,10 +54,12 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 			nil];
 }
 
-+ (NSDictionary*)localPlayerNameTextColorAttributes
++ (NSDictionary*)localPlayerNameTextAttributes
 {
-	return [NSDictionary dictionaryWithObject:[self localPlayerNameTextColor]
-									   forKey:NSForegroundColorAttributeName];
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+			[self localPlayerNameTextColor], NSForegroundColorAttributeName,
+			[NSNumber numberWithBool:YES], iTetLocalPlayerNicknameAttributeName,
+			nil];
 }
 
 + (NSDictionary*)defaultGameActionsTextAttributes
