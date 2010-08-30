@@ -74,10 +74,20 @@
 {
 	// Clear the chat text
 	[self clearChat];
+	
+	// Register for notifications of changes to the local player's nickname-highlight color
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+															  forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]
+																 options:0
+																 context:NULL];
 }
 
 - (void)dealloc
 {
+	// De-register for user defaults notifications
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
+																 forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]];
+	
 	// De-register for player-event notifications
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
@@ -178,6 +188,87 @@
 }
 
 #pragma mark -
+#pragma mark Chat Text
+
+- (void)clearChat
+{
+	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
+							withString:@""];
+}
+
+- (void)appendChatLine:(NSAttributedString*)line
+{
+	// If the chat view is not empty, add a line separator
+	if ([[chatView textStorage] length] > 0)
+		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
+	
+	// Add the line
+	[[chatView textStorage] appendAttributedString:line];
+	
+	// Scroll the chat view to see the new line
+	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
+}
+
+- (void)appendChatLine:(NSAttributedString*)line
+			fromPlayer:(iTetPlayer*)player
+				action:(BOOL)isAction
+{
+	NSMutableAttributedString* formattedMessage;
+	if (isAction)
+	{
+		// Begin the message line with a dot (to indicate an action)
+		formattedMessage = [NSMutableAttributedString attributedStringWithString:iTetLocalActionMessageIndicator];
+		
+		// Append the player's name (and a space)
+		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];
+	}
+	else
+	{
+		// Begin the mesasge line with the player's name, followed by a colon and a space
+		formattedMessage = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:@"%@: ", [player nickname]]];
+	}
+	
+	// Format the name in bold
+	NSRange nameRange = NSMakeRange(0, ([[player nickname] length] + 1));
+	[formattedMessage applyFontTraits:NSBoldFontMask
+								range:nameRange];
+	
+	// If the player is the local player, change the color of the name
+	if ([player isLocalPlayer])
+	{
+		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextAttributes]
+								  range:nameRange];
+	}
+	
+	// Append the message contents
+	[formattedMessage appendAttributedString:line];
+	
+	// Add the message to the chat view
+	[self appendChatLine:formattedMessage];
+}
+
+- (void)appendStatusMessage:(NSString*)message
+{
+	// Create a centered paragraph style
+	NSMutableParagraphStyle* statusMessageStyle = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+	[statusMessageStyle setAlignment:NSCenterTextAlignment];
+	
+	// Create a bold font
+	NSFont* font = [NSFont fontWithName:@"Helvetica-Bold" size:12.0];
+	
+	// Create an attributed string with the message and the above attributes
+	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
+							  font, NSFontAttributeName,
+							  statusMessageStyle, NSParagraphStyleAttributeName,
+							  nil];
+	NSAttributedString* formattedMessage = [[[NSAttributedString alloc] initWithString:message
+																			attributes:attrDict] autorelease];
+	
+	// Append the message to the chat view
+	[self appendChatLine:formattedMessage];
+}
+
+#pragma mark -
 #pragma mark Player Event Notifications
 
 #define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"ChatViewController", @"Status message appended to the chat view when a player joins the channel")
@@ -248,84 +339,34 @@
 }
 
 #pragma mark -
-#pragma mark Chat Text
+#pragma mark Key/Value Observation
 
-- (void)clearChat
+- (void)observeValueForKeyPath:(NSString*)keyPath
+					  ofObject:(id)object
+						change:(NSDictionary*)change
+					   context:(void *)context
 {
-	[chatView replaceCharactersInRange:NSMakeRange(0, [[chatView textStorage] length])
-							withString:@""];
-}
-
-- (void)appendChatLine:(NSAttributedString*)line
-{
-	// If the chat view is not empty, add a line separator
-	if ([[chatView textStorage] length] > 0)
-		[[[chatView textStorage] mutableString] appendFormat:@"%C", NSParagraphSeparatorCharacter];
-	
-	// Add the line
-	[[chatView textStorage] appendAttributedString:line];
-	
-	// Scroll the chat view to see the new line
-	[chatView scrollRangeToVisible:NSMakeRange([[chatView textStorage] length], 0)];
-}
-
-- (void)appendChatLine:(NSAttributedString*)line
-			fromPlayer:(iTetPlayer*)player
-				action:(BOOL)isAction
-{
-	NSMutableAttributedString* formattedMessage;
-	if (isAction)
+	// Change to local player's nickname-highlight color; update colors on the chat view
+	// Enumerate all the ranges of the text field contents that are highlighted
+	NSMutableAttributedString* chatText = [chatView textStorage];
+	NSRange fullRange = NSMakeRange(0, [chatText length]);
+	NSRange attributeRange = NSMakeRange(0, 0);
+	for (NSUInteger index = 0; index < NSMaxRange(fullRange); index = (NSMaxRange(attributeRange) + 1))
 	{
-		// Begin the message line with a dot (to indicate an action)
-		formattedMessage = [NSMutableAttributedString attributedStringWithString:iTetLocalActionMessageIndicator];
+		// Get the attributes for this range
+		NSDictionary* attributes = [chatText attributesAtIndex:index
+										 longestEffectiveRange:&attributeRange
+													   inRange:fullRange];
 		
-		// Append the player's name (and a space)
-		[[formattedMessage mutableString] appendFormat:@"%@ ", [player nickname]];
+		// Check if this range contains an attribute indicating the highlighted nickname
+		if ([attributes objectForKey:iTetLocalPlayerNicknameAttributeName] != nil)
+		{
+			// Change the the highlight color
+			[chatText addAttribute:NSForegroundColorAttributeName
+							 value:[iTetTextAttributes localPlayerNameTextColor]
+							 range:attributeRange];
+		}
 	}
-	else
-	{
-		// Begin the mesasge line with the player's name, followed by a colon and a space
-		formattedMessage = [NSMutableAttributedString attributedStringWithString:[NSString stringWithFormat:@"%@: ", [player nickname]]];
-	}
-	
-	// Format the name in bold
-	NSRange nameRange = NSMakeRange(0, ([[player nickname] length] + 1));
-	[formattedMessage applyFontTraits:NSBoldFontMask
-								range:nameRange];
-	
-	// If the player is the local player, change the color of the name
-	if ([player isLocalPlayer])
-	{
-		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextColorAttributes]
-								  range:nameRange];
-	}
-	
-	// Append the message contents
-	[formattedMessage appendAttributedString:line];
-	
-	// Add the message to the chat view
-	[self appendChatLine:formattedMessage];
-}
-
-- (void)appendStatusMessage:(NSString*)message
-{
-	// Create a centered paragraph style
-	NSMutableParagraphStyle* statusMessageStyle = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-	[statusMessageStyle setAlignment:NSCenterTextAlignment];
-	
-	// Create a bold font
-	NSFont* font = [NSFont fontWithName:@"Helvetica-Bold" size:12.0];
-	
-	// Create an attributed string with the message and the above attributes
-	NSDictionary* attrDict = [NSDictionary dictionaryWithObjectsAndKeys:
-							  font, NSFontAttributeName,
-							  statusMessageStyle, NSParagraphStyleAttributeName,
-							  nil];
-	NSAttributedString* formattedMessage = [[[NSAttributedString alloc] initWithString:message
-																			attributes:attrDict] autorelease];
-	
-	// Append the message to the chat view
-	[self appendChatLine:formattedMessage];
 }
 
 @end

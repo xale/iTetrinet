@@ -114,9 +114,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// Load the default key bindings
 	currentKeyConfiguration = [[iTetKeyConfiguration currentKeyConfiguration] retain];
 	
-	// Register for notifications of changes to the key bindings
+	// Register for notifications of changes to the key bindings, and the local player's nickname-highlight color
 	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
 															  forKeyPath:[@"values." stringByAppendingString:iTetCurrentKeyConfigNumberPrefKey]
+																 options:0
+																 context:NULL];
+	[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self
+															  forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]
 																 options:0
 																 context:NULL];
 	
@@ -213,6 +217,8 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// De-register for notifications
 	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
 																 forKeyPath:[@"values." stringByAppendingString:iTetCurrentKeyConfigNumberPrefKey]];
+	[[NSUserDefaultsController sharedUserDefaultsController] removeObserver:self
+																 forKeyPath:[@"values." stringByAppendingString:iTetLocalPlayerNameColorPrefKey]];
 	
 	[currentKeyConfiguration release];
 	[currentGameRules release];
@@ -580,7 +586,7 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	// If the player is the local player, change the color of the name
 	if ([player isLocalPlayer])
 	{
-		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextColorAttributes]
+		[formattedMessage addAttributes:[iTetTextAttributes localPlayerNameTextAttributes]
 								  range:nameRange];
 	}
 	
@@ -833,8 +839,35 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 						change:(NSDictionary*)change
 					   context:(void *)context
 {
-	// Change to keyboard configuration; load new bindings from user defaults
-	[self setCurrentKeyConfiguration:[iTetKeyConfiguration currentKeyConfiguration]];
+	if ([keyPath rangeOfString:iTetCurrentKeyConfigNumberPrefKey].location != NSNotFound)
+	{
+		// Change to keyboard configuration; load new bindings from user defaults
+		[self setCurrentKeyConfiguration:[iTetKeyConfiguration currentKeyConfiguration]];
+	}
+	else if ([keyPath rangeOfString:iTetLocalPlayerNameColorPrefKey].location != NSNotFound)
+	{
+		// Change to local player's nickname-highlight color; update colors on the chat view
+		// Enumerate all the ranges of the text field contents that are highlighted
+		NSMutableAttributedString* chatText = [chatView textStorage];
+		NSRange fullRange = NSMakeRange(0, [chatText length]);
+		NSRange attributeRange = NSMakeRange(0, 0);
+		for (NSUInteger index = 0; index < NSMaxRange(fullRange); index = (NSMaxRange(attributeRange) + 1))
+		{
+			// Get the attributes for this range
+			NSDictionary* attributes = [chatText attributesAtIndex:index
+											 longestEffectiveRange:&attributeRange
+														   inRange:fullRange];
+			
+			// Check if this range contains an attribute indicating the highlighted nickname
+			if ([attributes objectForKey:iTetLocalPlayerNicknameAttributeName] != nil)
+			{
+				// Change the the highlight color
+				[chatText addAttribute:NSForegroundColorAttributeName
+								 value:[iTetTextAttributes localPlayerNameTextColor]
+								 range:attributeRange];
+			}
+		}
+	}
 }
 
 #pragma mark -
