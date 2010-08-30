@@ -801,6 +801,10 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 
 - (void)endOfGameNotificationDelayTimeout
 {
+	// If the network controller has disconnected, don't bother sending the notification
+	if (![networkController connectionOpen])
+		return;
+	
 	// Check if we have a winning player _now_
 	iTetPlayer* winner = [playersController lastWinningPlayer];
 	if (winner != nil)
