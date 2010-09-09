@@ -78,11 +78,16 @@
 
 - (void)keyEvent:(NSEvent*)keyEvent
 {
+	// Check that the event is a valid key
+	iTetKeyNamePair* key = [iTetKeyNamePair keyNamePairFromKeyEvent:keyEvent];
+	if (key == nil)
+		return;
+	
 	// Check if we have a delegate, and whether or not it is interested
 	if ((eventDelegate != nil) && [eventDelegate respondsToSelector:@selector(keyPressed:onLocalFieldView:)])
 	{
 		// Inform the delegate
-		[eventDelegate keyPressed:[iTetKeyNamePair keyNamePairFromKeyEvent:keyEvent]
+		[eventDelegate keyPressed:key
 				 onLocalFieldView:self];
 	}
 }

@@ -12,9 +12,9 @@
 
 @interface iTetKeyNamePair (Private)
 
-- (NSString*)keyNameForEvent:(NSEvent*)event;
-- (NSString*)modifierNameForEvent:(NSEvent*)event;
-- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
++ (NSString*)keyNameForEvent:(NSEvent*)event;
++ (NSString*)modifierNameForEvent:(NSEvent*)event;
++ (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
 								onNumpad:(BOOL)isOnNumpad;
 
 @end
@@ -54,18 +54,26 @@
 	// Determine the name of the event
 	if (isModifier)
 	{
-		keyName = [[self modifierNameForEvent:event] retain];
+		// Check if this is a key release event (and should therefore be ignored)
+		// Note that caps lock "release" events occur on the second _press_
+		if ((([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == 0) && ([event keyCode] != iTetCapsLockKeyCode))
+		{
+			[self release];
+			return nil;
+		}
+		
+		keyName = [[[self class] modifierNameForEvent:event] retain];
 	}
 	else
 	{
-		keyName = [[self keyNameForEvent:event] retain];
+		keyName = [[[self class] keyNameForEvent:event] retain];
 		
 		// Check if the key is on the numeric keypad
 		numpadKey = (([event modifierFlags] & NSNumericPadKeyMask) > 0);
 	}
 	
 	// Set the minimum display width for drawing the key
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
+	minDisplayWidth = [[self class] minimumDisplayWidthForKeyName:keyName
 												 onNumpad:numpadKey];
 	
 	return self;
@@ -79,8 +87,8 @@
 	keyCode = code;
 	keyName = [name copy];
 	numpadKey = isOnNumpad;
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
-												 onNumpad:numpadKey];
+	minDisplayWidth = [[self class] minimumDisplayWidthForKeyName:keyName
+														 onNumpad:numpadKey];
 	
 	return self;
 }
@@ -95,7 +103,7 @@
 #pragma mark -
 #pragma mark Key Name Lookups
 
-#define EscapeKeyCode	53
+#define iTetEscapeKeyCode	53
 
 #define iTetEscapeKeyPlaceholderString	NSLocalizedStringFromTable(@"esc", @"Keyboard", @"Letters appearing on or abbreviation representing the escape key on the keyboard")
 #define iTetTabKeyPlaceholderString		NSLocalizedStringFromTable(@"tab", @"Keyboard", @"Name of the 'tab' key, in lowercase")
@@ -108,12 +116,12 @@ NSString* const iTetRightArrowKeyPlaceholderString =	@"→";
 NSString* const iTetUpArrowKeyPlaceholderString =		@"↑";
 NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 
-- (NSString*)keyNameForEvent:(NSEvent*)keyEvent
++ (NSString*)keyNameForEvent:(NSEvent*)keyEvent
 {
 	// Check for events with no characters
 	switch ([keyEvent keyCode])
 	{
-		case EscapeKeyCode:
+		case iTetEscapeKeyCode:
 			return iTetEscapeKeyPlaceholderString;
 	}
 	
@@ -166,8 +174,6 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	return keyString;
 }
 
-#define CapsLockKeyCode	57
-
 #define iTetCapsLockKeyPlaceholderString		NSLocalizedStringFromTable(@"caps lock", @"Keyboard", @"Name of the 'caps lock' key, in lowercase")
 #define iTetShiftKeyPlaceholderString			NSLocalizedStringFromTable(@"shift", @"Keyboard", @"Name of the 'shift' modifier key, in lowercase")
 #define iTetControlKeyPlaceholderString			NSLocalizedStringFromTable(@"control", @"Keyboard", @"Name of the 'control' modifier key, in lowercase")
@@ -175,7 +181,7 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 #define iTetCommandKeyPlaceholderString			NSLocalizedStringFromTable(@"command", @"Keyboard", @"Name of the 'command' modifier key, in lowercase")
 #define iTetUnknownModifierPlaceholderString	NSLocalizedStringFromTable(@"(unknown)", @"Keyboard", @"Placeholder string for an unknown modifier key")
 
-- (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
++ (NSString*)modifierNameForEvent:(NSEvent*)modifierEvent
 {
 	// Check which modifier key has been pressed
 	NSUInteger flags = [modifierEvent modifierFlags];
@@ -195,7 +201,7 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 	{
 		return iTetControlKeyPlaceholderString;
 	}
-	else if ([modifierEvent keyCode] == CapsLockKeyCode)
+	else if ([modifierEvent keyCode] == iTetCapsLockKeyCode)
 	{
 		// Caps lock needs to be detected on both "on" and "off" presses, hence the direct key-code comparison
 		return iTetCapsLockKeyPlaceholderString;
@@ -215,7 +221,7 @@ NSString* const iTetDownArrowKeyPlaceholderString =		@"↓";
 
 NSString* const iTetZeroKeyName =			@"0";
 
-- (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
++ (CGFloat)minimumDisplayWidthForKeyName:(NSString*)name
 								onNumpad:(BOOL)isOnNumPad
 {
 	if ([name isEqualToString:iTetSpacebarPlaceholderString])
@@ -289,8 +295,8 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
 	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
 	numpadKey = [decoder decodeBoolForKey:iTetKeyNamePairNumpadKey];
-	minDisplayWidth = [self minimumDisplayWidthForKeyName:keyName
-												 onNumpad:numpadKey];
+	minDisplayWidth = [[self class] minimumDisplayWidthForKeyName:keyName
+														 onNumpad:numpadKey];
 	
 	return self;
 }

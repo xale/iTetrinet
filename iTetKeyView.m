@@ -208,6 +208,10 @@ NSString* const iTetKeyFontName =	@"Helvetica";
 
 - (void)keyPressed:(iTetKeyNamePair*)key
 {
+	// If the key is not valid, ignore
+	if (key == nil)
+		return;
+	
 	// If this view is not highlighted, ignore the event
 	if (![self highlighted])
 		return;

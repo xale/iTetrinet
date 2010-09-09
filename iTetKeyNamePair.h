@@ -12,10 +12,12 @@
 
 #define iTetSpacebarPlaceholderString	NSLocalizedStringFromTable(@"space", @"Keyboard", @"Name of the spacebar key, in lowercase")
 
-#define iTetLeftArrowKeyCode	(123)
-#define iTetRightArrowKeyCode	(124)
-#define iTetDownArrowKeyCode	(125)
-#define iTetUpArrowKeyCode		(126)
+#define iTetLeftArrowKeyCode	123
+#define iTetRightArrowKeyCode	124
+#define iTetDownArrowKeyCode	125
+#define iTetUpArrowKeyCode		126
+
+#define iTetCapsLockKeyCode		57
 
 extern NSString* const iTetLeftArrowKeyPlaceholderString;
 extern NSString* const iTetRightArrowKeyPlaceholderString;
