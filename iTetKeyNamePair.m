@@ -10,6 +10,8 @@
 
 #import "iTetKeyNamePair.h"
 
+static int iTetLastModifierFlags = 0;
+
 @interface iTetKeyNamePair (Private)
 
 + (NSString*)keyNameForEvent:(NSEvent*)event;
@@ -50,18 +52,21 @@
 	
 	// Check if the event is a modifier event
 	BOOL isModifier = ([event type] == NSFlagsChanged);
+	int flags = ([event modifierFlags] & NSDeviceIndependentModifierFlagsMask);
 	
 	// Determine the name of the event
 	if (isModifier)
 	{
 		// Check if this is a key release event (and should therefore be ignored)
 		// Note that caps lock "release" events occur on the second _press_
-		if ((([event modifierFlags] & NSDeviceIndependentModifierFlagsMask) == 0) && ([event keyCode] != iTetCapsLockKeyCode))
+		if ((flags <= iTetLastModifierFlags) && ([event keyCode] != iTetCapsLockKeyCode))
 		{
+			iTetLastModifierFlags = flags;
 			[self release];
 			return nil;
 		}
 		
+		iTetLastModifierFlags = flags;
 		keyName = [[[self class] modifierNameForEvent:event] retain];
 	}
 	else
@@ -69,7 +74,7 @@
 		keyName = [[[self class] keyNameForEvent:event] retain];
 		
 		// Check if the key is on the numeric keypad
-		numpadKey = (([event modifierFlags] & NSNumericPadKeyMask) > 0);
+		numpadKey = ((flags & NSNumericPadKeyMask) > 0);
 	}
 	
 	// Set the minimum display width for drawing the key
@@ -77,7 +82,6 @@
 												 onNumpad:numpadKey];
 	
 	return self;
-	
 }
 
 - (id)initWithKeyCode:(NSInteger)code
