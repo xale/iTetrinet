@@ -32,8 +32,8 @@ NSString* const iTetApplicationSupportThemesSubdirectoryName =	@"Themes";
 	// Get the path to the user's "Application Support" directory
 	NSString* appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleNameKey];
 	NSError* appSupportError;
-	NSString* appSupportPath = [IPSApplicationSupportDirectory applicationSupportDirectoryPathForApp:appName
-																							   error:&appSupportError];
+	NSString* appSupportPath = [IPSApplicationSupportDirectory pathToSupportDirectoryForApplication:appName
+																							  error:&appSupportError];
 	
 	// Check that the app support path is valid
 	if (appSupportPath == nil)
