@@ -31,6 +31,9 @@ NSArray* defaultThemes = nil;
 - (void)loadImages;
 - (void)createPreview;
 
+- (void)setThemeFilePath:(NSString*)themePath;
+- (void)setImageFilePath:(NSString*)imagePath;
+
 + (NSMutableDictionary*)themeCache;
 
 @end
@@ -398,7 +401,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 #pragma mark -
 #pragma mark File Organization
 
-- (void)copyFiles
+- (void)copyFilesToSupportDirectory
 {
 	// Get the path to a subdirectory of the Application Support directory to store this theme
 	NSError* error = nil;
@@ -410,7 +413,7 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 	if (directoryPath == nil)
 		goto abort;
 	
-	// Append the theme and image filenames to the directory path
+	// Create the full paths to the theme and image files
 	NSString* themeDestPath = [directoryPath stringByAppendingPathComponent:[[self themeFilePath] lastPathComponent]];
 	NSString* imageDestPath = [directoryPath stringByAppendingPathComponent:[[self imageFilePath] lastPathComponent]];
 	
@@ -431,14 +434,8 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 		goto abort;
 	
 	// Update the theme and image file paths to reflect the copied files
-	[self willChangeValueForKey:@"themeFilePath"];
-	[themeFilePath release];
-	themeFilePath = [themeDestPath retain];
-	[self didChangeValueForKey:@"themeFilePath"];
-	[self willChangeValueForKey:@"imageFilePath"];
-	[imageFilePath release];
-	imageFilePath = [imageDestPath retain];
-	[self didChangeValueForKey:@"imageFilePath"];
+	[self setThemeFilePath:themeDestPath];
+	[self setImageFilePath:imageDestPath];
 	
 	// Add theme to cache
 	[[iTetTheme themeCache] setObject:self
@@ -452,7 +449,7 @@ abort:;
 	}
 }
 
-- (void)deleteFiles
+- (void)removeFilesFromSupportDirectory
 {
 	// Locate the theme's subdirectory of this user's Application Support directory
 	NSString* directoryPath = [iTetThemesSupportDirectory pathToSupportDirectoryForTheme:[self themeName]
@@ -528,7 +525,38 @@ shouldProceedAfterError:(NSError*)error
 #pragma mark -
 #pragma mark Accessors
 
+- (void)setThemeFilePath:(NSString*)themePath
+{
+	[self willChangeValueForKey:@"themeFilePath"];
+	
+	// Retain...
+	[themePath retain];
+	
+	// ...Release...
+	[themeFilePath release];
+	
+	// ...Swap
+	themeFilePath = [themePath retain];
+	
+	[self didChangeValueForKey:@"themeFilePath"];
+}
 @synthesize themeFilePath;
+
+- (void)setImageFilePath:(NSString*)imagePath
+{
+	[self willChangeValueForKey:@"imageFilePath"];
+	
+	// Retain...
+	[imagePath retain];
+	
+	// ...Release...
+	[imageFilePath release];
+	
+	// ...Swap
+	imageFilePath = [imagePath retain];
+	
+	[self didChangeValueForKey:@"imageFilePath"];
+}
 @synthesize imageFilePath;
 
 @synthesize themeName;

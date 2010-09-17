@@ -37,8 +37,8 @@
 // Designated initializer; all others call this
 - (id)initWithThemeFile:(NSString*)path;
 
-- (void)copyFiles;
-- (void)deleteFiles;
+- (void)copyFilesToSupportDirectory;
+- (void)removeFilesFromSupportDirectory;
 
 @property (readonly) NSString* themeFilePath;
 @property (readonly) NSString* imageFilePath;

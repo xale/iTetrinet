@@ -16,6 +16,8 @@
 
 // Additions
 - (iTetTheme*)selectedTheme;
+- (void)replaceTheme:(iTetTheme*)oldTheme
+		   withTheme:(iTetTheme*)newTheme;
 
 // Overrides
 - (void)addObject:(id)object;

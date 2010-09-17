@@ -198,9 +198,10 @@
 	if (returnCode == NSAlertSecondButtonReturn)
 		return;
 	
-	// If the user chose to replace the existing theme, remove it
-	// (Themes are compared by name, so this will remove the old theme)
-	[themesArrayController removeObject:newTheme];
+	// If the user chose to replace the existing theme, do so
+	// Note: themes are compared by name, so, odd as this looks, it works
+	[themesArrayController replaceTheme:newTheme
+							  withTheme:newTheme];
 	
 	// Add the new theme
 	[self addThemeToThemesArrayController:newTheme];

@@ -49,8 +49,8 @@
 {
 	if ([object isKindOfClass:[iTetTheme class]])
 	{
-		iTetTheme* addedTheme = (iTetTheme*)object;
-		[addedTheme copyFiles];
+		iTetTheme* themeToAdd = (iTetTheme*)object;
+		[themeToAdd copyFilesToSupportDirectory];
 	}
 	
 	[super addObject:object];
@@ -61,10 +61,20 @@
 	if ([object isKindOfClass:[iTetTheme class]])
 	{
 		iTetTheme* themeToRemove = (iTetTheme*)object;
-		[themeToRemove deleteFiles];
+		[themeToRemove removeFilesFromSupportDirectory];
 	}
 	
 	[super removeObject:object];
+}
+
+- (void)replaceTheme:(iTetTheme*)oldTheme
+		   withTheme:(iTetTheme*)newTheme
+{
+	// Remove the old theme; do not remove old theme's files, in case they are already in the right place for the old theme
+	[super removeObject:oldTheme];
+	
+	// Add the new theme
+	[self addObject:newTheme];
 }
 
 - (void)removeObjectAtArrangedObjectIndex:(NSUInteger)index
@@ -73,7 +83,7 @@
 	if ([objectToRemove isKindOfClass:[iTetTheme class]])
 	{
 		iTetTheme* themeToRemove = (iTetTheme*)objectToRemove;
-		[themeToRemove deleteFiles];
+		[themeToRemove removeFilesFromSupportDirectory];
 	}
 	
 	[super removeObjectAtArrangedObjectIndex:index];
