@@ -19,12 +19,6 @@
 
 #define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
 
-@interface iTetThemesViewController (Private)
-
-- (void)addThemeToThemesArrayController:(iTetTheme*)theme;
-
-@end
-
 @implementation iTetThemesViewController
 
 - (id)init
@@ -173,8 +167,14 @@
 		return;
 	}
 	
-	// Add the new theme
-	[self addThemeToThemesArrayController:newTheme];
+	// Add theme to list
+	[themesArrayController addObject:newTheme];
+	
+	// Select and show the new theme
+	NSUInteger index = [[themesArrayController arrangedObjects] indexOfObject:newTheme];
+	[themesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
+				 byExtendingSelection:NO];
+	[themesTableView scrollRowToVisible:index];
 }
 
 #pragma mark -
@@ -203,20 +203,8 @@
 	[themesArrayController replaceTheme:newTheme
 							  withTheme:newTheme];
 	
-	// Add the new theme
-	[self addThemeToThemesArrayController:newTheme];
-}
-
-#pragma mark -
-#pragma mark Adding Themes
-
-- (void)addThemeToThemesArrayController:(iTetTheme*)theme
-{
-	// Add theme to list
-	[themesArrayController addObject:theme];
-	
 	// Select and show the new theme
-	NSUInteger index = [[themesArrayController arrangedObjects] indexOfObject:theme];
+	NSUInteger index = [[themesArrayController arrangedObjects] indexOfObject:newTheme];
 	[themesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
 				 byExtendingSelection:NO];
 	[themesTableView scrollRowToVisible:index];
