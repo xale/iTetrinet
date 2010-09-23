@@ -19,6 +19,12 @@
 
 #define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
 
+@interface iTetThemesViewController (Private)
+
+- (void)selectAndShowCollectionViewItemAtIndex:(NSUInteger)index;
+
+@end
+
 @implementation iTetThemesViewController
 
 - (id)init
@@ -43,11 +49,7 @@
 	[super awakeFromNib];
 	
 	// Re-select the saved selection indexes
-	[themesTableView selectRowIndexes:initialThemeSelection
-				 byExtendingSelection:NO];
-	
-	// Scroll the tableview to show the selection
-	[themesTableView scrollRowToVisible:[initialThemeSelection firstIndex]];
+	[self selectAndShowCollectionViewItemAtIndex:[initialThemeSelection firstIndex]];
 }
 
 - (void)dealloc
@@ -171,10 +173,7 @@
 	[themesArrayController addObject:newTheme];
 	
 	// Select and show the new theme
-	NSUInteger index = [[themesArrayController arrangedObjects] indexOfObject:newTheme];
-	[themesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
-				 byExtendingSelection:NO];
-	[themesTableView scrollRowToVisible:index];
+	[self selectAndShowCollectionViewItemAtIndex:[[themesArrayController arrangedObjects] indexOfObject:newTheme]];
 }
 
 #pragma mark -
@@ -204,10 +203,20 @@
 							  withTheme:newTheme];
 	
 	// Select and show the new theme
-	NSUInteger index = [[themesArrayController arrangedObjects] indexOfObject:newTheme];
-	[themesTableView selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
-				 byExtendingSelection:NO];
-	[themesTableView scrollRowToVisible:index];
+	[self selectAndShowCollectionViewItemAtIndex:[[themesArrayController arrangedObjects] indexOfObject:newTheme]];
+}
+
+- (void)selectAndShowCollectionViewItemAtIndex:(NSUInteger)index
+{
+	// Select the tiem
+	[themesCollectionView setSelectionIndexes:[NSIndexSet indexSetWithIndex:index]];
+	
+	// Scroll to the selected index
+	NSRect itemRect;
+	itemRect.size = [[[themesCollectionView itemPrototype] view] frame].size;
+	itemRect.origin = NSMakePoint((index * itemRect.size.width), 0);
+	[[themesScrollView contentView] scrollRectToVisible:itemRect];
+	[themesScrollView reflectScrolledClipView:[themesScrollView contentView]];
 }
 
 @end
