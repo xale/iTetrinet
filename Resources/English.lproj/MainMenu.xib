@@ -700,7 +700,7 @@
 				<string key="NSName">_NSMainMenu</string>
 			</object>
 			<object class="NSWindowTemplate" id="1048072440">
-				<int key="NSWindowStyleMask">7</int>
+				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{543, 345}, {850, 713}}</string>
 				<int key="NSWTFlags">1948255232</int>
@@ -948,7 +948,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 					</object>
 				</object>
-				<string key="NSWindowContentMaxSize">{850, 713}</string>
+				<string key="NSWindowContentMaxSize">{1.79769e+308, 1.79769e+308}</string>
 				<string key="NSWindowContentMinSize">{850, 713}</string>
 				<object class="NSView" key="NSWindowView" id="396637928">
 					<reference key="NSNextResponder"/>
@@ -1719,7 +1719,7 @@
 											</object>
 											<object class="NSScrollView" id="411799953">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">258</int>
+												<int key="NSvFlags">273</int>
 												<object class="NSMutableArray" key="NSSubviews">
 													<bool key="EncodedWithXMLCoder">YES</bool>
 													<object class="NSClipView" id="74575719">
@@ -1840,7 +1840,7 @@
 											</object>
 											<object class="NSTextField" id="375863373">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">268</int>
+												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{262, 376}, {144, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
@@ -1856,14 +1856,14 @@
 											</object>
 											<object class="NSCustomView" id="88024989">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">268</int>
+												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{265, 418}, {138, 12}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<string key="NSClassName">IPSScalableLevelIndicator</string>
 											</object>
 											<object class="NSCustomView" id="29850154">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">268</int>
+												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{265, 396}, {138, 12}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<string key="NSClassName">IPSScalableLevelIndicator</string>
@@ -1902,7 +1902,7 @@
 											</object>
 											<object class="NSTextField" id="869715485">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">268</int>
+												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{262, 425}, {144, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
@@ -1918,7 +1918,7 @@
 											</object>
 											<object class="NSTextField" id="914783506">
 												<reference key="NSNextResponder" ref="1052209441"/>
-												<int key="NSvFlags">268</int>
+												<int key="NSvFlags">265</int>
 												<string key="NSFrame">{{262, 403}, {144, 14}}</string>
 												<reference key="NSSuperview" ref="1052209441"/>
 												<bool key="NSEnabled">YES</bool>
@@ -2854,7 +2854,7 @@
 						</object>
 						<object class="NSTextField" id="834459839">
 							<reference key="NSNextResponder" ref="396637928"/>
-							<int key="NSvFlags">268</int>
+							<int key="NSvFlags">290</int>
 							<string key="NSFrame">{{25, 5}, {773, 14}}</string>
 							<reference key="NSSuperview" ref="396637928"/>
 							<bool key="NSEnabled">YES</bool>
@@ -2871,7 +2871,7 @@
 						</object>
 						<object class="NSProgressIndicator" id="744756666">
 							<reference key="NSNextResponder" ref="396637928"/>
-							<int key="NSvFlags">1292</int>
+							<int key="NSvFlags">1316</int>
 							<object class="NSPSMatrix" key="NSDrawMatrix"/>
 							<string key="NSFrame">{{4, 4}, {16, 16}}</string>
 							<reference key="NSSuperview" ref="396637928"/>
@@ -2885,7 +2885,7 @@
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1058}}</string>
 				<string key="NSMinSize">{850, 791}</string>
-				<string key="NSMaxSize">{850, 791}</string>
+				<string key="NSMaxSize">{1.79769e+308, 1.79769e+308}</string>
 			</object>
 			<object class="NSWindowTemplate" id="262931833">
 				<int key="NSWindowStyleMask">7</int>
@@ -8119,7 +8119,7 @@
 					<string>{{129, 87}, {850, 713}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
-					<boolean value="YES"/>
+					<boolean value="NO"/>
 					<boolean value="YES"/>
 					<string>{850, 713}</string>
 					<string>{850, 713}</string>
