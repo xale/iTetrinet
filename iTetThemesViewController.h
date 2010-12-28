@@ -16,8 +16,7 @@
 @interface iTetThemesViewController : iTetPreferencesViewController
 {
 	IBOutlet iTetThemesArrayController* themesArrayController;
-	IBOutlet NSCollectionView* themesCollectionView;
-	IBOutlet NSScrollView* themesScrollView;
+	IBOutlet NSTableView* themesTableView;
 	NSIndexSet* initialThemeSelection;
 }
 
