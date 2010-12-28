@@ -41,7 +41,7 @@
 }
 
 #pragma mark -
-#pragma mark Drawing
+#pragma mark Drawing/Geometry
 
 - (void)drawRect:(NSRect)dirtyRect
 {
@@ -119,6 +119,15 @@ done:;
 	[graphicsContext restoreGraphicsState];
 }
 
+- (NSAffineTransform*)scaleTransformFromBackgroundSize:(NSSize)backgroundSize
+											toViewSize:(NSSize)viewSize
+{
+	NSAffineTransform* newTransform = [NSAffineTransform transform];
+	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
+					   yBy:(viewSize.height / backgroundSize.height)];
+	return newTransform;
+}
+
 #pragma mark -
 #pragma mark Accessors
 
@@ -176,23 +185,41 @@ done:;
 	if ([newTheme isEqual:theme])
 		return;
 	
-	[super setTheme:newTheme];
-	
 	// Recalculate the graphics context transform, based on the theme's background size
-	NSAffineTransform* newTransform = [NSAffineTransform transform];
-	NSSize viewSize = [self bounds].size;
-	NSSize backgroundSize = [[newTheme background] size];
-	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
-					   yBy:(viewSize.height / backgroundSize.height)];
+	NSAffineTransform* newTransform = [self scaleTransformFromBackgroundSize:[[newTheme background] size]
+																  toViewSize:[self bounds].size];
 	[self setViewScaleTransform:newTransform];
 	[newTransform invert];
 	[self setReverseTransform:newTransform];
 	
-	// Just to be safe...
-	[self setNeedsDisplay:YES];
+	// Update the theme
+	[super setTheme:newTheme];
 }
 
 @synthesize viewScaleTransform;
 @synthesize reverseTransform;
+
+- (void)setFrame:(NSRect)newFrame
+{
+	// Ensure that the view maintains its aspect ratio
+	/* FIXME: this causes the view to gradually decrease in size; the view's _bounds_ should be updated instead
+	CGFloat fieldAspect = ((CGFloat)ITET_FIELD_WIDTH / (CGFloat)ITET_FIELD_HEIGHT);
+	if (newFrame.size.width > (newFrame.size.height * fieldAspect))
+		newFrame.size.width = (newFrame.size.height * fieldAspect);
+	else if (newFrame.size.height > (newFrame.size.width / fieldAspect))
+		newFrame.size.height = (newFrame.size.width / fieldAspect);
+	 */
+	
+	// Recalculate the graphics context transform, based on the view's new frame
+	// FIXME: this should be based on the new computed bounds, above
+	NSAffineTransform* newTransform = [self scaleTransformFromBackgroundSize:[[[self theme] background] size]
+																  toViewSize:newFrame.size];
+	[self setViewScaleTransform:newTransform];
+	[newTransform invert];
+	[self setReverseTransform:newTransform];
+	
+	// Update the frame
+	[super setFrame:newFrame];
+}
 
 @end
