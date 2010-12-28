@@ -987,8 +987,7 @@ willDisconnectWithError:(NSError*)error
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetConnectingStatusLabelFormat, [currentServer serverAddress]]];
 			
-			// Reveal and start the progress indicator
-			[connectionProgressIndicator setHidden:NO];
+			// Start the progress indicator
 			[connectionProgressIndicator startAnimation:self];
 			
 			break;
@@ -1005,9 +1004,8 @@ willDisconnectWithError:(NSError*)error
 			break;
 			
 		case canceled:
-			// Stop and hide the progress indicator
+			// Stop the progress indicator
 			[connectionProgressIndicator stopAnimation:self];
-			[connectionProgressIndicator setHidden:YES];
 			
 			// Change the connection status label
 			[connectionStatusLabel setStringValue:iTetConnectionCanceledStatusLabel];
@@ -1019,9 +1017,8 @@ willDisconnectWithError:(NSError*)error
 			break;
 			
 		case connected:
-			// Stop and hide the progress indicator
+			// Stop the progress indicator
 			[connectionProgressIndicator stopAnimation:self];
-			[connectionProgressIndicator setHidden:YES];
 			
 			// Change the connection toolbar and menu items to "disconnect" actions
 			[connectionButton setLabel:iTetDisconnectButtonTitle];
@@ -1048,13 +1045,9 @@ willDisconnectWithError:(NSError*)error
 			break;
 			
 		case connectionError:
-			// If we were connecting, stop and hide the progress indicator
+			// If we were connecting, stop the progress indicator
 			if ((connectionState == connecting) || (connectionState == login))
-			{
-				// Stop and hide the progress indicator
 				[connectionProgressIndicator stopAnimation:self];
-				[connectionProgressIndicator setHidden:YES];
-			}
 			
 			// If the connection was open when the error occurred, append a status message
 			if ((connectionState == connected) || (connectionState == login))
