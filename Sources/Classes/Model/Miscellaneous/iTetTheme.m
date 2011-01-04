@@ -580,9 +580,11 @@ shouldProceedAfterError:(NSError*)error
 		return [specialImages objectAtIndex:([cellAsSpecial indexNumber] - 1)];
 	
 	// Invalid cell type
-	NSAssert1(NO, @"image requested for invalid cell type: %d", cellType);
-	
-	return nil;
+	NSString* excDesc = [NSString stringWithFormat:@"image requested for invalid cell type: %d", cellType];
+	NSException* cellTypeException = [NSException exceptionWithName:@"iTetInvalidCellTypeException"
+															 reason:excDesc
+														   userInfo:nil];
+	@throw cellTypeException;
 }
 
 @synthesize preview;

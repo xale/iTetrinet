@@ -1124,8 +1124,13 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 			break;
 			
 		default:
-			NSAssert2(NO, @"GameViewController -activateSpecial: called with invalid special type: %c (%d)", special, special);
-			break;
+		{
+			NSString* excDesc = [NSString stringWithFormat:@"iTetGameViewController -activateSpecial: called with unknown special type: %c (%d)", special, special];
+			NSException* unknownSpecialException = [NSException exceptionWithName:@"iTetUnknownSpecialTypeException"
+																		   reason:excDesc
+																		 userInfo:nil];
+			@throw unknownSpecialException;
+		}
 	}
 	
 	// Check if the local player has lost the game
@@ -1658,8 +1663,13 @@ NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 				return [NSAttributedString attributedStringWithString:iTetQuadrupleClearEventDescription
 														   attributes:linesDescriptionAttributes];
 			default:
-				NSAssert1(NO, @"GameViewController -eventDescriptionForLines: called with invalid number of lines: %d", numLines);
-				return nil;
+			{
+				NSString* excDesc = [NSString stringWithFormat:@"iTetGameViewController -eventDescriptionForLines: called with invalid number of lines: %d", numLines];
+				NSException* invalidLinesException = [NSException exceptionWithName:@"iTetInvalidLinesCountException"
+																			 reason:excDesc
+																		   userInfo:nil];
+				@throw invalidLinesException;
+			}
 		}
 	}
 	

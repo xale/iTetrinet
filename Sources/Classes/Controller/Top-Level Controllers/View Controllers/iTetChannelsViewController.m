@@ -424,15 +424,18 @@ didConnectToHost:(NSString*)host
 			}
 			else
 			{
-				NSLog(@"warning: query-response-terminator received with no query in-progress");
+				NSLog(@"warning: query-response terminator received with no query in progress");
 			}
 			
 			break;
 		}	
 		default:
 		{
-			NSAssert2(NO, @"invalid message type detected in ChannelsViewController: %d; contents: %@", [message type], [message contents]);
-			break;
+			NSString* excDesc = [NSString stringWithFormat:@"unknown message type detected in iTetChannelsViewController -onSocket:didReadData:withTag: %d; contents: %@", [message type], [message contents]];
+			NSException* unknownMessageException = [NSException exceptionWithName:@"iTetUnknownMessageTypeException"
+																		   reason:excDesc
+																		 userInfo:nil];
+			@throw unknownMessageException;
 		}
 	}
 }

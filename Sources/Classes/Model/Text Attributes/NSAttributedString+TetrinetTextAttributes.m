@@ -105,7 +105,11 @@
 		}
 		else
 		{
-			NSAssert1(NO, @"unknown attribute key in NSAttributedString -initWithPlineMessageData: '%@'", attributeKey);
+			NSString* excDesc = [NSString stringWithFormat:@"unknown attribute key in NSAttributedString -initWithPlineMessageData: '%@'", attributeKey];
+			NSException* invalidAttributeKeyException = [NSException exceptionWithName:@"iTetInvalidAttributeKeyException"
+																			 reason:excDesc
+																		   userInfo:nil];
+			@throw invalidAttributeKeyException;
 		}
 		
 		// Increment the number of formatting bytes removed from the final message

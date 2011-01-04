@@ -136,9 +136,11 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"cellValue requested for invalid special type: %@ (%d)", [self displayName], type);
-	
-	return 0;
+	NSString* excDesc = [NSString stringWithFormat:@"cellValue requested for invalid special type: %@ (%d)", [self displayName], type];
+	NSException* invalidSpecialException = [NSException exceptionWithName:@"iTetInvalidSpecialTypeException"
+																   reason:excDesc
+																 userInfo:nil];
+	@throw invalidSpecialException;
 }
 
 - (uint8_t)indexNumber
@@ -167,9 +169,11 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"indexNumber requested for invalid special type: %@ (%d)", [self displayName], type);
-	
-	return 0;
+	NSString* excDesc = [NSString stringWithFormat:@"indexNumber requested for invalid special type: %@ (%d)", [self displayName], type];
+	NSException* invalidSpecialException = [NSException exceptionWithName:@"iTetInvalidSpecialTypeException"
+																   reason:excDesc
+																 userInfo:nil];
+	@throw invalidSpecialException;
 }
 
 - (NSString*)displayName
@@ -226,9 +230,11 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"messageName requested for invalid special type: %@ (%d)", [self displayName], type);
-	
-	return nil;
+	NSString* excDesc = [NSString stringWithFormat:@"messageName requested for invalid special type: %@ (%d)", [self displayName], type];
+	NSException* invalidSpecialException = [NSException exceptionWithName:@"iTetInvalidSpecialTypeException"
+																   reason:excDesc
+																 userInfo:nil];
+	@throw invalidSpecialException;
 }
 
 - (BOOL)isClassicStyleAdd
@@ -260,9 +266,11 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"numberOfClassicLines requested for invalid special type: %@ (%d)", [self displayName], type);
-	
-	return 0;
+	NSString* excDesc = [NSString stringWithFormat:@"numberOfClassicLines requested for invalid special type: %@ (%d)", [self displayName], type];
+	NSException* invalidSpecialException = [NSException exceptionWithName:@"iTetInvalidSpecialTypeException"
+																   reason:excDesc
+																 userInfo:nil];
+	@throw invalidSpecialException;
 }
 
 - (BOOL)hasPositiveEffect
@@ -286,9 +294,11 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 			break;
 	}
 	
-	NSAssert2(NO, @"hasPositiveEffect requested for invalid special type: %@ (%d)", [self displayName], type);
-	
-	return NO;
+	NSString* excDesc = [NSString stringWithFormat:@"hasPositiveEffect requested for invalid special type: %@ (%d)", [self displayName], type];
+	NSException* invalidSpecialException = [NSException exceptionWithName:@"iTetInvalidSpecialTypeException"
+																   reason:excDesc
+																 userInfo:nil];
+	@throw invalidSpecialException;
 }
 
 @end
