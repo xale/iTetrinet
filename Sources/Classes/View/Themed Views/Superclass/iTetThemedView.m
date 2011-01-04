@@ -65,12 +65,12 @@
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	if ([newTheme isEqual:theme])
-		return;
-	
+	// Retain / Release / Replace
+	[newTheme retain]
 	[theme release];
-	theme = [newTheme retain];
+	theme = newTheme;
 	
+	// Repaint
 	[self setNeedsDisplay:YES];
 }
 @synthesize theme;

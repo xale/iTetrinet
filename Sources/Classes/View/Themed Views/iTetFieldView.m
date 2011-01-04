@@ -182,9 +182,6 @@ done:;
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	if ([newTheme isEqual:theme])
-		return;
-	
 	// Recalculate the graphics context transform, based on the theme's background size
 	NSAffineTransform* newTransform = [self scaleTransformFromBackgroundSize:[[newTheme background] size]
 																  toViewSize:[self bounds].size];
