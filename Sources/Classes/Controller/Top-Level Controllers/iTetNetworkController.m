@@ -188,8 +188,13 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		case canceled:
 		case connectionError:
 		case disconnecting:
-			NSAssert1(NO, @"NetworkController -openCloseConnection: called with invalid connection state: %d", [self connectionState]);
-			break;
+		{
+			NSString* excDesc = [NSString stringWithFormat:@"NetworkController -openCloseConnection: called with invalid connection state: %d", [self connectionState]];
+			NSException* invalidStateException = [NSException exceptionWithName:NSInternalInconsistencyException
+																		 reason:excDesc
+																	   userInfo:nil];
+			@throw invalidStateException;
+		}
 	}
 }
 
@@ -766,8 +771,13 @@ willDisconnectWithError:(NSError*)error
 			break;
 		}
 		default:
-			NSAssert2(NO, @"invalid message type in NetworkController -messageReceived: %d; contents: %@", type, [message contents]);
-			break;
+		{
+			NSString* excDesc = [NSString stringWithFormat:@"unknown message type in NetworkController -messageReceived: %d; contents: %@", type, [message contents]];
+			NSException* unknownMessageException = [NSException exceptionWithName:@"iTetUnknownMessageTypeException"
+																		   reason:excDesc
+																		 userInfo:nil];
+			@throw unknownMessageException;
+		}
 	}
 }
 

@@ -113,9 +113,11 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 											   forKey:NSUnderlineStyleAttributeName];
 	}
 	
-	NSAssert1(NO, @"invalid attribute code in iTetTextAttributes +chatTextAttributeForCode: '%d'", attributeCode);
-	
-	return nil;
+	NSString* excDesc = [NSString stringWithFormat:@"invalid attribute code in iTetTextAttributes +chatTextAttributeForCode: '%d'", attributeCode];
+	NSException* invalidAttributeException = [NSException exceptionWithName:@"iTetInvalidTextAttributeException"
+																	 reason:excDesc
+																   userInfo:nil];
+	@throw invalidAttributeException;
 }
 
 #pragma mark -

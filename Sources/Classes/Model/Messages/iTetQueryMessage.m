@@ -86,12 +86,7 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	// Split into space-separated components, stripping quotation marks but preserving quoted ranges as single components
 	NSArray* messageTokens = [messageContents quotedComponentsSeparatedByString:@" "
 																	stripQuotes:YES];
-	if (messageTokens == nil)
-	{
-		NSAssert1(NO, @"unbalanced quotes in query-reply message: %@", messageContents);
-		[self release];
-		return nil;
-	}
+	NSAssert1((messageTokens != nil), @"unbalanced quotes in query-reply message: %@", messageContents);
 	
 	contents = [[NSMutableDictionary alloc] initWithCapacity:[messageTokens count]];
 	NSNumberFormatter* decFormat = [[[NSNumberFormatter alloc] init] autorelease];
@@ -176,9 +171,11 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 	// Invalid number of tokens
 	else
 	{
-		NSAssert1(NO, @"invalid number of tokens in query-reply message: %@", messageContents);
-		[self release];
-		return nil;
+		NSString* excDesc = [NSString stringWithFormat:@"invalid number of tokens in query-reply message: %@", messageContents];
+		NSException* unknownMessageException = [NSException exceptionWithName:@"iTetUnknownMessageTypeException"
+																	   reason:excDesc
+																	 userInfo:nil];
+		@throw unknownMessageException;
 	}
 	
 	return self;
@@ -198,8 +195,13 @@ NSString* const iTetQueryMessagePlayerAuthLevelKey =	@"iTetPlayerAuthLevel";
 			return [iTetPlayerListQueryMessageFormat messageData];
 			
 		default:
-			NSAssert1(NO, @"rawMessageData called for invalid query message type: %d", [self type]);
-			break;
+		{
+			NSString* excDesc = [NSString stringWithFormat:@"rawMessageData called for invalid query message type: %d", [self type]];
+			NSException* invalidMessageTypeException = [NSException exceptionWithName:@"iTetInvalidMessageTypeException"
+																			   reason:excDesc
+																			 userInfo:nil];
+			@throw invalidMessageTypeException;
+		}
 	}
 	
 	return nil;

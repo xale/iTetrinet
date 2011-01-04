@@ -162,9 +162,11 @@ BOOL iTetMessageTypeHasPlayerNumberFirst(iTetMessageType t)
 	NSNumber* typeSearchResult = [[iTetMessage messageDesignations] objectForKey:messageDesignation];
 	if (typeSearchResult == nil)
 	{
-		NSAssert1(NO, @"unknown message designation: %@", messageDesignation);
-		[self release];
-		return nil;
+		NSString* excDesc = [NSString stringWithFormat:@"unknown message designation: %@", messageDesignation];
+		NSException* unknownMessageException = [NSException exceptionWithName:@"iTetUnknownMessageTypeException"
+																	   reason:excDesc
+																	 userInfo:nil];
+		@throw unknownMessageException;
 	}
 	type = [typeSearchResult intValue];
 	contents = [[NSMutableDictionary alloc] init];
@@ -447,8 +449,11 @@ done:;
 		}	
 		default:
 		{
-			NSAssert1(NO, @"rawMessageData called on message of invalid type: %d", [self type]);
-			return nil;
+			NSString* excDesc = [NSString stringWithFormat:@"rawMessageData called on message of invalid type: %d", [self type]];
+			NSException* invalidMessageTypeException = [NSException exceptionWithName:@"iTetInvalidMessageTypeException"
+																			   reason:excDesc
+																			 userInfo:nil];
+			@throw invalidMessageTypeException;
 		}
 	}
 	

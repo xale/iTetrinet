@@ -142,8 +142,13 @@ static IPSRegion ITET_T_BLOCK_RECTS[4] = {
 		case T_block:
 			return ITET_T_BLOCK_RECTS[orientation];
 		default:
-			NSAssert1(NO, @"iTetBlock -boundingRegion called with invalid block type: %d", type);
-			break;
+		{
+			NSString* excDesc = [NSString stringWithFormat:@"iTetBlock -boundingRegion called with invalid block type: %d", type];
+			NSException* invalidBlockException = [NSException exceptionWithName:@"iTetInvalidBlockTypeException"
+																		 reason:excDesc
+																	   userInfo:nil];
+			@throw invalidBlockException;
+		}
 	}
 	
 	return IPSEmptyRegion;
