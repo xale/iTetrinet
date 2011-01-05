@@ -11,6 +11,14 @@
 #import "iTetFieldView.h"
 #import "iTetField.h"
 
+@interface iTetFieldView (Private)
+
+- (NSRect)fieldFrameForViewSize:(NSSize)viewSize;
+- (NSAffineTransform*)scaleTransformForBackgroundOfSize:(NSSize)backgroundSize;
+- (void)updateViewTransforms;
+
+@end
+
 @implementation iTetFieldView
 
 + (void)initialize
@@ -18,17 +26,18 @@
 	[self exposeBinding:@"field"];
 }
 
-- (void)awakeFromNib
+- (id)initWithFrame:(NSRect)frame
 {
-	// Calculate the graphics context transform (and its inverse)
-	NSAffineTransform* newTransform = [NSAffineTransform transform];
-	NSSize viewSize = [self bounds].size;
-	NSSize backgroundSize = [[[self theme] background] size];
-	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
-					   yBy:(viewSize.height / backgroundSize.height)];
-	[self setViewScaleTransform:newTransform];
-	[newTransform invert];
-	[self setReverseTransform:newTransform];
+	if (![super initWithFrame:frame])
+		return nil;
+	
+	// Calculate the largest subrect of the view with an aspect ratio appropriate for the field
+	fieldFrame = [self fieldFrameForViewSize:frame.size];
+	
+	// Calculate the view's graphics transform
+	[self updateViewTransforms];
+	
+	return self;
 }
 
 - (void)dealloc
@@ -43,8 +52,18 @@
 #pragma mark -
 #pragma mark Drawing/Geometry
 
+- (BOOL)isOpaque
+{
+	return NO;
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
+	// Clip the dirty rect to the view's field-frame
+	NSRect fieldDirtyRect = NSIntersectionRect(dirtyRect, [self fieldFrame]);
+	if (NSIsEmptyRect(fieldDirtyRect))
+		return;
+	
 	// Push the graphics context onto the stack
 	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
 	[graphicsContext saveGraphicsState];
@@ -67,8 +86,8 @@
 	
 	// Determine the region of the background to be drawn
 	NSRect backgroundRect;
-	backgroundRect.origin = [[self reverseTransform] transformPoint:dirtyRect.origin];
-	backgroundRect.size = [[self reverseTransform] transformSize:dirtyRect.size];
+	backgroundRect.origin = [[self reverseTransform] transformPoint:fieldDirtyRect.origin];
+	backgroundRect.size = [[self reverseTransform] transformSize:fieldDirtyRect.size];
 	
 	// Draw the background for the dirty section of the view
 	[background drawInRect:backgroundRect
@@ -79,10 +98,10 @@
 	// Determine the region of the field that needs to be drawn
 	NSSize cellSize = [[self theme] cellSize];
 	IPSRegion dirtyRegion;
-	dirtyRegion.origin.col = floor(backgroundRect.origin.x / cellSize.width);
-	dirtyRegion.origin.row = floor(backgroundRect.origin.y / cellSize.height);
-	dirtyRegion.area.width = ceil(backgroundRect.size.width / cellSize.width);
-	dirtyRegion.area.height = ceil(backgroundRect.size.height / cellSize.height);
+	dirtyRegion.origin.col = MAX(floor(backgroundRect.origin.x / cellSize.width), 0);
+	dirtyRegion.origin.row = MAX(floor(backgroundRect.origin.y / cellSize.height), 0);
+	dirtyRegion.area.width = MIN(ceil(backgroundRect.size.width / cellSize.width), ITET_FIELD_WIDTH);
+	dirtyRegion.area.height = MIN(ceil(backgroundRect.size.height / cellSize.height), ITET_FIELD_HEIGHT);
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
@@ -119,22 +138,56 @@ done:;
 	[graphicsContext restoreGraphicsState];
 }
 
-- (NSAffineTransform*)scaleTransformFromBackgroundSize:(NSSize)backgroundSize
-											toViewSize:(NSSize)viewSize
+- (NSRect)fieldFrameForViewSize:(NSSize)viewSize
 {
+	// Get the aspect ratio from the field's dimensions
+	CGFloat fieldAspect = ((CGFloat)ITET_FIELD_WIDTH / (CGFloat)ITET_FIELD_HEIGHT);
+	
+	// Calculate the largest possible subrect of the view that maintains the aspect ratio
+	NSRect newFieldFrame = NSZeroRect;
+	if (viewSize.width > (viewSize.height * fieldAspect))
+	{
+		newFieldFrame.size.width = (viewSize.height * fieldAspect);
+		newFieldFrame.size.height = viewSize.height;
+	}
+	else if (viewSize.height > (viewSize.width / fieldAspect))
+	{
+		newFieldFrame.size.width = viewSize.width;
+		newFieldFrame.size.height = (viewSize.width / fieldAspect);
+	}
+	
+	// FIXME: center field frame in view
+	
+	return newFieldFrame;
+}
+
+- (NSAffineTransform*)scaleTransformForBackgroundOfSize:(NSSize)backgroundSize
+{
+	// Create an affine transform
 	NSAffineTransform* newTransform = [NSAffineTransform transform];
-	[newTransform scaleXBy:(viewSize.width / backgroundSize.width)
-					   yBy:(viewSize.height / backgroundSize.height)];
+	
+	// Scale from the size of the background to the size of the field as drawn in the view
+	[newTransform scaleXBy:([self fieldFrame].size.width / backgroundSize.width)
+					   yBy:([self fieldFrame].size.height / backgroundSize.height)];
+	
+	// Translate from the view's origin to the origin of the field
+	[newTransform translateXBy:[self fieldFrame].origin.x
+						   yBy:[self fieldFrame].origin.y];
+	
 	return newTransform;
+}
+
+- (void)updateViewTransforms
+{
+	// Calculate the graphics context transform (and its inverse)
+	NSAffineTransform* newTransform = [self scaleTransformForBackgroundOfSize:[[[self theme] background] size]];
+	[self setViewScaleTransform:newTransform];
+	[newTransform invert];
+	[self setReverseTransform:newTransform];
 }
 
 #pragma mark -
 #pragma mark Accessors
-
-- (BOOL)isOpaque
-{
-	return YES;
-}
 
 - (void)setField:(iTetField*)newField
 {
@@ -180,17 +233,15 @@ done:;
 }
 @synthesize field;
 
+@synthesize fieldFrame;
+
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	// Recalculate the graphics context transform, based on the theme's background size
-	NSAffineTransform* newTransform = [self scaleTransformFromBackgroundSize:[[newTheme background] size]
-																  toViewSize:[self bounds].size];
-	[self setViewScaleTransform:newTransform];
-	[newTransform invert];
-	[self setReverseTransform:newTransform];
-	
 	// Update the theme
 	[super setTheme:newTheme];
+	
+	// Recalculate the graphics context transform, based on the theme's background size
+	[self updateViewTransforms];
 }
 
 @synthesize viewScaleTransform;
@@ -198,22 +249,11 @@ done:;
 
 - (void)setFrame:(NSRect)newFrame
 {
-	// Ensure that the view maintains its aspect ratio
-	/* FIXME: this causes the view to gradually decrease in size; the view's _bounds_ should be updated instead
-	CGFloat fieldAspect = ((CGFloat)ITET_FIELD_WIDTH / (CGFloat)ITET_FIELD_HEIGHT);
-	if (newFrame.size.width > (newFrame.size.height * fieldAspect))
-		newFrame.size.width = (newFrame.size.height * fieldAspect);
-	else if (newFrame.size.height > (newFrame.size.width / fieldAspect))
-		newFrame.size.height = (newFrame.size.width / fieldAspect);
-	 */
+	// Recalculate the subrect used for the frame of the field
+	[self setFieldFrame:[self fieldFrameForViewSize:newFrame.size]];
 	
-	// Recalculate the graphics context transform, based on the view's new frame
-	// FIXME: this should be based on the new computed bounds, above
-	NSAffineTransform* newTransform = [self scaleTransformFromBackgroundSize:[[[self theme] background] size]
-																  toViewSize:newFrame.size];
-	[self setViewScaleTransform:newTransform];
-	[newTransform invert];
-	[self setReverseTransform:newTransform];
+	// Recalculate the graphics context transform, based on the new frame
+	[self updateViewTransforms];
 	
 	// Update the frame
 	[super setFrame:newFrame];

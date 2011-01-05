@@ -18,11 +18,13 @@
 @interface iTetFieldView : iTetThemedView
 {
 	iTetField* field;
+	NSRect fieldFrame;
 	NSAffineTransform* viewScaleTransform;
 	NSAffineTransform* reverseTransform;
 }
 
 @property (readwrite, nonatomic, retain) iTetField* field;
+@property (readwrite, assign) NSRect fieldFrame;
 @property (readwrite, copy) NSAffineTransform* viewScaleTransform;
 @property (readwrite, copy) NSAffineTransform* reverseTransform;
 
