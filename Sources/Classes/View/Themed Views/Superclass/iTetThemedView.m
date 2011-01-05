@@ -66,7 +66,7 @@
 - (void)setTheme:(iTetTheme*)newTheme
 {
 	// Retain / Release / Replace
-	[newTheme retain]
+	[newTheme retain];
 	[theme release];
 	theme = newTheme;
 	
