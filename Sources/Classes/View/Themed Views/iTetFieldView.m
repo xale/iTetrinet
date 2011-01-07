@@ -98,17 +98,17 @@
 	// Determine the region of the field that needs to be drawn
 	NSSize cellSize = [[self theme] cellSize];
 	IPSRegion dirtyRegion;
-	dirtyRegion.origin.col = MAX(floor(backgroundRect.origin.x / cellSize.width), 0);
-	dirtyRegion.origin.row = MAX(floor(backgroundRect.origin.y / cellSize.height), 0);
-	dirtyRegion.area.width = MIN(ceil(backgroundRect.size.width / cellSize.width), ITET_FIELD_WIDTH);
-	dirtyRegion.area.height = MIN(ceil(backgroundRect.size.height / cellSize.height), ITET_FIELD_HEIGHT);
+	dirtyRegion.origin.col = floor(backgroundRect.origin.x / cellSize.width);
+	dirtyRegion.origin.row = floor(backgroundRect.origin.y / cellSize.height);
+	dirtyRegion.area.width = ceil(backgroundRect.size.width / cellSize.width);
+	dirtyRegion.area.height = ceil(backgroundRect.size.height / cellSize.height);
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
 	NSPoint drawPoint;
-	for (NSInteger row = IPSMinRow(dirtyRegion); row <= IPSMaxRow(dirtyRegion); row++)
+	for (NSInteger row = MAX(IPSMinRow(dirtyRegion), 0); row <= MIN(IPSMaxRow(dirtyRegion), (ITET_FIELD_HEIGHT - 1)); row++)
 	{
-		for (NSInteger col = IPSMinCol(dirtyRegion); col <= IPSMaxCol(dirtyRegion); col++)
+		for (NSInteger col = MAX(IPSMinCol(dirtyRegion), 0); col <= MIN(IPSMaxCol(dirtyRegion), (ITET_FIELD_WIDTH - 1)); col++)
 		{
 			// Get the cell type
 			uint8_t cell = (*fieldContents)[row][col];
