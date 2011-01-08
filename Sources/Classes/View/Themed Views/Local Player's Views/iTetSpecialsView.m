@@ -69,6 +69,7 @@
 	
 	// Add lines to deliniate spots for specials
 	[[NSColor lightGrayColor] setStroke];
+	[NSBezierPath setDefaultLineWidth:borderWidth];
 	CGFloat x = backgroundRect.origin.x + backgroundRect.size.height;
 	for (; x < NSMaxX(backgroundRect); x += backgroundRect.size.height)
 	{
