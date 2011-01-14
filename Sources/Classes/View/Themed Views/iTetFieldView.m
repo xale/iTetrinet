@@ -144,7 +144,7 @@ done:;
 	CGFloat fieldAspect = ((CGFloat)ITET_FIELD_WIDTH / (CGFloat)ITET_FIELD_HEIGHT);
 	
 	// Calculate the largest possible subrect of the view that maintains the aspect ratio
-	NSRect newFieldFrame = NSZeroRect;
+	NSRect newFieldFrame;
 	if (viewSize.width > (viewSize.height * fieldAspect))
 	{
 		newFieldFrame.size.width = (viewSize.height * fieldAspect);
@@ -156,7 +156,9 @@ done:;
 		newFieldFrame.size.height = (viewSize.width / fieldAspect);
 	}
 	
-	// FIXME: center field frame in view
+	// Center the field frame in the view
+	newFieldFrame.origin.x = ((viewSize.width - newFieldFrame.size.width) / 2);
+	newFieldFrame.origin.y = ((viewSize.height - newFieldFrame.size.height) / 2);
 	
 	return newFieldFrame;
 }
@@ -166,13 +168,13 @@ done:;
 	// Create an affine transform
 	NSAffineTransform* newTransform = [NSAffineTransform transform];
 	
-	// Scale from the size of the background to the size of the field as drawn in the view
-	[newTransform scaleXBy:([self fieldFrame].size.width / backgroundSize.width)
-					   yBy:([self fieldFrame].size.height / backgroundSize.height)];
-	
 	// Translate from the view's origin to the origin of the field
 	[newTransform translateXBy:[self fieldFrame].origin.x
 						   yBy:[self fieldFrame].origin.y];
+	
+	// Scale from the size of the background to the size of the field as drawn in the view
+	[newTransform scaleXBy:([self fieldFrame].size.width / backgroundSize.width)
+					   yBy:([self fieldFrame].size.height / backgroundSize.height)];
 	
 	return newTransform;
 }
