@@ -64,10 +64,6 @@
 	if (NSIsEmptyRect(fieldDirtyRect))
 		return;
 	
-	// Push the graphics context onto the stack
-	NSGraphicsContext* graphicsContext = [NSGraphicsContext currentContext];
-	[graphicsContext saveGraphicsState];
-	
 	// Apply our scale transform to the graphics context
 	[[self viewTransform] concat];
 	
@@ -134,8 +130,8 @@
 	
 done:;
 	
-	// Pop the graphics context
-	[graphicsContext restoreGraphicsState];
+	// Revert the graphics context
+	[[self reverseTransform] concat];
 }
 
 - (NSRect)fieldFrameForViewSize:(NSSize)viewSize

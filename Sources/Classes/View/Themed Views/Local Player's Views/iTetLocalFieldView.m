@@ -46,10 +46,6 @@
 	NSSize cellSize = [[self theme] cellSize];
 	NSPoint blockDrawLocation = NSMakePoint((blockPosition.col * cellSize.width), (blockPosition.row * cellSize.height));
 	
-	// Push the graphics context onto the stack
-	NSGraphicsContext* context = [NSGraphicsContext currentContext];
-	[context saveGraphicsState];
-	
 	// Apply our scale transform to the graphics context
 	[[self viewTransform] concat];
 	
@@ -59,8 +55,8 @@
 				  operation:NSCompositeSourceOver
 				   fraction:1.0];
 	
-	// Pop the graphics context
-	[context restoreGraphicsState];
+	// Revert the graphics context
+	[[self reverseTransform] concat];
 }
 
 #pragma mark -
