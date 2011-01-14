@@ -43,7 +43,7 @@
 - (void)dealloc
 {
 	[field release];
-	[viewScaleTransform release];
+	[viewTransform release];
 	[reverseTransform release];
 	
 	[super dealloc];
@@ -69,7 +69,7 @@
 	[graphicsContext saveGraphicsState];
 	
 	// Apply our scale transform to the graphics context
-	[[self viewScaleTransform] concat];
+	[[self viewTransform] concat];
 	
 	// Get the background image from the theme
 	NSImage* background = [[self theme] background];
@@ -183,7 +183,7 @@ done:;
 {
 	// Calculate the graphics context transform (and its inverse)
 	NSAffineTransform* newTransform = [self scaleTransformForBackgroundOfSize:[[[self theme] background] size]];
-	[self setViewScaleTransform:newTransform];
+	[self setViewTransform:newTransform];
 	[newTransform invert];
 	[self setReverseTransform:newTransform];
 }
@@ -228,8 +228,8 @@ done:;
 	dirtyRect.size.height = (fieldDirtyRegion.area.height * cellSize.height);
 	
 	// Convert the rect to the transformed coordinate system
-	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
 	
 	[self setNeedsDisplayInRect:dirtyRect];
 }
@@ -246,7 +246,7 @@ done:;
 	[self updateViewTransforms];
 }
 
-@synthesize viewScaleTransform;
+@synthesize viewTransform;
 @synthesize reverseTransform;
 
 - (void)setFrame:(NSRect)newFrame

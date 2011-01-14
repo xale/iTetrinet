@@ -51,7 +51,7 @@
 	[context saveGraphicsState];
 	
 	// Apply our scale transform to the graphics context
-	[[self viewScaleTransform] concat];
+	[[self viewTransform] concat];
 	
 	// Draw the block image to the view
 	[blockImage drawAtPoint:blockDrawLocation
@@ -119,8 +119,8 @@
 	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
 	
 	// Convert to the transformed coordinate system
-	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
 	[self setNeedsDisplayInRect:dirtyRect];
 	
 	// Calculate the rect of the view occupied by the new block
@@ -132,8 +132,8 @@
 	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
 	
 	// Convert to the transformed coordinate system
-	dirtyRect.origin = [[self viewScaleTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewScaleTransform] transformSize:dirtyRect.size];
+	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
 	[self setNeedsDisplayInRect:dirtyRect];
 }
 @synthesize block;
