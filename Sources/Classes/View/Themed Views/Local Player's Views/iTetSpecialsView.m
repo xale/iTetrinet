@@ -139,9 +139,6 @@
 
 - (void)setTheme:(iTetTheme*)newTheme
 {
-	if ([newTheme isEqual:theme])
-		return;
-	
 	[super setTheme:newTheme];
 	
 	// Recalculate the graphics context transform, based on the theme's cellSize
@@ -151,9 +148,6 @@
 						   yBy:backgroundRect.origin.y];
 	[newTransform scaleBy:(backgroundRect.size.height / [[self theme] cellSize].height)];
 	[self setViewScaleTransform:newTransform];
-	
-	// Just to be safe...
-	[self setNeedsDisplay:YES];
 }
 
 - (void)setSpecials:(NSArray*)newSpecials
