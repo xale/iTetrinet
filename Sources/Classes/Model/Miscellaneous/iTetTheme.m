@@ -158,7 +158,7 @@ NSString* const iTetThemeFileImageNameSectionIdentifier =	@"blocks=";
 NSString* const iTetThemeFileBlockSizeSectionIdentifier =	@"blocksize=";
 NSString* const iTetThemeFileNameSectionIdentifier =		@"name=";
 NSString* const iTetThemeFileAuthorSectionIdentifier =		@"author=";
-NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"decription=";
+NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 
 - (BOOL)parseThemeFile
 {
