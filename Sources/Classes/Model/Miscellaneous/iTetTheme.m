@@ -315,20 +315,16 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"decription=";
 	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
-#define PREVIEW_HEIGHT (225)
+#define ITET_THEME_PREVIEW_HEIGHT (225)
 
 - (void)createPreview
 {
 	// Determine the size of the background when scaled to fit the preview
 	CGFloat bgRatio = ([background size].width / [background size].height);
-	NSSize bgSize;
-	bgSize.height = 225;
-	bgSize.width = (bgSize.height * bgRatio);
+	NSSize bgSize = NSMakeSize((ITET_THEME_PREVIEW_HEIGHT * bgRatio), ITET_THEME_PREVIEW_HEIGHT);
 	
 	// Determine the full size of the preview
-	NSSize previewSize;
-	previewSize.height = bgSize.height;
-	previewSize.width = (ITET_DEF_CELL_WIDTH * 2) + bgSize.width;
+	NSSize previewSize = NSMakeSize(((ITET_DEF_CELL_WIDTH * 2) + bgSize.width), bgSize.height);
 	
 	// Release the old preview image (if it exists)
 	[preview release];
@@ -338,14 +334,11 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"decription=";
 	[preview lockFocus];
 	
 	// Draw the cell images
-	NSRect targetRect;
-	targetRect.size = NSMakeSize(ITET_DEF_CELL_WIDTH, ITET_DEF_CELL_HEIGHT);
-	targetRect.origin.x = 0;
+	NSRect targetRect = NSMakeRect(0, 0, ITET_DEF_CELL_WIDTH, ITET_DEF_CELL_HEIGHT);
 	NSInteger cellNum;
 	for (cellNum = 0; cellNum < ITET_NUM_CELL_COLORS; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		
 		[[cellImages objectAtIndex:cellNum] drawInRect:targetRect
 											  fromRect:NSZeroRect
 											 operation:NSCompositeCopy
@@ -357,7 +350,6 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"decription=";
 	for (cellNum = 0; cellNum < ITET_NUM_SPECIAL_TYPES; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		
 		[[specialImages objectAtIndex:cellNum] drawInRect:targetRect
 												 fromRect:NSZeroRect
 												operation:NSCompositeCopy
