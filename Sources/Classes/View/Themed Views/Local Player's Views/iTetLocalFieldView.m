@@ -12,6 +12,12 @@
 #import "iTetBlock+Drawing.h"
 #import "iTetKeyNamePair.h"
 
+@interface iTetLocalFieldView(Private)
+
+- (NSRect)viewRectOccupiedByBlock:(iTetBlock*)drawBlock;
+
+@end
+
 @implementation iTetLocalFieldView
 
 + (void)initialize
@@ -104,34 +110,32 @@
 	[block release];
 	block = newBlock;
 	
-	// Calculate the rect of the view occupied by the old block
-	IPSCoord blockPosition = [oldBlock position];
-	IPSRegion boundingRegion = [oldBlock boundingRegion];
-	NSSize cellSize = [[self theme] cellSize];
-	NSRect dirtyRect;
-	dirtyRect.origin.x = ((blockPosition.col + boundingRegion.origin.col) * cellSize.width);
-	dirtyRect.origin.y = ((blockPosition.row + boundingRegion.origin.row) * cellSize.height);
-	dirtyRect.size.width = (boundingRegion.area.width * cellSize.width);
-	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
+	// Redraw the rect of the field occupied by the old block
+	[self setNeedsDisplayInRect:[self viewRectOccupiedByBlock:oldBlock]];
 	
-	// Convert to the transformed coordinate system
-	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
-	[self setNeedsDisplayInRect:dirtyRect];
-	
-	// Calculate the rect of the view occupied by the new block
-	blockPosition = [newBlock position];
-	boundingRegion = [newBlock boundingRegion];
-	dirtyRect.origin.x = ((blockPosition.col + boundingRegion.origin.col) * cellSize.width);
-	dirtyRect.origin.y = ((blockPosition.row + boundingRegion.origin.row) * cellSize.height);
-	dirtyRect.size.width = (boundingRegion.area.width * cellSize.width);
-	dirtyRect.size.height = (boundingRegion.area.height * cellSize.height);
-	
-	// Convert to the transformed coordinate system
-	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
-	[self setNeedsDisplayInRect:dirtyRect];
+	// Redraw the rect of the view occupied by the new block
+	[self setNeedsDisplayInRect:[self viewRectOccupiedByBlock:newBlock]];
 }
 @synthesize block;
+
+- (NSRect)viewRectOccupiedByBlock:(iTetBlock*)drawBlock
+{
+	// Retrieve the size of a cell on the background and the dimensions of the block
+	NSSize cellSize = [[self theme] cellSize];
+	IPSCoord pos = [drawBlock position];
+	IPSRegion bounds = [drawBlock boundingRegion];
+	
+	// Calculate the occupied rect in the background's coordinate system
+	NSRect rect;
+	rect.origin.x = ((pos.col + bounds.origin.col) * cellSize.width);
+	rect.origin.y = ((pos.row + bounds.origin.row) * cellSize.height);
+	rect.size.width = (bounds.area.width * cellSize.width);
+	rect.size.height = (bounds.area.height * cellSize.height);
+	
+	// Convert to the view's coordinate system
+	rect.origin = [[self viewTransform] transformPoint:rect.origin];
+	rect.size = [[self viewTransform] transformSize:rect.size];
+	return rect;
+}
 
 @end
