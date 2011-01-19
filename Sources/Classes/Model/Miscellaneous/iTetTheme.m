@@ -26,8 +26,8 @@ NSArray* defaultThemes = nil;
 @interface iTetTheme (Private)
 
 - (BOOL)parseThemeFile;
-- (NSRange)rangeOfSection:(NSString*)sectionName
-			  inThemeFile:(NSString*)themeFileContents;
+- (NSRange)rangeOfSectionWithIdentifier:(NSString*)sectionName
+							inThemeFile:(NSString*)themeFileContents;
 - (void)loadImages;
 - (void)createPreview;
 
@@ -154,6 +154,12 @@ NSArray* defaultThemes = nil;
 #define iTetUnknownThemeAuthorPlaceholderName	NSLocalizedStringFromTable(@"Unknown", @"Themes", @"Placeholder for a theme loaded from a file that does not specify the theme's author")
 #define iTetBlankThemeDescriptionPlaceholder	NSLocalizedStringFromTable(@"No description provided.", @"Themes", @"Placeholder for a theme loaded from a file that does not provide a description of the theme")
 
+NSString* const iTetThemeFileImageNameSectionIdentifier =	@"blocks=";
+NSString* const iTetThemeFileBlockSizeSectionIdentifier =	@"blocksize=";
+NSString* const iTetThemeFileNameSectionIdentifier =		@"name=";
+NSString* const iTetThemeFileAuthorSectionIdentifier =		@"author=";
+NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"decription=";
+
 - (BOOL)parseThemeFile
 {
 	// Attempt to read the contents of the file
@@ -166,8 +172,8 @@ NSArray* defaultThemes = nil;
 		return NO;
 	
 	// Search for the name of the theme's image
-	NSRange dataRange = [self rangeOfSection:@"blocks="
-								 inThemeFile:themeFile];
+	NSRange dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileImageNameSectionIdentifier
+											   inThemeFile:themeFile];
 	if (dataRange.location == NSNotFound)
 		return NO;
 	
@@ -184,8 +190,8 @@ NSArray* defaultThemes = nil;
 	
 	// Search for the other data in the theme file
 	// Cell size
-	dataRange = [self rangeOfSection:@"blocksize="
-						 inThemeFile:themeFile];
+	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileBlockSizeSectionIdentifier
+									   inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 	{
 		CGFloat cell = [[themeFile substringWithRange:dataRange] floatValue];
@@ -197,24 +203,24 @@ NSArray* defaultThemes = nil;
 	}
 	
 	// Name
-	dataRange = [self rangeOfSection:@"name="
-						 inThemeFile:themeFile];
+	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileNameSectionIdentifier
+									   inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		themeName = [[themeFile substringWithRange:dataRange] retain];
 	else
 		themeName = [[NSString alloc] initWithString:iTetUnnamedThemePlaceholderName];
 	
 	// Author
-	dataRange = [self rangeOfSection:@"author="
-						 inThemeFile:themeFile];
+	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileAuthorSectionIdentifier
+									   inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		themeAuthor = [[themeFile substringWithRange:dataRange] retain];
 	else
 		themeAuthor = [[NSString alloc] initWithString:iTetUnknownThemeAuthorPlaceholderName];
 	
 	// Description
-	dataRange = [self rangeOfSection:@"description="
-						 inThemeFile:themeFile];
+	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileDescriptionSectionIdentifier
+									   inThemeFile:themeFile];
 	if (dataRange.location != NSNotFound)
 		themeDescription = [[themeFile substringWithRange:dataRange] retain];
 	else
@@ -223,8 +229,8 @@ NSArray* defaultThemes = nil;
 	return YES;
 }
 
-- (NSRange)rangeOfSection:(NSString*)sectionName
-			  inThemeFile:(NSString*)themeFile
+- (NSRange)rangeOfSectionWithIdentifier:(NSString*)sectionName
+							inThemeFile:(NSString*)themeFile
 {
 	// Locate the section heading
 	NSRange searchResult;
