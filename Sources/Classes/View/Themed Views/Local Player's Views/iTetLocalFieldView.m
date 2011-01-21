@@ -125,12 +125,12 @@
 
 - (NSRect)viewRectOccupiedByBlock:(iTetBlock*)drawBlock
 {
-	// Retrieve the size of a cell on the background and the dimensions of the block
+	// Retrieve the size of a cell on the field and the dimensions of the block
 	NSSize cellSize = [[self theme] cellSize];
 	IPSCoord pos = [drawBlock position];
 	IPSRegion bounds = [drawBlock boundingRegion];
 	
-	// Calculate the occupied rect in the background's coordinate system
+	// Calculate the occupied rect in the field's coordinate system
 	NSRect rect;
 	rect.origin.x = ((pos.col + bounds.origin.col) * cellSize.width);
 	rect.origin.y = ((pos.row + bounds.origin.row) * cellSize.height);
