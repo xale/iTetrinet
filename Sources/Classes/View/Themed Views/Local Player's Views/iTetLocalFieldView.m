@@ -58,7 +58,7 @@
 	NSPoint blockDrawLocation = NSMakePoint((blockPosition.col * cellSize.width), (blockPosition.row * cellSize.height));
 	
 	// Apply our scale transform to the graphics context
-	[[self viewTransform] concat];
+	[[self fieldToViewTransform] concat];
 	
 	// Draw the block image to the view
 	[blockImage drawAtPoint:blockDrawLocation
@@ -67,7 +67,7 @@
 				   fraction:1.0];
 	
 	// Revert the graphics context
-	[[self reverseTransform] concat];
+	[[self viewToFieldTransform] concat];
 }
 
 #pragma mark -
@@ -138,8 +138,8 @@
 	rect.size.height = (bounds.area.height * cellSize.height);
 	
 	// Convert to the view's coordinate system
-	rect.origin = [[self viewTransform] transformPoint:rect.origin];
-	rect.size = [[self viewTransform] transformSize:rect.size];
+	rect.origin = [[self fieldToViewTransform] transformPoint:rect.origin];
+	rect.size = [[self fieldToViewTransform] transformSize:rect.size];
 	return rect;
 }
 

@@ -43,8 +43,8 @@
 - (void)dealloc
 {
 	[field release];
-	[viewTransform release];
-	[reverseTransform release];
+	[fieldToViewTransform release];
+	[viewToFieldTransform release];
 	
 	[super dealloc];
 }
@@ -65,17 +65,17 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Clip the dirty rect to the view's field-frame
-	NSRect fieldDirtyRect = NSIntersectionRect(dirtyRect, [self fieldFrame]);
-	if (NSIsEmptyRect(fieldDirtyRect))
+	NSRect frameDirtyRect = NSIntersectionRect(dirtyRect, [self fieldFrame]);
+	if (NSIsEmptyRect(frameDirtyRect))
 		return;
 	
 	// Apply our scale transform to the graphics context
-	[[self viewTransform] concat];
+	[[self fieldToViewTransform] concat];
 	
 	// Determine the region of the background to be drawn
 	NSRect backgroundDirtyRect;
-	backgroundDirtyRect.origin = [[self reverseTransform] transformPoint:fieldDirtyRect.origin];
-	backgroundDirtyRect.size = [[self reverseTransform] transformSize:fieldDirtyRect.size];
+	backgroundDirtyRect.origin = [[self viewToFieldTransform] transformPoint:frameDirtyRect.origin];
+	backgroundDirtyRect.size = [[self viewToFieldTransform] transformSize:frameDirtyRect.size];
 	
 	// Draw the background for the dirty section of the view
 	[[self backgroundImage] drawInRect:backgroundDirtyRect
@@ -127,7 +127,7 @@
 done:;
 	
 	// Revert the graphics context
-	[[self reverseTransform] concat];
+	[[self viewToFieldTransform] concat];
 }
 
 - (NSRect)fieldFrameForViewSize:(NSSize)viewSize
@@ -179,9 +179,9 @@ done:;
 {
 	// Calculate the graphics context transform (and its inverse)
 	NSAffineTransform* newTransform = [self viewTransformForCellSize:[[self theme] cellSize]];
-	[self setViewTransform:newTransform];
+	[self setFieldToViewTransform:newTransform];
 	[newTransform invert];
-	[self setReverseTransform:newTransform];
+	[self setViewToFieldTransform:newTransform];
 }
 
 #pragma mark -
@@ -224,8 +224,8 @@ done:;
 	dirtyRect.size.height = (fieldDirtyRegion.area.height * cellSize.height);
 	
 	// Convert the rect to the transformed coordinate system
-	dirtyRect.origin = [[self viewTransform] transformPoint:dirtyRect.origin];
-	dirtyRect.size = [[self viewTransform] transformSize:dirtyRect.size];
+	dirtyRect.origin = [[self fieldToViewTransform] transformPoint:dirtyRect.origin];
+	dirtyRect.size = [[self fieldToViewTransform] transformSize:dirtyRect.size];
 	
 	[self setNeedsDisplayInRect:dirtyRect];
 }
@@ -242,8 +242,8 @@ done:;
 	[self updateViewTransforms];
 }
 
-@synthesize viewTransform;
-@synthesize reverseTransform;
+@synthesize fieldToViewTransform;
+@synthesize viewToFieldTransform;
 
 - (void)setFrame:(NSRect)newFrame
 {

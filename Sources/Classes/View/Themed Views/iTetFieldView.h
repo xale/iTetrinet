@@ -19,15 +19,15 @@
 {
 	iTetField* field;
 	NSRect fieldFrame;
-	NSAffineTransform* viewTransform;
-	NSAffineTransform* reverseTransform;
+	NSAffineTransform* fieldToViewTransform;
+	NSAffineTransform* viewToFieldTransform;
 }
 
 - (NSImage*)backgroundImage;
 
 @property (readwrite, nonatomic, retain) iTetField* field;
 @property (readwrite, assign) NSRect fieldFrame;
-@property (readwrite, copy) NSAffineTransform* viewTransform;
-@property (readwrite, copy) NSAffineTransform* reverseTransform;
+@property (readwrite, copy) NSAffineTransform* fieldToViewTransform;
+@property (readwrite, copy) NSAffineTransform* viewToFieldTransform;
 
 @end
