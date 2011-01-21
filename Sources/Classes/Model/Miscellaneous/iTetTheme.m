@@ -26,8 +26,8 @@ NSArray* defaultThemes = nil;
 @interface iTetTheme (Private)
 
 - (BOOL)parseThemeFile;
-- (NSRange)rangeOfSectionWithIdentifier:(NSString*)sectionName
-							inThemeFile:(NSString*)themeFileContents;
+- (NSString*)sectionOfThemeFile:(NSString*)themeFile
+				 withIdentifier:(NSString*)sectionName;
 - (void)loadImages;
 - (void)createPreview;
 
@@ -173,13 +173,12 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 		return NO;
 	
 	// Search for the name of the theme's image
-	NSRange dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileImageNameSectionIdentifier
-											   inThemeFile:themeFile];
-	if (dataRange.location == NSNotFound)
+	NSString* imageName = [self sectionOfThemeFile:themeFile
+									withIdentifier:iTetThemeFileImageNameSectionIdentifier];
+	if (imageName == nil)
 		return NO;
 	
 	// Create the image path
-	NSString* imageName = [themeFile substringWithRange:dataRange];
 	imageFilePath = [[themeFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:imageName];
 	
 	// Check that the image path is valid
@@ -190,11 +189,11 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	
 	// Search for the other data in the theme file
 	// Cell size
-	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileBlockSizeSectionIdentifier
-									   inThemeFile:themeFile];
-	if (dataRange.location != NSNotFound)
+	NSString* cellSizeString = [self sectionOfThemeFile:themeFile
+										withIdentifier:iTetThemeFileBlockSizeSectionIdentifier];
+	if (cellSizeString != nil)
 	{
-		CGFloat cell = [[themeFile substringWithRange:dataRange] floatValue];
+		CGFloat cell = [cellSizeString floatValue];
 		cellSize = NSMakeSize(cell, cell);
 	}
 	else
@@ -203,43 +202,37 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	}
 	
 	// Name
-	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileNameSectionIdentifier
-									   inThemeFile:themeFile];
-	if (dataRange.location != NSNotFound)
-		themeName = [[themeFile substringWithRange:dataRange] retain];
-	else
+	themeName = [[self sectionOfThemeFile:themeFile
+						   withIdentifier:iTetThemeFileNameSectionIdentifier] retain];
+	if (themeName == nil)
 		themeName = [[NSString alloc] initWithString:iTetUnnamedThemePlaceholderName];
 	
 	// Author
-	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileAuthorSectionIdentifier
-									   inThemeFile:themeFile];
-	if (dataRange.location != NSNotFound)
-		themeAuthor = [[themeFile substringWithRange:dataRange] retain];
-	else
+	themeAuthor = [[self sectionOfThemeFile:themeFile
+							 withIdentifier:iTetThemeFileAuthorSectionIdentifier] retain];
+	if (themeAuthor == nil)
 		themeAuthor = [[NSString alloc] initWithString:iTetUnknownThemeAuthorPlaceholderName];
 	
 	// Description
-	dataRange = [self rangeOfSectionWithIdentifier:iTetThemeFileDescriptionSectionIdentifier
-									   inThemeFile:themeFile];
-	if (dataRange.location != NSNotFound)
-		themeDescription = [[themeFile substringWithRange:dataRange] retain];
-	else
+	themeDescription = [[self sectionOfThemeFile:themeFile
+								  withIdentifier:iTetThemeFileDescriptionSectionIdentifier] retain];
+	if (themeDescription == nil)
 		themeDescription = [[NSString alloc] initWithString:iTetBlankThemeDescriptionPlaceholder];
 	
 	return YES;
 }
 
-- (NSRange)rangeOfSectionWithIdentifier:(NSString*)sectionName
-							inThemeFile:(NSString*)themeFile
+- (NSString*)sectionOfThemeFile:(NSString*)themeFile
+				 withIdentifier:(NSString*)sectionName
 {
 	// Locate the section heading
 	NSRange searchResult;
 	searchResult = [themeFile rangeOfString:sectionName
 									options:NSCaseInsensitiveSearch];
 	
-	// If not found, return "not found"
+	// If no section with that identifier can be found, abort
 	if (searchResult.location == NSNotFound)
-		return searchResult;
+		return nil;
 	
 	// If the section was found, find the next newline after the section
 	NSRange dataRange;
@@ -255,10 +248,10 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	
 	// Check that the length of the section is positive
 	if (dataRange.length <= 0)
-		return NSMakeRange(NSNotFound, 0);
+		return nil;
 	
-	// Return the range of the section
-	return dataRange;
+	// Return the information found in the specified section
+	return [themeFile substringWithRange:dataRange];
 }
 
 #define ITET_REMOTE_FIELD_SCALE	0.5
