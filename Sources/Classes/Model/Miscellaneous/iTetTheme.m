@@ -285,6 +285,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	srcRect.origin.y = (srcRect.size.height * (1.0 - ITET_REMOTE_FIELD_SCALE));
 	srcRect.size.width *= ITET_REMOTE_FIELD_SCALE;
 	srcRect.size.height *= ITET_REMOTE_FIELD_SCALE;
+	dstRect.size = srcRect.size;
 	remoteFieldBackground = [[NSImage alloc] initWithSize:dstRect.size];
 	
 	// Copy the remote players' background to the new image

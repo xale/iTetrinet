@@ -65,35 +65,45 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Clip the dirty rect to the view's field-frame
-	NSRect frameDirtyRect = NSIntersectionRect(dirtyRect, [self fieldFrame]);
-	if (NSIsEmptyRect(frameDirtyRect))
+	NSRect croppedDirtyRect = NSIntersectionRect(dirtyRect, [self fieldFrame]);
+	if (NSIsEmptyRect(croppedDirtyRect))
 		return;
 	
-	// Apply our scale transform to the graphics context
+	// Transform the graphics context's coordinate system to match the field
 	[[self fieldToViewTransform] concat];
 	
-	// Determine the region of the background to be drawn
-	NSRect backgroundDirtyRect;
-	backgroundDirtyRect.origin = [[self viewToFieldTransform] transformPoint:frameDirtyRect.origin];
-	backgroundDirtyRect.size = [[self viewToFieldTransform] transformSize:frameDirtyRect.size];
+	// Convert the dirty rect to the new coordinate system
+	NSRect fieldDirtyRect;
+	fieldDirtyRect.origin = [[self viewToFieldTransform] transformPoint:croppedDirtyRect.origin];
+	fieldDirtyRect.size = [[self viewToFieldTransform] transformSize:croppedDirtyRect.size];
 	
-	// Draw the background for the dirty section of the view
-	[[self backgroundImage] drawInRect:backgroundDirtyRect
+	// Scale the dirty rect to the background
+	NSSize cellSize = [[self theme] cellSize];
+	NSSize backgroundSize = [[self backgroundImage] size];
+	CGFloat xScale = (backgroundSize.width / (ITET_FIELD_WIDTH * cellSize.width));
+	CGFloat yScale = (backgroundSize.height / (ITET_FIELD_HEIGHT * cellSize.height));
+	NSRect backgroundDirtyRect;
+	backgroundDirtyRect.origin.x = (fieldDirtyRect.origin.x * xScale);
+	backgroundDirtyRect.origin.y = (fieldDirtyRect.origin.y * yScale);
+	backgroundDirtyRect.size.width = (fieldDirtyRect.size.width * xScale);
+	backgroundDirtyRect.size.height = (fieldDirtyRect.size.height * yScale);
+	
+	// Repaint the background behind the dirty rect of the field
+	[[self backgroundImage] drawInRect:fieldDirtyRect
 							  fromRect:backgroundDirtyRect
 							 operation:NSCompositeCopy
 							  fraction:1.0];
 	
-	// If we have no field to draw, we're done
+	// If we have no field contents to draw, we're done
 	if ([self field] == nil)
 		goto done;
 	
 	// Determine the region of the field that needs to be drawn
-	NSSize cellSize = [[self theme] cellSize];
 	IPSRegion dirtyRegion;
-	dirtyRegion.origin.col = MAX(floor(backgroundDirtyRect.origin.x / cellSize.width), 0);
-	dirtyRegion.origin.row = MAX(floor(backgroundDirtyRect.origin.y / cellSize.height), 0);
-	dirtyRegion.area.width = MIN(ceil(backgroundDirtyRect.size.width / cellSize.width), (ITET_FIELD_WIDTH - dirtyRegion.origin.col));
-	dirtyRegion.area.height = MIN(ceil(backgroundDirtyRect.size.height / cellSize.height), (ITET_FIELD_HEIGHT - dirtyRegion.origin.row));
+	dirtyRegion.origin.col = MAX(floor(fieldDirtyRect.origin.x / cellSize.width), 0);
+	dirtyRegion.origin.row = MAX(floor(fieldDirtyRect.origin.y / cellSize.height), 0);
+	dirtyRegion.area.width = MIN(ceil(fieldDirtyRect.size.width / cellSize.width), (ITET_FIELD_WIDTH - dirtyRegion.origin.col));
+	dirtyRegion.area.height = MIN(ceil(fieldDirtyRect.size.height / cellSize.height), (ITET_FIELD_HEIGHT - dirtyRegion.origin.row));
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
@@ -126,7 +136,7 @@
 	
 done:;
 	
-	// Revert the graphics context
+	// Revert the graphics context's coordinate system
 	[[self viewToFieldTransform] concat];
 }
 
