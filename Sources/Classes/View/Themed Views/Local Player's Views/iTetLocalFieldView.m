@@ -35,6 +35,11 @@
 #pragma mark -
 #pragma mark Drawing
 
+- (NSImage*)backgroundImage
+{
+	return [[self theme] localFieldBackground];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Call the default iTetFieldView drawRect:

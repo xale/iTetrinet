@@ -23,6 +23,8 @@
 	NSAffineTransform* reverseTransform;
 }
 
+- (NSImage*)backgroundImage;
+
 @property (readwrite, nonatomic, retain) iTetField* field;
 @property (readwrite, assign) NSRect fieldFrame;
 @property (readwrite, copy) NSAffineTransform* viewTransform;

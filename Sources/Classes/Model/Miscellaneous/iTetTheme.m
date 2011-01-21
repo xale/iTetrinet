@@ -139,7 +139,8 @@ NSArray* defaultThemes = nil;
 	[themeAuthor release];
 	[themeDescription release];
 	
-	[background release];
+	[localFieldBackground release];
+	[remoteFieldBackground release];
 	[cellImages release];
 	[specialImages release];
 	[preview release];
@@ -179,8 +180,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	
 	// Create the image path
 	NSString* imageName = [themeFile substringWithRange:dataRange];
-	imageFilePath = [[themeFilePath stringByDeletingLastPathComponent]
-					 stringByAppendingPathComponent:imageName];
+	imageFilePath = [[themeFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:imageName];
 	
 	// Check that the image path is valid
 	if (![[NSFileManager defaultManager] fileExistsAtPath:imageFilePath])
@@ -261,47 +261,58 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	return dataRange;
 }
 
+#define ITET_REMOTE_FIELD_SCALE	0.5
+
 - (void)loadImages
 {
 	NSImage* sheet = [[[NSImage alloc] initWithContentsOfFile:[self imageFilePath]] autorelease];
 	
-	// Create an image for the background
-	NSSize fieldSize = NSMakeSize((cellSize.width * ITET_FIELD_WIDTH),
-								  (cellSize.height * ITET_FIELD_HEIGHT));
-	background = [[NSImage alloc] initWithSize:fieldSize];
+	// Create an image for the background for the local player's field
+	NSRect srcRect = NSMakeRect(0, 0, (cellSize.width * ITET_FIELD_WIDTH), (cellSize.height * ITET_FIELD_HEIGHT));
+	NSRect dstRect = srcRect;
+	localFieldBackground = [[NSImage alloc] initWithSize:dstRect.size];
 	
-	// Draw the background portion of the sheet to the background
-	NSRect fieldRect;
-	fieldRect.origin = NSZeroPoint;
-	fieldRect.size = fieldSize;
-	[background lockFocus];
-	[sheet drawInRect:fieldRect
-			 fromRect:fieldRect
+	// Copy the local player's background to the new image
+	[localFieldBackground lockFocus];
+	[sheet drawInRect:dstRect
+			 fromRect:srcRect
 			operation:NSCompositeCopy
 			 fraction:1.0];
-	[background unlockFocus];
+	[localFieldBackground unlockFocus];
 	
-	// Create a mutable array to add the cell images to
-	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:
-							 (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
+	// Create an image for the background for the remote players' fields
+	srcRect.origin.x = srcRect.size.width;
+	srcRect.origin.y = (srcRect.size.height * (1.0 - ITET_REMOTE_FIELD_SCALE));
+	srcRect.size.width *= ITET_REMOTE_FIELD_SCALE;
+	srcRect.size.height *= ITET_REMOTE_FIELD_SCALE;
+	remoteFieldBackground = [[NSImage alloc] initWithSize:dstRect.size];
+	
+	// Copy the remote players' background to the new image
+	[remoteFieldBackground lockFocus];
+	[sheet drawInRect:dstRect
+			 fromRect:srcRect
+			operation:NSCompositeCopy
+			 fraction:1.0];
+	[remoteFieldBackground unlockFocus];
+	
+	// Create a mutable array for the cell and special images
+	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:(ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
 	
 	// Clip each cell and special image out of the sheet
-	NSRect cellRect;
-	cellRect.size = cellSize;
-	cellRect.origin.y = ([sheet size].height - cellSize.height);
-	NSInteger cellNum;
-	NSImage* cellImage;
-	for (cellNum = 0; cellNum < (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES); cellNum++)
+	srcRect.size = cellSize;
+	srcRect.origin.y = ([sheet size].height - cellSize.height);
+	dstRect.size = srcRect.size;
+	for (NSInteger cellNum = 0; cellNum < (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES); cellNum++)
 	{
-		cellRect.origin.x = (cellNum * cellRect.size.width);
+		srcRect.origin.x = (cellNum * srcRect.size.width);
 		
 		// Create a new cell image
-		cellImage = [[[NSImage alloc] initWithSize:cellSize] autorelease];
+		NSImage* cellImage = [[[NSImage alloc] initWithSize:cellSize] autorelease];
 		
 		// Draw the relevant section of the sheet to the image
 		[cellImage lockFocus];
-		[sheet drawInRect:NSMakeRect(0, 0, cellSize.width, cellSize.height)
-				 fromRect:cellRect
+		[sheet drawInRect:dstRect
+				 fromRect:srcRect
 				operation:NSCompositeCopy
 				 fraction:1.0];
 		[cellImage unlockFocus];
@@ -320,7 +331,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 - (void)createPreview
 {
 	// Determine the size of the background when scaled to fit the preview
-	CGFloat bgRatio = ([background size].width / [background size].height);
+	CGFloat bgRatio = ([localFieldBackground size].width / [localFieldBackground size].height);
 	NSSize bgSize = NSMakeSize((ITET_THEME_PREVIEW_HEIGHT * bgRatio), ITET_THEME_PREVIEW_HEIGHT);
 	
 	// Determine the full size of the preview
@@ -359,10 +370,10 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	// Draw the background (scaled to fit)
 	targetRect.size = bgSize;
 	targetRect.origin = NSMakePoint((ITET_DEF_CELL_WIDTH * 2), 0);
-	[background drawInRect:targetRect
-				  fromRect:NSZeroRect
-				 operation:NSCompositeCopy
-				  fraction:1.0];
+	[localFieldBackground drawInRect:targetRect
+							fromRect:NSZeroRect
+						   operation:NSCompositeCopy
+							fraction:1.0];
 	
 	[preview unlockFocus];
 }
@@ -561,7 +572,9 @@ shouldProceedAfterError:(NSError*)error
 @synthesize themeAuthor;
 @synthesize themeDescription;
 
-@synthesize background;
+@synthesize localFieldBackground;
+@synthesize remoteFieldBackground;
+
 @synthesize cellSize;
 - (NSImage*)imageForCellType:(uint8_t)cellType
 {

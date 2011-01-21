@@ -57,6 +57,11 @@
 	return NO;
 }
 
+- (NSImage*)backgroundImage
+{
+	return [[self theme] remoteFieldBackground];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Clip the dirty rect to the view's field-frame
@@ -67,37 +72,28 @@
 	// Apply our scale transform to the graphics context
 	[[self viewTransform] concat];
 	
-	// Get the background image from the theme
-	NSImage* background = [[self theme] background];
-	
-	// If we have no field to draw, simply draw the background
-	if ([self field] == nil)
-	{
-		[background drawAtPoint:NSZeroPoint
-					   fromRect:NSZeroRect
-					  operation:NSCompositeCopy
-					   fraction:1.0];
-		goto done;
-	}
-	
 	// Determine the region of the background to be drawn
-	NSRect backgroundRect;
-	backgroundRect.origin = [[self reverseTransform] transformPoint:fieldDirtyRect.origin];
-	backgroundRect.size = [[self reverseTransform] transformSize:fieldDirtyRect.size];
+	NSRect backgroundDirtyRect;
+	backgroundDirtyRect.origin = [[self reverseTransform] transformPoint:fieldDirtyRect.origin];
+	backgroundDirtyRect.size = [[self reverseTransform] transformSize:fieldDirtyRect.size];
 	
 	// Draw the background for the dirty section of the view
-	[background drawInRect:backgroundRect
-				  fromRect:backgroundRect
-				 operation:NSCompositeCopy
-				  fraction:1.0];
+	[[self backgroundImage] drawInRect:backgroundDirtyRect
+							  fromRect:backgroundDirtyRect
+							 operation:NSCompositeCopy
+							  fraction:1.0];
+	
+	// If we have no field to draw, we're done
+	if ([self field] == nil)
+		goto done;
 	
 	// Determine the region of the field that needs to be drawn
 	NSSize cellSize = [[self theme] cellSize];
 	IPSRegion dirtyRegion;
-	dirtyRegion.origin.col = floor(backgroundRect.origin.x / cellSize.width);
-	dirtyRegion.origin.row = floor(backgroundRect.origin.y / cellSize.height);
-	dirtyRegion.area.width = ceil(backgroundRect.size.width / cellSize.width);
-	dirtyRegion.area.height = ceil(backgroundRect.size.height / cellSize.height);
+	dirtyRegion.origin.col = floor(backgroundDirtyRect.origin.x / cellSize.width);
+	dirtyRegion.origin.row = floor(backgroundDirtyRect.origin.y / cellSize.height);
+	dirtyRegion.area.width = ceil(backgroundDirtyRect.size.width / cellSize.width);
+	dirtyRegion.area.height = ceil(backgroundDirtyRect.size.height / cellSize.height);
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
@@ -151,6 +147,10 @@ done:;
 		newFieldFrame.size.width = viewSize.width;
 		newFieldFrame.size.height = (viewSize.width / fieldAspect);
 	}
+	else
+	{
+		newFieldFrame.size = viewSize;
+	}
 	
 	// Center the field frame in the view
 	newFieldFrame.origin.x = ((viewSize.width - newFieldFrame.size.width) / 2);
@@ -159,7 +159,7 @@ done:;
 	return newFieldFrame;
 }
 
-- (NSAffineTransform*)scaleTransformForBackgroundOfSize:(NSSize)backgroundSize
+- (NSAffineTransform*)viewTransformForCellSize:(NSSize)cellSize
 {
 	// Create an affine transform
 	NSAffineTransform* newTransform = [NSAffineTransform transform];
@@ -169,8 +169,8 @@ done:;
 						   yBy:[self fieldFrame].origin.y];
 	
 	// Scale from the size of the background to the size of the field as drawn in the view
-	[newTransform scaleXBy:([self fieldFrame].size.width / backgroundSize.width)
-					   yBy:([self fieldFrame].size.height / backgroundSize.height)];
+	[newTransform scaleXBy:([self fieldFrame].size.width / (ITET_FIELD_WIDTH * cellSize.width))
+					   yBy:([self fieldFrame].size.height / (ITET_FIELD_HEIGHT * cellSize.height))];
 	
 	return newTransform;
 }
@@ -178,7 +178,7 @@ done:;
 - (void)updateViewTransforms
 {
 	// Calculate the graphics context transform (and its inverse)
-	NSAffineTransform* newTransform = [self scaleTransformForBackgroundOfSize:[[[self theme] background] size]];
+	NSAffineTransform* newTransform = [self viewTransformForCellSize:[[self theme] cellSize]];
 	[self setViewTransform:newTransform];
 	[newTransform invert];
 	[self setReverseTransform:newTransform];
@@ -238,7 +238,7 @@ done:;
 	// Update the theme
 	[super setTheme:newTheme];
 	
-	// Recalculate the graphics context transform, based on the theme's background size
+	// Recalculate the graphics context transform, based on the theme's cell size
 	[self updateViewTransforms];
 }
 

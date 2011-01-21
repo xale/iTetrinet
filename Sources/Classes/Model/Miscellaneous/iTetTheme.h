@@ -22,7 +22,8 @@
 	NSString* themeAuthor;
 	NSString* themeDescription;
 	
-	NSImage* background;
+	NSImage* localFieldBackground;
+	NSImage* remoteFieldBackground;
 	NSSize cellSize;
 	NSArray* cellImages;
 	NSArray* specialImages;
@@ -47,7 +48,9 @@
 @property (readonly) NSString* themeAuthor;
 @property (readonly) NSString* themeDescription;
 
-@property (readonly) NSImage* background;
+@property (readonly) NSImage* localFieldBackground;
+@property (readonly) NSImage* remoteFieldBackground;
+
 @property (readonly) NSSize cellSize;
 - (NSImage*)imageForCellType:(uint8_t)cellType;
 
