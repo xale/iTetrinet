@@ -24,6 +24,7 @@
 }
 
 - (NSImage*)backgroundImage;
+- (NSImage*)imageForCellType:(uint8_t)cellType;
 
 @property (readwrite, nonatomic, retain) iTetField* field;
 @property (readwrite, assign) NSRect fieldFrame;

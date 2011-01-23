@@ -62,6 +62,11 @@
 	return [[self theme] remoteFieldBackground];
 }
 
+- (NSImage*)imageForCellType:(uint8_t)cellType
+{
+	return [[self theme] imageForCellType:cellType];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Clip the dirty rect to the view's field-frame
@@ -107,7 +112,8 @@
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
-	NSPoint drawPoint;
+	NSRect cellRect;
+	cellRect.size = cellSize;
 	for (NSInteger row = IPSMinRow(dirtyRegion); row <= IPSMaxRow(dirtyRegion); row++)
 	{
 		for (NSInteger col = IPSMinCol(dirtyRegion); col <= IPSMaxCol(dirtyRegion); col++)
@@ -120,17 +126,17 @@
 				continue;
 			
 			// Get the image for this cell
-			NSImage* cellImage = [[self theme] imageForCellType:cell];
+			NSImage* cellImage = [self imageForCellType:cell];
 			
-			// Determine the point at which to draw the cell
-			drawPoint.x = col * cellSize.width;
-			drawPoint.y = row * cellSize.height;
+			// Calculate the rect in which to draw the cell
+			cellRect.origin.x = (col * cellSize.width);
+			cellRect.origin.y = (row * cellSize.height);
 			
 			// Draw the cell
-			[cellImage drawAtPoint:drawPoint
-						  fromRect:NSZeroRect
-						 operation:NSCompositeSourceOver
-						  fraction:1.0];
+			[cellImage drawInRect:cellRect
+						 fromRect:NSZeroRect
+						operation:NSCompositeSourceOver
+						 fraction:1.0];
 		}
 	}
 	
