@@ -103,11 +103,7 @@
 		6A9C3F1E12C9719900C78BFD /* gtetblocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFA12C9719900C78BFD /* gtetblocks.png */; };
 		6A9C3F1F12C9719900C78BFD /* GTetrinetTheme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFB12C9719900C78BFD /* GTetrinetTheme.cfg */; };
 		6A9C3F2012C9719900C78BFD /* iTetBlocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFC12C9719900C78BFD /* iTetBlocks.png */; };
-		6A9C3F2112C9719900C78BFD /* iTetBlocks_Mono.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFD12C9719900C78BFD /* iTetBlocks_Mono.png */; };
-		6A9C3F2212C9719900C78BFD /* iTetBlocks_White.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFE12C9719900C78BFD /* iTetBlocks_White.png */; };
 		6A9C3F2312C9719900C78BFD /* theme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFF12C9719900C78BFD /* theme.cfg */; };
-		6A9C3F2412C9719900C78BFD /* theme_mono.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3F0012C9719900C78BFD /* theme_mono.cfg */; };
-		6A9C3F2512C9719900C78BFD /* theme_white.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3F0112C9719900C78BFD /* theme_white.cfg */; };
 		6A9C3F9312C973A800C78BFD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9212C973A800C78BFD /* Cocoa.framework */; };
 		6A9C3F9B12C973BF00C78BFD /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9A12C973BF00C78BFD /* Growl.framework */; };
 		6A9C3FA312C973C900C78BFD /* Growl.framework in Copy Bundled Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9A12C973BF00C78BFD /* Growl.framework */; };
@@ -298,11 +294,7 @@
 		6A9C3EFA12C9719900C78BFD /* gtetblocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gtetblocks.png; sourceTree = "<group>"; };
 		6A9C3EFB12C9719900C78BFD /* GTetrinetTheme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = GTetrinetTheme.cfg; sourceTree = "<group>"; };
 		6A9C3EFC12C9719900C78BFD /* iTetBlocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks.png; sourceTree = "<group>"; };
-		6A9C3EFD12C9719900C78BFD /* iTetBlocks_Mono.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_Mono.png; sourceTree = "<group>"; };
-		6A9C3EFE12C9719900C78BFD /* iTetBlocks_White.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTetBlocks_White.png; sourceTree = "<group>"; };
 		6A9C3EFF12C9719900C78BFD /* theme.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme.cfg; sourceTree = "<group>"; };
-		6A9C3F0012C9719900C78BFD /* theme_mono.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_mono.cfg; sourceTree = "<group>"; };
-		6A9C3F0112C9719900C78BFD /* theme_white.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = theme_white.cfg; sourceTree = "<group>"; };
 		6A9C3F9212C973A800C78BFD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		6A9C3F9A12C973BF00C78BFD /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		6A9C3FAD12C9741100C78BFD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -812,11 +804,7 @@
 				6A9C3EFA12C9719900C78BFD /* gtetblocks.png */,
 				6A9C3EFB12C9719900C78BFD /* GTetrinetTheme.cfg */,
 				6A9C3EFC12C9719900C78BFD /* iTetBlocks.png */,
-				6A9C3EFD12C9719900C78BFD /* iTetBlocks_Mono.png */,
-				6A9C3EFE12C9719900C78BFD /* iTetBlocks_White.png */,
 				6A9C3EFF12C9719900C78BFD /* theme.cfg */,
-				6A9C3F0012C9719900C78BFD /* theme_mono.cfg */,
-				6A9C3F0112C9719900C78BFD /* theme_white.cfg */,
 			);
 			path = Themes;
 			sourceTree = "<group>";
@@ -920,11 +908,7 @@
 				6A9C3F1E12C9719900C78BFD /* gtetblocks.png in Resources */,
 				6A9C3F1F12C9719900C78BFD /* GTetrinetTheme.cfg in Resources */,
 				6A9C3F2012C9719900C78BFD /* iTetBlocks.png in Resources */,
-				6A9C3F2112C9719900C78BFD /* iTetBlocks_Mono.png in Resources */,
-				6A9C3F2212C9719900C78BFD /* iTetBlocks_White.png in Resources */,
 				6A9C3F2312C9719900C78BFD /* theme.cfg in Resources */,
-				6A9C3F2412C9719900C78BFD /* theme_mono.cfg in Resources */,
-				6A9C3F2512C9719900C78BFD /* theme_white.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

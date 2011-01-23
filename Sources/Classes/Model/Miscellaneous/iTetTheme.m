@@ -73,10 +73,6 @@ NSArray* defaultThemes = nil;
 			defaultThemes = [[NSArray alloc] initWithObjects:
 							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme"
 																					  ofType:@"cfg"]],
-							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_white"
-																					  ofType:@"cfg"]],
-							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"theme_mono"
-																					  ofType:@"cfg"]],
 							 [self themeFromThemeFile:[[NSBundle mainBundle] pathForResource:@"GTetrinetTheme"
 																					  ofType:@"cfg"]],
 							 nil];
