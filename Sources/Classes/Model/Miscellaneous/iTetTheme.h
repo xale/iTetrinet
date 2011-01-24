@@ -3,7 +3,7 @@
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/5/09.
-//  Copyright (c) 2009-2011 Alex Heinz (xale@acm.jhu.edu)
+//  Copyright (c) 2009-2010 Alex Heinz (xale@acm.jhu.edu)
 //  This is free software, presented under the MIT License
 //  See the included license.txt for more information
 //
@@ -21,13 +21,13 @@
 	NSString* themeName;
 	NSString* themeAuthor;
 	NSString* themeDescription;
-	NSImage* preview;
 	
-	NSSize cellSize;
 	NSImage* localFieldBackground;
 	NSImage* remoteFieldBackground;
-	NSArray* localCellImages;
-	NSArray* localSpecialImages;
+	NSSize cellSize;
+	NSArray* cellImages;
+	NSArray* specialImages;
+	NSImage* preview;
 }
 
 + (iTetTheme*)currentTheme;
@@ -47,11 +47,13 @@
 @property (readonly) NSString* themeName;
 @property (readonly) NSString* themeAuthor;
 @property (readonly) NSString* themeDescription;
-@property (readonly) NSImage* preview;
 
-@property (readonly) NSSize cellSize;
 @property (readonly) NSImage* localFieldBackground;
 @property (readonly) NSImage* remoteFieldBackground;
+
+@property (readonly) NSSize cellSize;
 - (NSImage*)imageForCellType:(uint8_t)cellType;
+
+@property (readonly) NSImage* preview;
 
 @end

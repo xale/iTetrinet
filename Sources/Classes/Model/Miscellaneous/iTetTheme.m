@@ -3,7 +3,7 @@
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/5/09.
-//  Copyright (c) 2009-2011 Alex Heinz (xale@acm.jhu.edu)
+//  Copyright (c) 2009-2010 Alex Heinz (xale@acm.jhu.edu)
 //  This is free software, presented under the MIT License
 //  See the included license.txt for more information
 //
@@ -29,8 +29,6 @@ NSArray* defaultThemes = nil;
 - (NSString*)sectionOfThemeFile:(NSString*)themeFile
 				 withIdentifier:(NSString*)sectionName;
 - (void)loadImages;
-- (NSArray*)cellImagesClippedFromSheet:(NSImage*)sheet
-					 beginningWithRect:(NSRect)srcRect;
 - (void)createPreview;
 
 - (void)setThemeFilePath:(NSString*)themePath;
@@ -139,8 +137,8 @@ NSArray* defaultThemes = nil;
 	
 	[localFieldBackground release];
 	[remoteFieldBackground release];
-	[localCellImages release];
-	[localSpecialImages release];
+	[cellImages release];
+	[specialImages release];
 	[preview release];
 	
 	[super dealloc];
@@ -287,32 +285,21 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 			 fraction:1.0];
 	[remoteFieldBackground unlockFocus];
 	
-	// Clip the full-size cell and special images out of the sheet
-	srcRect.origin.x = 0;
-	srcRect.origin.y = ([sheet size].height - cellSize.height);
-	srcRect.size = cellSize;
-	NSArray* cells = [self cellImagesClippedFromSheet:sheet
-									beginningWithRect:srcRect];
-	
-	// Fill the cell and special lists with the images clipped from the sheet
-	localCellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
-	localSpecialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
-}
-
-- (NSArray*)cellImagesClippedFromSheet:(NSImage*)sheet
-					 beginningWithRect:(NSRect)srcRect
-{
-	// Create a mutable collection of cells
+	// Create a mutable array for the cell and special images
 	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:(ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
-	NSRect dstRect = NSMakeRect(0, 0, srcRect.size.width, srcRect.size.height);
 	
-	// Slide the source rect over the row of cell images, copying each one
+	// Clip each cell and special image out of the sheet
+	srcRect.size = cellSize;
+	srcRect.origin.y = ([sheet size].height - cellSize.height);
+	dstRect.size = srcRect.size;
 	for (NSInteger cellNum = 0; cellNum < (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES); cellNum++)
 	{
-		// Create a new cell image
-		NSImage* cellImage = [[[NSImage alloc] initWithSize:srcRect.size] autorelease];
+		srcRect.origin.x = (cellNum * srcRect.size.width);
 		
-		// Draw the section of the sheet under the source rect to the new image
+		// Create a new cell image
+		NSImage* cellImage = [[[NSImage alloc] initWithSize:cellSize] autorelease];
+		
+		// Draw the relevant section of the sheet to the image
 		[cellImage lockFocus];
 		[sheet drawInRect:dstRect
 				 fromRect:srcRect
@@ -320,14 +307,13 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 				 fraction:1.0];
 		[cellImage unlockFocus];
 		
-		// Add the image to the list of cell images
+		// Add the image to the array of cell images
 		[cells addObject:cellImage];
-		
-		// Translate the source rect to the next cell
-		srcRect.origin.x += srcRect.size.width;
 	}
 	
-	return cells;
+	// Fill the cell and special arrays with the images clipped from the sheet
+	cellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
 }
 
 #define ITET_THEME_PREVIEW_HEIGHT (225)
@@ -354,7 +340,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	for (cellNum = 0; cellNum < ITET_NUM_CELL_COLORS; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		[[localCellImages objectAtIndex:cellNum] drawInRect:targetRect
+		[[cellImages objectAtIndex:cellNum] drawInRect:targetRect
 											  fromRect:NSZeroRect
 											 operation:NSCompositeCopy
 											  fraction:1.0];
@@ -365,7 +351,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	for (cellNum = 0; cellNum < ITET_NUM_SPECIAL_TYPES; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		[[localSpecialImages objectAtIndex:cellNum] drawInRect:targetRect
+		[[specialImages objectAtIndex:cellNum] drawInRect:targetRect
 												 fromRect:NSZeroRect
 												operation:NSCompositeCopy
 												 fraction:1.0];
@@ -586,13 +572,13 @@ shouldProceedAfterError:(NSError*)error
 	// If the cell is a normal cell, return one of the normal cell images
 	if ((cellType > 0) && (cellType <= ITET_NUM_CELL_COLORS))
 	{
-		return [localCellImages objectAtIndex:(cellType - 1)];
+		return [cellImages objectAtIndex:(cellType - 1)];
 	}
 	
 	// If the cell is a special, return the image for that special type
 	iTetSpecial* cellAsSpecial = [iTetSpecial specialFromCellValue:cellType];
 	if ([cellAsSpecial type] != invalidSpecial)
-		return [localSpecialImages objectAtIndex:([cellAsSpecial indexNumber] - 1)];
+		return [specialImages objectAtIndex:([cellAsSpecial indexNumber] - 1)];
 	
 	// Invalid cell type
 	NSString* excDesc = [NSString stringWithFormat:@"image requested for invalid cell type: %d", cellType];
