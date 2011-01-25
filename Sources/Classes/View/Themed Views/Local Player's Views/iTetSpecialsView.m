@@ -102,7 +102,7 @@
 		for (iTetSpecial* special in [specials reverseObjectEnumerator])
 		{
 			// Get the next special's image
-			NSImage* specialImage = [[self theme] imageForCellType:[special cellValue]];
+			NSImage* specialImage = [[self theme] localFieldCellImageForCellType:[special cellValue]];
 			
 			// Draw the special
 			[specialImage drawAtPoint:NSMakePoint((specialNum * [[self theme] cellSize].width), 0)

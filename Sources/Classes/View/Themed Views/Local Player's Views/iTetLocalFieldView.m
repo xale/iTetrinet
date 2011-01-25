@@ -40,6 +40,11 @@
 	return [[self theme] localFieldBackground];
 }
 
+- (NSImage*)imageForCellType:(uint8_t)cellType
+{
+	return [[self theme] localFieldCellImageForCellType:cellType];
+}
+
 - (void)drawRect:(NSRect)dirtyRect
 {
 	// Call the default iTetFieldView drawRect:

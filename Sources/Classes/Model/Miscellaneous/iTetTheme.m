@@ -25,14 +25,20 @@ NSArray* defaultThemes = nil;
 
 @interface iTetTheme (Private)
 
-- (BOOL)parseThemeFile;
+- (BOOL)loadDataFromThemeFileAtPath:(NSString*)path;
 - (NSString*)sectionOfThemeFile:(NSString*)themeFile
 				 withIdentifier:(NSString*)sectionName;
-- (void)loadImages;
+- (void)loadImagesFromSheet:(NSImage*)sheet;
+- (NSArray*)cellImagesClippedFromSheet:(NSImage*)sheet
+					 beginningWithRect:(NSRect)srcRect;
 - (void)createPreview;
 
 - (void)setThemeFilePath:(NSString*)themePath;
 - (void)setImageFilePath:(NSString*)imagePath;
+
+- (NSImage*)imageForCellType:(uint8_t)cellType
+			 usingCellImages:(NSArray*)cellImages
+			   specialImages:(NSArray*)specialImages;
 
 + (NSMutableDictionary*)themeCache;
 
@@ -104,14 +110,14 @@ NSArray* defaultThemes = nil;
 	themeFilePath = [path copy];
 	
 	// Attempt to read data from the theme file
-	if (![self parseThemeFile])
+	if (![self loadDataFromThemeFileAtPath:path])
 	{
 		[self release];
 		return [[NSNull null] retain];
 	}
 	
 	// Load and clip the images from the sheet
-	[self loadImages];
+	[self loadImagesFromSheet:[[[NSImage alloc] initWithContentsOfFile:imageFilePath] autorelease]];
 	
 	// Create the preview image
 	[self createPreview];
@@ -134,12 +140,14 @@ NSArray* defaultThemes = nil;
 	[themeName release];
 	[themeAuthor release];
 	[themeDescription release];
+	[preview release];
 	
 	[localFieldBackground release];
+	[localFieldCellImages release];
+	[localFieldSpecialImages release];
 	[remoteFieldBackground release];
-	[cellImages release];
-	[specialImages release];
-	[preview release];
+	[remoteFieldCellImages release];
+	[remoteFieldSpecialImages release];
 	
 	[super dealloc];
 }
@@ -157,19 +165,19 @@ NSString* const iTetThemeFileNameSectionIdentifier =		@"name=";
 NSString* const iTetThemeFileAuthorSectionIdentifier =		@"author=";
 NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 
-- (BOOL)parseThemeFile
+- (BOOL)loadDataFromThemeFileAtPath:(NSString*)path
 {
 	// Attempt to read the contents of the file
-	NSString* themeFile = [NSString stringWithContentsOfFile:themeFilePath
-												usedEncoding:nil
-													   error:NULL];
+	NSString* themeFileContents = [NSString stringWithContentsOfFile:path
+														usedEncoding:nil
+															   error:NULL];
 	
 	// Check that the file was read successfully
-	if (themeFile == nil)
+	if (themeFileContents == nil)
 		return NO;
 	
 	// Search for the name of the theme's image
-	NSString* imageName = [self sectionOfThemeFile:themeFile
+	NSString* imageName = [self sectionOfThemeFile:themeFileContents
 									withIdentifier:iTetThemeFileImageNameSectionIdentifier];
 	if (imageName == nil)
 		return NO;
@@ -185,7 +193,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	
 	// Search for the other data in the theme file
 	// Cell size
-	NSString* cellSizeString = [self sectionOfThemeFile:themeFile
+	NSString* cellSizeString = [self sectionOfThemeFile:themeFileContents
 										withIdentifier:iTetThemeFileBlockSizeSectionIdentifier];
 	if (cellSizeString != nil)
 	{
@@ -198,19 +206,19 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	}
 	
 	// Name
-	themeName = [[self sectionOfThemeFile:themeFile
+	themeName = [[self sectionOfThemeFile:themeFileContents
 						   withIdentifier:iTetThemeFileNameSectionIdentifier] retain];
 	if (themeName == nil)
 		themeName = [[NSString alloc] initWithString:iTetUnnamedThemePlaceholderName];
 	
 	// Author
-	themeAuthor = [[self sectionOfThemeFile:themeFile
+	themeAuthor = [[self sectionOfThemeFile:themeFileContents
 							 withIdentifier:iTetThemeFileAuthorSectionIdentifier] retain];
 	if (themeAuthor == nil)
 		themeAuthor = [[NSString alloc] initWithString:iTetUnknownThemeAuthorPlaceholderName];
 	
 	// Description
-	themeDescription = [[self sectionOfThemeFile:themeFile
+	themeDescription = [[self sectionOfThemeFile:themeFileContents
 								  withIdentifier:iTetThemeFileDescriptionSectionIdentifier] retain];
 	if (themeDescription == nil)
 		themeDescription = [[NSString alloc] initWithString:iTetBlankThemeDescriptionPlaceholder];
@@ -252,10 +260,8 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 
 #define ITET_REMOTE_FIELD_SCALE	0.5
 
-- (void)loadImages
+- (void)loadImagesFromSheet:(NSImage*)sheet
 {
-	NSImage* sheet = [[[NSImage alloc] initWithContentsOfFile:[self imageFilePath]] autorelease];
-	
 	// Create an image for the background for the local player's field
 	NSRect srcRect = NSMakeRect(0, 0, (cellSize.width * ITET_FIELD_WIDTH), (cellSize.height * ITET_FIELD_HEIGHT));
 	NSRect dstRect = srcRect;
@@ -285,21 +291,43 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 			 fraction:1.0];
 	[remoteFieldBackground unlockFocus];
 	
-	// Create a mutable array for the cell and special images
-	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:(ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
-	
-	// Clip each cell and special image out of the sheet
+	// Clip the full-size cell and special images out of the sheet
+	srcRect.origin = NSMakePoint(0, ([sheet size].height - cellSize.height));
 	srcRect.size = cellSize;
-	srcRect.origin.y = ([sheet size].height - cellSize.height);
-	dstRect.size = srcRect.size;
+	NSArray* cells = [self cellImagesClippedFromSheet:sheet
+									beginningWithRect:srcRect];
+	
+	// Fill the cell and special lists with the images clipped from the sheet
+	localFieldCellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+	localFieldSpecialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+	
+	// Clip the half-size cell and special images
+	srcRect.origin.x = 0;
+	srcRect.origin.y = ([sheet size].height - (cellSize.height + (cellSize.height * ITET_REMOTE_FIELD_SCALE)));
+	srcRect.size.width *= ITET_REMOTE_FIELD_SCALE;
+	srcRect.size.height *= ITET_REMOTE_FIELD_SCALE;
+	cells = [self cellImagesClippedFromSheet:sheet
+						   beginningWithRect:srcRect];
+	
+	// Fill the cell and special lists
+	remoteFieldCellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
+	remoteFieldSpecialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+}
+
+- (NSArray*)cellImagesClippedFromSheet:(NSImage*)sheet
+					 beginningWithRect:(NSRect)srcRect
+{
+	// Create a mutable collection of cells
+	NSMutableArray* cells = [NSMutableArray arrayWithCapacity:(ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES)];
+	NSRect dstRect = NSMakeRect(0, 0, srcRect.size.width, srcRect.size.height);
+	
+	// Slide the source rect over the row of cell images, copying each one
 	for (NSInteger cellNum = 0; cellNum < (ITET_NUM_CELL_COLORS + ITET_NUM_SPECIAL_TYPES); cellNum++)
 	{
-		srcRect.origin.x = (cellNum * srcRect.size.width);
-		
 		// Create a new cell image
-		NSImage* cellImage = [[[NSImage alloc] initWithSize:cellSize] autorelease];
+		NSImage* cellImage = [[[NSImage alloc] initWithSize:srcRect.size] autorelease];
 		
-		// Draw the relevant section of the sheet to the image
+		// Draw the section of the sheet under the source rect to the new image
 		[cellImage lockFocus];
 		[sheet drawInRect:dstRect
 				 fromRect:srcRect
@@ -307,13 +335,14 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 				 fraction:1.0];
 		[cellImage unlockFocus];
 		
-		// Add the image to the array of cell images
+		// Add the image to the list of cell images
 		[cells addObject:cellImage];
+		
+		// Translate the source rect to the next cell
+		srcRect.origin.x += srcRect.size.width;
 	}
 	
-	// Fill the cell and special arrays with the images clipped from the sheet
-	cellImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(0, ITET_NUM_CELL_COLORS)]];
-	specialImages = [[NSArray alloc] initWithArray:[cells subarrayWithRange:NSMakeRange(ITET_NUM_CELL_COLORS, ITET_NUM_SPECIAL_TYPES)]];
+	return cells;
 }
 
 #define ITET_THEME_PREVIEW_HEIGHT (225)
@@ -340,7 +369,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	for (cellNum = 0; cellNum < ITET_NUM_CELL_COLORS; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		[[cellImages objectAtIndex:cellNum] drawInRect:targetRect
+		[[localFieldCellImages objectAtIndex:cellNum] drawInRect:targetRect
 											  fromRect:NSZeroRect
 											 operation:NSCompositeCopy
 											  fraction:1.0];
@@ -351,7 +380,7 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 	for (cellNum = 0; cellNum < ITET_NUM_SPECIAL_TYPES; cellNum++)
 	{
 		targetRect.origin.y = previewSize.height - ((cellNum + 1) * ITET_DEF_CELL_HEIGHT);
-		[[specialImages objectAtIndex:cellNum] drawInRect:targetRect
+		[[localFieldSpecialImages objectAtIndex:cellNum] drawInRect:targetRect
 												 fromRect:NSZeroRect
 												operation:NSCompositeCopy
 												 fraction:1.0];
@@ -561,19 +590,35 @@ shouldProceedAfterError:(NSError*)error
 @synthesize themeName;
 @synthesize themeAuthor;
 @synthesize themeDescription;
-
-@synthesize localFieldBackground;
-@synthesize remoteFieldBackground;
+@synthesize preview;
 
 @synthesize cellSize;
+@synthesize localFieldBackground;
+
+- (NSImage*)localFieldCellImageForCellType:(uint8_t)cellType
+{
+	return [self imageForCellType:cellType
+				  usingCellImages:localFieldCellImages
+					specialImages:localFieldSpecialImages];
+}
+
+@synthesize remoteFieldBackground;
+
+- (NSImage*)remoteFieldCellImageForCellType:(uint8_t)cellType
+{
+	return [self imageForCellType:cellType
+				  usingCellImages:remoteFieldCellImages
+					specialImages:remoteFieldSpecialImages];
+}
+
 - (NSImage*)imageForCellType:(uint8_t)cellType
+			 usingCellImages:(NSArray*)cellImages
+			   specialImages:(NSArray*)specialImages
 {
 	// Check if the requested cell is a normal cell or a special
 	// If the cell is a normal cell, return one of the normal cell images
 	if ((cellType > 0) && (cellType <= ITET_NUM_CELL_COLORS))
-	{
 		return [cellImages objectAtIndex:(cellType - 1)];
-	}
 	
 	// If the cell is a special, return the image for that special type
 	iTetSpecial* cellAsSpecial = [iTetSpecial specialFromCellValue:cellType];
@@ -587,8 +632,6 @@ shouldProceedAfterError:(NSError*)error
 														   userInfo:nil];
 	@throw cellTypeException;
 }
-
-@synthesize preview;
 
 - (NSString*)description
 {

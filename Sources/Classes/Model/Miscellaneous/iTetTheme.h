@@ -21,13 +21,15 @@
 	NSString* themeName;
 	NSString* themeAuthor;
 	NSString* themeDescription;
-	
-	NSImage* localFieldBackground;
-	NSImage* remoteFieldBackground;
-	NSSize cellSize;
-	NSArray* cellImages;
-	NSArray* specialImages;
 	NSImage* preview;
+	
+	NSSize cellSize;
+	NSImage* localFieldBackground;
+	NSArray* localFieldCellImages;
+	NSArray* localFieldSpecialImages;
+	NSImage* remoteFieldBackground;
+	NSArray* remoteFieldCellImages;
+	NSArray* remoteFieldSpecialImages;
 }
 
 + (iTetTheme*)currentTheme;
@@ -47,13 +49,12 @@
 @property (readonly) NSString* themeName;
 @property (readonly) NSString* themeAuthor;
 @property (readonly) NSString* themeDescription;
-
-@property (readonly) NSImage* localFieldBackground;
-@property (readonly) NSImage* remoteFieldBackground;
+@property (readonly) NSImage* preview;
 
 @property (readonly) NSSize cellSize;
-- (NSImage*)imageForCellType:(uint8_t)cellType;
-
-@property (readonly) NSImage* preview;
+@property (readonly) NSImage* localFieldBackground;
+- (NSImage*)localFieldCellImageForCellType:(uint8_t)cellType;
+@property (readonly) NSImage* remoteFieldBackground;
+- (NSImage*)remoteFieldCellImageForCellType:(uint8_t)cellType;
 
 @end

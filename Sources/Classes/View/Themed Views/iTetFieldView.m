@@ -64,7 +64,7 @@
 
 - (NSImage*)imageForCellType:(uint8_t)cellType
 {
-	return [[self theme] imageForCellType:cellType];
+	return [[self theme] remoteFieldCellImageForCellType:cellType];
 }
 
 - (void)drawRect:(NSRect)dirtyRect

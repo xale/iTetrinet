@@ -36,7 +36,7 @@
 				continue;
 			
 			// Otherwise, get the image for this cell color, and draw it to the block image
-			NSImage* cellImage = [theme imageForCellType:cellType];
+			NSImage* cellImage = [theme localFieldCellImageForCellType:cellType];
 			[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
 						  fromRect:NSZeroRect
 						 operation:NSCompositeSourceOver
