@@ -37,7 +37,7 @@
 			
 			// Otherwise, get the image for this cell color, and draw it to the block image
 			NSImage* cellImage = [theme localFieldCellImageForCellType:cellType];
-			[cellImage drawAtPoint:NSMakePoint(cellSize.width * col, cellSize.height * row)
+			[cellImage drawAtPoint:NSMakePoint((col * cellSize.width), (row * cellSize.height))
 						  fromRect:NSZeroRect
 						 operation:NSCompositeSourceOver
 						  fraction:1.0];
@@ -49,6 +49,43 @@
 	
 	// Return the image
 	return image;
+}
+
+- (NSImage*)previewImageWithCellSize:(NSSize)previewCellSize
+							   theme:(iTetTheme*)theme
+{
+	// Create an image of the block using the default cellSize from the theme
+	NSImage* blockImage = [self imageWithTheme:theme];
+	
+	// Determine the region of the block's coordinate system that contains cells
+	IPSRegion boundingRegion = [self boundingRegion];
+	
+	// Calculate the rect of the block image containing the cells
+	NSRect srcRect;
+	srcRect.origin.x = (boundingRegion.origin.col * [theme cellSize].width);
+	srcRect.origin.y = (boundingRegion.origin.row * [theme cellSize].height);
+	srcRect.size.width = (boundingRegion.area.width * [theme cellSize].width);
+	srcRect.size.height = (boundingRegion.area.height * [theme cellSize].height);
+	
+	// Calculate the final size of the preview image
+	NSRect dstRect;
+	dstRect.origin = NSZeroPoint;
+	dstRect.size.width = (boundingRegion.area.width * previewCellSize.width);
+	dstRect.size.height = (boundingRegion.area.height * previewCellSize.height);
+	
+	// Create a blank image of the desired size
+	NSImage* previewImage = [[[NSImage alloc] initWithSize:dstRect.size] autorelease];
+	
+	// Draw the relevant portion of the default image into the final image
+	[previewImage lockFocus];
+	[blockImage drawInRect:dstRect
+				  fromRect:srcRect
+				 operation:NSCompositeSourceOver
+				  fraction:1.0];
+	[previewImage unlockFocus];
+	
+	// Return the image
+	return previewImage;
 }
 
 static IPSRegion ITET_I_BLOCK_RECTS[2] = {
@@ -88,40 +125,6 @@ static IPSRegion ITET_T_BLOCK_RECTS[4] = {
 	{1, 0, 2, 3},	// Bottom
 	{1, 0, 3, 2}	// Left
 };
-
-- (NSImage*)previewImageWithTheme:(iTetTheme*)theme
-{
-	// Create an image of the block using the default cellSize from the theme
-	NSImage* blockImage = [self imageWithTheme:theme];
-	
-	// Determine the area of the image to crop
-	IPSRegion boundingRegion = [self boundingRegion];
-	
-	// Scale the area to the same proportions as the default image size
-	NSRect blockRect;
-	blockRect.origin.x = (boundingRegion.origin.col * [theme cellSize].width);
-	blockRect.origin.y = (boundingRegion.origin.row * [theme cellSize].height);
-	blockRect.size.width = (boundingRegion.area.width * [theme cellSize].width);
-	blockRect.size.height = (boundingRegion.area.height * [theme cellSize].height);
-	
-	// Create a blank image of the final desired size
-	NSImage* previewImage = [[[NSImage alloc] initWithSize:blockRect.size] autorelease];
-	
-	// Prepare for drawing
-	[previewImage lockFocus];
-	
-	// Draw the relevant portion of the default image into the final image
-	[blockImage drawInRect:NSMakeRect(0, 0, blockRect.size.width, blockRect.size.height)
-				  fromRect:blockRect
-				 operation:NSCompositeSourceOver
-				  fraction:1.0];
-	
-	// Finished drawing
-	[previewImage unlockFocus];
-	
-	// Return the image
-	return previewImage;
-}
 
 - (IPSRegion)boundingRegion
 {

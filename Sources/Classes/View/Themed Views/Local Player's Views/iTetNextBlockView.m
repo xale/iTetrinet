@@ -35,19 +35,28 @@
 	if ([self block] == nil)
 		return;
 	
-	// Ask the block to draw itself to an NSImage
-	NSImage* blockImage = [[self block] previewImageWithTheme:[self theme]];
+	// Calculate a cell size for the block, based on the view's size and the maximum dimensions of a block
+	NSSize viewSize = [self bounds].size;
+	NSSize cellSize = NSMakeSize((viewSize.width / ITET_BLOCK_WIDTH), (viewSize.height / ITET_BLOCK_HEIGHT));
+	
+	// Normalize to the smaller dimension, to ensure the cells are square
+	if (cellSize.width > cellSize.height)
+		cellSize.width = cellSize.height;
+	else if (cellSize.height > cellSize.width)
+		cellSize.height = cellSize.width;
+	
+	// Create the preview image for the block
+	NSImage* blockPreview = [[self block] previewImageWithCellSize:cellSize
+															 theme:[self theme]];
 	
 	// Center the image in the view
-	NSSize viewSize = [self bounds].size;
-	NSSize imageSize = [blockImage size];
-	NSPoint drawPoint = NSMakePoint(((viewSize.width - imageSize.width) / 2), ((viewSize.height - imageSize.height) / 2));
+	NSPoint drawPoint = NSMakePoint(((viewSize.width - [blockPreview size].width) / 2), ((viewSize.height - [blockPreview size].height) / 2));
 	
 	// Draw the image
-	[blockImage drawAtPoint:drawPoint
-				   fromRect:NSZeroRect
-				  operation:NSCompositeSourceOver
-				   fraction:1.0];
+	[blockPreview drawAtPoint:drawPoint
+					 fromRect:NSZeroRect
+					operation:NSCompositeSourceOver
+					 fraction:1.0];
 }
 
 #pragma mark -

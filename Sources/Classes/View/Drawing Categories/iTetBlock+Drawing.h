@@ -18,7 +18,8 @@
 
 - (NSImage*)imageWithTheme:(iTetTheme*)theme;
 
-- (NSImage*)previewImageWithTheme:(iTetTheme *)theme;
+- (NSImage*)previewImageWithCellSize:(NSSize)cellSize
+							   theme:(iTetTheme*)theme;
 
 - (IPSRegion)boundingRegion;
 
