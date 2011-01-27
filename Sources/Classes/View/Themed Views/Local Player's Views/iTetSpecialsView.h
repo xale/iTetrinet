@@ -9,7 +9,6 @@
 //
 // A ThemedView subclass that draws the local player's list of specials.
 
-#import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
 
 @interface iTetSpecialsView : iTetThemedView

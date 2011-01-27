@@ -10,7 +10,6 @@
 // A ThemedView subclass used for drawing a player's field (background + blocks)
 //
 
-#import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
 
 @class iTetField;
