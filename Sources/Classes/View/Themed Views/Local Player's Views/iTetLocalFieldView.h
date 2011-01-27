@@ -10,7 +10,6 @@
 // A BoardView subclass that also draws the active (falling) block and accepts player input. Used only for the local player's board.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "iTetFieldView.h"
 
 @class iTetKeyNamePair;

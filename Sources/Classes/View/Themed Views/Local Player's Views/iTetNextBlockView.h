@@ -9,7 +9,6 @@
 //
 // A ThemedView subclass that previews the next block for the local player.
 
-#import <Cocoa/Cocoa.h>
 #import "iTetThemedView.h"
 
 @class iTetBlock;
