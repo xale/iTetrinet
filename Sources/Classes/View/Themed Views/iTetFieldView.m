@@ -105,10 +105,10 @@
 	
 	// Determine the region of the field that needs to be drawn
 	IPSRegion dirtyRegion;
-	dirtyRegion.origin.col = MAX(floor(fieldDirtyRect.origin.x / cellSize.width), 0);
-	dirtyRegion.origin.row = MAX(floor(fieldDirtyRect.origin.y / cellSize.height), 0);
-	dirtyRegion.area.width = MIN(ceil(fieldDirtyRect.size.width / cellSize.width), (ITET_FIELD_WIDTH - dirtyRegion.origin.col));
-	dirtyRegion.area.height = MIN(ceil(fieldDirtyRect.size.height / cellSize.height), (ITET_FIELD_HEIGHT - dirtyRegion.origin.row));
+	dirtyRegion.origin.col = round(fieldDirtyRect.origin.x / cellSize.width);
+	dirtyRegion.origin.row = round(fieldDirtyRect.origin.y / cellSize.height);
+	dirtyRegion.area.width = round(fieldDirtyRect.size.width / cellSize.width);
+	dirtyRegion.area.height = round(fieldDirtyRect.size.height / cellSize.height);
 	
 	// Draw the updated region of the field contents
 	FIELD* fieldContents = [[self field] contents];
