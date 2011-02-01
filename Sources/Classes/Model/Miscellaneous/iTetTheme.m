@@ -183,13 +183,11 @@ NSString* const iTetThemeFileDescriptionSectionIdentifier =	@"description=";
 		return NO;
 	
 	// Create the image path
-	imageFilePath = [[themeFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:imageName];
+	imageFilePath = [[[themeFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:imageName] retain];
 	
 	// Check that the image path is valid
 	if (![[NSFileManager defaultManager] fileExistsAtPath:imageFilePath])
 		return NO;
-	
-	[imageFilePath retain];
 	
 	// Search for the other data in the theme file
 	// Cell size
