@@ -96,7 +96,7 @@
 	// Repaint the background behind the dirty rect of the field
 	[[self backgroundImage] drawInRect:fieldDirtyRect
 							  fromRect:backgroundDirtyRect
-							 operation:NSCompositeCopy
+							 operation:NSCompositeSourceOver
 							  fraction:1.0];
 	
 	// If we have no field contents to draw, we're done
