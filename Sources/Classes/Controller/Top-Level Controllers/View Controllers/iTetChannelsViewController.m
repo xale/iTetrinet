@@ -14,7 +14,7 @@
 #import "iTetWindowController.h"
 #import "iTetNetworkController.h"
 
-#import "iTetChannelInfo.h"
+#import "iTetChannelListEntry.h"
 
 #import "IPSContextMenuTableView.h"
 
@@ -99,7 +99,7 @@
 	
 	// If the connection fails here, simply abort and retry when someone asks us to refresh the list; that being said, we shouldn't fail here very often, since this method should only be called after the network controller has already established a connection to the server over the game socket
 }
-	 
+
 - (IBAction)refreshChannelList:(id)sender
 {
 	// If we already know that this server doesn't support the Query protocol, don't bother trying to refresh
@@ -357,11 +357,11 @@ didConnectToHost:(NSString*)host
 		{
 			// Create a new entry for the channel list
 			NSDictionary* info = [message contents];
-			iTetChannelInfo* channel = [iTetChannelInfo channelInfoWithName:[info objectForKey:iTetMessageChannelNameKey]
-																description:[info objectForKey:iTetQueryMessageChannelDescriptionKey]
-															 currentPlayers:[info integerForKey:iTetQueryMessageChannelPlayerCountKey]
-																 maxPlayers:[info integerForKey:iTetQueryMessageChannelMaxPlayersKey]
-																	  state:[info intForKey:iTetQueryMessageGameplayStateKey]];
+			iTetChannelListEntry* channel = [iTetChannelListEntry channelListEntryWithName:[info objectForKey:iTetMessageChannelNameKey]
+																			   description:[info objectForKey:iTetQueryMessageChannelDescriptionKey]
+																			currentPlayers:[info integerForKey:iTetQueryMessageChannelPlayerCountKey]
+																				maxPlayers:[info integerForKey:iTetQueryMessageChannelMaxPlayersKey]
+																					 state:[info intForKey:iTetQueryMessageGameplayStateKey]];
 			
 			// Check if the channel is the local player's
 			if ([[channel channelName] isEqualToString:localPlayerChannelName])
@@ -504,7 +504,7 @@ willDisconnectWithError:(NSError*)error
 	
 	// Attempt to un-mark the player's previous channel
 	NSArray* filteredChannels = [channels filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"channelName == %@", localPlayerChannelName]];
-	for (iTetChannelInfo* channel in filteredChannels)
+	for (iTetChannelListEntry* channel in filteredChannels)
 		[channel setLocalPlayerChannel:NO];
 	
 	// Find and mark the player's new channel

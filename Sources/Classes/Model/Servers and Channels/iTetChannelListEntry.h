@@ -1,5 +1,5 @@
 //
-//  iTetChannelInfo.h
+//  iTetChannelListEntry.h
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/23/09.
@@ -11,7 +11,7 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetGameplayState.h"
 
-@interface iTetChannelInfo : NSObject
+@interface iTetChannelListEntry : NSObject
 {
 	NSString* channelName;
 	NSString* channelDescription;
@@ -21,11 +21,11 @@
 	BOOL localPlayerChannel;
 }
 
-+ (id)channelInfoWithName:(NSString*)name
-			  description:(NSString*)desc
-		   currentPlayers:(NSInteger)playerCount
-			   maxPlayers:(NSInteger)max
-					state:(iTetGameplayState)gameState;
++ (id)channelListEntryWithName:(NSString*)name
+				   description:(NSString*)desc
+				currentPlayers:(NSInteger)playerCount
+					maxPlayers:(NSInteger)max
+						 state:(iTetGameplayState)gameState;
 - (id)initWithName:(NSString*)name
 	   description:(NSString*)desc
 	currentPlayers:(NSInteger)playerCount

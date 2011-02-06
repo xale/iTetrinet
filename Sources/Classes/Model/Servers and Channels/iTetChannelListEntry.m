@@ -1,5 +1,5 @@
 //
-//  iTetChannelInfo.m
+//  iTetChannelListEntry.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 6/23/09.
@@ -8,15 +8,15 @@
 //  See the included license.txt for more information
 //
 
-#import "iTetChannelInfo.h"
+#import "iTetChannelListEntry.h"
 
-@implementation iTetChannelInfo
+@implementation iTetChannelListEntry
 
-+ (id)channelInfoWithName:(NSString*)name
-			  description:(NSString*)desc
-		   currentPlayers:(NSInteger)playerCount
-			   maxPlayers:(NSInteger)max
-					state:(iTetGameplayState)gameState
++ (id)channelListEntryWithName:(NSString*)name
+				   description:(NSString*)desc
+				currentPlayers:(NSInteger)playerCount
+					maxPlayers:(NSInteger)max
+						 state:(iTetGameplayState)gameState
 {
 	return [[[self alloc] initWithName:name
 						   description:desc
