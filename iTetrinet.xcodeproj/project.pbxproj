@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6A64E2A013038347000CFCF1 /* iTetChannelListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */; };
+		6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6A64E2B21303841C000CFCF1 /* iTetrinet.icns */; };
 		6A9C3E7B12C96FB500C78BFD /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */; };
 		6A9C3E7C12C96FB500C78BFD /* iTetGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD712C96FB500C78BFD /* iTetGrowlController.m */; };
 		6A9C3E7D12C96FB500C78BFD /* iTetPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DDA12C96FB500C78BFD /* iTetPreferencesWindowController.m */; };
@@ -129,6 +130,7 @@
 /* Begin PBXFileReference section */
 		6A64E29E13038347000CFCF1 /* iTetChannelListEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChannelListEntry.h; sourceTree = "<group>"; };
 		6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelListEntry.m; sourceTree = "<group>"; };
+		6A64E2B21303841C000CFCF1 /* iTetrinet.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTetrinet.icns; sourceTree = "<group>"; };
 		6A9C3DD312C96FB500C78BFD /* iTetThemesArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesArrayController.h; sourceTree = "<group>"; };
 		6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesArrayController.m; sourceTree = "<group>"; };
 		6A9C3DD612C96FB500C78BFD /* iTetGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGrowlController.h; sourceTree = "<group>"; };
@@ -770,6 +772,7 @@
 				6A9C3EE112C9719900C78BFD /* PreferencesWindow.xib */,
 				6A9C3EE312C9719900C78BFD /* ServersPrefsView.xib */,
 				6A9C3EE512C9719900C78BFD /* ThemesPrefsView.xib */,
+				6A64E2B21303841C000CFCF1 /* iTetrinet.icns */,
 				6A9C3EF712C9719900C78BFD /* Info.plist */,
 				6A9C3EF812C9719900C78BFD /* license.txt */,
 			);
@@ -909,6 +912,7 @@
 				6A9C3F1F12C9719900C78BFD /* GTetrinetTheme.cfg in Resources */,
 				6A9C3F2012C9719900C78BFD /* iTetBlocks.png in Resources */,
 				6A9C3F2312C9719900C78BFD /* theme.cfg in Resources */,
+				6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
