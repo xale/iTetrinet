@@ -13,7 +13,7 @@
 #import "iTetPlayersController.h"
 #import "iTetLocalPlayer.h"
 
-#import "iTetChannelInfo.h"
+#import "iTetChannelListEntry.h"
 
 #import "iTetNetworkController.h"
 #import "iTetMessage.h"
