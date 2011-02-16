@@ -57,7 +57,7 @@
 
 - (NSString*)players
 {
-	return [NSString stringWithFormat:@"%d / %d", currentPlayers, maxPlayers];
+	return [NSString localizedStringWithFormat:@"%d / %d", currentPlayers, maxPlayers];
 }
 
 - (NSNumber*)sortablePlayers
