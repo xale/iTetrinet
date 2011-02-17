@@ -10,6 +10,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "iTetMessage.h"
+#import "iTetServerListEntry.h"
 
 @class iTetWindowController;
 @class iTetPlayersController;
@@ -18,8 +19,9 @@
 @class iTetChannelsViewController;
 @class iTetWinlistViewController;
 
-@class iTetServerInfo;
 @class AsyncSocket;
+
+@class iTetLocalPlayer;
 
 extern NSString* const iTetNetworkErrorDomain;
 typedef enum
@@ -61,19 +63,25 @@ typedef enum
 	IBOutlet NSArrayController* serverListController;
 	
 	// Network connection
-	iTetServerInfo* currentServer;
 	AsyncSocket* gameSocket;
 	iTetConnectionState connectionState;
+	NSString* currentServerAddress;
+	iTetProtocolType currentServerProtocol;
+	iTetGameVersion currentGameVersion;
+	iTetLocalPlayer* connectingPlayer;
 }
 
 - (IBAction)openCloseConnection:(id)sender;
 
-- (void)connectToServer:(iTetServerInfo*)server;
+- (void)connectToServerAddress:(NSString*)serverAddress
+					  protocol:(iTetProtocolType)gameProtocol
+					   version:(iTetGameVersion)gameVersion
+				playerNickname:(NSString*)nickname
+				playerTeamName:(NSString*)teamName;
 - (void)disconnect;
 
 - (void)sendMessage:(iTetMessage*)message;
 
-@property (readonly) NSString* currentServerAddress;
 @property (readonly) iTetConnectionState connectionState;
 @property (readonly) BOOL connectionOpen;
 

@@ -21,7 +21,6 @@
 @class IPSScalableLevelIndicator;
 @class iTetPlayer;
 @class iTetSpecial;
-@class iTetServerInfo;
 @class iTetRandomBlockGenerator;
 @class iTetKeyConfiguration;
 

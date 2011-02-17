@@ -9,7 +9,7 @@
 //
 
 #import "iTetProtocolTransformer.h"
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 
 NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 

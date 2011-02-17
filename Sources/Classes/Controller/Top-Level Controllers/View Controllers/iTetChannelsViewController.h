@@ -14,7 +14,6 @@
 @class iTetPlayersController;
 @class iTetWindowController;
 @class iTetNetworkController;
-@class iTetServerInfo;
 @class AsyncSocket;
 
 typedef enum
@@ -43,13 +42,13 @@ typedef enum
 	
 	// Server query socket
 	AsyncSocket* querySocket;
-	iTetServerInfo* currentServer;
+	NSString* currentServerAddress;
 	BOOL serverSupportsQueries;
 	iTetQueryStatus channelQueryStatus;
 	iTetQueryStatus playerQueryStatus;
 }
 
-- (void)requestChannelListFromServer:(iTetServerInfo*)server;
+- (void)requestChannelListFromServer:(NSString*)serverAddress;
 - (IBAction)refreshChannelList:(id)sender;
 - (void)stopQueriesAndDisconnect;
 

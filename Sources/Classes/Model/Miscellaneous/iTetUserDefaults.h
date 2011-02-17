@@ -16,7 +16,7 @@ extern NSString* const iTetAutoSwitchChatAfterGamePrefKey;
 extern NSString* const iTetLocalPlayerNameColorPrefKey;
 extern NSString* const iTetThemesListPrefKey;
 extern NSString* const iTetThemesSelectionPrefKey;
-extern NSString* const iTetServersListPrefKey;
+extern NSString* const iTetFavoriteServersPrefKey;
 extern NSString* const iTetKeyConfigsListPrefKey;
 extern NSString* const iTetCurrentKeyConfigNumberPrefKey;
 extern NSString* const iTetOfflineGameRulesPrefKey;

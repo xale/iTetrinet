@@ -9,7 +9,7 @@
 //
 
 #import "iTetGameVersionTransformer.h"
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 
 NSString* const iTetGameVersionTransformerName =	@"TetrinetGameVersionTransformer";
 

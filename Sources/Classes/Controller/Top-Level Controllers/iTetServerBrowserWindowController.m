@@ -8,9 +8,22 @@
 
 #import "iTetServerBrowserWindowController.h"
 
+#import "iTetServerListEntry.h"
+#import "iTetUserDefaults.h"
+
+#import "IPSContextMenuTableView.h"
+
 NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 
 @implementation iTetServerBrowserWindowController
+
++ (void)initialize
+{
+	NSMutableDictionary* defaults = [NSMutableDictionary dictionary];
+	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerListEntry defaultFavoriteServers]]
+				 forKey:iTetFavoriteServersPrefKey];
+	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
 
 - (id)init
 {
@@ -37,6 +50,11 @@ NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 	// FIXME: WRITEME
 }
 
+- (IBAction)addNewServerToFavorites:(id)sender
+{
+	// FIXME: WRITEME: add new server list entry to favorites controller, select "address" field
+}
+
 - (IBAction)addSelectedServersToFavorites:(id)sender
 {
 	// Add the servers selected in the "internet servers" table to the favorites list
@@ -54,9 +72,35 @@ NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 #pragma mark -
 #pragma mark NSUserInterfaceValidations Methods
 
-- (BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item
+NSString* const iTetServerBrowserWindowInternetServersTabIdentifier =	@"internet";
+NSString* const iTetServerBrowserWindowFavoriteServersTabIdentifier =	@"favorites";
+
+- (BOOL)validateUserInterfaceItem:(id<NSValidatedUserInterfaceItem>)item
 {
-	// FIXME: WRITEME
+	// Determine the item's action
+	SEL action = [item action];
+	
+	// "Connect to server"
+	if (action == @selector(connect:))
+	{
+		// Check which tab of the browser is open
+		NSArrayController* activeController = nil;
+		if ([[[browserTabView selectedTabViewItem] identifier] isEqualToString:iTetServerBrowserWindowInternetServersTabIdentifier])
+			activeController = internetServersController;
+		else if ([[[browserTabView selectedTabViewItem] identifier] isEqualToString:iTetServerBrowserWindowFavoriteServersTabIdentifier])
+			activeController = favoriteServersController;
+		
+		// Check that the active controller has exactly one server selected
+		if ([[favoriteServersController selectedObjects] count] != 1)
+			return NO;
+		
+		// FIXME: WRITEME: check the player's nickname and team name
+		
+		return YES;
+	}
+	
+	// By default, make the control active
+	return YES;
 }
 
 #pragma mark -

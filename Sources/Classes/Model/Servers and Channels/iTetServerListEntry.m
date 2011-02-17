@@ -32,6 +32,14 @@ NSString* const iTetServerListEntryUnknownLocationPlaceholder =			@"Location unk
 
 @implementation iTetServerListEntry
 
++ (NSArray*)defaultFavoriteServers
+{
+	return [NSArray arrayWithObjects:
+			[iTetServerListEntry serverListEntryWithServerAddress:@"tetrinet.us"],
+			[iTetServerListEntry serverListEntryWithServerAddress:@"tetrinet.no"],
+			nil];
+}
+
 + (id)serverListEntryWithServerAddress:(NSString*)serverAddress
 {
 	return [[[self alloc] initWithServerAddress:serverAddress] autorelease];
@@ -174,7 +182,7 @@ NSString* const iTetServerListEntryUnknownLocationPlaceholder =			@"Location unk
 #pragma mark -
 #pragma mark NSCopying
 
-- (id)copyWithZone:(NSZone)zone
+- (id)copyWithZone:(NSZone*)zone
 {
 	return [[[self class] allocWithZone:zone] initWithServerListEntry:self];
 }

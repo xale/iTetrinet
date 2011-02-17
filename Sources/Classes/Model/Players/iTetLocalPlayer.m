@@ -13,7 +13,24 @@
 #import "iTetBlock.h"
 #import "iTetSpecial.h"
 
+#define iTetUnconnectedPlayerNumber		(-1)
+
 @implementation iTetLocalPlayer
+
++ (id)playerWithNickname:(NSString*)nick
+				teamName:(NSString*)team
+{
+	return [[[self alloc] initWithNickname:nick
+								  teamName:team] autorelease];
+}
+
+- (id)initWithNickname:(NSString*)nick
+			  teamName:(NSString*)team
+{
+	return [super initWithNickname:nick
+							number:iTetUnconnectedPlayerNumber
+						  teamName:team];
+}
 
 - (void)dealloc
 {

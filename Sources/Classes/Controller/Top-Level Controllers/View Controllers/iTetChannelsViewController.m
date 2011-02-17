@@ -18,7 +18,7 @@
 
 #import "IPSContextMenuTableView.h"
 
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 #import "AsyncSocket.h"
 #import "iTetMessage.h"
 #import "iTetQueryMessage.h"
@@ -39,7 +39,7 @@
 - (void)sendQueryMessage:(iTetQueryMessage*)message;
 - (void)listenForResponse;
 
-- (void)setCurrentServer:(iTetServerInfo*)server;
+- (void)setCurrentServerAddress:(NSString*)serverAddress;
 - (void)setChannels:(NSArray*)newChannels;
 - (void)setLocalPlayerChannelName:(NSString*)channelName;
 
@@ -73,7 +73,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[querySocket release];
-	[currentServer release];
+	[currentServerAddress release];
 	[updateChannels release];
 	[channels release];
 	[localPlayerChannelName release];
@@ -84,16 +84,16 @@
 #pragma mark -
 #pragma mark Public Methods
 
-- (void)requestChannelListFromServer:(iTetServerInfo*)server
+- (void)requestChannelListFromServer:(NSString*)serverAddress
 {
 	// Hold a reference to the server
-	[self setCurrentServer:server];
+	[self setCurrentServerAddress:serverAddress];
 	
 	// Assume, until we determine otherwise, that the server supports the Query protocol
 	serverSupportsQueries = YES;
 	
 	// Attempt to open a Query-protocol connection to the server
-	[querySocket connectToHost:[currentServer serverAddress]
+	[querySocket connectToHost:serverAddress
 						onPort:iTetQueryNetworkPort
 						 error:NULL];
 	
@@ -124,7 +124,7 @@
 	// If we have been disconnected since the last query, (by a read timeout on the server's end, for instance) reconnect
 	if (![querySocket isConnected])
 	{
-		[querySocket connectToHost:[currentServer serverAddress]
+		[querySocket connectToHost:currentServerAddress
 							onPort:iTetQueryNetworkPort
 							 error:NULL];
 		
@@ -151,7 +151,7 @@
 	
 	// Disconnect from the server
 	[querySocket disconnect];
-	[self setCurrentServer:nil];
+	[self setCurrentServerAddress:nil];
 	
 	// De-register for tab-change notifications
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -177,7 +177,7 @@
 	
 	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" items
 	if (itemAction == @selector(refreshChannelList:))
-		return ((currentServer != nil) && serverSupportsQueries);
+		return ((currentServerAddress != nil) && serverSupportsQueries);
 	
 	return YES;
 }
@@ -215,7 +215,7 @@
 	[menu addItem:menuItem];
 	
 	// If we're not connected to a server, or the server does not support queries, disable the "refresh channel list" items
-	[menuItem setEnabled:((currentServer != nil) && serverSupportsQueries)];
+	[menuItem setEnabled:((currentServerAddress != nil) && serverSupportsQueries)];
 	[menuItem release];
 	
 	return menu;
@@ -457,7 +457,7 @@ willDisconnectWithError:(NSError*)error
 	// If we have been disconnected before a query was completed, attempt to reconnect
 	if ((channelQueryStatus != noQuery) || (playerQueryStatus != noQuery))
 	{
-		[querySocket connectToHost:[currentServer serverAddress]
+		[querySocket connectToHost:currentServerAddress
 							onPort:iTetQueryNetworkPort
 							 error:NULL];
 	}
@@ -466,11 +466,11 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Accessors
 
-- (void)setCurrentServer:(iTetServerInfo*)server
+- (void)setCurrentServerAddress:(NSString*)serverAddress
 {
-	[server retain];
-	[currentServer release];
-	currentServer = server;
+	[serverAddress retain];
+	[currentServerAddress release];
+	currentServerAddress = serverAddress;
 }
 
 - (void)setChannels:(NSArray*)newChannels

@@ -13,7 +13,7 @@
 #import "iTetPlayer.h"
 #import "iTetField.h"
 #import "iTetSpecial.h"
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 
 #import "NSAttributedString+TetrinetTextAttributes.h"
 

@@ -9,7 +9,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 
 #define ITET_NUM_GAME_RULES_KEYS	16
 extern NSString* const iTetGameRulesOfflineGameKey;

@@ -40,6 +40,8 @@ extern NSString* const iTet114GameVersionName;
 	NSInteger numActiveChannels;
 }
 
++ (NSArray*)defaultFavoriteServers;
+
 + (id)serverListEntryWithServerAddress:(NSString*)serverAddress;
 - (id)initWithServerAddress:(NSString*)serverAddress;
 

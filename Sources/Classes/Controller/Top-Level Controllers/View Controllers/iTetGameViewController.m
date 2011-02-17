@@ -23,7 +23,7 @@
 #import "iTetLocalPlayer.h"
 #import "iTetServerPlayer.h"
 #import "iTetPlayer+GameEvents.h"
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 #import "iTetField.h"
 #import "iTetBlock.h"
 #import "iTetSpecial.h"

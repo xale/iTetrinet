@@ -25,6 +25,11 @@
 	NSInteger linesSinceLastSpecials;
 }
 
++ (id)playerWithNickname:(NSString*)nick
+				teamName:(NSString*)team;
+- (id)initWithNickname:(NSString*)nick
+			  teamName:(NSString*)team;
+
 - (void)addLines:(NSInteger)lines;
 - (void)resetLinesCleared;
 - (void)addSpecialToQueue:(iTetSpecial*)special;

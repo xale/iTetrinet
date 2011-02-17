@@ -14,7 +14,7 @@
 	IBOutlet NSArrayController* favoriteServersController;
 	BOOL refreshingServerList;
 	
-	IBOutlet NSTabView* serversTabView;
+	IBOutlet NSTabView* browserTabView;
 	
 	IBOutlet NSPopUpButton* gameTypeMenu;
 	IBOutlet NSPopUpButton* protocolMenu;

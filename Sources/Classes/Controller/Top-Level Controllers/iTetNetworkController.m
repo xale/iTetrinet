@@ -21,7 +21,6 @@
 #import "iTetGrowlController.h"
 
 #import "AsyncSocket.h"
-#import "iTetServerInfo.h"
 #import "iTetMessage.h"
 
 #import "iTetLocalPlayer.h"
@@ -66,8 +65,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			   forKey:iTetAutoSwitchChatOnConnectPrefKey];
 	[defaults setBool:YES
 			   forKey:iTetAutoSwitchChatAfterGamePrefKey];
-	[defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:[iTetServerInfo defaultServers]]
-				 forKey:iTetServersListPrefKey];
 	[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
 
@@ -85,7 +82,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Release socket and server data
 	[gameSocket release];
-	[currentServer release];
+	[currentServerAddress release];
 	
 	[super dealloc];
 }
@@ -316,17 +313,25 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #pragma mark -
 #pragma mark Connecting
 
-- (void)connectToServer:(iTetServerInfo*)server
+- (void)connectToServerAddress:(NSString*)serverAddress
+					  protocol:(iTetProtocolType)gameProtocol
+					   version:(iTetGameVersion)gameVersion
+				playerNickname:(NSString*)nickname
+				playerTeamName:(NSString*)teamName
 {
-	// Retain the server info
-	currentServer = [server retain];
+	// Hold onto the server info
+	currentServerAddress = [serverAddress copy];
+	currentServerProtocol = gameProtocol;
+	currentGameVersion = gameVersion;
+	connectingPlayer = [[iTetLocalPlayer alloc] initWithNickname:nickname
+														teamName:teamName];
 	
 	// Change the connection state
 	[self setConnectionState:connecting];
 	
 	// Attempt to open a connection to the server
 	NSError* error;
-	BOOL success = [gameSocket connectToHost:[currentServer serverAddress]
+	BOOL success = [gameSocket connectToHost:currentServerAddress
 									  onPort:iTetGameNetworkPort
 									   error:&error];
 	
@@ -352,16 +357,13 @@ didConnectToHost:(NSString*)hostname
 		hostname = @"127.0.0.1";
 	
 	// Create a server login message
-	iTetMessage* message;
-	if ([currentServer protocol] == tetrinetProtocol)
-		message = [iTetMessage messageWithMessageType:tetrinetLoginMessage];
-	else
-		message = [iTetMessage messageWithMessageType:tetrifastLoginMessage];
-	[[message contents] setObject:[currentServer playerNickname]
+	iTetMessageType loginMessageType = ((currentServerProtocol == tetrinetProtocol) ? tetrinetLoginMessage : tetrifastLoginMessage);
+	iTetMessage* message = [iTetMessage messageWithMessageType:loginMessageType];
+	[[message contents] setObject:[connectingPlayer nickname]
 						   forKey:iTetMessagePlayerNicknameKey];
 	[[message contents] setObject:hostname
 						   forKey:iTetMessageServerAddressKey];
-	[[message contents] setInt:[currentServer gameVersion]
+	[[message contents] setInt:currentGameVersion
 						forKey:iTetMessageGameVersionKey];
 	
 	// Send the login message
@@ -547,8 +549,8 @@ willDisconnectWithError:(NSError*)error
 			{
 				// Create the local player object
 				[playersController createLocalPlayerWithNumber:playerNumber
-													  nickname:[currentServer playerNickname]
-													  teamName:[currentServer playerTeamName]];
+													  nickname:[connectingPlayer playerNickname]
+													  teamName:[connectingPlayer playerTeamName]];
 				
 				// Treat this as the sign of a successful connection
 				[self setConnectionState:connected];
@@ -658,8 +660,8 @@ willDisconnectWithError:(NSError*)error
 			// Tell the game controller to start the game
 			[gameController newGameWithPlayers:[playersController playerList]
 										 rules:[iTetGameRules gameRulesFromArray:[[message contents] objectForKey:iTetMessageGameRulesArrayKey]
-																	withGameType:[currentServer protocol]
-																	 gameVersion:[currentServer gameVersion]]];
+																	withGameType:currentServerProtocol
+																	 gameVersion:currentGameVersion]];
 			
 			// Clear the last designated winning player
 			[playersController setLastWinningPlayer:nil];
@@ -919,11 +921,6 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Accessors
 
-- (NSString*)currentServerAddress
-{
-	return [currentServer serverAddress];
-}
-
 #define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"Connect to Server...", @"NetworkController", @"Title of menu item used to open a connection to a server")
 #define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"Connection Closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
 #define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"Disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")
@@ -994,7 +991,7 @@ willDisconnectWithError:(NSError*)error
 			[connectionMenuItem setKeyEquivalent:@"d"];
 			
 			// Change the connection status label
-			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetConnectingStatusLabelFormat, [currentServer serverAddress]]];
+			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetConnectingStatusLabelFormat, currentServerAddress]];
 			
 			// Start the progress indicator
 			[connectionProgressIndicator startAnimation:self];
@@ -1008,7 +1005,7 @@ willDisconnectWithError:(NSError*)error
 			[chatController appendStatusMessage:iTetConnectionOpenedStatusMessage];
 			
 			// Change the connection status label
-			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetLoggingInStatusLabelFormat, [currentServer playerNickname]]];
+			[connectionStatusLabel setStringValue:[NSString stringWithFormat:iTetLoggingInStatusLabelFormat, [connectingPlayer nickname]]];
 			
 			break;
 			
@@ -1039,7 +1036,7 @@ willDisconnectWithError:(NSError*)error
 			[connectionStatusLabel setStringValue:iTetConnectedStatusLabel];
 			
 			// Attempt to retrieve the server's channel list
-			[channelsController requestChannelListFromServer:currentServer];
+			[channelsController requestChannelListFromServer:currentServerAddress];
 			
 			// If the user wants us to, automatically switch to the chat tab
 			if ([[NSUserDefaults standardUserDefaults] boolForKey:iTetAutoSwitchChatOnConnectPrefKey])

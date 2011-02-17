@@ -16,7 +16,7 @@
 #import "iTetMessage.h"
 #import "NSDictionary+AdditionalTypes.h"
 
-#import "iTetServerInfo.h"
+#import "iTetServerListEntry.h"
 
 #import "iTetNotifications.h"
 

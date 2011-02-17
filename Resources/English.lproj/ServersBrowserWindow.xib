@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="1"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -61,9 +61,9 @@
 							<object class="NSMutableArray" key="NSTabViewItems">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSTabViewItem" id="1032714998">
-									<string key="NSIdentifier">1</string>
+									<string key="NSIdentifier">internet</string>
 									<object class="NSView" key="NSView" id="1070042707">
-										<reference key="NSNextResponder" ref="27895187"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -438,7 +438,6 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {654, 335}}</string>
-										<reference key="NSSuperview" ref="27895187"/>
 									</object>
 									<string key="NSLabel">Internet</string>
 									<object class="NSColor" key="NSColor" id="176563958">
@@ -450,9 +449,9 @@
 									<reference key="NSTabView" ref="27895187"/>
 								</object>
 								<object class="NSTabViewItem" id="188107099">
-									<string key="NSIdentifier">2</string>
+									<string key="NSIdentifier">favorites</string>
 									<object class="NSView" key="NSView" id="68196275">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="27895187"/>
 										<int key="NSvFlags">256</int>
 										<object class="NSMutableArray" key="NSSubviews">
 											<bool key="EncodedWithXMLCoder">YES</bool>
@@ -801,20 +800,21 @@
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {654, 335}}</string>
+										<reference key="NSSuperview" ref="27895187"/>
 									</object>
 									<string key="NSLabel">Favorites</string>
 									<reference key="NSColor" ref="176563958"/>
 									<reference key="NSTabView" ref="27895187"/>
 								</object>
 							</object>
-							<reference key="NSSelectedTabViewItem" ref="1032714998"/>
+							<reference key="NSSelectedTabViewItem" ref="188107099"/>
 							<reference key="NSFont" ref="883773672"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
-								<reference ref="1070042707"/>
+								<reference ref="68196275"/>
 							</object>
 						</object>
 						<object class="NSProgressIndicator" id="554876362">
