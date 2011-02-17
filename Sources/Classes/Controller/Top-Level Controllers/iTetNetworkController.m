@@ -549,8 +549,8 @@ willDisconnectWithError:(NSError*)error
 			{
 				// Create the local player object
 				[playersController createLocalPlayerWithNumber:playerNumber
-													  nickname:[connectingPlayer playerNickname]
-													  teamName:[connectingPlayer playerTeamName]];
+													  nickname:[connectingPlayer nickname]
+													  teamName:[connectingPlayer teamName]];
 				
 				// Treat this as the sign of a successful connection
 				[self setConnectionState:connected];
@@ -920,6 +920,8 @@ willDisconnectWithError:(NSError*)error
 
 #pragma mark -
 #pragma mark Accessors
+
+@synthesize currentServerAddress;
 
 #define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"Connect to Server...", @"NetworkController", @"Title of menu item used to open a connection to a server")
 #define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"Connection Closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
