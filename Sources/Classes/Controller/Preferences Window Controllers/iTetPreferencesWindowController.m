@@ -11,7 +11,6 @@
 #import "iTetPreferencesWindowController.h"
 #import "iTetGeneralPrefsViewController.h"
 #import "iTetThemesViewController.h"
-#import "iTetServersViewController.h"
 #import "iTetKeyboardViewController.h"
 #import "iTetOfflineGamePrefsViewController.h"
 
@@ -26,7 +25,6 @@
 	viewControllers = [[NSArray alloc] initWithObjects:
 					   [iTetGeneralPrefsViewController viewController],
 					   [iTetThemesViewController viewController],
-					   [iTetServersViewController viewController],
 					   [iTetKeyboardViewController viewController],
 					   [iTetOfflineGamePrefsViewController viewController],
 					   nil];
@@ -150,7 +148,7 @@
 
 - (NSArray*)toolbarSelectableItemIdentifiers:(NSToolbar*)toolbar
 {
-	return [NSArray arrayWithObjects: [general itemIdentifier], [themes itemIdentifier], [servers itemIdentifier], [keyboard itemIdentifier], [offline itemIdentifier], nil];
+	return [NSArray arrayWithObjects: [general itemIdentifier], [themes itemIdentifier], [keyboard itemIdentifier], [offline itemIdentifier], nil];
 }
 
 @end

@@ -42,11 +42,6 @@ extern NSString* const iTetWinlistViewTabIdentifier;
 - (IBAction)switchToWinlistTab:(id)sender;
 
 - (IBAction)showPreferences:(id)sender;
-- (void)openPreferencesTabNumber:(NSInteger)tabNumber;
-- (IBAction)openGeneralPreferencesTab:(id)sender;
-- (IBAction)openThemesPreferencesTab:(id)sender;
-- (IBAction)openServersPreferencesTab:(id)sender;
-- (IBAction)openKeyboardPreferencesTab:(id)sender;
 
 @property (readonly) NSWindow* window;
 @property (readonly) NSTabView* tabView;

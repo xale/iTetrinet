@@ -17,9 +17,8 @@ typedef enum
 	noPreferencesTab =			-1,
 	generalPreferencesTab =		0,
 	themesPreferencesTab =		1,
-	serversPreferencesTab =		2,
-	keyboardPreferencesTab =	3,
-	offlineGamePreferencesTab =	4
+	keyboardPreferencesTab =	2,
+	offlineGamePreferencesTab =	3
 } iTetPreferencesTabNumber;
 
 @interface iTetPreferencesWindowController : NSWindowController
@@ -31,7 +30,6 @@ typedef enum
 	
 	IBOutlet NSToolbarItem* general;
 	IBOutlet NSToolbarItem* themes;
-	IBOutlet NSToolbarItem* servers;
 	IBOutlet NSToolbarItem* keyboard;
 	IBOutlet NSToolbarItem* offline;
 }

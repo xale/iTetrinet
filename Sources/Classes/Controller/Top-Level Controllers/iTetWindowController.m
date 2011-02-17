@@ -258,32 +258,6 @@ NSString* const iTetWinlistViewTabIdentifier =	@"winlist";
 	[[prefsWindowController window] makeKeyAndOrderFront:self];
 }
 
-- (void)openPreferencesTabNumber:(NSInteger)tabNumber
-{
-	[self showPreferences:self];
-	[prefsWindowController displayViewControllerAtIndex:tabNumber];
-}
-
-- (IBAction)openGeneralPreferencesTab:(id)sender
-{
-	[self openPreferencesTabNumber:generalPreferencesTab];
-}
-
-- (IBAction)openThemesPreferencesTab:(id)sender
-{
-	[self openPreferencesTabNumber:themesPreferencesTab];
-}
-
-- (IBAction)openServersPreferencesTab:(id)sender
-{
-	[self openPreferencesTabNumber:serversPreferencesTab];
-}
-
-- (IBAction)openKeyboardPreferencesTab:(id)sender
-{
-	[self openPreferencesTabNumber:keyboardPreferencesTab];
-}
-
 #pragma mark -
 #pragma mark Accessors
 
