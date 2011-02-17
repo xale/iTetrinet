@@ -45,8 +45,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 
 @interface iTetNetworkController (Private)
 
-- (void)openServerSelectionDialog;
-
 - (void)messageReceived:(iTetMessage*)message;
 - (void)handleError:(NSError*)error;
 
@@ -149,35 +147,11 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 			break;
 		}
 			
-			// If we are not connected, open the server list for a new connection
+			// If we are not connected, open the server browser for a new connection
 		case disconnected:
 		{
-			// Check if the user is playing an offline game
-			if ([gameController gameInProgress])
-			{
-				// Make note if the game was paused, pause if not
-				BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);
-				if (!gameWasPaused)
-					[gameController pauseGame];
-				
-				// If the user is playing an offline game, create an alert asking to end the game before connecting
-				NSAlert* alert = [[[NSAlert alloc] init] autorelease];
-				[alert setMessageText:iTetGameInProgressAlertTitle];
-				[alert setInformativeText:iTetConnectWithOfflineGameInProgressAlertInformativeText];
-				[alert addButtonWithTitle:iTetConnectWithOfflineGameInProgressConfirmButtonTitle];
-				[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
-				
-				// Run the alert as sheet
-				[alert beginSheetModalForWindow:[windowController window]
-								  modalDelegate:self
-								 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
-									contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
-			}
-			else
-			{
-				// If there is no offline game in progress, open the server selection dialog
-				[self openServerSelectionDialog];
-			}
+			// Open the server browser
+			// FIXME: WRITEME: open server browser
 			
 			break;
 		}
@@ -231,58 +205,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[gameController endGame];
 	
 	// Open the "connect to server" dialog
-	[self openServerSelectionDialog];
-}
-
-#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"Connect to Server", @"NetworkController", @"Title of 'connect to server' alert dialog")
-#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"Select a server to connect to:", @"NetworkController", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
-#define iTetConnectButtonTitle					NSLocalizedStringFromTable(@"Connect", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
-#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"Edit Server List...", @"NetworkController", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
-
-- (void)openServerSelectionDialog
-{
-	// Create an alert for the server selection dialog
-	NSAlert* dialog = [[[NSAlert alloc] init] autorelease];
-	[dialog setMessageText:iTetConnectToServerAlertTitle];
-	[dialog setInformativeText:iTetConnectToServerAlertInformativeText];
-	[dialog addButtonWithTitle:iTetConnectButtonTitle];
-	[dialog addButtonWithTitle:iTetCancelButtonTitle];
-	[dialog addButtonWithTitle:iTetEditServerListButtonTitle];
-	
-	// Add the table view containing the server list as the dialog's accessory
-	[dialog setAccessoryView:serverListView];
-	
-	// Run the dialog as a sheet
-	[dialog beginSheetModalForWindow:[windowController window]
-					   modalDelegate:self
-					  didEndSelector:@selector(connectAlertDidEnd:returnCode:contextInfo:)
-						 contextInfo:NULL];
-}
-
-- (void)connectAlertDidEnd:(NSAlert*)dialog
-				returnCode:(NSInteger)returnCode
-			   contextInfo:(void*)contextInfo
-{
-	// If the user cancelled, do nothing
-	if (returnCode == NSAlertSecondButtonReturn)
-		return;
-	
-	// If the user clicked "edit server list" open the preferences window
-	if (returnCode == NSAlertThirdButtonReturn)
-	{
-		[[dialog window] orderOut:self];
-		[windowController openServersPreferencesTab:self];
-		return;
-	}
-	
-	// Determine the server the user wishes to connect to
-	iTetServerInfo* server = [[serverListController selectedObjects] objectAtIndex:0];
-	
-	// Order out the dialog
-	[[dialog window] orderOut:self];
-	
-	// Attempt to connect to the server
-	[self connectToServer:server];
+	// FIXME: WRITEME: open server browser
 }
 
 #pragma mark -
@@ -923,6 +846,7 @@ willDisconnectWithError:(NSError*)error
 
 @synthesize currentServerAddress;
 
+#define iTetConnectButtonTitle				NSLocalizedStringFromTable(@"Connect", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
 #define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"Connect to Server...", @"NetworkController", @"Title of menu item used to open a connection to a server")
 #define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"Connection Closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
 #define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"Disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")

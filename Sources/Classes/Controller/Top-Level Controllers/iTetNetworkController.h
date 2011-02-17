@@ -58,10 +58,6 @@ typedef enum
 	IBOutlet NSProgressIndicator* connectionProgressIndicator;
 	IBOutlet NSTextField* connectionStatusLabel;
 	
-	// List view (and controller) for servers on connection sheet
-	IBOutlet NSScrollView* serverListView;
-	IBOutlet NSArrayController* serverListController;
-	
 	// Network connection
 	AsyncSocket* gameSocket;
 	iTetConnectionState connectionState;

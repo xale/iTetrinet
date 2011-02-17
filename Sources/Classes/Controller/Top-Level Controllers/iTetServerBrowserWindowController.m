@@ -43,6 +43,29 @@ NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 - (IBAction)connect:(id)sender
 {
 	// FIXME: WRITEME: determine selected server, connect
+	
+	// Check if the user is playing an offline game
+	/* FIXME: re-enable when connection code is written
+	 if ([gameController gameInProgress])
+	{
+		// Make note if the game was paused, pause if not
+		BOOL gameWasPaused = ([gameController gameplayState] == gamePaused);
+		if (!gameWasPaused)
+			[gameController pauseGame];
+		
+		// If the user is playing an offline game, create an alert asking to end the game before connecting
+		NSAlert* alert = [[[NSAlert alloc] init] autorelease];
+		[alert setMessageText:iTetGameInProgressAlertTitle];
+		[alert setInformativeText:iTetConnectWithOfflineGameInProgressAlertInformativeText];
+		[alert addButtonWithTitle:iTetConnectWithOfflineGameInProgressConfirmButtonTitle];
+		[alert addButtonWithTitle:iTetContinuePlayingButtonTitle];
+		
+		// Run the alert as sheet
+		[alert beginSheetModalForWindow:[windowController window]
+						  modalDelegate:self
+						 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
+							contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
+	}*/
 }
 
 - (IBAction)refreshServerList:(id)sender
