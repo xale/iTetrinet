@@ -14,6 +14,16 @@ NSString* const iTetCurrentChannelImageTransformerName = @"TetrinetCurrentChanne
 
 @implementation iTetCurrentChannelImageTransformer
 
++ (id)valueTransformer
+{
+	return [[[self alloc] init] autorelease];
+}
+
++ (NSString*)valueTransformerName
+{
+	return iTetCurrentChannelImageTransformerName;
+}
+
 + (Class)transformedValueClass
 {
 	return [NSImage class];

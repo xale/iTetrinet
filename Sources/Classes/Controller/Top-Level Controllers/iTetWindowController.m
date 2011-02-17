@@ -19,6 +19,7 @@
 #import "iTetUserDefaults.h"
 #import "iTetPreferencesWindowController.h"
 
+#import "iTetCountryCodeFlagImageTransformer.h"
 #import "iTetCurrentChannelImageTransformer.h"
 #import "iTetGameStateImageTransformer.h"
 #import "iTetGameVersionTransformer.h"
@@ -34,27 +35,29 @@
 + (void)initialize
 {
 	// Register value transformers
+	// Country code/flag images
+	[NSValueTransformer setValueTransformer:[iTetCountryCodeFlagImageTransformer valueTransformer]
+									forName:[iTetCountryCodeFlagImageTransformer valueTransformerName]];
+	
 	// Current channel icon
-	NSValueTransformer* transformer = [[[iTetCurrentChannelImageTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetCurrentChannelImageTransformerName];
+	[NSValueTransformer setValueTransformer:[iTetCurrentChannelImageTransformer valueTransformer]
+									forName:[iTetCurrentChannelImageTransformer valueTransformerName]];
 	
 	// Game state icon
-	transformer = [[[iTetGameStateImageTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetGameStateImageTransformerName];
+	[NSValueTransformer setValueTransformer:[iTetGameStateImageTransformer valueTransformer]
+									forName:[iTetGameStateImageTransformer valueTransformerName]];
+	
 	// Game version enum to name
-	transformer = [[[iTetGameVersionTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetGameVersionTransformerName];
+	[NSValueTransformer setValueTransformer:[iTetGameVersionTransformer valueTransformer]
+									forName:[iTetGameVersionTransformer valueTransformerName]];
+	
 	// Protocol enum to name
-	transformer = [[[iTetProtocolTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetProtocolTransformerName];
+	[NSValueTransformer setValueTransformer:[iTetProtocolTransformer valueTransformer]
+									forName:[iTetProtocolTransformer valueTransformerName]];
+	
 	// Winlist entry type to image
-	transformer = [[[iTetWinlistEntryTypeImageTransformer alloc] init] autorelease];
-	[NSValueTransformer setValueTransformer:transformer
-									forName:iTetWinlistEntryTypeImageTransformerName];
+	[NSValueTransformer setValueTransformer:[iTetWinlistEntryTypeImageTransformer valueTransformer]
+									forName:[iTetWinlistEntryTypeImageTransformer valueTransformerName]];
 }
 
 - (void)awakeFromNib

@@ -15,6 +15,16 @@ NSString* const iTetProtocolTransformerName = @"TetrinetProtocolTransformer";
 
 @implementation iTetProtocolTransformer
 
++ (id)valueTransformer
+{
+	return [[[self alloc] init] autorelease];
+}
+
++ (NSString*)valueTransformerName
+{
+	return iTetProtocolTransformerName;
+}
+
 + (Class)transformedValueClass
 {
 	return [NSString class];

@@ -14,6 +14,16 @@ NSString* const iTetWinlistEntryTypeImageTransformerName = @"TetrinetWinlistEntr
 
 @implementation iTetWinlistEntryTypeImageTransformer
 
++ (id)valueTransformer
+{
+	return [[[self alloc] init] autorelease];
+}
+
++ (NSString*)valueTransformerName
+{
+	return iTetWinlistEntryTypeImageTransformerName;
+}
+
 + (Class)transformedValueClass
 {
 	return [NSImage class];

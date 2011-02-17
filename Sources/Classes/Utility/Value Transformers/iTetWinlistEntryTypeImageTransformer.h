@@ -14,6 +14,9 @@ extern NSString* const iTetWinlistEntryTypeImageTransformerName;
 
 @interface iTetWinlistEntryTypeImageTransformer : NSValueTransformer
 
++ (id)valueTransformer;
++ (NSString*)valueTransformerName;
+
 // Overrides
 + (Class)transformedValueClass;
 + (BOOL)allowsReverseTransformation;

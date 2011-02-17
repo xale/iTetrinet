@@ -14,6 +14,9 @@ extern NSString* const iTetGameStateImageTransformerName;
 
 @interface iTetGameStateImageTransformer : NSValueTransformer
 
++ (id)valueTransformer;
++ (NSString*)valueTransformerName;
+
 // Overrides
 + (Class)transformedValueClass;
 + (BOOL)allowsReverseTransformation;

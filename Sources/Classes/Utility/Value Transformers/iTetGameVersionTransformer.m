@@ -15,6 +15,16 @@ NSString* const iTetGameVersionTransformerName =	@"TetrinetGameVersionTransforme
 
 @implementation iTetGameVersionTransformer
 
++ (id)valueTransformer
+{
+	return [[[self alloc] init] autorelease];
+}
+
++ (NSString*)valueTransformerName
+{
+	return iTetGameVersionTransformerName;
+}
+
 + (Class)transformedValueClass
 {
 	return [NSString class];

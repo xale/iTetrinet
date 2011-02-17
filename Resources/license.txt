@@ -22,6 +22,8 @@ Stop Red Button.png
 Users.png
 Which are copyright (c) 2007-2010 ~Sekkyumu, and are provided for use in any software project, but may not be resold individually or as a pack,
 
+National flag icons from www.icondrawer.com, used under requirement of attribution, and are not to be reused with attribution or the acquisition of a royalty-free license from www.icondrawer.com,
+
 And the "default" theme from GTetrinet (http://gtetrinet.sourceforge.net/):
 gtetblocks.png (original title: "blocks.png")
 GTetrinetTheme.cfg (original title: "theme.cfg")

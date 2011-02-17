@@ -14,6 +14,9 @@ extern NSString* const iTetCurrentChannelImageTransformerName;
 
 @interface iTetCurrentChannelImageTransformer : NSValueTransformer
 
++ (id)valueTransformer;
++ (NSString*)valueTransformerName;
+
 // Overrides
 + (Class)transformedValueClass;
 + (BOOL)allowsReverseTransformation;

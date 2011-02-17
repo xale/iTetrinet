@@ -14,6 +14,9 @@ extern NSString* const iTetGameVersionTransformerName;
 
 @interface iTetGameVersionTransformer : NSValueTransformer
 
++ (id)valueTransformer;
++ (NSString*)valueTransformerName;
+
 // Overrides
 + (Class)transformedValueClass;
 + (BOOL)allowsReverseTransformation;

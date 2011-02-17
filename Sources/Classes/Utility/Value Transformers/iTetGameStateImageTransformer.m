@@ -15,6 +15,16 @@ NSString* const iTetGameStateImageTransformerName = @"TetrinetGameStateTransform
 
 @implementation iTetGameStateImageTransformer
 
++ (id)valueTransformer
+{
+	return [[[self alloc] init] autorelease];
+}
+
++ (NSString*)valueTransformerName
+{
+	return iTetGameStateImageTransformerName;
+}
+
 + (Class)transformedValueClass
 {
 	return [NSImage class];

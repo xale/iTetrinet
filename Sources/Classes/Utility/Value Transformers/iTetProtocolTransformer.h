@@ -14,6 +14,9 @@ extern NSString* const iTetProtocolTransformerName;
 
 @interface iTetProtocolTransformer : NSValueTransformer
 
++ (id)valueTransformer;
++ (NSString*)valueTransformerName;
+
 // Overrides
 + (Class)transformedValueClass;
 + (BOOL)allowsReverseTransformation;
