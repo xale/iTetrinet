@@ -485,8 +485,8 @@
 		6A9C3DFA12C96FB500C78BFD /* Game Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6A9C3DFB12C96FB500C78BFD /* Block Generators */,
 				6A8BC5E3130D98AA001A21DD /* Field Objects */,
+				6A9C3DFB12C96FB500C78BFD /* Block Generators */,
 				6A9C3E0512C96FB500C78BFD /* iTetGameRules.h */,
 				6A9C3E0612C96FB500C78BFD /* iTetGameRules.m */,
 				6A9C3E0412C96FB500C78BFD /* iTetGameplayState.h */,
