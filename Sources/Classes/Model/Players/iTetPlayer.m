@@ -76,6 +76,29 @@
 	[super dealloc];
 }
 
+#pragma mark =
+#pragma mark Name Validation
+
++ (NSString*)serverSanitizedNickname:(NSString*)nick
+{
+	// Strip whitespace from the ends of the name
+	nick = [nick stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Split the name on any internal whitespace characters
+	NSArray* nameTokens = [nick componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+	
+	// Re-join the name with underscores
+	nick = [nameTokens componentsJoinedByString:@"_"];
+	
+	return nick;
+}
+
++ (NSString*)serverSanitizedTeamName:(NSString*)name
+{
+	// Strip whitespace from the ends of the name
+	return [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+}
+
 #pragma mark -
 #pragma mark Comparators
 

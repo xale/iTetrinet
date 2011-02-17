@@ -89,7 +89,7 @@
 	// Check that the name is not nil, and remove any leading or trailing spaces
 	if (newTeam == nil)
 		newTeam = [NSString string];
-	newTeam = [iTetServerInfo serverSanitizedTeamName:newTeam];
+	newTeam = [iTetPlayer serverSanitizedTeamName:newTeam];
 	
 	// Change the local player's team name
 	[localPlayer setTeamName:newTeam];

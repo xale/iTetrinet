@@ -43,6 +43,9 @@
 + (id)playerWithNumber:(NSInteger)number;
 - (id)initWithNumber:(NSInteger)number;
 
++ (NSString*)serverSanitizedNickname:(NSString*)nick;
++ (NSString*)serverSanitizedTeamName:(NSString*)name;
+
 @property (readonly) BOOL isLocalPlayer;
 @property (readonly) BOOL isServerPlayer;
 @property (readwrite, copy) NSString* nickname;
