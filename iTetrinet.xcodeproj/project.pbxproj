@@ -289,10 +289,11 @@
 		6A66BA0412FE70A200B13CFC /* zm.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A66B8EE12FE70A200B13CFC /* zm.png */; };
 		6A66BA0512FE70A200B13CFC /* zw.png in Resources */ = {isa = PBXBuildFile; fileRef = 6A66B8EF12FE70A200B13CFC /* zw.png */; };
 		6A6D007F12F7DC990088BB4E /* ServersBrowserWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6A6D007E12F7DC990088BB4E /* ServersBrowserWindow.xib */; };
-		6A8BC53C130D8398001A21DD /* iTetChannelListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3E2D12C96FB500C78BFD /* iTetChannelListEntry.m */; };
-		6A8BC5FF130D99DD001A21DD /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5FA130D99DD001A21DD /* iTetBlock.m */; };
-		6A8BC600130D99DD001A21DD /* iTetField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5FC130D99DD001A21DD /* iTetField.m */; };
-		6A8BC601130D99DD001A21DD /* iTetSpecial.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5FE130D99DD001A21DD /* iTetSpecial.m */; };
+		6A8BC5EA130D98AA001A21DD /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5E5130D98AA001A21DD /* iTetBlock.m */; };
+		6A8BC5EB130D98AA001A21DD /* iTetField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5E7130D98AA001A21DD /* iTetField.m */; };
+		6A8BC5EC130D98AA001A21DD /* iTetSpecial.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5E9130D98AA001A21DD /* iTetSpecial.m */; };
+		6A8BC62E130D9B86001A21DD /* iTetBlockTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC62D130D9B86001A21DD /* iTetBlockTimer.m */; };
+		6A8BC68D130DC777001A21DD /* iTetChannelListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3E2D12C96FB500C78BFD /* iTetChannelListEntry.m */; };
 		6A9C3E7B12C96FB500C78BFD /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */; };
 		6A9C3E7C12C96FB500C78BFD /* iTetGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD712C96FB500C78BFD /* iTetGrowlController.m */; };
 		6A9C3E7D12C96FB500C78BFD /* iTetPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DDA12C96FB500C78BFD /* iTetPreferencesWindowController.m */; };
@@ -692,12 +693,14 @@
 		6A66B8EE12FE70A200B13CFC /* zm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zm.png; sourceTree = "<group>"; };
 		6A66B8EF12FE70A200B13CFC /* zw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zw.png; sourceTree = "<group>"; };
 		6A6D007C12F7DC930088BB4E /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ServersBrowserWindow.xib; sourceTree = "<group>"; };
-		6A8BC5F9130D99DD001A21DD /* iTetBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlock.h; sourceTree = "<group>"; };
-		6A8BC5FA130D99DD001A21DD /* iTetBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetBlock.m; sourceTree = "<group>"; };
-		6A8BC5FB130D99DD001A21DD /* iTetField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetField.h; sourceTree = "<group>"; };
-		6A8BC5FC130D99DD001A21DD /* iTetField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetField.m; sourceTree = "<group>"; };
-		6A8BC5FD130D99DD001A21DD /* iTetSpecial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetSpecial.h; sourceTree = "<group>"; };
-		6A8BC5FE130D99DD001A21DD /* iTetSpecial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecial.m; sourceTree = "<group>"; };
+		6A8BC5E4130D98AA001A21DD /* iTetBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlock.h; sourceTree = "<group>"; };
+		6A8BC5E5130D98AA001A21DD /* iTetBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetBlock.m; sourceTree = "<group>"; };
+		6A8BC5E6130D98AA001A21DD /* iTetField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetField.h; sourceTree = "<group>"; };
+		6A8BC5E7130D98AA001A21DD /* iTetField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetField.m; sourceTree = "<group>"; };
+		6A8BC5E8130D98AA001A21DD /* iTetSpecial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetSpecial.h; sourceTree = "<group>"; };
+		6A8BC5E9130D98AA001A21DD /* iTetSpecial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecial.m; sourceTree = "<group>"; };
+		6A8BC62C130D9B86001A21DD /* iTetBlockTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetBlockTimer.h; sourceTree = "<group>"; };
+		6A8BC62D130D9B86001A21DD /* iTetBlockTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetBlockTimer.m; sourceTree = "<group>"; };
 		6A9C3DD312C96FB500C78BFD /* iTetThemesArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesArrayController.h; sourceTree = "<group>"; };
 		6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesArrayController.m; sourceTree = "<group>"; };
 		6A9C3DD612C96FB500C78BFD /* iTetGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGrowlController.h; sourceTree = "<group>"; };
@@ -1187,15 +1190,15 @@
 			path = Flags;
 			sourceTree = "<group>";
 		};
-		6A8BC5F8130D99DD001A21DD /* Field Objects */ = {
+		6A8BC5E3130D98AA001A21DD /* Field Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6A8BC5F9130D99DD001A21DD /* iTetBlock.h */,
-				6A8BC5FA130D99DD001A21DD /* iTetBlock.m */,
-				6A8BC5FB130D99DD001A21DD /* iTetField.h */,
-				6A8BC5FC130D99DD001A21DD /* iTetField.m */,
-				6A8BC5FD130D99DD001A21DD /* iTetSpecial.h */,
-				6A8BC5FE130D99DD001A21DD /* iTetSpecial.m */,
+				6A8BC5E4130D98AA001A21DD /* iTetBlock.h */,
+				6A8BC5E5130D98AA001A21DD /* iTetBlock.m */,
+				6A8BC5E6130D98AA001A21DD /* iTetField.h */,
+				6A8BC5E7130D98AA001A21DD /* iTetField.m */,
+				6A8BC5E8130D98AA001A21DD /* iTetSpecial.h */,
+				6A8BC5E9130D98AA001A21DD /* iTetSpecial.m */,
 			);
 			path = "Field Objects";
 			sourceTree = "<group>";
@@ -1332,10 +1335,12 @@
 		6A9C3DFA12C96FB500C78BFD /* Game Objects */ = {
 			isa = PBXGroup;
 			children = (
-				6A8BC5F8130D99DD001A21DD /* Field Objects */,
+				6A8BC5E3130D98AA001A21DD /* Field Objects */,
 				6A9C3DFB12C96FB500C78BFD /* Block Generators */,
 				6A9C3E0512C96FB500C78BFD /* iTetGameRules.h */,
 				6A9C3E0612C96FB500C78BFD /* iTetGameRules.m */,
+				6A8BC62C130D9B86001A21DD /* iTetBlockTimer.h */,
+				6A8BC62D130D9B86001A21DD /* iTetBlockTimer.m */,
 				6A9C3E0412C96FB500C78BFD /* iTetGameplayState.h */,
 			);
 			path = "Game Objects";
@@ -2144,10 +2149,11 @@
 				6ADEDD9113022543007B67A4 /* iTetServerBrowserWindowController.m in Sources */,
 				6A64E3091303A0CA000CFCF1 /* iTetCountryCodeFlagImageTransformer.m in Sources */,
 				6A64E30E1303A642000CFCF1 /* iTetIntegerNotFoundTransformer.m in Sources */,
-				6A8BC53C130D8398001A21DD /* iTetChannelListEntry.m in Sources */,
-				6A8BC5FF130D99DD001A21DD /* iTetBlock.m in Sources */,
-				6A8BC600130D99DD001A21DD /* iTetField.m in Sources */,
-				6A8BC601130D99DD001A21DD /* iTetSpecial.m in Sources */,
+				6A8BC5EA130D98AA001A21DD /* iTetBlock.m in Sources */,
+				6A8BC5EB130D98AA001A21DD /* iTetField.m in Sources */,
+				6A8BC5EC130D98AA001A21DD /* iTetSpecial.m in Sources */,
+				6A8BC62E130D9B86001A21DD /* iTetBlockTimer.m in Sources */,
+				6A8BC68D130DC777001A21DD /* iTetChannelListEntry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

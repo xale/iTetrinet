@@ -22,13 +22,8 @@
 @class iTetPlayer;
 @class iTetSpecial;
 @class iTetRandomBlockGenerator;
+@class iTetBlockTimer;
 @class iTetKeyConfiguration;
-
-typedef enum
-{
-	nextBlockTimer,
-	blockFallTimer
-} iTetBlockTimerType;
 
 @interface iTetGameViewController : NSObject <NSUserInterfaceValidations>
 {
@@ -71,17 +66,13 @@ typedef enum
 	iTetRandomBlockGenerator* blockGenerator;
 	
 	// Timer for local player's falling block
-	NSTimer* blockTimer;
+	iTetBlockTimer* blockTimer;
 	
 	// State of current game
 	iTetGameplayState gameplayState;
 	
 	// Current key bindings
 	iTetKeyConfiguration* currentKeyConfiguration;
-	
-	// Data stored when game is paused
-	NSTimeInterval timeUntilNextTimerFire;
-	iTetBlockTimerType lastTimerType;
 }
 
 - (IBAction)startStopGame:(id)sender;
