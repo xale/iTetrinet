@@ -12,7 +12,7 @@
 #import "iTetMessage.h"
 #import "iTetServerListEntry.h"
 
-@class iTetWindowController;
+@class iTetMainWindowController;
 @class iTetPlayersController;
 @class iTetGameViewController;
 @class iTetChatViewController;
@@ -43,7 +43,7 @@ typedef enum
 @interface iTetNetworkController : NSObject <NSUserInterfaceValidations>
 {
 	// Other top-level controllers
-	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetMainWindowController* windowController;
 	IBOutlet iTetPlayersController* playersController;
 	IBOutlet iTetGameViewController* gameController;
 	IBOutlet iTetChatViewController* chatController;

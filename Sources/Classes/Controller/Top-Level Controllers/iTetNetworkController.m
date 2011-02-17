@@ -12,7 +12,7 @@
 
 #import <netdb.h>
 
-#import "iTetWindowController.h"
+#import "iTetMainWindowController.h"
 #import "iTetPlayersController.h"
 #import "iTetGameViewController.h"
 #import "iTetChatViewController.h"

@@ -12,7 +12,7 @@
 
 @class iTetChatViewController;
 @class iTetPlayersController;
-@class iTetWindowController;
+@class iTetMainWindowController;
 @class iTetNetworkController;
 @class AsyncSocket;
 
@@ -28,7 +28,7 @@ typedef enum
 	// Top-level controllers
 	IBOutlet iTetChatViewController* chatController;
 	IBOutlet iTetPlayersController* playersController;
-	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetMainWindowController* windowController;
 	IBOutlet iTetNetworkController* networkController;
 	
 	// Interface Builder elements

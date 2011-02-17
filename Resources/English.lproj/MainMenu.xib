@@ -2981,7 +2981,7 @@
 				<string key="NSMaxSize">{400, 149}</string>
 			</object>
 			<object class="NSCustomObject" id="547177939">
-				<string key="NSClassName">iTetWindowController</string>
+				<string key="NSClassName">iTetMainWindowController</string>
 			</object>
 			<object class="NSCustomObject" id="28388600">
 				<string key="NSClassName">iTetPlayersController</string>
@@ -7486,7 +7486,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{411, 813}, {164, 23}}</string>
+					<string>{{-800, 753}, {164, 23}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{596, 852}, {216, 23}}</string>
@@ -7565,7 +7565,7 @@
 					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{241, 443}, {157, 393}}</string>
+					<string>{{-937, 383}, {157, 393}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -7626,7 +7626,7 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{230, 683}, {151, 153}}</string>
+					<string>{{-981, 623}, {151, 153}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{187, 434}, {243, 243}}</string>
@@ -7644,11 +7644,11 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{340, 643}, {225, 193}}</string>
+					<string>{{-871, 583}, {225, 193}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{47, 836}, {392, 20}}</string>
+					<string>{{-1131, 776}, {392, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{74, 862}</string>
@@ -7806,7 +7806,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{92, 653}, {193, 183}}</string>
+					<string>{{-1119, 593}, {193, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -7843,7 +7843,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{173, 713}, {233, 123}}</string>
+					<string>{{-1038, 653}, {233, 123}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
 					<string>{{145, 474}, {199, 203}}</string>
@@ -7899,7 +7899,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">1790</int>
+			<int key="maxID">1793</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7998,7 +7998,7 @@
 							<string>iTetChatViewController</string>
 							<string>iTetNetworkController</string>
 							<string>iTetPlayersController</string>
-							<string>iTetWindowController</string>
+							<string>iTetMainWindowController</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -8036,7 +8036,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">windowController</string>
-								<string key="candidateClassName">iTetWindowController</string>
+								<string key="candidateClassName">iTetMainWindowController</string>
 							</object>
 						</object>
 					</object>
@@ -8234,7 +8234,7 @@
 							<string>iTetFieldView</string>
 							<string>IPSScalableLevelIndicator</string>
 							<string>iTetSpecialsView</string>
-							<string>iTetWindowController</string>
+							<string>iTetMainWindowController</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -8342,7 +8342,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">windowController</string>
-								<string key="candidateClassName">iTetWindowController</string>
+								<string key="candidateClassName">iTetMainWindowController</string>
 							</object>
 						</object>
 					</object>
@@ -8366,6 +8366,120 @@
 						</object>
 					</object>
 					<reference key="sourceIdentifier" ref="1056344282"/>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">iTetMainWindowController</string>
+					<string key="superclassName">NSObject</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>showPreferences:</string>
+							<string>showServerBrowser:</string>
+							<string>switchToChatTab:</string>
+							<string>switchToGameTab:</string>
+							<string>switchToWinlistTab:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>showPreferences:</string>
+							<string>showServerBrowser:</string>
+							<string>switchToChatTab:</string>
+							<string>switchToGameTab:</string>
+							<string>switchToWinlistTab:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">showPreferences:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">showServerBrowser:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToChatTab:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToGameTab:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">switchToWinlistTab:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>gameController</string>
+							<string>networkController</string>
+							<string>playersController</string>
+							<string>tabView</string>
+							<string>window</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>iTetGameViewController</string>
+							<string>iTetNetworkController</string>
+							<string>iTetPlayersController</string>
+							<string>NSTabView</string>
+							<string>NSWindow</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>gameController</string>
+							<string>networkController</string>
+							<string>playersController</string>
+							<string>tabView</string>
+							<string>window</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">gameController</string>
+								<string key="candidateClassName">iTetGameViewController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">networkController</string>
+								<string key="candidateClassName">iTetNetworkController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">playersController</string>
+								<string key="candidateClassName">iTetPlayersController</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tabView</string>
+								<string key="candidateClassName">NSTabView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">window</string>
+								<string key="candidateClassName">NSWindow</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBUserSource</string>
+						<string key="minorKey"/>
+					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">iTetNetworkController</string>
@@ -8406,7 +8520,7 @@
 							<string>NSTextField</string>
 							<string>iTetGameViewController</string>
 							<string>iTetPlayersController</string>
-							<string>iTetWindowController</string>
+							<string>iTetMainWindowController</string>
 							<string>iTetWinlistViewController</string>
 						</object>
 					</object>
@@ -8461,7 +8575,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">windowController</string>
-								<string key="candidateClassName">iTetWindowController</string>
+								<string key="candidateClassName">iTetMainWindowController</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">winlistController</string>
@@ -8539,7 +8653,7 @@
 							<string>iTetNetworkController</string>
 							<string>NSTextField</string>
 							<string>NSWindow</string>
-							<string>iTetWindowController</string>
+							<string>iTetMainWindowController</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -8567,7 +8681,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">windowController</string>
-								<string key="candidateClassName">iTetWindowController</string>
+								<string key="candidateClassName">iTetMainWindowController</string>
 							</object>
 						</object>
 					</object>
@@ -8590,113 +8704,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Sources/Classes/View/Themed Views/Superclass/iTetThemedView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">iTetWindowController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>showPreferences:</string>
-							<string>switchToChatTab:</string>
-							<string>switchToGameTab:</string>
-							<string>switchToWinlistTab:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>showPreferences:</string>
-							<string>switchToChatTab:</string>
-							<string>switchToGameTab:</string>
-							<string>switchToWinlistTab:</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">showPreferences:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">switchToChatTab:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">switchToGameTab:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">switchToWinlistTab:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>gameController</string>
-							<string>networkController</string>
-							<string>playersController</string>
-							<string>tabView</string>
-							<string>window</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>iTetGameViewController</string>
-							<string>iTetNetworkController</string>
-							<string>iTetPlayersController</string>
-							<string>NSTabView</string>
-							<string>NSWindow</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSArray" key="dict.sortedKeys">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>gameController</string>
-							<string>networkController</string>
-							<string>playersController</string>
-							<string>tabView</string>
-							<string>window</string>
-						</object>
-						<object class="NSMutableArray" key="dict.values">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBToOneOutletInfo">
-								<string key="name">gameController</string>
-								<string key="candidateClassName">iTetGameViewController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">networkController</string>
-								<string key="candidateClassName">iTetNetworkController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">playersController</string>
-								<string key="candidateClassName">iTetPlayersController</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tabView</string>
-								<string key="candidateClassName">NSTabView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">window</string>
-								<string key="candidateClassName">NSWindow</string>
-							</object>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Sources/Classes/Controller/Top-Level Controllers/iTetWindowController.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

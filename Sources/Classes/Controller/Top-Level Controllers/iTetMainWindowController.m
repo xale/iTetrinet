@@ -1,5 +1,5 @@
 //
-//  iTetWindowController.m
+//  iTetMainWindowController.m
 //  iTetrinet
 //
 //  Created by Alex Heinz on 3/16/10.
@@ -8,13 +8,15 @@
 //  See the included license.txt for more information
 //
 
-#import "iTetWindowController.h"
+#import "iTetMainWindowController.h"
 
 #import "iTetNetworkController.h"
 #import "iTetPlayersController.h"
 #import "iTetGameViewController.h"
 
 #import "iTetLocalPlayer.h"
+
+#import "iTetServerBrowserWindowController.h"
 
 #import "iTetUserDefaults.h"
 #import "iTetPreferencesWindowController.h"
@@ -30,7 +32,7 @@
 
 #import "iTetCommonLocalizations.h"
 
-@implementation iTetWindowController
+@implementation iTetMainWindowController
 
 + (void)initialize
 {
@@ -74,6 +76,7 @@
 
 - (void)dealloc
 {
+	[serverBrowserWindowController release];
 	[prefsWindowController release];
 	
 	[super dealloc];
@@ -247,15 +250,24 @@ NSString* const iTetWinlistViewTabIdentifier =	@"winlist";
 }
 
 #pragma mark -
-#pragma mark Preferences Window
+#pragma mark Additional Windows
+
+- (IBAction)showServerBrowser:(id)sender
+{
+	if (serverBrowserWindowController == nil)
+		serverBrowserWindowController = [[iTetServerBrowserWindowController alloc] init];
+	
+	[serverBrowserWindowController showWindow:sender];
+	[[prefsWindowController window] makeKeyAndOrderFront:sender];
+}
 
 - (IBAction)showPreferences:(id)sender
 {
 	if (prefsWindowController == nil)
 		prefsWindowController = [[iTetPreferencesWindowController alloc] init];
 	
-	[prefsWindowController showWindow:self];
-	[[prefsWindowController window] makeKeyAndOrderFront:self];
+	[prefsWindowController showWindow:sender];
+	[[prefsWindowController window] makeKeyAndOrderFront:sender];
 }
 
 #pragma mark -

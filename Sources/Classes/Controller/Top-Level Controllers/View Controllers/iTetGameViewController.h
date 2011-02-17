@@ -11,7 +11,7 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetGameplayState.h"
 
-@class iTetWindowController;
+@class iTetMainWindowController;
 @class iTetPlayersController;
 @class iTetNetworkController;
 @class iTetFieldView;
@@ -33,7 +33,7 @@ typedef enum
 @interface iTetGameViewController : NSObject <NSUserInterfaceValidations>
 {
 	// Top-level controllers
-	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetMainWindowController* windowController;
 	IBOutlet iTetPlayersController* playersController;
 	IBOutlet iTetNetworkController* networkController;
 	

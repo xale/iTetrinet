@@ -10,7 +10,7 @@
 
 #import "iTetPlayersController.h"
 
-#import "iTetWindowController.h"
+#import "iTetMainWindowController.h"
 #import "iTetNetworkController.h"
 
 #import "iTetMessage.h"

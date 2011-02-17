@@ -14,12 +14,12 @@
 @class iTetLocalPlayer;
 @class iTetServerPlayer;
 
-@class iTetWindowController;
+@class iTetMainWindowController;
 @class iTetNetworkController;
 
 @interface iTetPlayersController : NSObject <NSUserInterfaceValidations>
 {
-	IBOutlet iTetWindowController* windowController;
+	IBOutlet iTetMainWindowController* windowController;
 	IBOutlet iTetNetworkController* networkController;
 	
 	IBOutlet NSWindow* teamNameSheet;

@@ -300,7 +300,7 @@
 		6A9C3E8312C96FB500C78BFD /* iTetPreferencesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DE812C96FB500C78BFD /* iTetPreferencesViewController.m */; };
 		6A9C3E8412C96FB500C78BFD /* iTetNetworkController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DEB12C96FB500C78BFD /* iTetNetworkController.m */; };
 		6A9C3E8512C96FB500C78BFD /* iTetPlayersController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DED12C96FB500C78BFD /* iTetPlayersController.m */; };
-		6A9C3E8612C96FB500C78BFD /* iTetWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DEF12C96FB500C78BFD /* iTetWindowController.m */; };
+		6A9C3E8612C96FB500C78BFD /* iTetMainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DEF12C96FB500C78BFD /* iTetMainWindowController.m */; };
 		6A9C3E8712C96FB500C78BFD /* iTetChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DF212C96FB500C78BFD /* iTetChannelsViewController.m */; };
 		6A9C3E8812C96FB500C78BFD /* iTetChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DF412C96FB500C78BFD /* iTetChatViewController.m */; };
 		6A9C3E8912C96FB500C78BFD /* iTetGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DF612C96FB500C78BFD /* iTetGameViewController.m */; };
@@ -712,8 +712,8 @@
 		6A9C3DEB12C96FB500C78BFD /* iTetNetworkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNetworkController.m; sourceTree = "<group>"; };
 		6A9C3DEC12C96FB500C78BFD /* iTetPlayersController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayersController.h; sourceTree = "<group>"; };
 		6A9C3DED12C96FB500C78BFD /* iTetPlayersController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayersController.m; sourceTree = "<group>"; };
-		6A9C3DEE12C96FB500C78BFD /* iTetWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWindowController.h; sourceTree = "<group>"; };
-		6A9C3DEF12C96FB500C78BFD /* iTetWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWindowController.m; sourceTree = "<group>"; };
+		6A9C3DEE12C96FB500C78BFD /* iTetMainWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetMainWindowController.h; sourceTree = "<group>"; };
+		6A9C3DEF12C96FB500C78BFD /* iTetMainWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetMainWindowController.m; sourceTree = "<group>"; };
 		6A9C3DF112C96FB500C78BFD /* iTetChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChannelsViewController.h; sourceTree = "<group>"; };
 		6A9C3DF212C96FB500C78BFD /* iTetChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelsViewController.m; sourceTree = "<group>"; };
 		6A9C3DF312C96FB500C78BFD /* iTetChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChatViewController.h; sourceTree = "<group>"; };
@@ -1279,10 +1279,10 @@
 				6A9C3DEB12C96FB500C78BFD /* iTetNetworkController.m */,
 				6A9C3DEC12C96FB500C78BFD /* iTetPlayersController.h */,
 				6A9C3DED12C96FB500C78BFD /* iTetPlayersController.m */,
-				6A9C3DEE12C96FB500C78BFD /* iTetWindowController.h */,
-				6A9C3DEF12C96FB500C78BFD /* iTetWindowController.m */,
 				6ADEDD8F13022543007B67A4 /* iTetServerBrowserWindowController.h */,
 				6ADEDD9013022543007B67A4 /* iTetServerBrowserWindowController.m */,
+				6A9C3DEE12C96FB500C78BFD /* iTetMainWindowController.h */,
+				6A9C3DEF12C96FB500C78BFD /* iTetMainWindowController.m */,
 			);
 			path = "Top-Level Controllers";
 			sourceTree = "<group>";
@@ -2080,7 +2080,7 @@
 				6A9C3E8312C96FB500C78BFD /* iTetPreferencesViewController.m in Sources */,
 				6A9C3E8412C96FB500C78BFD /* iTetNetworkController.m in Sources */,
 				6A9C3E8512C96FB500C78BFD /* iTetPlayersController.m in Sources */,
-				6A9C3E8612C96FB500C78BFD /* iTetWindowController.m in Sources */,
+				6A9C3E8612C96FB500C78BFD /* iTetMainWindowController.m in Sources */,
 				6A9C3E8712C96FB500C78BFD /* iTetChannelsViewController.m in Sources */,
 				6A9C3E8812C96FB500C78BFD /* iTetChatViewController.m in Sources */,
 				6A9C3E8912C96FB500C78BFD /* iTetGameViewController.m in Sources */,

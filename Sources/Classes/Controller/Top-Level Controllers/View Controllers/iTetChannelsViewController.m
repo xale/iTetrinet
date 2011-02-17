@@ -11,7 +11,7 @@
 #import "iTetChannelsViewController.h"
 #import "iTetChatViewController.h"
 #import "iTetPlayersController.h"
-#import "iTetWindowController.h"
+#import "iTetMainWindowController.h"
 #import "iTetNetworkController.h"
 
 #import "iTetChannelListEntry.h"
