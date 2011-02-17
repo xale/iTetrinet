@@ -91,9 +91,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #define iTetDisconnectWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to disconnect from the server?", @"NetworkController", @"Informative text on alert displayed when the user attempts to disconnect from a server while participating in a game")
 #define iTetDisconnectWithGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit and Disconnect", @"NetworkController", @"Title of button on 'disconnect with game in progress?' alert that allows the user to stop playing and disconnect")
 
-#define iTetConnectWithOfflineGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"An offline game is currently in progress. Before you can connect to a server, you will have to forfeit the game. Are you sure you want to do this?", @"NetworkController", @"Informative text on alert displayed when the user attempts to open a new server connection while playing an offline game")
-#define iTetConnectWithOfflineGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit Game", @"NetworkController", @"Title of button on 'connect with offline game in progress?' alert that allows the user to stop playing the offline game and open a connection to a server")
-
 - (IBAction)openCloseConnection:(id)sender
 {
 	switch ([self connectionState])
@@ -151,7 +148,7 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 		case disconnected:
 		{
 			// Open the server browser
-			// FIXME: WRITEME: open server browser
+			[windowController showServerBrowser:sender];
 			
 			break;
 		}
@@ -179,33 +176,6 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	
 	// Disconnect from the server
 	[self disconnect];
-}
-
-- (void)connectWithOfflineGameInProgressAlertDidEnd:(NSAlert*)alert
-										 returnCode:(NSInteger)returnCode
-									  gameWasPaused:(NSNumber*)pauseState
-{
-	BOOL gameWasPaused = [pauseState boolValue];
-	[pauseState release];
-	
-	// Order out the sheet
-	[[alert window] orderOut:self];
-	
-	// If the user pressed "continue playing", resume the game
-	if (returnCode == NSAlertSecondButtonReturn)
-	{
-		// If the game was not paused beforehand, resume the game
-		if (!gameWasPaused)
-			[gameController resumeGame];
-		
-		return;
-	}
-	
-	// Otherwise, tell the game controller to end the game
-	[gameController endGame];
-	
-	// Open the "connect to server" dialog
-	// FIXME: WRITEME: open server browser
 }
 
 #pragma mark -

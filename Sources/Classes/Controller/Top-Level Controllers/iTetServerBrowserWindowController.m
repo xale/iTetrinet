@@ -40,6 +40,9 @@ NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 	// FIXME: WRITEME: populate favorites list, start a refresh
 }
 
+#define iTetConnectWithOfflineGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"An offline game is currently in progress. Before you can connect to a server, you will have to forfeit the game. Are you sure you want to do this?", @"NetworkController", @"Informative text on alert displayed when the user attempts to open a new server connection while playing an offline game")
+#define iTetConnectWithOfflineGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit Game", @"NetworkController", @"Title of button on 'connect with offline game in progress?' alert that allows the user to stop playing the offline game and open a connection to a server")
+
 - (IBAction)connect:(id)sender
 {
 	// FIXME: WRITEME: determine selected server, connect
@@ -66,6 +69,35 @@ NSString* const iTetServerBrowserWindowNibName =	@"ServerBrowserWindow";
 						 didEndSelector:@selector(connectWithOfflineGameInProgressAlertDidEnd:returnCode:gameWasPaused:)
 							contextInfo:[[NSNumber alloc] initWithBool:gameWasPaused]];
 	}*/
+}
+
+- (void)connectWithOfflineGameInProgressAlertDidEnd:(NSAlert*)alert
+										 returnCode:(NSInteger)returnCode
+									  gameWasPaused:(NSNumber*)pauseState
+{
+	/* FIXME: re-enable when we have a way to access the game state
+	BOOL gameWasPaused = [pauseState boolValue];
+	[pauseState release];
+	
+	// Order out the sheet
+	[[alert window] orderOut:self];
+	
+	// If the user pressed "continue playing", resume the game
+	if (returnCode == NSAlertSecondButtonReturn)
+	{
+		// If the game was not paused beforehand, resume the game
+		if (!gameWasPaused)
+			[gameController resumeGame];
+		
+		return;
+	}
+	
+	// Otherwise, tell the game controller to end the game
+	[gameController endGame];
+	 */
+	 
+	// Open the connection
+	// FIXME: WRITEME: open connection
 }
 
 - (IBAction)refreshServerList:(id)sender
