@@ -862,8 +862,8 @@
 		6A9C3FB112C9741100C78BFD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6AAE748C12FCF01C00D1B320 /* iTetServerListEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetServerListEntry.h; sourceTree = "<group>"; };
 		6AAE748D12FCF01C00D1B320 /* iTetServerListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetServerListEntry.m; sourceTree = "<group>"; };
-		6ADEDD8F13022543007B67A4 /* iTetServerBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetServerBrowserWindowController.h; sourceTree = "<group>"; };
-		6ADEDD9013022543007B67A4 /* iTetServerBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetServerBrowserWindowController.m; sourceTree = "<group>"; };
+		6ADEDD8F13022543007B67A4 /* iTetServerBrowserWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iTetServerBrowserWindowController.h; path = "../Top-Level Controllers/iTetServerBrowserWindowController.h"; sourceTree = "<group>"; };
+		6ADEDD9013022543007B67A4 /* iTetServerBrowserWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iTetServerBrowserWindowController.m; path = "../Top-Level Controllers/iTetServerBrowserWindowController.m"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iTetrinet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTetrinet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -1232,6 +1232,8 @@
 			children = (
 				6A9C3DD612C96FB500C78BFD /* iTetGrowlController.h */,
 				6A9C3DD712C96FB500C78BFD /* iTetGrowlController.m */,
+				6ADEDD8F13022543007B67A4 /* iTetServerBrowserWindowController.h */,
+				6ADEDD9013022543007B67A4 /* iTetServerBrowserWindowController.m */,
 			);
 			path = Miscellaneous;
 			sourceTree = "<group>";
@@ -1279,8 +1281,6 @@
 				6A9C3DEB12C96FB500C78BFD /* iTetNetworkController.m */,
 				6A9C3DEC12C96FB500C78BFD /* iTetPlayersController.h */,
 				6A9C3DED12C96FB500C78BFD /* iTetPlayersController.m */,
-				6ADEDD8F13022543007B67A4 /* iTetServerBrowserWindowController.h */,
-				6ADEDD9013022543007B67A4 /* iTetServerBrowserWindowController.m */,
 				6A9C3DEE12C96FB500C78BFD /* iTetMainWindowController.h */,
 				6A9C3DEF12C96FB500C78BFD /* iTetMainWindowController.m */,
 			);
