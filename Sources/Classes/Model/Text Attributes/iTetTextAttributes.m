@@ -207,7 +207,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	return nil;
 }
 
-+ (iTetTextColorAttribute)codeForChatTextColor:(NSColor*)color
++ (iTetTextColorAttributeCode)codeForChatTextColor:(NSColor*)color
 {
 	if ([color hasSameRGBValuesAsColor:[NSColor blackColor]])
 		return blackTextColor;

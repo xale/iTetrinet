@@ -146,7 +146,7 @@
 		
 		// Check for specific attributes that interest us
 		// Text color
-		iTetTextColorAttribute color = [iTetTextAttributes codeForChatTextColor:[attributes objectForKey:NSForegroundColorAttributeName]];
+		iTetTextColorAttributeCode color = [iTetTextAttributes codeForChatTextColor:[attributes objectForKey:NSForegroundColorAttributeName]];
 		if ((color != noColor) && (color != blackTextColor))
 		{
 			// Add color codes to the outgoing message data

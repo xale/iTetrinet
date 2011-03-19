@@ -29,14 +29,14 @@ typedef enum
 	purpleTextColor =	19,
 	maroonTextColor =	16,
 	magentaTextColor =	8
-} iTetTextColorAttribute;
+} iTetTextColorAttributeCode;
 
 typedef enum
 {
 	italicText =		22,
 	underlineText =		31,
 	boldText =			2
-} iTetTextFontAttribute;
+} iTetTextFontAttributeCode;
 
 #define ITET_HIGHEST_ATTR_CODE	31
 
@@ -75,7 +75,7 @@ extern NSString* const iTetLocalPlayerNicknameAttributeName;
 + (NSColor*)chatTextColorForCode:(uint8_t)attribute;
 
 // Returns the color code representing the specified foreground text color
-+ (iTetTextColorAttribute)codeForChatTextColor:(NSColor*)color;
++ (iTetTextColorAttributeCode)codeForChatTextColor:(NSColor*)color;
 
 // Returns the default foreground text color (black)
 + (NSColor*)defaultTextColor;
