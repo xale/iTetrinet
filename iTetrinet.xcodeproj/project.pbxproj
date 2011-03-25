@@ -17,6 +17,8 @@
 		6A603622133723B200433285 /* iTetMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603621133723B200433285 /* iTetMessage.m */; };
 		6A603625133723CC00433285 /* iTetNoPayloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603624133723CC00433285 /* iTetNoPayloadMessage.m */; };
 		6A6492B81337F7CB00E5FE75 /* iTetLoginMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6492B71337F7CB00E5FE75 /* iTetLoginMessage.m */; };
+		6A6492BB1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6492BA1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m */; };
+		6A6492BE1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6492BD1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m */; };
 		6A64E2A013038347000CFCF1 /* iTetChannelListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */; };
 		6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6A64E2B21303841C000CFCF1 /* iTetrinet.icns */; };
 		6A76950F1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76950E1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m */; };
@@ -149,6 +151,10 @@
 		6A603624133723CC00433285 /* iTetNoPayloadMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNoPayloadMessage.m; sourceTree = "<group>"; };
 		6A6492B61337F7CB00E5FE75 /* iTetLoginMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetLoginMessage.h; sourceTree = "<group>"; };
 		6A6492B71337F7CB00E5FE75 /* iTetLoginMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetLoginMessage.m; sourceTree = "<group>"; };
+		6A6492B91337FDB200E5FE75 /* iTetTetrinetLoginMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTetrinetLoginMessage.h; sourceTree = "<group>"; };
+		6A6492BA1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTetrinetLoginMessage.m; sourceTree = "<group>"; };
+		6A6492BC1337FE8300E5FE75 /* iTetTetrifastLoginMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTetrifastLoginMessage.h; sourceTree = "<group>"; };
+		6A6492BD1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTetrifastLoginMessage.m; sourceTree = "<group>"; };
 		6A64E29E13038347000CFCF1 /* iTetChannelListEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChannelListEntry.h; sourceTree = "<group>"; };
 		6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelListEntry.m; sourceTree = "<group>"; };
 		6A64E2B21303841C000CFCF1 /* iTetrinet.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTetrinet.icns; sourceTree = "<group>"; };
@@ -409,6 +415,10 @@
 			isa = PBXGroup;
 			children = (
 				6A6492B51337F7AC00E5FE75 /* Superclass */,
+				6A6492B91337FDB200E5FE75 /* iTetTetrinetLoginMessage.h */,
+				6A6492BA1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m */,
+				6A6492BC1337FE8300E5FE75 /* iTetTetrifastLoginMessage.h */,
+				6A6492BD1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m */,
 			);
 			path = "Login Messages";
 			sourceTree = "<group>";
@@ -1080,6 +1090,8 @@
 				6A603622133723B200433285 /* iTetMessage.m in Sources */,
 				6A603625133723CC00433285 /* iTetNoPayloadMessage.m in Sources */,
 				6A6492B81337F7CB00E5FE75 /* iTetLoginMessage.m in Sources */,
+				6A6492BB1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m in Sources */,
+				6A6492BE1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
