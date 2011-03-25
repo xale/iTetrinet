@@ -14,28 +14,32 @@
 
 + (id)channelListEntryWithName:(NSString*)name
 				   description:(NSString*)desc
-				currentPlayers:(NSInteger)playerCount
-					maxPlayers:(NSInteger)max
+				currentPlayers:(NSInteger)currentPlayerCount
+					maxPlayers:(NSInteger)maxPlayers
+					  priority:(NSInteger)priority
 						 state:(iTetGameplayState)gameState
 {
 	return [[[self alloc] initWithName:name
 						   description:desc
-						currentPlayers:playerCount
-							maxPlayers:max
+						currentPlayers:currentPlayerCount
+							maxPlayers:maxPlayers
+							  priority:priority
 								 state:gameState] autorelease];
 }
 
 - (id)initWithName:(NSString*)name
 	   description:(NSString*)desc
-	currentPlayers:(NSInteger)playerCount
-		maxPlayers:(NSInteger)max
+	currentPlayers:(NSInteger)currentPlayerCount
+		maxPlayers:(NSInteger)maxPlayers
+		  priority:(NSInteger)priority
 			 state:(iTetGameplayState)gameState
 {
 	channelName = [name copy];
 	channelDescription = [desc copy];
-	currentPlayers = playerCount;
-	maxPlayers = max;
+	playerCount = currentPlayerCount;
+	maxPlayerCount = maxPlayers;
 	channelState = gameState;
+	channelPriority = priority;
 	localPlayerChannel = NO;
 	
 	return self;
@@ -50,26 +54,41 @@
 }
 
 #pragma mark -
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone*)zone
+{
+	return [[[self class] allocWithZone:zone] initWithName:[self channelName]
+											   description:[self channelDescription]
+											currentPlayers:[self playerCount]
+												maxPlayers:[self maxPlayerCount]
+												  priority:[self channelPriority]
+													 state:[self channelState]];
+}
+
+#pragma mark -
 #pragma mark Accessors
 
 @synthesize channelName;
 @synthesize channelDescription;
 
+@synthesize playerCount;
+@synthesize maxPlayerCount;
 - (NSString*)players
 {
-	return [NSString localizedStringWithFormat:@"%d / %d", currentPlayers, maxPlayers];
+	return [NSString localizedStringWithFormat:@"%d / %d", [self playerCount], [self maxPlayerCount]];
 }
-
 - (NSNumber*)sortablePlayers
 {
-	return [NSNumber numberWithDouble:(currentPlayers + (maxPlayers / 100.0))];
+	return [NSNumber numberWithDouble:([self playerCount] + ([self maxPlayerCount] / 100.0))];
 }
 
-@synthesize channelState;
+@synthesize channelPriority;
 
+@synthesize channelState;
 - (NSNumber*)sortableState
 {
-	switch (channelState)
+	switch ([self channelState])
 	{
 		case gamePlaying:
 			return [NSNumber numberWithInt:2];

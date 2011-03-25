@@ -11,31 +11,37 @@
 #import <Cocoa/Cocoa.h>
 #import "iTetGameplayState.h"
 
-@interface iTetChannelListEntry : NSObject
+@interface iTetChannelListEntry : NSObject <NSCopying>
 {
 	NSString* channelName;
 	NSString* channelDescription;
-	NSInteger currentPlayers;
-	NSInteger maxPlayers;
+	NSInteger playerCount;
+	NSInteger maxPlayerCount;
+	NSInteger channelPriority;
 	iTetGameplayState channelState;
 	BOOL localPlayerChannel;
 }
 
 + (id)channelListEntryWithName:(NSString*)name
 				   description:(NSString*)desc
-				currentPlayers:(NSInteger)playerCount
-					maxPlayers:(NSInteger)max
+				currentPlayers:(NSInteger)currentPlayerCount
+					maxPlayers:(NSInteger)maxPlayers
+					  priority:(NSInteger)priority
 						 state:(iTetGameplayState)gameState;
 - (id)initWithName:(NSString*)name
 	   description:(NSString*)desc
-	currentPlayers:(NSInteger)playerCount
-		maxPlayers:(NSInteger)max
+	currentPlayers:(NSInteger)currentPlayerCount
+		maxPlayers:(NSInteger)maxPlayers
+		  priority:(NSInteger)priority
 			 state:(iTetGameplayState)gameState;
 
 @property (readonly) NSString* channelName;
 @property (readonly) NSString* channelDescription;
+@property (readonly) NSInteger playerCount;
+@property (readonly) NSInteger maxPlayerCount;
 @property (readonly) NSString* players;
 @property (readonly) NSNumber* sortablePlayers;
+@property (readonly) NSInteger channelPriority;
 @property (readonly) iTetGameplayState channelState;
 @property (readonly) NSNumber* sortableState;
 @property (readwrite, assign, getter=isLocalPlayerChannel) BOOL localPlayerChannel;
