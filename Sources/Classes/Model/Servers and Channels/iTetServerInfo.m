@@ -9,7 +9,6 @@
 //
 
 #import "iTetServerInfo.h"
-#import "iTetNetworkController.h"
 #import "iTetUserDefaults.h"
 
 NSString* const iTetTetrinetProtocolName =	@"TetriNET";
