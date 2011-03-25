@@ -20,6 +20,8 @@
 		6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6A64E2B21303841C000CFCF1 /* iTetrinet.icns */; };
 		6A76950F1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76950E1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m */; };
 		6A769514133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A769513133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m */; };
+		6A76952A13355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76952913355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m */; };
+		6A76953F1335625C00C0D273 /* iTetPlayerListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76953E1335625C00C0D273 /* iTetPlayerListEntry.m */; };
 		6A769557133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A769556133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m */; };
 		6A76955C13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76955B13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m */; };
 		6A7695821335700500C0D273 /* NSString+MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7695811335700500C0D273 /* NSString+MessageData.m */; };
@@ -151,6 +153,10 @@
 		6A76950E1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryResponseTerminatorMessage.m; sourceTree = "<group>"; };
 		6A769512133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryResponseChannelListEntryMessage.h; sourceTree = "<group>"; };
 		6A769513133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryResponseChannelListEntryMessage.m; sourceTree = "<group>"; };
+		6A76952813355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryResponsePlayerListEntryMessage.h; sourceTree = "<group>"; };
+		6A76952913355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryResponsePlayerListEntryMessage.m; sourceTree = "<group>"; };
+		6A76953D1335625C00C0D273 /* iTetPlayerListEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayerListEntry.h; sourceTree = "<group>"; };
+		6A76953E1335625C00C0D273 /* iTetPlayerListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayerListEntry.m; sourceTree = "<group>"; };
 		6A769555133569CE00C0D273 /* iTetQueryChannelListRequestMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryChannelListRequestMessage.h; sourceTree = "<group>"; };
 		6A769556133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryChannelListRequestMessage.m; sourceTree = "<group>"; };
 		6A76955A13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryPlayerListRequestMessage.h; sourceTree = "<group>"; };
@@ -415,6 +421,8 @@
 				6A76950E1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m */,
 				6A769512133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.h */,
 				6A769513133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m */,
+				6A76952813355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.h */,
+				6A76952913355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m */,
 			);
 			path = "Response Messages";
 			sourceTree = "<group>";
@@ -587,6 +595,8 @@
 				6A9C3E2F12C96FB500C78BFD /* iTetServerInfo.m */,
 				6A64E29E13038347000CFCF1 /* iTetChannelListEntry.h */,
 				6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */,
+				6A76953D1335625C00C0D273 /* iTetPlayerListEntry.h */,
+				6A76953E1335625C00C0D273 /* iTetPlayerListEntry.m */,
 			);
 			path = "Servers and Channels";
 			sourceTree = "<group>";
@@ -1025,6 +1035,8 @@
 				6A484203130F427C00C90966 /* iTetGameRules.m in Sources */,
 				6A76950F1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m in Sources */,
 				6A769514133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m in Sources */,
+				6A76952A13355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m in Sources */,
+				6A76953F1335625C00C0D273 /* iTetPlayerListEntry.m in Sources */,
 				6A769557133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m in Sources */,
 				6A76955C13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m in Sources */,
 				6A7695821335700500C0D273 /* NSString+MessageData.m in Sources */,

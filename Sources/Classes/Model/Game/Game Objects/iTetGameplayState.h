@@ -17,6 +17,13 @@ typedef enum
 
 typedef enum
 {
+	playerNotPlaying =	0,
+	playerPlaying =		1,
+	playerLost =		2
+} iTetPlayerGameplayState;
+
+typedef enum
+{
 	startGameRequest =	1,
 	stopGameRequest =	0
 } iTetStartStopRequestType;
