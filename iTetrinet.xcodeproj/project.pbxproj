@@ -126,6 +126,7 @@
 		6A9C3FB212C9741100C78BFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3FB112C9741100C78BFD /* Foundation.framework */; };
 		6AE076281339288C00FB559D /* iTetPlayerKickMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE076271339288C00FB559D /* iTetPlayerKickMessage.m */; };
 		6AE0762D13392A1800FB559D /* iTetPlayerTeamMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0762C13392A1800FB559D /* iTetPlayerTeamMessage.m */; };
+		6AE0763213392C7300FB559D /* iTetWinlistMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6AE0763113392C7300FB559D /* iTetWinlistMessage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -347,6 +348,8 @@
 		6AE076271339288C00FB559D /* iTetPlayerKickMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayerKickMessage.m; sourceTree = "<group>"; };
 		6AE0762B13392A1800FB559D /* iTetPlayerTeamMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayerTeamMessage.h; sourceTree = "<group>"; };
 		6AE0762C13392A1800FB559D /* iTetPlayerTeamMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayerTeamMessage.m; sourceTree = "<group>"; };
+		6AE0763013392C7300FB559D /* iTetWinlistMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetWinlistMessage.h; sourceTree = "<group>"; };
+		6AE0763113392C7300FB559D /* iTetWinlistMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetWinlistMessage.m; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* iTetrinet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTetrinet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -475,6 +478,8 @@
 				6AE076271339288C00FB559D /* iTetPlayerKickMessage.m */,
 				6AE0762B13392A1800FB559D /* iTetPlayerTeamMessage.h */,
 				6AE0762C13392A1800FB559D /* iTetPlayerTeamMessage.m */,
+				6AE0763013392C7300FB559D /* iTetWinlistMessage.h */,
+				6AE0763113392C7300FB559D /* iTetWinlistMessage.m */,
 			);
 			path = "Game Context Messages";
 			sourceTree = "<group>";
@@ -1202,6 +1207,7 @@
 				6A5E99051338429400738015 /* iTetPlayerLeaveMessage.m in Sources */,
 				6AE076281339288C00FB559D /* iTetPlayerKickMessage.m in Sources */,
 				6AE0762D13392A1800FB559D /* iTetPlayerTeamMessage.m in Sources */,
+				6AE0763213392C7300FB559D /* iTetWinlistMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

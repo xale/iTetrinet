@@ -10,6 +10,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString* const iTetPlayerWinlistEntryTag;
+extern NSString* const iTetTeamWinlistEntryTag;
+
 @interface iTetWinlistEntry : NSObject
 {
 	NSString* entryName;
@@ -17,6 +20,7 @@
 	BOOL teamEntry;
 }
 
++ (id)entryWithWinlistMessageToken:(NSString*)token;
 + (id)playerEntryWithName:(NSString*)name
 					score:(NSInteger)score;
 + (id)teamEntryWithName:(NSString*)name
@@ -24,6 +28,8 @@
 - (id)initWithName:(NSString*)name
 			 score:(NSInteger)score
 			isTeam:(BOOL)isTeam;
+
+- (NSString*)messageToken;
 
 @property (readonly) NSString* entryName;
 @property (readonly) NSInteger entryScore;
