@@ -15,11 +15,13 @@
 #import "iTetKeyboardViewController.h"
 #import "iTetOfflineGamePrefsViewController.h"
 
+NSString* const iTetPreferencesWindowNibName =	@"PreferencesWindow";
+
 @implementation iTetPreferencesWindowController
 
 - (id)init
 {
-	if (![super initWithWindowNibName:@"PreferencesWindow"])
+	if (![super initWithWindowNibName:iTetPreferencesWindowNibName])
 		return nil;
 	
 	// Create the view controllers
