@@ -15,6 +15,8 @@
 		6A484202130F427C00C90966 /* iTetBlockTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4841F9130F427C00C90966 /* iTetBlockTimer.m */; };
 		6A484203130F427C00C90966 /* iTetGameRules.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A4841FC130F427C00C90966 /* iTetGameRules.m */; };
 		6A5E98F91338346B00738015 /* iTetPlayerNumberMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E98F81338346B00738015 /* iTetPlayerNumberMessage.m */; };
+		6A5E98FC1338374A00738015 /* iTetTetrinetPlayerNumberMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E98FB1338374A00738015 /* iTetTetrinetPlayerNumberMessage.m */; };
+		6A5E98FF133837DF00738015 /* iTetTetrifastPlayerNumberMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5E98FE133837DF00738015 /* iTetTetrifastPlayerNumberMessage.m */; };
 		6A603622133723B200433285 /* iTetMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603621133723B200433285 /* iTetMessage.m */; };
 		6A603625133723CC00433285 /* iTetNoPayloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603624133723CC00433285 /* iTetNoPayloadMessage.m */; };
 		6A60362D1337284D00433285 /* NSArray+Subranges.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A60362C1337284D00433285 /* NSArray+Subranges.m */; };
@@ -154,6 +156,10 @@
 		6A4841FC130F427C00C90966 /* iTetGameRules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameRules.m; sourceTree = "<group>"; };
 		6A5E98F71338346B00738015 /* iTetPlayerNumberMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetPlayerNumberMessage.h; sourceTree = "<group>"; };
 		6A5E98F81338346B00738015 /* iTetPlayerNumberMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetPlayerNumberMessage.m; sourceTree = "<group>"; };
+		6A5E98FA1338374A00738015 /* iTetTetrinetPlayerNumberMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTetrinetPlayerNumberMessage.h; sourceTree = "<group>"; };
+		6A5E98FB1338374A00738015 /* iTetTetrinetPlayerNumberMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTetrinetPlayerNumberMessage.m; sourceTree = "<group>"; };
+		6A5E98FD133837DF00738015 /* iTetTetrifastPlayerNumberMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetTetrifastPlayerNumberMessage.h; sourceTree = "<group>"; };
+		6A5E98FE133837DF00738015 /* iTetTetrifastPlayerNumberMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetTetrifastPlayerNumberMessage.m; sourceTree = "<group>"; };
 		6A603620133723B200433285 /* iTetMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetMessage.h; sourceTree = "<group>"; };
 		6A603621133723B200433285 /* iTetMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetMessage.m; sourceTree = "<group>"; };
 		6A603623133723CC00433285 /* iTetNoPayloadMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNoPayloadMessage.h; sourceTree = "<group>"; };
@@ -417,6 +423,10 @@
 			isa = PBXGroup;
 			children = (
 				6A5E98F61338345700738015 /* Superclass */,
+				6A5E98FA1338374A00738015 /* iTetTetrinetPlayerNumberMessage.h */,
+				6A5E98FB1338374A00738015 /* iTetTetrinetPlayerNumberMessage.m */,
+				6A5E98FD133837DF00738015 /* iTetTetrifastPlayerNumberMessage.h */,
+				6A5E98FE133837DF00738015 /* iTetTetrifastPlayerNumberMessage.m */,
 			);
 			path = "Player Number Messages";
 			sourceTree = "<group>";
@@ -1166,6 +1176,8 @@
 				6A6492BB1337FDB200E5FE75 /* iTetTetrinetLoginMessage.m in Sources */,
 				6A6492BE1337FE8300E5FE75 /* iTetTetrifastLoginMessage.m in Sources */,
 				6A5E98F91338346B00738015 /* iTetPlayerNumberMessage.m in Sources */,
+				6A5E98FC1338374A00738015 /* iTetTetrinetPlayerNumberMessage.m in Sources */,
+				6A5E98FF133837DF00738015 /* iTetTetrifastPlayerNumberMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
