@@ -14,12 +14,13 @@
 
 @class iTetKeyNamePair;
 @class iTetBlock;
+@protocol iTetLocalFieldViewEventDelegate;
 
 @interface iTetLocalFieldView : iTetFieldView
 {
 	iTetBlock* block;
 	
-	IBOutlet id eventDelegate;
+	IBOutlet id<iTetLocalFieldViewEventDelegate> eventDelegate;
 }
 
 - (void)keyEvent:(NSEvent*)keyEvent;
@@ -28,7 +29,7 @@
 
 @end
 
-@interface NSObject (iTetLocalFieldViewEventDelegate)
+@protocol iTetLocalFieldViewEventDelegate
 
 - (void)keyPressed:(iTetKeyNamePair*)key
   onLocalFieldView:(iTetLocalFieldView*)fieldView;

@@ -95,8 +95,8 @@
 	if (key == nil)
 		return;
 	
-	// Check if we have a delegate, and whether or not it is interested
-	if ((eventDelegate != nil) && [eventDelegate respondsToSelector:@selector(keyPressed:onLocalFieldView:)])
+	// Check if we have a delegate
+	if (eventDelegate != nil)
 	{
 		// Inform the delegate
 		[eventDelegate keyPressed:key
