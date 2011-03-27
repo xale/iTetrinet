@@ -39,8 +39,10 @@
 		6A769557133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A769556133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m */; };
 		6A76955C13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76955B13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m */; };
 		6A7695821335700500C0D273 /* NSString+MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7695811335700500C0D273 /* NSString+MessageData.m */; };
+		6A7A671D1332C57200EF72CD /* iTetQueryConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7A671C1332C57200EF72CD /* iTetQueryConnection.m */; };
 		6A8C67151336CA9E002ACE0C /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C67141336CA9E002ACE0C /* AsyncSocket.m */; };
 		6A8C67181336CAC9002ACE0C /* iTetNetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C67171336CAC9002ACE0C /* iTetNetworkConnection.m */; };
+		6A8C673D1336EA62002ACE0C /* NSString+QuotedComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C673C1336EA62002ACE0C /* NSString+QuotedComponents.m */; };
 		6A9C3E7B12C96FB500C78BFD /* iTetThemesArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */; };
 		6A9C3E7C12C96FB500C78BFD /* iTetGrowlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DD712C96FB500C78BFD /* iTetGrowlController.m */; };
 		6A9C3E7D12C96FB500C78BFD /* iTetPreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A9C3DDA12C96FB500C78BFD /* iTetPreferencesWindowController.m */; };
@@ -209,10 +211,14 @@
 		6A76955B13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryPlayerListRequestMessage.m; sourceTree = "<group>"; };
 		6A7695801335700500C0D273 /* NSString+MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MessageData.h"; sourceTree = "<group>"; };
 		6A7695811335700500C0D273 /* NSString+MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MessageData.m"; sourceTree = "<group>"; };
+		6A7A671B1332C57200EF72CD /* iTetQueryConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryConnection.h; sourceTree = "<group>"; };
+		6A7A671C1332C57200EF72CD /* iTetQueryConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryConnection.m; sourceTree = "<group>"; };
 		6A8C67131336CA9E002ACE0C /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
 		6A8C67141336CA9E002ACE0C /* AsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncSocket.m; sourceTree = "<group>"; };
 		6A8C67161336CAC9002ACE0C /* iTetNetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNetworkConnection.h; sourceTree = "<group>"; };
 		6A8C67171336CAC9002ACE0C /* iTetNetworkConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNetworkConnection.m; sourceTree = "<group>"; };
+		6A8C673B1336EA62002ACE0C /* NSString+QuotedComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+QuotedComponents.h"; sourceTree = "<group>"; };
+		6A8C673C1336EA62002ACE0C /* NSString+QuotedComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+QuotedComponents.m"; sourceTree = "<group>"; };
 		6A9C3DD312C96FB500C78BFD /* iTetThemesArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetThemesArrayController.h; sourceTree = "<group>"; };
 		6A9C3DD412C96FB500C78BFD /* iTetThemesArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetThemesArrayController.m; sourceTree = "<group>"; };
 		6A9C3DD612C96FB500C78BFD /* iTetGrowlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGrowlController.h; sourceTree = "<group>"; };
@@ -441,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				6A8C67121336C9CD002ACE0C /* Superclass */,
+				6A7A67161332C4FD00EF72CD /* Query Connections */,
 				6A8C67131336CA9E002ACE0C /* AsyncSocket.h */,
 				6A8C67141336CA9E002ACE0C /* AsyncSocket.m */,
 			);
@@ -585,6 +592,16 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		6A7A67161332C4FD00EF72CD /* Query Connections */ = {
+			isa = PBXGroup;
+			children = (
+				6A7A671B1332C57200EF72CD /* iTetQueryConnection.h */,
+				6A7A671C1332C57200EF72CD /* iTetQueryConnection.m */,
+				6A8C673A1336EA62002ACE0C /* Utility */,
+			);
+			path = "Query Connections";
+			sourceTree = "<group>";
+		};
 		6A8C67121336C9CD002ACE0C /* Superclass */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,6 +609,15 @@
 				6A8C67171336CAC9002ACE0C /* iTetNetworkConnection.m */,
 			);
 			path = Superclass;
+			sourceTree = "<group>";
+		};
+		6A8C673A1336EA62002ACE0C /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				6A8C673B1336EA62002ACE0C /* NSString+QuotedComponents.h */,
+				6A8C673C1336EA62002ACE0C /* NSString+QuotedComponents.m */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 		6A8C675F1336F032002ACE0C /* Game Protocol Messages */ = {
@@ -1194,6 +1220,7 @@
 				6A484201130F427C00C90966 /* iTetSpecial.m in Sources */,
 				6A484202130F427C00C90966 /* iTetBlockTimer.m in Sources */,
 				6A484203130F427C00C90966 /* iTetGameRules.m in Sources */,
+				6A7A671D1332C57200EF72CD /* iTetQueryConnection.m in Sources */,
 				6A76950F1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m in Sources */,
 				6A769514133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m in Sources */,
 				6A76952A13355D7C00C0D273 /* iTetQueryResponsePlayerListEntryMessage.m in Sources */,
@@ -1203,6 +1230,7 @@
 				6A7695821335700500C0D273 /* NSString+MessageData.m in Sources */,
 				6A8C67151336CA9E002ACE0C /* AsyncSocket.m in Sources */,
 				6A8C67181336CAC9002ACE0C /* iTetNetworkConnection.m in Sources */,
+				6A8C673D1336EA62002ACE0C /* NSString+QuotedComponents.m in Sources */,
 				6A603622133723B200433285 /* iTetMessage.m in Sources */,
 				6A603625133723CC00433285 /* iTetNoPayloadMessage.m in Sources */,
 				6A60362D1337284D00433285 /* NSArray+Subranges.m in Sources */,
