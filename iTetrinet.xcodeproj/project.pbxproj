@@ -39,6 +39,7 @@
 		6A769557133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A769556133569CE00C0D273 /* iTetQueryChannelListRequestMessage.m */; };
 		6A76955C13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A76955B13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m */; };
 		6A7695821335700500C0D273 /* NSString+MessageData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7695811335700500C0D273 /* NSString+MessageData.m */; };
+		6A7A671A1332C52800EF72CD /* iTetGameConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7A67191332C52800EF72CD /* iTetGameConnection.m */; };
 		6A7A671D1332C57200EF72CD /* iTetQueryConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A7A671C1332C57200EF72CD /* iTetQueryConnection.m */; };
 		6A8C67151336CA9E002ACE0C /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C67141336CA9E002ACE0C /* AsyncSocket.m */; };
 		6A8C67181336CAC9002ACE0C /* iTetNetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8C67171336CAC9002ACE0C /* iTetNetworkConnection.m */; };
@@ -211,6 +212,8 @@
 		6A76955B13356ACE00C0D273 /* iTetQueryPlayerListRequestMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryPlayerListRequestMessage.m; sourceTree = "<group>"; };
 		6A7695801335700500C0D273 /* NSString+MessageData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MessageData.h"; sourceTree = "<group>"; };
 		6A7695811335700500C0D273 /* NSString+MessageData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MessageData.m"; sourceTree = "<group>"; };
+		6A7A67181332C52800EF72CD /* iTetGameConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetGameConnection.h; sourceTree = "<group>"; };
+		6A7A67191332C52800EF72CD /* iTetGameConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetGameConnection.m; sourceTree = "<group>"; };
 		6A7A671B1332C57200EF72CD /* iTetQueryConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetQueryConnection.h; sourceTree = "<group>"; };
 		6A7A671C1332C57200EF72CD /* iTetQueryConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetQueryConnection.m; sourceTree = "<group>"; };
 		6A8C67131336CA9E002ACE0C /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
@@ -447,6 +450,7 @@
 			isa = PBXGroup;
 			children = (
 				6A8C67121336C9CD002ACE0C /* Superclass */,
+				6A7A67141332C4FD00EF72CD /* Game Connections */,
 				6A7A67161332C4FD00EF72CD /* Query Connections */,
 				6A8C67131336CA9E002ACE0C /* AsyncSocket.h */,
 				6A8C67141336CA9E002ACE0C /* AsyncSocket.m */,
@@ -590,6 +594,23 @@
 				6A7695811335700500C0D273 /* NSString+MessageData.m */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		6A7A67141332C4FD00EF72CD /* Game Connections */ = {
+			isa = PBXGroup;
+			children = (
+				6A7A67151332C4FD00EF72CD /* Superclass */,
+			);
+			path = "Game Connections";
+			sourceTree = "<group>";
+		};
+		6A7A67151332C4FD00EF72CD /* Superclass */ = {
+			isa = PBXGroup;
+			children = (
+				6A7A67181332C52800EF72CD /* iTetGameConnection.h */,
+				6A7A67191332C52800EF72CD /* iTetGameConnection.m */,
+			);
+			path = Superclass;
 			sourceTree = "<group>";
 		};
 		6A7A67161332C4FD00EF72CD /* Query Connections */ = {
@@ -1220,6 +1241,7 @@
 				6A484201130F427C00C90966 /* iTetSpecial.m in Sources */,
 				6A484202130F427C00C90966 /* iTetBlockTimer.m in Sources */,
 				6A484203130F427C00C90966 /* iTetGameRules.m in Sources */,
+				6A7A671A1332C52800EF72CD /* iTetGameConnection.m in Sources */,
 				6A7A671D1332C57200EF72CD /* iTetQueryConnection.m in Sources */,
 				6A76950F1335576900C0D273 /* iTetQueryResponseTerminatorMessage.m in Sources */,
 				6A769514133558AA00C0D273 /* iTetQueryResponseChannelListEntryMessage.m in Sources */,
