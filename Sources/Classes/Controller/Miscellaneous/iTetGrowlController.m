@@ -128,7 +128,7 @@ static iTetGrowlController* sharedController = nil;
 	{
 		if (sharedController == nil)
 		{
-			[[self alloc] init];
+			sharedController = [[super allocWithZone:NULL] init];
 		}
 	}
 	
@@ -137,15 +137,7 @@ static iTetGrowlController* sharedController = nil;
 
 + (id)allocWithZone:(NSZone*)zone
 {
-	@synchronized(self)
-	{
-		if (sharedController == nil)
-		{
-			sharedController = [super allocWithZone:zone];
-			return sharedController;
-		}
-	}
-	return nil;
+	return [[self sharedGrowlController] retain];
 }
 
 - (id)copyWithZone:(NSZone*)zone
@@ -160,7 +152,7 @@ static iTetGrowlController* sharedController = nil;
 
 - (NSUInteger)retainCount
 {
-	return UINT_MAX;
+	return NSUIntegerMax;
 }
 
 - (void)release
