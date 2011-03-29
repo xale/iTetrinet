@@ -55,7 +55,7 @@ static NSDictionary* tetrinetMessageDictionary =	nil;
 	// Connection status messages
 	[messages setObject:[iTetNoConnectingMessage class]
 				 forKey:iTetNoConnectingMessageTag];
-	// FIXME: WRITEME
+	// Client-info-request messages use the player-level message tag
 	
 	// Game context messages
 	[messages setObject:[iTetTetrinetPlayerNumberMessage class]
