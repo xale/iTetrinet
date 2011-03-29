@@ -18,6 +18,9 @@
 #import "iTetPlayerKickMessage.h"
 #import "iTetPlayerTeamMessage.h"
 #import "iTetWinlistMessage.h"
+#import "iTetPartylineChatMessage.h"
+#import "iTetPartylineActionMessage.h"
+#import "iTetGameChatMessage.h"
 
 #import "iTetPlayerLevelMessage.h"
 
@@ -67,7 +70,12 @@ static NSDictionary* tetrinetMessageDictionary =	nil;
 				 forKey:iTetPlayerTeamMessageTag];
 	[messages setObject:[iTetWinlistMessage class]
 				 forKey:iTetWinlistMessageTag];
-	// FIXME: WRITEME
+	[messages setObject:[iTetPartylineChatMessage class]
+				 forKey:iTetPartylineChatMessageTag];
+	[messages setObject:[iTetPartylineActionMessage class]
+				 forKey:iTetPartylineActionMessageTag];
+	[messages setObject:[iTetGameChatMessage class]
+				 forKey:iTetGameChatMessageTag];
 	
 	// Gameplay messages
 	[messages setObject:[iTetPlayerLevelMessage class]
