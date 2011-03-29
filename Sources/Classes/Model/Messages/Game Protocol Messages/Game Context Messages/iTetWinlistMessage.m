@@ -18,6 +18,9 @@ NSString* const iTetWinlistMessageTag =	@"winlist";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Check that the message is not an empty list
 	if ([tokens count] > 1)
 	{
@@ -58,6 +61,9 @@ NSString* const iTetWinlistMessageTag =	@"winlist";
 
 - (id)initWithWinlistEntries:(NSArray*)entries
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	winlistEntries = [entries copy];
 	
 	return self;

@@ -17,6 +17,9 @@ NSString* const iTetPlayerTeamMessageTag =	@"team";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Treat the second token as the player number
 	playerNumber = [[tokens objectAtIndex:1] integerValue];
 	
@@ -37,6 +40,9 @@ NSString* const iTetPlayerTeamMessageTag =	@"team";
 - (id)initWithPlayerNumber:(NSInteger)number
 				  teamName:(NSString*)teamName
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	playerNumber = number;
 	playerTeamName = [teamName copy];
 	

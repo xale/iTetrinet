@@ -80,6 +80,9 @@ NSString* const iTetTetrinetUSServerAddress =			@"www.tetrinet.us";
 		  protocol:(iTetProtocolType)p
 	   gameVersion:(iTetGameVersion)version
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	serverName = [name copy];
 	serverAddress = [addr copy];
 	playerNickname = [nick copy];
@@ -140,14 +143,12 @@ NSString* const iTetServerInfoGameVersionCoderKey =		@"gameVersion";
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-	serverName = [[decoder decodeObjectForKey:iTetServerInfoNameCoderKey] retain];
-	serverAddress = [[decoder decodeObjectForKey:iTetServerInfoAddressCoderKey] retain];
-	playerNickname = [[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameCoderKey] retain];
-	playerTeamName = [[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameCoderKey] retain];
-	protocol = [decoder decodeIntForKey:iTetServerInfoProtocolCoderKey];
-	gameVersion = [decoder decodeIntForKey:iTetServerInfoGameVersionCoderKey];
-	
-	return self;
+	return [self initWithName:[decoder decodeObjectForKey:iTetServerInfoNameCoderKey]
+					  address:[decoder decodeObjectForKey:iTetServerInfoAddressCoderKey]
+			   playerNickname:[decoder decodeObjectForKey:iTetServerInfoPlayerNicknameCoderKey]
+			   playerTeamName:[decoder decodeObjectForKey:iTetServerInfoPlayerTeamNameCoderKey]
+					 protocol:[decoder decodeIntForKey:iTetServerInfoProtocolCoderKey]
+				  gameVersion:[decoder decodeIntForKey:iTetServerInfoGameVersionCoderKey]];
 }
 
 #pragma mark -

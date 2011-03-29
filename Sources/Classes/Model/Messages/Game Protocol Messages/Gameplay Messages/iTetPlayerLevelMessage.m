@@ -17,6 +17,9 @@ NSString* const iTetPlayerLevelMessageTag =	@"lvl";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Read the player number and level from the second and third tokens
 	playerNumber = [[tokens objectAtIndex:1] integerValue];
 	playerLevel = [[tokens objectAtIndex:2] integerValue];
@@ -42,6 +45,9 @@ NSString* const iTetPlayerLevelMessageTag =	@"lvl";
 - (id)initWithPlayerNumber:(NSInteger)playerNum
 					 level:(NSInteger)level
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	playerNumber = playerNum;
 	playerLevel = level;
 	

@@ -53,6 +53,9 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 
 - (id)init
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	updateFieldstring = iTetEmptyFieldstring;
 	updateDirtyRegion = iTetFullFieldDirtyRegion;
 	
@@ -110,6 +113,9 @@ NSString* const iTetUnchangedFieldstringPlaceholder =	@"iTetUnchangedFieldstring
 - (id)initWithPartialUpdate:(NSString*)partialUpdate
 					toField:(iTetField*)field
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Copy the existing field
 	[self initWithField:field];
 	

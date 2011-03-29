@@ -14,6 +14,9 @@
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Abstract class; throw an exception on instantiation
 	if ([self isMemberOfClass:[iTetPlayerNumberMessage class]])
 	{
@@ -35,6 +38,9 @@
 
 - (id)initWithPlayerNumber:(NSInteger)number
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Abstract class; throw an exception on instantiation
 	if ([self isMemberOfClass:[iTetPlayerNumberMessage class]])
 	{

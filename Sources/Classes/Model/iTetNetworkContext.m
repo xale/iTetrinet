@@ -18,6 +18,9 @@
 - (id)initWithServer:(iTetServerInfo*)serverToConnect
 		 gameContext:(iTetOnlineGameContext*)context
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	server = [serverToConnect retain];
 	gameContext = [context retain];
 	

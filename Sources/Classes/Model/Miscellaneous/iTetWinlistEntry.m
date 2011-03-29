@@ -63,6 +63,9 @@ NSString* const iTetTeamWinlistEntryTag =	@"t";
 			 score:(NSInteger)score
 			isTeam:(BOOL)isTeam
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	entryName = [name copy];
 	entryScore = score;
 	teamEntry = isTeam;

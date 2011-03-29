@@ -14,6 +14,9 @@
 
 - (id)init
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Abstract class: throw an exception on instantiation
 	if ([self isMemberOfClass:[iTetGameContext class]])
 	{

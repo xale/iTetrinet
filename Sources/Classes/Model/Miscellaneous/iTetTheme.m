@@ -106,6 +106,17 @@ NSArray* defaultThemes = nil;
 
 - (id)initWithThemeFile:(NSString*)path
 {
+	if (!(self = [super init]))
+		return nil;
+	
+	// Check that a theme file was specified
+	if (path == nil)
+	{
+		@throw [NSException exceptionWithName:NSInvalidArgumentException
+									   reason:nil
+									 userInfo:nil];
+	}
+	
 	// Copy theme file path
 	themeFilePath = [path copy];
 	
@@ -126,10 +137,8 @@ NSArray* defaultThemes = nil;
 }
 
 - (id)init
-{	
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+{
+	return [self initWithThemeFile:nil];
 }
 
 - (void)dealloc
@@ -409,6 +418,9 @@ NSString* const iTetThemeFilePathKey = @"themeFilePath";
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Load the path to the theme file
 	NSString* path = [decoder decodeObjectForKey:iTetThemeFilePathKey];
 	

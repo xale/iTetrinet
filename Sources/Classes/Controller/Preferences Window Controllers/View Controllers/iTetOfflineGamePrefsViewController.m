@@ -12,13 +12,15 @@
 #import "iTetUserDefaults.h"
 #import "iTetGameRules.h"
 
+NSString* const iTetOfflineGamePrefsViewNibName =	@"OfflineGamePrefsView";
+
 #define iTetOfflineGamePreferencesViewName	NSLocalizedStringFromTable(@"Offline Game Preferences", @"PreferencePanes", @"Title of the 'offline game preferences' preferences pane")
 
 @implementation iTetOfflineGamePrefsViewController
 
 - (id)init
 {
-	if (![super initWithNibName:@"OfflineGamePrefsView" bundle:nil])
+	if (!(self = [super initWithNibName:iTetOfflineGamePrefsViewNibName bundle:nil]))
 		return nil;
 	
 	[self setTitle:iTetOfflineGamePreferencesViewName];

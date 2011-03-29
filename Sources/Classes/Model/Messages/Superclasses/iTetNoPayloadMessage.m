@@ -17,17 +17,4 @@
 	return [[[self alloc] init] autorelease];
 }
 
-- (id)init
-{
-	// Overrides superclass' abstract initializer
-	return self;
-}
-
-- (id)initWithMessageTokens:(NSArray*)tokens
-{
-	// Overrides superclass' abstract initializer
-	// Ignore message data
-	return self;
-}
-
 @end

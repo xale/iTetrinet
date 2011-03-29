@@ -19,9 +19,17 @@
 
 - (id)init
 {
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	if (!(self = [super init]))
+		return nil;
+	
+	if ([self isMemberOfClass:[iTetPreferencesViewController class]])
+	{
+		[self doesNotRecognizeSelector:_cmd];
+		[self release];
+		return nil;
+	}
+	
+	return self;
 }
 
 #pragma mark -

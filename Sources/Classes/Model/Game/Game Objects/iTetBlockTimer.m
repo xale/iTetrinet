@@ -45,6 +45,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
  scheduledInRunLoop:(NSRunLoop*)runLoop
 			repeats:(BOOL)repeats
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Create and start the timer
 	timer = [NSTimer timerWithTimeInterval:delay
 									target:target

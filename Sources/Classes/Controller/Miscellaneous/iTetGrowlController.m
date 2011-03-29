@@ -45,6 +45,9 @@ static iTetGrowlController* sharedController = nil;
 
 - (id)init
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Register for event notifications
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 	

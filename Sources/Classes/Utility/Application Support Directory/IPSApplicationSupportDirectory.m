@@ -10,7 +10,7 @@
 
 #import "IPSApplicationSupportDirectory.h"
 
-NSFileManager* supportFileManager = nil;
+static NSFileManager* supportFileManager = nil;
 
 @interface IPSApplicationSupportDirectory (Private)
 

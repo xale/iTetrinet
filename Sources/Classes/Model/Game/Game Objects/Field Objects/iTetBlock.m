@@ -151,6 +151,9 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 	   orientation:(NSInteger)blockOrientation
 		  position:(IPSCoord)blockPosition
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	type = blockType;
 	orientation = (blockOrientation % orientationCount[type]);
 	position = blockPosition;
@@ -168,17 +171,9 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 - (id)initWithType:(iTetBlockType)blockType
 	   orientation:(NSInteger)blockOrientation
 {
-	type = blockType;
-	orientation = (blockOrientation % orientationCount[type]);
-	
-	return self;
-}
-
-- (id)copyWithZone:(NSZone*)zone
-{
-	return [[[self class] allocWithZone:zone] initWithType:type
-											   orientation:orientation
-												  position:position];
+	return [self initWithType:blockType
+				  orientation:blockOrientation
+					 position:IPSZeroCoord];
 }
 
 + (id)randomBlockUsingBlockFrequencies:(NSArray*)blockFrequencies
@@ -191,10 +186,20 @@ static NSInteger orientationCount[ITET_NUM_BLOCK_TYPES] = {2, 1, 4, 4, 2, 2, 4};
 	NSParameterAssert(blockFrequencies != nil);
 	NSParameterAssert([blockFrequencies count] == 100);
 	
-	type = (iTetBlockType)[[blockFrequencies objectAtIndex:(random() % [blockFrequencies count])] intValue];
-	orientation = (random() % orientationCount[type]);
-	
-	return self;
+	iTetBlockType blockType = [[blockFrequencies objectAtIndex:(random() % [blockFrequencies count])] intValue];
+	return [self initWithType:blockType
+				  orientation:(random() % orientationCount[type])
+					 position:IPSZeroCoord];
+}
+
+#pragma mark -
+#pragma mark NSCopying Methods
+
+- (id)copyWithZone:(NSZone*)zone
+{
+	return [[[self class] allocWithZone:zone] initWithType:type
+											   orientation:orientation
+												  position:position];
 }
 
 #pragma mark -

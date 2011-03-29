@@ -14,10 +14,7 @@
 
 - (id)init
 {
-	// Abstract class; throw an exception on instantiation
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	return [self initWithMessageTokens:nil];
 }
 
 + (id)messageWithMessageTokens:(NSArray*)tokens
@@ -27,10 +24,18 @@
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Abstract class; throw an exception on instantiation
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	if ([self isMemberOfClass:[iTetMessage class]])
+	{
+		[self doesNotRecognizeSelector:_cmd];
+		[self release];
+		return nil;	
+	}
+	
+	return self;
 }
 
 - (NSString*)messageContents

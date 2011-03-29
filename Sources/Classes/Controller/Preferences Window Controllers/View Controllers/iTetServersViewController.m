@@ -11,13 +11,15 @@
 #import "iTetServersViewController.h"
 #import "iTetServerInfo.h"
 
+NSString* const iTetServersPrefsViewNibName =	@"ServersPrefsView";
+
 #define iTetServersPreferencesViewName	NSLocalizedStringFromTable(@"Servers List", @"PreferencePanes", @"Title of the 'servers' preferences pane")
 
 @implementation iTetServersViewController
 
 - (id)init
 {
-	if (![super initWithNibName:@"ServersPrefsView" bundle:nil])
+	if (!(self = [super initWithNibName:iTetServersPrefsViewNibName bundle:nil]))
 		return nil;
 	
 	[self setTitle:iTetServersPreferencesViewName];

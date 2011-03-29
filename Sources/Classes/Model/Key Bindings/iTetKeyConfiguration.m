@@ -165,6 +165,9 @@
 - (id)initWithConfigurationName:(NSString*)configName
 					keyBindings:(NSMutableDictionary*)bindings
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	configurationName = [configName copy];
 	keyBindings = [bindings retain];
 	

@@ -17,13 +17,15 @@
 
 #import "iTetCommonLocalizations.h"
 
+NSString* const iTetThemesPrefsViewNibName =	@"ThemesPrefsView";
+
 #define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
 
 @implementation iTetThemesViewController
 
 - (id)init
 {
-	if (![super initWithNibName:@"ThemesPrefsView" bundle:nil])
+	if (!(self = [super initWithNibName:iTetThemesPrefsViewNibName bundle:nil]))
 		return nil;
 	
 	[self setTitle:iTetThemesPreferencesViewName];

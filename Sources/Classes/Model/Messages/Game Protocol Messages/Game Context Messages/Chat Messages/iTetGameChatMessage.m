@@ -17,6 +17,9 @@ NSString* const iTetGameChatMessageTag =	@"gmsg";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Treat all tokens beyond the first as the contents of the chat message
 	chatContents = [[[tokens subarrayFromIndex:1] componentsJoinedByString:@" "] retain];
 	
@@ -30,6 +33,9 @@ NSString* const iTetGameChatMessageTag =	@"gmsg";
 
 - (id)initWithChatContents:(NSString*)contents
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	chatContents = [contents copy];
 	
 	return self;

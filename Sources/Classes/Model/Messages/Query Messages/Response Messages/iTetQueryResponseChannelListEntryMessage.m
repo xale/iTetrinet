@@ -15,6 +15,9 @@
 
 - (id)initWithMessageTokens:(NSArray*)messageTokens
 {
+	if (!(self = [super initWithMessageTokens:messageTokens]))
+		return nil;
+	
 	// Check the length of the list of tokens
 	if ([messageTokens count] != iTetQueryResponseChannelListEntryMessageTokenCount)
 	{
@@ -68,6 +71,9 @@
 
 - (id)initWithChannelListEntry:(iTetChannelListEntry*)entry
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	channelListEntry = [entry copy];
 	
 	return self;

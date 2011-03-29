@@ -47,6 +47,9 @@ static int iTetLastModifierFlags = 0;
 
 - (id)initWithKeyEvent:(NSEvent*)event
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Get the key code
 	keyCode = [event keyCode];
 	
@@ -88,6 +91,9 @@ static int iTetLastModifierFlags = 0;
 				 name:(NSString*)name
 			numpadKey:(BOOL)isOnNumpad
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	keyCode = code;
 	keyName = [name copy];
 	numpadKey = isOnNumpad;
@@ -296,13 +302,9 @@ NSString* const iTetKeyNamePairNumpadKey =	@"numpad";
 
 - (id)initWithCoder:(NSCoder*)decoder
 {
-	keyCode = [decoder decodeIntegerForKey:iTetKeyNamePairCodeKey];
-	keyName = [[decoder decodeObjectForKey:iTetKeyNamePairNameKey] retain];
-	numpadKey = [decoder decodeBoolForKey:iTetKeyNamePairNumpadKey];
-	minDisplayWidth = [[self class] minimumDisplayWidthForKeyName:keyName
-														 onNumpad:numpadKey];
-	
-	return self;
+	return [self initWithKeyCode:[decoder decodeIntegerForKey:iTetKeyNamePairCodeKey]
+							name:[decoder decodeObjectForKey:iTetKeyNamePairNameKey]
+					   numpadKey:[decoder decodeBoolForKey:iTetKeyNamePairNumpadKey]];
 }
 
 #pragma mark -

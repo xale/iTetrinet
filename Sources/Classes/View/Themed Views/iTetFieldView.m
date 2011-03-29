@@ -28,7 +28,7 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-	if (![super initWithFrame:frame])
+	if (!(self = [super initWithFrame:frame]))
 		return nil;
 	
 	// Calculate the largest subrect of the view with an aspect ratio appropriate for the field

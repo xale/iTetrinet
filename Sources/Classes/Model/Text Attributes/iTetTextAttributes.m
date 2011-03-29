@@ -114,7 +114,7 @@ NSCharacterSet* iTetTextAttributeCharacterSet = nil;
 	}
 	
 	NSString* excDesc = [NSString stringWithFormat:@"invalid attribute code in iTetTextAttributes +chatTextAttributeForCode: '%d'", attributeCode];
-	NSException* invalidAttributeException = [NSException exceptionWithName:@"iTetInvalidTextAttributeException"
+	NSException* invalidAttributeException = [NSException exceptionWithName:@"iTetInvalidTextAttributeCodeException"
 																	 reason:excDesc
 																   userInfo:nil];
 	@throw invalidAttributeException;

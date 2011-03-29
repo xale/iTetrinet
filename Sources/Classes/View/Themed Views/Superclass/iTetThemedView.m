@@ -15,7 +15,7 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-	if (![super initWithFrame:frame])
+	if (!(self = [super initWithFrame:frame]))
 		return nil;
 	
 	// Set the initial theme from user defaults

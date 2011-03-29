@@ -16,6 +16,9 @@
 
 - (id)init
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	nickname = [[NSString alloc] initWithString:iTetServerPlayerName];
 	playerNumber = 0;
 	teamName = nil;
@@ -30,9 +33,17 @@
 				number:(NSInteger)number
 			  teamName:(NSString*)team
 {
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	if (!(self = [super initWithNickname:nick number:number teamName:team]))
+		return nil;
+	
+	if ([self isMemberOfClass:[iTetServerPlayer class]])
+	{
+		[self doesNotRecognizeSelector:_cmd];
+		[self release];
+		return nil;
+	}
+	
+	return self;
 }
 
 #pragma mark -

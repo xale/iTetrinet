@@ -16,6 +16,9 @@
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Abstract class; throw an exception on instantiation
 	if ([self isMemberOfClass:[iTetLoginMessage class]])
 	{
@@ -43,6 +46,9 @@
 			 protocolVersion:(NSString*)version
 		   destinationServer:(NSString*)destinationAddress
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Abstract class; throw an exception on instantiation
 	if ([self isMemberOfClass:[iTetLoginMessage class]])
 	{

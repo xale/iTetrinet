@@ -16,7 +16,7 @@ NSString* const iTetMainWindowNibName =	@"MainWindow";
 
 - (id)init
 {
-	if (![super initWithWindowNibName:iTetMainWindowNibName])
+	if (!(self = [super initWithWindowNibName:iTetMainWindowNibName]))
 		return nil;
 	
 	return self;

@@ -16,6 +16,9 @@ NSString* const iTetClientInfoResponseMessageTag =	@"clientinfo";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Treat the second and third tokens as the client name and version, respectively
 	clientName = [[tokens objectAtIndex:1] copy];
 	clientVersion = [[tokens objectAtIndex:2] copy];
@@ -33,6 +36,9 @@ NSString* const iTetClientInfoResponseMessageTag =	@"clientinfo";
 - (id)initWithClientName:(NSString*)name
 				 version:(NSString*)version
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	NSParameterAssert([name rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound);
 	NSParameterAssert([version rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound);
 	

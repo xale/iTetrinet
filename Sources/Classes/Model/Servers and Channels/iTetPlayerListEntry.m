@@ -36,6 +36,9 @@
 		gameplayStatus:(iTetPlayerGameplayState)gameplayStatus
 		 clientVersion:(NSString*)version
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	playerNickname = [nickname copy];
 	playerTeamName = [teamName copy];
 	channelName = [channel copy];

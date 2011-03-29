@@ -25,7 +25,7 @@
 
 - (id)initWithFrame:(NSRect)frame
 {
-	if (![super initWithFrame:frame])
+	if (!(self = [super initWithFrame:frame]))
 		return nil;
 	
 	currentKeyImage = nil;

@@ -21,7 +21,7 @@ NSString* const iTetPreferencesWindowNibName =	@"PreferencesWindow";
 
 - (id)init
 {
-	if (![super initWithWindowNibName:iTetPreferencesWindowNibName])
+	if (!(self = [super initWithWindowNibName:iTetPreferencesWindowNibName]))
 		return nil;
 	
 	// Create the view controllers

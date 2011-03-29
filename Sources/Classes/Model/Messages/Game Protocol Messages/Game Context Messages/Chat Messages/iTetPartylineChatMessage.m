@@ -19,6 +19,9 @@ NSString* const iTetPartylineChatMessageTag =	@"pline";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Treat second token as the sender player's number
 	senderPlayerNumber = [[tokens objectAtIndex:1] integerValue];
 	
@@ -42,6 +45,9 @@ NSString* const iTetPartylineChatMessageTag =	@"pline";
 - (id)initWithChatContents:(NSAttributedString*)contents
 					sender:(NSInteger)playerNumber
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	senderPlayerNumber = playerNumber;
 	chatContents = [contents copy];
 	

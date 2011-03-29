@@ -15,9 +15,7 @@
 
 - (id)init
 {
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	return [self initWithNumber:0];
 }
 
 + (id)playerWithNickname:(NSString*)nick
@@ -32,6 +30,9 @@
 				number:(NSInteger)number
 			  teamName:(NSString*)team
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	nickname = [nick copy];
 	playerNumber = number;
 	teamName = [team copy];

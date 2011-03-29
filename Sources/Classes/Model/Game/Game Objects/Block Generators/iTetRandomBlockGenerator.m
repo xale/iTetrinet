@@ -15,13 +15,22 @@
 
 - (id)init
 {
-	[self doesNotRecognizeSelector:_cmd];
-	[self release];
-	return nil;
+	return [self initWithBlockFrequencies:nil];
 }
 
 - (id)initWithBlockFrequencies:(NSArray*)frequencies
 {
+	if (!(self = [super init]))
+		return nil;
+	
+	// Check that we have been provided a frequency list
+	if ((frequencies == nil) || ([frequencies count] == 0))
+	{
+		@throw [NSException exceptionWithName:NSInvalidArgumentException
+									   reason:nil
+									 userInfo:nil];
+	}
+	
 	blockFrequencies = [frequencies copy];
 	
 	return self;

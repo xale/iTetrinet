@@ -34,6 +34,9 @@
 		  priority:(NSInteger)priority
 			 state:(iTetGameplayState)gameState
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	channelName = [name copy];
 	channelDescription = [desc copy];
 	playerCount = currentPlayerCount;

@@ -23,6 +23,9 @@
 
 - (id)initWithPlineMessageContents:(NSString*)rawMessage
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Split the message on formatting characters
 	NSArray* messageTokens = [rawMessage componentsSeparatedByCharactersInSet:[iTetTextAttributes chatTextAttributeCharacterSet]];
 	

@@ -23,6 +23,9 @@
 	 connectedToServer:(iTetServerInfo*)serverToConnect
 	   connectionError:(NSError**)error
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	// Hold a reference to the delegate, and retain the server
 	delegate = connectionDelegate;
 	server = [serverToConnect retain];

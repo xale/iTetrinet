@@ -16,6 +16,9 @@ NSString* const iTetQueryResponseTerminatorMessageContents =	@"+OK";
 
 - (id)initWithMessageTokens:(NSArray*)messageTokens
 {
+	if (!(self = [super initWithMessageTokens:messageTokens]))
+		return nil;
+	
 	// Check the length of the list of tokens, and that the contents are as expected
 	if (([messageTokens count] != iTetQueryResponseTerminatorMessageTokenCount) || ![[messageTokens objectAtIndex:0] isEqualToString:iTetQueryResponseTerminatorMessageContents])
 	{

@@ -17,6 +17,9 @@ NSString* const iTetNoConnectingMessageTag =	@"noconnecting";
 
 - (id)initWithMessageTokens:(NSArray*)tokens
 {
+	if (!(self = [super initWithMessageTokens:tokens]))
+		return nil;
+	
 	// Treat all tokens beyond the first, if present, as the reason message
 	if ([tokens count] > 1)
 		reason = [[[tokens subarrayFromIndex:1] componentsJoinedByString:@" "] retain];
@@ -26,6 +29,9 @@ NSString* const iTetNoConnectingMessageTag =	@"noconnecting";
 
 - (id)initWithReason:(NSString*)reasonMessage
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	reason = [reasonMessage copy];
 	
 	return self;

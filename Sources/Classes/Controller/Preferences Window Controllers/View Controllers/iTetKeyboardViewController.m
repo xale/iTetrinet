@@ -19,14 +19,16 @@
 
 #import "iTetCommonLocalizations.h"
 
+NSString* const iTetKeyboardPrefsViewNibName =	@"KeyboardPrefsView";
+
 #define iTetKeyboardPreferencesViewName					NSLocalizedStringFromTable(@"Keyboard Controls", @"PreferencePanes", @"Title of 'keyboard configuration' preferences pane")
 #define iTetUnsavedKeyboardConfigurationPlaceholderName	NSLocalizedStringFromTable(@"Unsaved Configuration", @"Keyboard", @"Placeholder name for copied keyboard configurations that have yet to be saved with a unique name")
 #define iTetKeyDescriptionFormat						NSLocalizedStringFromTable(@"Press a key to bind to '%@'", @"KeyboardPrefsViewController", @"Format for the prompt for the user to bind a new key to a specified action")
 
-NSString* const iTetOriginalSenderInfoKey =					@"originalSender";
-NSString* const iTetNewControllerInfoKey =					@"newController";
-NSString* const iTetWindowToCloseInfoKey =					@"windowToClose";
-NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
+NSString* const iTetOriginalSenderInfoKey =		@"originalSender";
+NSString* const iTetNewControllerInfoKey =		@"newController";
+NSString* const iTetWindowToCloseInfoKey =		@"windowToClose";
+NSString* const iTetApplicationToQuitInfoKey =	@"applicationToQuit";
 
 #define KEY_CONFIGS			[[NSUserDefaults standardUserDefaults] unarchivedObjectForKey:iTetKeyConfigsListPrefKey]
 #define CURRENT_CONFIG_NUM	[[NSUserDefaults standardUserDefaults] unsignedIntegerForKey:iTetCurrentKeyConfigNumberPrefKey]
@@ -56,7 +58,7 @@ NSString* const iTetApplicationToQuitInfoKey =				@"applicationToQuit";
 
 - (id)init
 {
-	if (![super initWithNibName:@"KeyboardPrefsView" bundle:nil])
+	if (!(self = [super initWithNibName:iTetKeyboardPrefsViewNibName bundle:nil]))
 		return nil;
 	
 	[self setTitle:iTetKeyboardPreferencesViewName];

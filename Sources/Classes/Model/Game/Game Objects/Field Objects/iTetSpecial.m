@@ -32,6 +32,9 @@ NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 
 - (id)initWithType:(iTetSpecialType)specialType
 {
+	if (!(self = [super init]))
+		return nil;
+	
 	type = specialType;
 	
 	return self;
