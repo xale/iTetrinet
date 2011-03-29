@@ -10,6 +10,8 @@
 
 #import "iTetPartylineChatMessage.h"
 
+#import "iTetJoinChannelMessage.h"
+
 #import "NSArray+Subranges.h"
 #import "NSAttributedString+TetrinetTextAttributes.h"
 
@@ -28,6 +30,14 @@ NSString* const iTetPartylineChatMessageTag =	@"pline";
 	// Treat the remaining tokens (if any) as the chat message
 	if ([tokens count] > 2)
 	{
+		// Check if this message is a join-channel message
+		if ([[tokens objectAtIndex:2] isEqualToString:iTetJoinChannelCommandTag])
+		{
+			// Release this object, and return a join-channel-message object, instead
+			[self release];
+			return [[iTetJoinChannelMessage alloc] initWithMessageTokens:tokens];
+		}
+		
 		NSString* rawChatString = [[tokens subarrayFromIndex:2] componentsJoinedByString:@" "];
 		chatContents = [[NSAttributedString alloc] initWithPlineMessageContents:rawChatString];
 	}
