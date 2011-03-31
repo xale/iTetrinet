@@ -35,6 +35,13 @@
 	NSString* messageTag = [tokens objectAtIndex:0];
 	Class messageClass = [[self messageTypesByTag] objectForKey:messageTag];
 	
+	// Check that this connection has a message type registered for this tag
+	if (messageClass == Nil)
+	{
+		// FIXME: WRITEME: error to delegate? exception? warning?
+		return nil;
+	}
+	
 	// Instantiate and return a message of the given class
 	return [messageClass messageWithMessageTokens:tokens];
 }
