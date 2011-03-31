@@ -10,9 +10,7 @@
 
 #import "iTetFieldUpdateMessage.h"
 
-
-// Define message tag here
-NSString* const iTetFieldUpdateMessageTag =	@"";
+NSString* const iTetFieldUpdateMessageTag =	@"f";
 
 @implementation iTetFieldUpdateMessage
 
