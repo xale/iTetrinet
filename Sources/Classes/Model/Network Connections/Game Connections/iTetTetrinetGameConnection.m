@@ -22,6 +22,7 @@
 #import "iTetPartylineActionMessage.h"
 #import "iTetGameChatMessage.h"
 
+#import "iTetTetrinetNewGameMessage.h"
 #import "iTetPlayerLevelMessage.h"
 
 static NSDictionary* tetrinetMessageDictionary =	nil;
@@ -78,6 +79,8 @@ static NSDictionary* tetrinetMessageDictionary =	nil;
 				 forKey:iTetGameChatMessageTag];
 	
 	// Gameplay messages
+	[messages setObject:[iTetTetrinetNewGameMessage class]
+				 forKey:iTetTetrinetNewGameMessageTag];
 	[messages setObject:[iTetPlayerLevelMessage class]
 				 forKey:iTetPlayerLevelMessageTag];
 	// FIXME: WRITEME
