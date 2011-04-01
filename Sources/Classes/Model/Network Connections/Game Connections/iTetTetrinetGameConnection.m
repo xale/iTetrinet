@@ -29,6 +29,7 @@
 #import "iTetSpecialMessage.h"
 #import "iTetPlayerLevelMessage.h"
 #import "iTetPlayerLostMessage.h"
+#import "iTetPlayerWonMessage.h"
 
 static NSDictionary* tetrinetMessageDictionary =	nil;
 
@@ -98,6 +99,8 @@ static NSDictionary* tetrinetMessageDictionary =	nil;
 				 forKey:iTetPlayerLevelMessageTag];
 	[messages setObject:[iTetPlayerLostMessage class]
 				 forKey:iTetPlayerLostMessageTag];
+	[messages setObject:[iTetPlayerWonMessage class]
+				 forKey:iTetPlayerWonMessageTag];
 	// FIXME: WRITEME
 	
 	return messages;
