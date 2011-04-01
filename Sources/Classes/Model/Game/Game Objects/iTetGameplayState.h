@@ -24,12 +24,12 @@ typedef enum
 
 typedef enum
 {
-	startGameRequest =	1,
-	stopGameRequest =	0
-} iTetStartStopRequestType;
+	startGame =	1,
+	stopGame =	0
+} iTetStartStopState;
 
 typedef enum
 {
-	pauseGameRequest =	1,
-	resumeGameRequest =	0
-} iTetPauseResumeRequestType;
+	pauseGame =		1,
+	resumeGame =	0
+} iTetPauseResumeState;
