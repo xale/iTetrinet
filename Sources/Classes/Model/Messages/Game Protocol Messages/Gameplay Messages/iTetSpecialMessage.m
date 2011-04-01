@@ -66,7 +66,6 @@ NSString* const iTetSpecialMessageTag =	@"sb";
 
 - (NSString*)messageContents
 {
-	// Override to add message payload to outgoing messages
 	return [NSString stringWithFormat:@"%@ %ld %@ %ld", iTetSpecialMessageTag, (long)[self targetPlayerNumber], [self specialDesignation], (long)[self senderPlayerNumber]];
 }
 

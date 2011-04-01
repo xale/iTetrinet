@@ -45,7 +45,6 @@ NSString* const iTetPauseResumeMessageTag =	@"pause";
 
 - (NSString*)messageContents
 {
-	// Override to add message payload to outgoing messages
 	return [NSString stringWithFormat:@"%@ %d", iTetPauseResumeMessageTag, [self pauseState]];
 }
 

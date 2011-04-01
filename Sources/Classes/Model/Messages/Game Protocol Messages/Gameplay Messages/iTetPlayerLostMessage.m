@@ -45,7 +45,6 @@ NSString* const iTetPlayerLostMessageTag =	@"playerlost";
 
 - (NSString*)messageContents
 {
-	// Override to add message payload to outgoing messages
 	return [NSString stringWithFormat:@"%@ %ld", iTetPlayerLostMessageTag, (long)[self playerNumber]];
 }
 
