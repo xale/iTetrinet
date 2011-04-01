@@ -30,6 +30,7 @@
 #import "iTetPlayerLevelMessage.h"
 #import "iTetPlayerLostMessage.h"
 #import "iTetPlayerWonMessage.h"
+#import "iTetEndGameMessage.h"
 
 static NSDictionary* tetrinetMessageDictionary =	nil;
 
@@ -101,7 +102,8 @@ static NSDictionary* tetrinetMessageDictionary =	nil;
 				 forKey:iTetPlayerLostMessageTag];
 	[messages setObject:[iTetPlayerWonMessage class]
 				 forKey:iTetPlayerWonMessageTag];
-	// FIXME: WRITEME
+	[messages setObject:[iTetEndGameMessage class]
+				 forKey:iTetEndGameMessageTag];
 	
 	return messages;
 }
