@@ -32,6 +32,7 @@
 		6A603622133723B200433285 /* iTetMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603621133723B200433285 /* iTetMessage.m */; };
 		6A603625133723CC00433285 /* iTetNoPayloadMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A603624133723CC00433285 /* iTetNoPayloadMessage.m */; };
 		6A60362D1337284D00433285 /* NSArray+Subranges.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A60362C1337284D00433285 /* NSArray+Subranges.m */; };
+		6A625B971345635300FB79D1 /* iTetSpecialMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A625B961345635300FB79D1 /* iTetSpecialMessage.m */; };
 		6A64926D1337C99000E5FE75 /* iTetHeartbeatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A64926A1337C99000E5FE75 /* iTetHeartbeatMessage.m */; };
 		6A64926E1337C99000E5FE75 /* iTetNoConnectingMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A64926C1337C99000E5FE75 /* iTetNoConnectingMessage.m */; };
 		6A6492711337C9A500E5FE75 /* iTetClientInfoRequestMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A6492701337C9A500E5FE75 /* iTetClientInfoRequestMessage.m */; };
@@ -217,6 +218,8 @@
 		6A603624133723CC00433285 /* iTetNoPayloadMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetNoPayloadMessage.m; sourceTree = "<group>"; };
 		6A60362B1337284D00433285 /* NSArray+Subranges.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Subranges.h"; sourceTree = "<group>"; };
 		6A60362C1337284D00433285 /* NSArray+Subranges.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Subranges.m"; sourceTree = "<group>"; };
+		6A625B951345635300FB79D1 /* iTetSpecialMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetSpecialMessage.h; sourceTree = "<group>"; };
+		6A625B961345635300FB79D1 /* iTetSpecialMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetSpecialMessage.m; sourceTree = "<group>"; };
 		6A6492691337C99000E5FE75 /* iTetHeartbeatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetHeartbeatMessage.h; sourceTree = "<group>"; };
 		6A64926A1337C99000E5FE75 /* iTetHeartbeatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetHeartbeatMessage.m; sourceTree = "<group>"; };
 		6A64926B1337C99000E5FE75 /* iTetNoConnectingMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetNoConnectingMessage.h; sourceTree = "<group>"; };
@@ -616,6 +619,8 @@
 				6A3CDBED13452A3C00310E82 /* iTetInGameMessage.m */,
 				6A3CDBFE13452B2400310E82 /* iTetFieldUpdateMessage.h */,
 				6A3CDBFF13452B2400310E82 /* iTetFieldUpdateMessage.m */,
+				6A625B951345635300FB79D1 /* iTetSpecialMessage.h */,
+				6A625B961345635300FB79D1 /* iTetSpecialMessage.m */,
 				6A6492721337CB0400E5FE75 /* iTetPlayerLevelMessage.h */,
 				6A6492731337CB0400E5FE75 /* iTetPlayerLevelMessage.m */,
 			);
@@ -1422,6 +1427,7 @@
 				6A3CDBE113451E3800310E82 /* iTetTetrifastNewGameMessage.m in Sources */,
 				6A3CDBEE13452A3C00310E82 /* iTetInGameMessage.m in Sources */,
 				6A3CDC0013452B2400310E82 /* iTetFieldUpdateMessage.m in Sources */,
+				6A625B971345635300FB79D1 /* iTetSpecialMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
