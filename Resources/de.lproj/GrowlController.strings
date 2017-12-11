@@ -7,13 +7,17 @@
 
 "player.joined.title" = "Raum betreten";
 "player.joined.message" = "%@ hat den Raum betreten";
+"player.joined.description" = "Wenn ein Spieler den Raum betritt";
 "player.left.title" = "Raum verlassenl";
 "player.left.message" = "%@ hat den Raum verlassen";
+"player.left.description" = "Wenn ein Spieler den Raum verlässt";
 "player.kicked.title" = "Spieler gekickt";
 "player.kicked.message" = "%@ wurde vom server gekickt";
+"player.kicked.description" = "Wenn ein Spieler gekickt wird";
 "player.local.kicked.title" = "Gekickt";
 "player.local.kicked.message" = "Du wurdest vom Server gekickt";
 "player.team.change.title" = "Teambewegung";
+"player.team.change.description" = "Wenn ein Spieler im Raum das Team wechselt";
 "player.team.change.join" = "%@ ist Team '%@' beigetreten";
 "player.team.change.switch" = "%@ ist zu Team '%@' gewechselt";
 "player.team.change.left" = "%@ hat Team '%@' verlassen";
@@ -21,22 +25,26 @@
 "game.started.title" = "Spiel gestartet";
 "game.started.message" = "%@ hat ein neues Spiel gestartet";
 "game.started.message.self" = "Du hast ein neues Spiel gestartet";
+"game.started.description" = "Wenn ein Spiel beginnt";
 "game.paused.title" = "Spiel pausiert";
 "game.paused.message" = "%@ hat das Spiel pausiert";
 "game.paused.message.self" = "Du hast das Spiel pausiert";
+"game.paused.description" = "Wenn ein Spiel pausiert wird oder weitergeht";
 "game.resumed.title" = "Spiel fortgesetzt";
 "game.resume.message" = "%@ hat das Spiel fortgesetzt";
 "game.resume.message.self" = "Du hast das Spiel fortgesetzt";
+"game.paused.resumed.title" = "Spiel Pausiert/Fortgesetzt";
 
 "game.player.lost.title" = "Spieler Eliminiert";
 "game.player.lost.message" = "%@ wurde eliminiert";
+"game.player.lost.description" = "Wenn ein Spieler eliminiert wird";
 "game.player.lost.local.title" = "Eliminiert";
 "game.player.lost.local.message" = "Du wurdest eliminiert";
 
 "game.end.title" = "Spiel beendet";
 "game.end.message" = "%@ hat das Spiel beendet";
 "game.end.message.self" = "Du hast das Spiel beendet";
+"game.end.description" = "Wenn ein Spiel endet";
 "game.end.won.player" = "%@ hat das Spiel gewonnen";
 "game.end.won.team" = "Team %@ hat das Spiel gewonnen";
 "game.end.won.self" = "Du hast das Spiel gewonnen";
-

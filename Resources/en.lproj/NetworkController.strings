@@ -24,7 +24,7 @@
 "net.err.local" = "A local network error occurred:";
 "net.err.timeout" = "The connection timed out.";
 "net.err.login" = "Server refused login:";
-"net.err.unknown" = "An unknown error occurred:"
+"net.err.unknown" = "An unknown error occurred:";
 "net.err.addr" = "Check the address of the server you are attempting to connect to and try again.";
 "net.err.inet" = "Check that your computer is connected to the internet, or check the server address and try again.";
 "net.err.domain" = "Error domain: %@";

@@ -210,14 +210,14 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 			nil];
 }
 
-#define iTetPlayerJoinedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Joined Channel", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a new player joins the local player's channel")
-#define iTetPlayerLeftGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Left Channel", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when another player leaves the local player's channel")
-#define iTetPlayerKickedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Player Kicked", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel is kicked from the server")
-#define iTetPlayerTeamChangedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
-#define iTetGameStartedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"Game Started", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game starts")
-#define iTetGamePausedResumedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Game Paused/Resumed", @"GrowlController", @"Name used in Growl System Preferences pane for the notifications displayed when a game is paused or resumed")
-#define iTetGamePlayerLostGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"Player Lost", @"GrowlController", "Name used in Growl System Preferences pan for the notification displayed when a player is eliminated from (loses) a game")
-#define iTetGameEndedGrowlNotificationHumanReadableName			NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game ends")
+#define iTetPlayerJoinedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"player.joined.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a new player joins the local player's channel")
+#define iTetPlayerLeftGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"player.left.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when another player leaves the local player's channel")
+#define iTetPlayerKickedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"player.kicked.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel is kicked from the server")
+#define iTetPlayerTeamChangedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"player.team.change.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a player in the local player's channel changes his or her team")
+#define iTetGameStartedGrowlNotificationHumanReadableName		NSLocalizedStringFromTable(@"game.started.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game starts")
+#define iTetGamePausedResumedGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"game.paused.resumed.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notifications displayed when a game is paused or resumed")
+#define iTetGamePlayerLostGrowlNotificationHumanReadableName	NSLocalizedStringFromTable(@"player.lost.title", @"GrowlController", "Name used in Growl System Preferences pan for the notification displayed when a player is eliminated from (loses) a game")
+#define iTetGameEndedGrowlNotificationHumanReadableName			NSLocalizedStringFromTable(@"game.end.title", @"GrowlController", @"Name used in Growl System Preferences pane for the notification displayed when a game ends")
 
 - (NSDictionary*)humanReadableNotificationNames
 {
@@ -233,14 +233,14 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 			nil];
 }
 
-#define iTetPlayerJoinedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a new player joins your channel", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player joined' notification will be displayed")
-#define iTetPlayerLeftGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a player leaves your channel", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player left' notification will be displayed")
-#define iTetPlayerKickedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a player in your channel is kicked", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player kicked' notification will be displayed")
-#define iTetPlayerTeamChangedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a player in your channel changes teams", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
-#define iTetGameStartedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a game starts", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game started' notification will be displayed")
-#define iTetGamePausedResumedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"When a game is paused or resumed", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game paused' and 'game resumed' notifications will be displayed")
-#define iTetGamePlayerLostGrowlNotificationPreferencesDescription		NSLocalizedStringFromTable(@"When a player is eliminated from a game", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player lost' notification will be displayed")
-#define iTetGameEndedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"When a game ends", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game ended' notification will be displayed")
+#define iTetPlayerJoinedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"player.joined.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player joined' notification will be displayed")
+#define iTetPlayerLeftGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"player.left.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player left' notification will be displayed")
+#define iTetPlayerKickedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"player.kicked.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player kicked' notification will be displayed")
+#define iTetPlayerTeamChangedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"player.team.change.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player changed team' notification will be displayed")
+#define iTetGameStartedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"game.started.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game started' notification will be displayed")
+#define iTetGamePausedResumedGrowlNotificationPreferencesDescription	NSLocalizedStringFromTable(@"game.paused.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game paused' and 'game resumed' notifications will be displayed")
+#define iTetGamePlayerLostGrowlNotificationPreferencesDescription		NSLocalizedStringFromTable(@"game.player.lost.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'player lost' notification will be displayed")
+#define iTetGameEndedGrowlNotificationPreferencesDescription			NSLocalizedStringFromTable(@"game.end.description", @"GrowlController", @"Short description used in Growl System Preferences pane to explain when the 'game ended' notification will be displayed")
 
 - (NSDictionary*)notificationDescriptions
 {

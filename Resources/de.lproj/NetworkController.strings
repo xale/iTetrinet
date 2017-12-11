@@ -24,7 +24,7 @@
 "net.err.local" = "Ein lokaler Netzwerkfehler ist aufgetreten:";
 "net.err.timeout" = "Zeitüberschreitung.";
 "net.err.login" = "Login abgelehnt:";
-"net.err.unknown" = "Ein unbekannter Fehler ist aufgetreten:"
+"net.err.unknown" = "Ein unbekannter Fehler ist aufgetreten:";
 "net.err.addr" = "Bitte die Adresse des Servers überprüfen und erneut versuchen.";
 "net.err.inet" = "Bitte die Netzwerkverbindung des Conputers oder die Serveradresse überprüfen und erneut versuchen.";
 "net.err.domain" = "Fehlerdomain: %@";
