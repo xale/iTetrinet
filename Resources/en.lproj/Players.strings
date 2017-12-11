@@ -1,0 +1,11 @@
+/* 
+  Players.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"event.server" = "Server";
+"event.all" = "All";
+"nick.server" = "SERVER";
+"nick.unnamed" = "Unnamed Player";

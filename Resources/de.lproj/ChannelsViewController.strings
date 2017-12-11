@@ -1,0 +1,12 @@
+/*
+ ChannelsViewController.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"channel.actions" = "Raum Aktionen";
+"channel.join" = "Raum betreten";
+"channel.refresh" = "Räume aktualisieren";
+"channel.switch" = "Wechsele in Raum '%@'";
+

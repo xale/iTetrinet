@@ -1,0 +1,15 @@
+/* 
+  ServerInfo.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"server.example.tnet" = "Example TetriNET Server";
+"server.example.fast" = "Example Tetrifast Server";
+"server.example.addr" = "www.example.com";
+"server.example.team" = "MyTeam";
+"server.unnamed" = "Unnamed Server";
+"server.reserved.nick" = "SERVER";
+"server.err.nonick" = "You must provide a nickname.";
+"server.err.reserved" = "The name '%@' is reserved; please choose another nickname.";

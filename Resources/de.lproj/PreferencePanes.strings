@@ -1,0 +1,35 @@
+/*
+ PreferencePanes.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"preferences.offline" = "Offline Einstellungen";
+
+"preferences.keyboard" = "Tastaturbelegung";
+"preferences.keyboard.unsaved" = "Neue Tastaturbelegung";
+"preferences.keyboard.bind" = "Drücke die Taste, die auf '%@' gelegt werden soll";
+"preferences.keyboard.save" = "Aktuelle Belegung speichern...";
+"preferences.keyboard.delete" = "Aktuelle Belegung löschen";
+"preferences.keyboard.unsaved.alert.title" = "Nicht gespeicherte Tastaturbelegung";
+"preferences.keyboard.unsaved.alert.message" = "Die momentane Tastaturbelegung ist nicht gespeichert. Wenn andere Konfigurationen bearbeitet werden, geht diese verloren. Soll diese Tastaturbelegung erst gespeichert werden?";
+"preferences.keyboard.unsaved.alert.save" = "Tastaturbelegung speichern";
+"preferences.keyboard.unsaved.alert.dismiss" = "Ändern, ohne zu speichern";
+"preferences.keyboard.config.delete.title" = "Tastaturbelegung löschen";
+"preferences.keyboard.config.delete.message" = "Soll die Tastaturbelegung '%@' wirklich gelöscht werden?";
+"preferences.keyboard.config.unsaved.hint" = "Die aktuelle Tastaturbelegung wurde nicht gespeichert. Soll dies nun geschehen?";
+"preferences.keyboard.config.replace.title" = "Tastaturbelegung ersetzen?";
+"preferences.keyboard.config.replace.message" = "Es gibt bereits eine Tastaturbelegung mit dem Namen '%@'. Soll diese ersetzt werden?";
+"preferences.keyboard.config.bound.alert" = "'%@' ist bereits mit '%@' belegt";
+
+"preferences.servers" = "Serverliste";
+
+"preferences.themes" = "Designs";
+"preferences.themes.loading.unable.title" = "Konnte Design nicht laden";
+"preferences.themes.loading.unable.message" = "Konnte Design aus Datei '%@' nicht laden. Bitte überprüfen, ob die Designdatei valide ist.";
+"preferences.themes.duplicate.title" = "Doppelt vorhandenes Design";
+"preferences.themes.duplicate.message" = "Das Design '%@' scheint ein Duplikat eines anderen iTetrinet Designs zu sein. Wenn dieses Design genutzt werden soll, ändere bitte den Namen.";
+"preferences.themes.exist" = "Ein Design namens '%@' existiert bereits. Soll das Design ersetzt werden?";
+
+"preferences.general" = "Allgemeine Einstellungen";

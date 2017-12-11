@@ -55,7 +55,7 @@
 						 teamName:[NSString string]];
 }
 
-#define iTetUnnamedPlayerPlaceholderName	NSLocalizedStringFromTable(@"Unnamed Player", @"Players", @"Name given to a player with no explicitly-defined name; should be used only extremely rarely, if at all")
+#define iTetUnnamedPlayerPlaceholderName	NSLocalizedStringFromTable(@"nick.unnamed", @"Players", @"Name given to a player with no explicitly-defined name; should be used only extremely rarely, if at all")
 
 + (id)playerWithNumber:(NSInteger)number
 {

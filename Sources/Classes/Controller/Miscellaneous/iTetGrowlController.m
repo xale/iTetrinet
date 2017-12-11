@@ -264,21 +264,21 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 #pragma mark -
 #pragma mark Notifications
 
-#define iTetPlayerJoinedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Joined Channel", @"GrowlController", @"Title (first line) of the Growl notification displayed when a new player joins the local player's channel")
-#define iTetPlayerJoinedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has joined the channel", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a new player joins the local player's channel")
+#define iTetPlayerJoinedGrowlNotificationTitle			NSLocalizedStringFromTable(@"player.joined.title", @"GrowlController", @"Title (first line) of the Growl notification displayed when a new player joins the local player's channel")
+#define iTetPlayerJoinedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"player.joined.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a new player joins the local player's channel")
 
-#define iTetPlayerLeftGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Left Channel", @"GrowlController", @"Title (first line) of the Growl notification displayed when another player leaves the local player's channel")
-#define iTetPlayerLeftGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has left the channel", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player leaves the local player's channel")
+#define iTetPlayerLeftGrowlNotificationTitle			NSLocalizedStringFromTable(@"player.left.title", @"GrowlController", @"Title (first line) of the Growl notification displayed when another player leaves the local player's channel")
+#define iTetPlayerLeftGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"player.left.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player leaves the local player's channel")
 
-#define iTetPlayerKickedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Kicked", @"GrowlController", @"Title (first line) of the Growl notification displayed when another player in the local player's channel is kicked from the server")
-#define iTetPlayerKickedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player in the local player's channel is kicked from the server")
-#define iTetLocalPlayerKickedGrowlNotificationTitle		NSLocalizedStringFromTable(@"Kicked", @"GrowlController", @"Title (first line) of the Growl notification displayed when the local player is kicked from the server")
-#define iTetLocalPlayerKickedGrowlNotificationMessage	NSLocalizedStringFromTable(@"You have been kicked from the server", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player is kicked from the server")
+#define iTetPlayerKickedGrowlNotificationTitle			NSLocalizedStringFromTable(@"player.kicked.title", @"GrowlController", @"Title (first line) of the Growl notification displayed when another player in the local player's channel is kicked from the server")
+#define iTetPlayerKickedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"player.kicked.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player in the local player's channel is kicked from the server")
+#define iTetLocalPlayerKickedGrowlNotificationTitle		NSLocalizedStringFromTable(@"player.local.kicked.title", @"GrowlController", @"Title (first line) of the Growl notification displayed when the local player is kicked from the server")
+#define iTetLocalPlayerKickedGrowlNotificationMessage	NSLocalizedStringFromTable(@"player.local.kicked.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player is kicked from the server")
 
-#define iTetPlayerTeamChangedGrowlNotificationTitle				NSLocalizedStringFromTable(@"Player Changed Team", @"GrowlController", @"Title (first line) of the Growl notification displayed when a player in the local player's channel changes his or her team")
-#define iTetPlayerJoinedTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel joins a team")
-#define iTetPlayerSwitchedTeamGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has switched to team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel changes from one team to another")
-#define iTetPlayerLeftTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel leaves his or her team")
+#define iTetPlayerTeamChangedGrowlNotificationTitle				NSLocalizedStringFromTable(@"player.team.change.title", @"GrowlController", @"Title (first line) of the Growl notification displayed when a player in the local player's channel changes his or her team")
+#define iTetPlayerJoinedTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"player.team.change.join", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel joins a team")
+#define iTetPlayerSwitchedTeamGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"player.team.change.switch", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel changes from one team to another")
+#define iTetPlayerLeftTeamGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"player.team.change.left", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when a player in the local player's channel leaves his or her team")
 
 - (void)playerEventNotification:(NSNotification*)notification
 {
@@ -359,29 +359,29 @@ NSString* const iTetGameEndedGrowlNotificationName =			@"com.indiepennant.iTetri
 	}
 }
 
-#define iTetGameStartedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Started", @"GrowlController", @"Title (first line) of Growl notification displayed when a game begins")
-#define iTetGameStartedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ started a new game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player starts a game")
-#define iTetGameStartedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"You started a new game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player starts a game")
+#define iTetGameStartedGrowlNotificationTitle			NSLocalizedStringFromTable(@"game.started.title", @"GrowlController", @"Title (first line) of Growl notification displayed when a game begins")
+#define iTetGameStartedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.started.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player starts a game")
+#define iTetGameStartedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"game.started.message.self", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player starts a game")
 
-#define iTetGamePausedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Paused", @"GrowlController", @"Title (first line) of Growl notification displayed when a game is paused")
-#define iTetGamePausedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ paused the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player pauses the game in progress")
-#define iTetGamePausedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"You paused the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player pauses the game in progress")
+#define iTetGamePausedGrowlNotificationTitle			NSLocalizedStringFromTable(@"game.paused.title", @"GrowlController", @"Title (first line) of Growl notification displayed when a game is paused")
+#define iTetGamePausedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.paused.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player pauses the game in progress")
+#define iTetGamePausedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"game.paused.message.self", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player pauses the game in progress")
 
-#define iTetGameResumedGrowlNotificationTitle			NSLocalizedStringFromTable(@"Game Resumed", @"GrowlController", @"Title (first line) of Growl notification displayed when a paused game is resumed")
-#define iTetGameResumedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ resumed the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player resumes a paused game")
-#define iTetGameResumedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"You resumed the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player resumes a paused game")
+#define iTetGameResumedGrowlNotificationTitle			NSLocalizedStringFromTable(@"game.resumed.title", @"GrowlController", @"Title (first line) of Growl notification displayed when a paused game is resumed")
+#define iTetGameResumedGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.resumed.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player resumes a paused game")
+#define iTetGameResumedLocalGrowlNotificationMessage	NSLocalizedStringFromTable(@"game.resumed.message.self", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player resumes a paused game")
 
-#define iTetGamePlayerLostGrowlNotificationTitle			NSLocalizedStringFromTable(@"Player Eliminated", @"GrowlController", @"Title (first line) of Growl notification displayed when another player is eliminated from (loses) the game in progress")
-#define iTetGamePlayerLostGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has been eliminated from the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player is eliminated from (loses) the game in progress")
-#define iTetGameLocalPlayerLostGrowlNotificationTitle		NSLocalizedStringFromTable(@"Eliminated", @"GrowlController", @"Title (first line) of Growl notification displayed when the local player is eliminated from (loses) the game in progress")
-#define iTetGameLocalPlayerLostGrowlNotificationMessage		NSLocalizedStringFromTable(@"You have been eliminated from the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player is eliminated from (loses) the game in progress")
+#define iTetGamePlayerLostGrowlNotificationTitle			NSLocalizedStringFromTable(@"game.player.lost.title", @"GrowlController", @"Title (first line) of Growl notification displayed when another player is eliminated from (loses) the game in progress")
+#define iTetGamePlayerLostGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.player.lost.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when another player is eliminated from (loses) the game in progress")
+#define iTetGameLocalPlayerLostGrowlNotificationTitle		NSLocalizedStringFromTable(@"game.player.lost.local.title", @"GrowlController", @"Title (first line) of Growl notification displayed when the local player is eliminated from (loses) the game in progress")
+#define iTetGameLocalPlayerLostGrowlNotificationMessage		NSLocalizedStringFromTable(@"game.player.lost.local.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player is eliminated from (loses) the game in progress")
 
-#define iTetGameEndedGrowlNotificationTitle				NSLocalizedStringFromTable(@"Game Ended", @"GrowlController", @"Title (first line) of Growl notification displayed when a game ends")
-#define iTetGameEndedGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"%@ stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the operator ends the current game in progress")
-#define iTetGameEndedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"You stopped the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player ends the current game in progress")
-#define iTetGamePlayerWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"%@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning player")
-#define iTetGameTeamWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"Team %@ has won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning team")
-#define iTetGameLocalPlayerWonGrowlNotificationMessage	NSLocalizedStringFromTable(@"You have won the game", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with the local player as the winner")
+#define iTetGameEndedGrowlNotificationTitle				NSLocalizedStringFromTable(@"game.end.title", @"GrowlController", @"Title (first line) of Growl notification displayed when a game ends")
+#define iTetGameEndedGrowlNotificationMessageFormat		NSLocalizedStringFromTable(@"game.end.message", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the operator ends the current game in progress")
+#define iTetGameEndedLocalGrowlNotificationMessage		NSLocalizedStringFromTable(@"game.end.message.self", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the local player ends the current game in progress")
+#define iTetGamePlayerWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.end.won.player", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning player")
+#define iTetGameTeamWonGrowlNotificationMessageFormat	NSLocalizedStringFromTable(@"game.end.won.team", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with a winning team")
+#define iTetGameLocalPlayerWonGrowlNotificationMessage	NSLocalizedStringFromTable(@"game.end.won.self", @"GrowlController", @"Message contents (additional lines beyond the first) of the Growl notification displayed when the game ends with the local player as the winner")
 
 - (void)gameEventNotification:(NSNotification*)notification
 {

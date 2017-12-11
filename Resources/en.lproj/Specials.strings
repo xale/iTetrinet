@@ -1,0 +1,17 @@
+/* 
+  Specials.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"special.addline" = "Add Line";
+"special.clearline" = "Clear Line";
+"special.nukefield" = "Nuke Field";
+"special.randomclear" = "Random Clear";
+"special.switchfield" = "Switch Field";
+"special.clearspecials" = "Clear Specials";
+"special.gravity" = "Gravity";
+"special.quakefield" = "Quake Field";
+"special.blockbomb" = "Block Bomb";
+"special.null" = "No Special";

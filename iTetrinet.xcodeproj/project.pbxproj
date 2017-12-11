@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		33388CF81FDEAC7000CB93ED /* GrowlController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388CFA1FDEAC7000CB93ED /* GrowlController.strings */; };
+		33388CFE1FDEB31500CB93ED /* PreferencePanes.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D001FDEB31500CB93ED /* PreferencePanes.strings */; };
+		33388D051FDEC22300CB93ED /* WindowController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D071FDEC22300CB93ED /* WindowController.strings */; };
+		33388D0B1FDEC39A00CB93ED /* NetworkController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D0D1FDEC39A00CB93ED /* NetworkController.strings */; };
+		33388D111FDECA1800CB93ED /* GameController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D131FDECA1800CB93ED /* GameController.strings */; };
+		33388D171FDECE1400CB93ED /* ChannelsViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D191FDECE1400CB93ED /* ChannelsViewController.strings */; };
+		33388D1D1FDECED600CB93ED /* ChatViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D1F1FDECED600CB93ED /* ChatViewController.strings */; };
+		33388D231FDED0A500CB93ED /* Keyboard.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D251FDED0A500CB93ED /* Keyboard.strings */; };
+		33388D291FDED5C000CB93ED /* Specials.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D2B1FDED5C000CB93ED /* Specials.strings */; };
+		33388D2F1FDED79C00CB93ED /* Players.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D311FDED79C00CB93ED /* Players.strings */; };
+		33388D351FDED85700CB93ED /* ServerInfo.strings in Resources */ = {isa = PBXBuildFile; fileRef = 33388D371FDED85700CB93ED /* ServerInfo.strings */; };
 		6A64E2A013038347000CFCF1 /* iTetChannelListEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */; };
 		6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */ = {isa = PBXBuildFile; fileRef = 6A64E2B21303841C000CFCF1 /* iTetrinet.icns */; };
 		6A8BC5EA130D98AA001A21DD /* iTetBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A8BC5E5130D98AA001A21DD /* iTetBlock.m */; };
@@ -108,7 +119,7 @@
 		6A9C3F2312C9719900C78BFD /* theme.cfg in Resources */ = {isa = PBXBuildFile; fileRef = 6A9C3EFF12C9719900C78BFD /* theme.cfg */; };
 		6A9C3F9312C973A800C78BFD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9212C973A800C78BFD /* Cocoa.framework */; };
 		6A9C3F9B12C973BF00C78BFD /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9A12C973BF00C78BFD /* Growl.framework */; };
-		6A9C3FA312C973C900C78BFD /* Growl.framework in Copy Bundled Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9A12C973BF00C78BFD /* Growl.framework */; };
+		6A9C3FA312C973C900C78BFD /* Growl.framework in Copy Bundled Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3F9A12C973BF00C78BFD /* Growl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6A9C3FAE12C9741100C78BFD /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3FAD12C9741100C78BFD /* AppKit.framework */; };
 		6A9C3FB012C9741100C78BFD /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3FAF12C9741100C78BFD /* CoreData.framework */; };
 		6A9C3FB212C9741100C78BFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A9C3FB112C9741100C78BFD /* Foundation.framework */; };
@@ -129,6 +140,36 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		33388CEF1FDEA83A00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = de; path = de.lproj/Credits.rtf; sourceTree = "<group>"; };
+		33388CF01FDEA84300CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/GeneralPrefsView.xib; sourceTree = "<group>"; };
+		33388CF11FDEA85300CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		33388CF21FDEA85B00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/OfflineGamePrefsView.xib; sourceTree = "<group>"; };
+		33388CF31FDEA85F00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
+		33388CF41FDEA86300CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/ServersPrefsView.xib; sourceTree = "<group>"; };
+		33388CF51FDEA86700CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/ThemesPrefsView.xib; sourceTree = "<group>"; };
+		33388CF91FDEAC7000CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GrowlController.strings; sourceTree = "<group>"; };
+		33388CFB1FDEAC8000CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GrowlController.strings; sourceTree = "<group>"; };
+		33388CFF1FDEB31500CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PreferencePanes.strings; sourceTree = "<group>"; };
+		33388D011FDEB31700CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PreferencePanes.strings; sourceTree = "<group>"; };
+		33388D021FDEBF7900CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = de; path = de.lproj/KeyboardPrefsView.xib; sourceTree = "<group>"; };
+		33388D061FDEC22300CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/WindowController.strings; sourceTree = "<group>"; };
+		33388D081FDEC22400CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/WindowController.strings; sourceTree = "<group>"; };
+		33388D0C1FDEC39A00CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/NetworkController.strings; sourceTree = "<group>"; };
+		33388D0E1FDEC39C00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/NetworkController.strings; sourceTree = "<group>"; };
+		33388D121FDECA1800CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GameController.strings; sourceTree = "<group>"; };
+		33388D141FDECA1A00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/GameController.strings; sourceTree = "<group>"; };
+		33388D181FDECE1400CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ChannelsViewController.strings; sourceTree = "<group>"; };
+		33388D1A1FDECE1600CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ChannelsViewController.strings; sourceTree = "<group>"; };
+		33388D1E1FDECED600CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ChatViewController.strings; sourceTree = "<group>"; };
+		33388D201FDECED800CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ChatViewController.strings; sourceTree = "<group>"; };
+		33388D241FDED0A500CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Keyboard.strings; sourceTree = "<group>"; };
+		33388D261FDED0A700CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Keyboard.strings; sourceTree = "<group>"; };
+		33388D2A1FDED5C000CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Specials.strings; sourceTree = "<group>"; };
+		33388D2C1FDED5C200CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Specials.strings; sourceTree = "<group>"; };
+		33388D301FDED79C00CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Players.strings; sourceTree = "<group>"; };
+		33388D321FDED79E00CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Players.strings; sourceTree = "<group>"; };
+		33388D361FDED85700CB93ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServerInfo.strings; sourceTree = "<group>"; };
+		33388D381FDED85900CB93ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServerInfo.strings; sourceTree = "<group>"; };
 		6A64E29E13038347000CFCF1 /* iTetChannelListEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iTetChannelListEntry.h; sourceTree = "<group>"; };
 		6A64E29F13038347000CFCF1 /* iTetChannelListEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iTetChannelListEntry.m; sourceTree = "<group>"; };
 		6A64E2B21303841C000CFCF1 /* iTetrinet.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = iTetrinet.icns; sourceTree = "<group>"; };
@@ -788,6 +829,17 @@
 				6A64E2B21303841C000CFCF1 /* iTetrinet.icns */,
 				6A9C3EF712C9719900C78BFD /* Info.plist */,
 				6A9C3EF812C9719900C78BFD /* license.txt */,
+				33388CFA1FDEAC7000CB93ED /* GrowlController.strings */,
+				33388D001FDEB31500CB93ED /* PreferencePanes.strings */,
+				33388D071FDEC22300CB93ED /* WindowController.strings */,
+				33388D0D1FDEC39A00CB93ED /* NetworkController.strings */,
+				33388D131FDECA1800CB93ED /* GameController.strings */,
+				33388D191FDECE1400CB93ED /* ChannelsViewController.strings */,
+				33388D1F1FDECED600CB93ED /* ChatViewController.strings */,
+				33388D251FDED0A500CB93ED /* Keyboard.strings */,
+				33388D2B1FDED5C000CB93ED /* Specials.strings */,
+				33388D311FDED79C00CB93ED /* Players.strings */,
+				33388D371FDED85700CB93ED /* ServerInfo.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -872,6 +924,9 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "iTetrinet" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -881,6 +936,8 @@
 				Japanese,
 				French,
 				German,
+				de,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* iTetrinet */;
 			projectDirPath = "";
@@ -901,6 +958,8 @@
 				6A9C3F0612C9719900C78BFD /* InfoPlist.strings in Resources */,
 				6A9C3F0712C9719900C78BFD /* KeyboardPrefsView.xib in Resources */,
 				6A9C3F0812C9719900C78BFD /* MainMenu.xib in Resources */,
+				33388D171FDECE1400CB93ED /* ChannelsViewController.strings in Resources */,
+				33388CFE1FDEB31500CB93ED /* PreferencePanes.strings in Resources */,
 				6A9C3F0912C9719900C78BFD /* OfflineGamePrefsView.xib in Resources */,
 				6A9C3F0A12C9719900C78BFD /* PreferencesWindow.xib in Resources */,
 				6A9C3F0B12C9719900C78BFD /* ServersPrefsView.xib in Resources */,
@@ -912,20 +971,29 @@
 				6A9C3F1112C9719900C78BFD /* Minus Red Button.png in Resources */,
 				6A9C3F1212C9719900C78BFD /* Network.png in Resources */,
 				6A9C3F1312C9719900C78BFD /* No Network.png in Resources */,
+				33388D1D1FDECED600CB93ED /* ChatViewController.strings in Resources */,
+				33388D291FDED5C000CB93ED /* Specials.strings in Resources */,
 				6A9C3F1412C9719900C78BFD /* Pause Blue Button.png in Resources */,
 				6A9C3F1512C9719900C78BFD /* Play Blue Button.png in Resources */,
+				33388D051FDEC22300CB93ED /* WindowController.strings in Resources */,
+				33388D2F1FDED79C00CB93ED /* Players.strings in Resources */,
 				6A9C3F1612C9719900C78BFD /* Play Green Button.png in Resources */,
 				6A9C3F1712C9719900C78BFD /* State Icon Pause.png in Resources */,
 				6A9C3F1812C9719900C78BFD /* State Icon Play.png in Resources */,
+				33388D231FDED0A500CB93ED /* Keyboard.strings in Resources */,
 				6A9C3F1912C9719900C78BFD /* State Icon Stop.png in Resources */,
 				6A9C3F1A12C9719900C78BFD /* Stop Red Button.png in Resources */,
 				6A9C3F1B12C9719900C78BFD /* Users.png in Resources */,
 				6A9C3F1D12C9719900C78BFD /* license.txt in Resources */,
 				6A9C3F1E12C9719900C78BFD /* gtetblocks.png in Resources */,
+				33388D351FDED85700CB93ED /* ServerInfo.strings in Resources */,
 				6A9C3F1F12C9719900C78BFD /* GTetrinetTheme.cfg in Resources */,
 				6A9C3F2012C9719900C78BFD /* iTetBlocks.png in Resources */,
 				6A9C3F2312C9719900C78BFD /* theme.cfg in Resources */,
+				33388D111FDECA1800CB93ED /* GameController.strings in Resources */,
+				33388CF81FDEAC7000CB93ED /* GrowlController.strings in Resources */,
 				6A64E2B31303841C000CFCF1 /* iTetrinet.icns in Resources */,
+				33388D0B1FDEC39A00CB93ED /* NetworkController.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1028,10 +1096,110 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		33388CFA1FDEAC7000CB93ED /* GrowlController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388CF91FDEAC7000CB93ED /* de */,
+				33388CFB1FDEAC8000CB93ED /* en */,
+			);
+			name = GrowlController.strings;
+			sourceTree = "<group>";
+		};
+		33388D001FDEB31500CB93ED /* PreferencePanes.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388CFF1FDEB31500CB93ED /* en */,
+				33388D011FDEB31700CB93ED /* de */,
+			);
+			name = PreferencePanes.strings;
+			sourceTree = "<group>";
+		};
+		33388D071FDEC22300CB93ED /* WindowController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D061FDEC22300CB93ED /* en */,
+				33388D081FDEC22400CB93ED /* de */,
+			);
+			name = WindowController.strings;
+			sourceTree = "<group>";
+		};
+		33388D0D1FDEC39A00CB93ED /* NetworkController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D0C1FDEC39A00CB93ED /* en */,
+				33388D0E1FDEC39C00CB93ED /* de */,
+			);
+			name = NetworkController.strings;
+			sourceTree = "<group>";
+		};
+		33388D131FDECA1800CB93ED /* GameController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D121FDECA1800CB93ED /* en */,
+				33388D141FDECA1A00CB93ED /* de */,
+			);
+			name = GameController.strings;
+			sourceTree = "<group>";
+		};
+		33388D191FDECE1400CB93ED /* ChannelsViewController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D181FDECE1400CB93ED /* en */,
+				33388D1A1FDECE1600CB93ED /* de */,
+			);
+			name = ChannelsViewController.strings;
+			sourceTree = "<group>";
+		};
+		33388D1F1FDECED600CB93ED /* ChatViewController.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D1E1FDECED600CB93ED /* en */,
+				33388D201FDECED800CB93ED /* de */,
+			);
+			name = ChatViewController.strings;
+			sourceTree = "<group>";
+		};
+		33388D251FDED0A500CB93ED /* Keyboard.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D241FDED0A500CB93ED /* en */,
+				33388D261FDED0A700CB93ED /* de */,
+			);
+			name = Keyboard.strings;
+			sourceTree = "<group>";
+		};
+		33388D2B1FDED5C000CB93ED /* Specials.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D2A1FDED5C000CB93ED /* en */,
+				33388D2C1FDED5C200CB93ED /* de */,
+			);
+			name = Specials.strings;
+			sourceTree = "<group>";
+		};
+		33388D311FDED79C00CB93ED /* Players.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D301FDED79C00CB93ED /* en */,
+				33388D321FDED79E00CB93ED /* de */,
+			);
+			name = Players.strings;
+			sourceTree = "<group>";
+		};
+		33388D371FDED85700CB93ED /* ServerInfo.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				33388D361FDED85700CB93ED /* en */,
+				33388D381FDED85900CB93ED /* de */,
+			);
+			name = ServerInfo.strings;
+			sourceTree = "<group>";
+		};
 		6A9C3ED512C9719900C78BFD /* Credits.rtf */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3ED612C9719900C78BFD /* English */,
+				33388CEF1FDEA83A00CB93ED /* de */,
 			);
 			name = Credits.rtf;
 			sourceTree = "<group>";
@@ -1040,6 +1208,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3ED812C9719900C78BFD /* English */,
+				33388CF01FDEA84300CB93ED /* de */,
 			);
 			name = GeneralPrefsView.xib;
 			sourceTree = "<group>";
@@ -1056,6 +1225,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EDC12C9719900C78BFD /* English */,
+				33388D021FDEBF7900CB93ED /* de */,
 			);
 			name = KeyboardPrefsView.xib;
 			sourceTree = "<group>";
@@ -1064,6 +1234,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EDE12C9719900C78BFD /* English */,
+				33388CF11FDEA85300CB93ED /* de */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -1072,6 +1243,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EE012C9719900C78BFD /* English */,
+				33388CF21FDEA85B00CB93ED /* de */,
 			);
 			name = OfflineGamePrefsView.xib;
 			sourceTree = "<group>";
@@ -1080,6 +1252,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EE212C9719900C78BFD /* English */,
+				33388CF31FDEA85F00CB93ED /* de */,
 			);
 			name = PreferencesWindow.xib;
 			sourceTree = "<group>";
@@ -1088,6 +1261,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EE412C9719900C78BFD /* English */,
+				33388CF41FDEA86300CB93ED /* de */,
 			);
 			name = ServersPrefsView.xib;
 			sourceTree = "<group>";
@@ -1096,6 +1270,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				6A9C3EE612C9719900C78BFD /* English */,
+				33388CF51FDEA86700CB93ED /* de */,
 			);
 			name = ThemesPrefsView.xib;
 			sourceTree = "<group>";
@@ -1106,8 +1281,9 @@
 		6A16958D12197A3700731950 /* Debug (GCC) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1123,7 +1299,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Debug (GCC)";
@@ -1140,7 +1316,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/Other Sources/iTetrinet_Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indiepennant.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = iTetrinet;
 			};
 			name = "Debug (GCC)";
@@ -1148,8 +1326,9 @@
 		6A16959312197A6A00731950 /* Debug (LLVM + Static Analyzer) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1166,7 +1345,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Debug (LLVM + Static Analyzer)";
@@ -1183,7 +1362,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/Other Sources/iTetrinet_Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indiepennant.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = iTetrinet;
 			};
 			name = "Debug (LLVM + Static Analyzer)";
@@ -1200,7 +1381,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/Other Sources/iTetrinet_Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = _ITETRINET_DEBUG;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indiepennant.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = iTetrinet;
 			};
 			name = "Debug (LLVM)";
@@ -1217,7 +1400,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sources/Other Sources/iTetrinet_Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Resources/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.indiepennant.${PRODUCT_NAME:identifier}";
 				PRODUCT_NAME = iTetrinet;
 			};
 			name = Release;
@@ -1225,8 +1410,9 @@
 		C01FCF4F08A954540054247B /* Debug (LLVM) */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_FAST_OBJC_DISPATCH = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1242,7 +1428,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 			};
 			name = "Debug (LLVM)";
@@ -1250,7 +1436,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = NS_BLOCK_ASSERTIONS;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1264,7 +1450,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

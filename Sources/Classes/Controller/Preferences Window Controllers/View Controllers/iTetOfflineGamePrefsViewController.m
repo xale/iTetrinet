@@ -12,7 +12,7 @@
 #import "iTetUserDefaults.h"
 #import "iTetGameRules.h"
 
-#define iTetOfflineGamePreferencesViewName	NSLocalizedStringFromTable(@"Offline Game Preferences", @"PreferencePanes", @"Title of the 'offline game preferences' preferences pane")
+#define iTetOfflineGamePreferencesViewName	NSLocalizedStringFromTable(@"preferences.offline", @"PreferencePanes", @"Title of the 'offline game preferences' preferences pane")
 
 @implementation iTetOfflineGamePrefsViewController
 

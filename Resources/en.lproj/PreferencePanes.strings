@@ -1,0 +1,35 @@
+/* 
+  PreferencePanes.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"preferences.offline" = "Offline Game Preferences";
+
+"preferences.keyboard" = "Keyboard Controls";
+"preferences.keyboard.unsaved" = "Unsaved Configuration";
+"preferences.keyboard.bind" = "Press a key to bind to '%@'";
+"preferences.keyboard.save" = "Save Current Configuration...";
+"preferences.keyboard.delete" = "Delete Current Configuration";
+"preferences.keyboard.unsaved.alert.title" = "Unsaved Keyboard Configuration";
+"preferences.keyboard.unsaved.alert.message" = "Your current key configuration is unsaved. If you change configurations, it will be lost. Do you  wish to save the configuration first?";
+"preferences.keyboard.unsaved.alert.save" = "Save Configuration";
+"preferences.keyboard.unsaved.alert.dismiss" = "Change without Saving";
+"preferences.keyboard.config.delete.title" = "Delete Keyboard Configuration";
+"preferences.keyboard.config.delete.message" = "Are you sure you want to delete the configuration '%@'?";
+"preferences.keyboard.config.unsaved.hint" = "Your current key configuration is unsaved. Do you wish to save the configuration?";
+"preferences.keyboard.config.replace.title" = "Replace Keyboard Configuration";
+"preferences.keyboard.config.replace.message" = "A keyboard configuration already exists with the name '%@'. Would you like to replace it?";
+"preferences.keyboard.config.bound.alert" = "'%@' is already bound to '%@'";
+
+"preferences.servers" = "Servers List";
+
+"preferences.themes" = "Themes";
+"preferences.themes.loading.unable.title" = "Could not load theme";
+"preferences.themes.loading.unable.message" = "Unable to load a theme from the file '%@'. Check that the file is a valid theme file, and that the image specified by the 'Blocks=' section of the theme file is in the same directory as the file.";
+"preferences.themes.duplicate.title" = "Duplicate theme";
+"preferences.themes.duplicate.message" = "The theme '%@' appears to be a duplicate of one of the default iTetrinet themes. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using a text editor, and change the contents of the 'Name=' section)";
+"preferences.themes.exist" = "A theme named '%@' is already installed. Would you like the replace the existing theme with the new one?";
+
+"preferences.general" = "General Preferences";

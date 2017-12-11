@@ -1,0 +1,11 @@
+/* 
+  ChannelsViewController.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"channel.actions" = "Channel Actions";
+"channel.join" = "Join Channel";
+"channel.refresh" = "Refresh Channels List";
+"channel.switch" = "Switching to channel '%@'";

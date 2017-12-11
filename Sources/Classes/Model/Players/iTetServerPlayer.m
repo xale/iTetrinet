@@ -10,7 +10,7 @@
 
 #import "iTetServerPlayer.h"
 
-#define iTetServerPlayerName	NSLocalizedStringFromTable(@"SERVER", @"Players", @"The placeholder name used in the chat views for messages sent by the server (as opposed to one of the players) ")
+#define iTetServerPlayerName	NSLocalizedStringFromTable(@"nick.server", @"Players", @"The placeholder name used in the chat views for messages sent by the server (as opposed to one of the players) ")
 
 @implementation iTetServerPlayer
 

@@ -1,0 +1,17 @@
+/*
+ Specials.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"special.addline" = "Reihe hinzufügen";
+"special.clearline" = "Reihe entfernen";
+"special.nukefield" = "Nuke";
+"special.randomclear" = "Zufällig entfernen";
+"special.switchfield" = "Feld tauschen";
+"special.clearspecials" = "Powerups entfernen";
+"special.gravity" = "Schwerkraft";
+"special.quakefield" = "Bebenfeld";
+"special.blockbomb" = "Blockbombe";
+"special.null" = "Kein Powerup";

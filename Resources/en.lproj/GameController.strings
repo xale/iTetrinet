@@ -1,0 +1,34 @@
+/* 
+  GameController.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"game.end.progress.title" = "End Game in Progress?";
+"game.end.progress.message" = "Are you sure you want to end the game in progress?";
+"game.end.progress.ok" = "End Game";
+
+"game.forfeit.title" = "Forfeit Game?";
+"game.forfeit.message" = "Are you sure you want to forfeit this game?";
+"game.forfeit.ok" = "Forfeit";
+
+"special.used.on" = "%@ used on %@ by %@";
+"special.used.by" = "%@ used by %@";
+
+"lines.added.to" = "%@ added to %@ by %@";
+"lines.singular" = "1 Line";
+"lines.plural" = "%d Lines";
+"lines.double" = "Double";
+"lines.triple" = "Triple";
+"lines.quadruple" = "Quadruple";
+
+"menu.new.game" = "Begin New Game";
+"menu.pause.game" = "Pause Current Game";
+"menu.resume.game" = "Resume Paused Game";
+"menu.end.game" = "End Current Game...";
+
+"button.new.game" = "New Game";
+"button.pause.game" = "Pause";
+"button.resume.game" = "Resume";
+"button.end.game" = "End Game";

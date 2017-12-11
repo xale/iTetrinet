@@ -1,0 +1,50 @@
+/*
+ NetworkController.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"disconnect.progress.message" = "Es läuft gerade ein Spiel. Sicher, dass du die Verbindung trennen willst?";
+"disconnect.progress.ok" = "Aufgeben und trennen";
+"connect.progress.message" = "Es läuft gerade ein lokales Spiel. Bevor eine Verbindung aufgebaut werden kann, muss das Spiel beendet werden. Soll das Spiel jetzt beendet werden?";
+"conntect.progress.ok" = "Aufgeben";
+"connect.server" = "Mit Server verbinden";
+"connect.server.query" = "Wähle einen Server zum verbinden aus:";
+"connect.server.ok" = "Verbinden";
+"server.list.edit" = "Serverliste bearbeiten...";
+
+"net.no.reason" = "(Kein Grund)";
+"net.err" = "Verbindungsfehler";
+"net.err.refused" = "Verbindung abgelehnt.";
+"net.err.nopen" = "Verbindung zum Server konnte nicht hergestellt werden.";
+"net.err.explain" = "Ein Netzwerkfehler ist aufgetreten:";
+"net.err.find" = "Konnte den Server nicht finden.";
+"net.err.find.long" = "Ein Netzwerkfehler ist aufgetreten, während der Server gesucht wurde.";
+"net.err.local" = "Ein lokaler Netzwerkfehler ist aufgetreten:";
+"net.err.timeout" = "Zeitüberschreitung.";
+"net.err.login" = "Login abgelehnt:";
+"net.err.unknown" = "Ein unbekannter Fehler ist aufgetreten:"
+"net.err.addr" = "Bitte die Adresse des Servers überprüfen und erneut versuchen.";
+"net.err.inet" = "Bitte die Netzwerkverbindung des Conputers oder die Serveradresse überprüfen und erneut versuchen.";
+"net.err.domain" = "Fehlerdomain: %@";
+"net.err.code" = "Fehlercode: %d";
+
+"server.connect" = "Verbinden...";
+"connection.closed" = "Verbindung geschlossen";
+"connection.disconnected" = "Verbindung getrennt";
+"connection.server.closed" = "Server hat die Verbindung getrennt";
+"connection.cancel" = "Verbindungsaufbau abbrechen";
+"connection.cancel.progress" = "Verbindungsaufbau wird abgebrochen...";
+"connection.connecting" = "Verbinde mit %@...";
+"connection.opened" = "Verbindung hergestellt";
+"connection.login" = "Einloggen als %@...";
+"connection.canceled" = "Verbindung beendet.";
+"connection.disconnect" = "Verbindung trennen";
+"connection.disconnect.from" = "Verbindung zum Server trennen";
+"connection.connected" = "Verbunden";
+"connection.disconnecting" = "Trenne Verbindung...";
+"connection.err.title" = "Verbindungsfehler";
+"connection.err" = "Verbindungsfehler aufgetreten";
+
+

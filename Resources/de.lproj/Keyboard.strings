@@ -1,0 +1,53 @@
+/*
+ Keyboard.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"move.left" = "Block nach Links bewegen";
+"move.right" = "Block nach Rechts bewegen";
+"move.down" = "Block nach Unten bewegen";
+"move.drop" = "Block fallen lassen";
+"rotate.counter" = "Block nach Rechts rotieren";
+"rotate.clockwise" = "Block nach Links rotieren";
+
+"special.discard" = "Powerup verwerfen";
+"special.use.self" = "Powerup selbst nutzen";
+"special.use.p1" = "Powerup gegen Spieler 1";
+"special.use.p2" = "Powerup gegen Spieler 2";
+"special.use.p3" = "Powerup gegen Spieler 3";
+"special.use.p4" = "Powerup gegen Spieler 4";
+"special.use.p5" = "Powerup gegen Spieler 5";
+"special.use.p6" = "Powerup gegen Spieler 6";
+
+"game.chat" = "Chat";
+"game.noop" = "Keine Aktion";
+"keys.arrow" = "Pfeiltasten";
+"keys.macbook" = "MacBook-Tastatur";
+"config.untitled" = "Unbenannte Tastaturbelegung";
+
+"key.esc" = "esc";
+"key.tab" = "tab";
+"key.return" = "return";
+"key.enter" = "enter";
+"key.delete" = "delete";
+"key.capslock" = "capslock";
+"key.shift" = "shift";
+"key.control" = "ctrl";
+"key.option" = "alt";
+"key.command" = "cmd";
+"key.unknown" = "(unknown)";
+
+"key.name.esc" = "Escape";
+"key.name.space" = "Leertaste";
+"key.name.tab" = "Tabulator";
+"key.name.return" = "Return";
+"key.name.enter" = "Enter";
+"key.name.delete" = "Delete";
+"key.name.capslock" = "Capslock";
+"key.name.shift" = "Umschalt";
+"key.name.control" = "Control";
+"key.name.option" = "Alt";
+"key.name.command" = "Command";
+"key.name.numpad" = "Numpad %@";

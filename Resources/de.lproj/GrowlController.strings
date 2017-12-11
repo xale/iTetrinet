@@ -1,0 +1,42 @@
+/*
+ GrowlController.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"player.joined.title" = "Raum betreten";
+"player.joined.message" = "%@ hat den Raum betreten";
+"player.left.title" = "Raum verlassenl";
+"player.left.message" = "%@ hat den Raum verlassen";
+"player.kicked.title" = "Spieler gekickt";
+"player.kicked.message" = "%@ wurde vom server gekickt";
+"player.local.kicked.title" = "Gekickt";
+"player.local.kicked.message" = "Du wurdest vom Server gekickt";
+"player.team.change.title" = "Teambewegung";
+"player.team.change.join" = "%@ ist Team '%@' beigetreten";
+"player.team.change.switch" = "%@ ist zu Team '%@' gewechselt";
+"player.team.change.left" = "%@ hat Team '%@' verlassen";
+
+"game.started.title" = "Spiel gestartet";
+"game.started.message" = "%@ hat ein neues Spiel gestartet";
+"game.started.message.self" = "Du hast ein neues Spiel gestartet";
+"game.paused.title" = "Spiel pausiert";
+"game.paused.message" = "%@ hat das Spiel pausiert";
+"game.paused.message.self" = "Du hast das Spiel pausiert";
+"game.resumed.title" = "Spiel fortgesetzt";
+"game.resume.message" = "%@ hat das Spiel fortgesetzt";
+"game.resume.message.self" = "Du hast das Spiel fortgesetzt";
+
+"game.player.lost.title" = "Spieler Eliminiert";
+"game.player.lost.message" = "%@ wurde eliminiert";
+"game.player.lost.local.title" = "Eliminiert";
+"game.player.lost.local.message" = "Du wurdest eliminiert";
+
+"game.end.title" = "Spiel beendet";
+"game.end.message" = "%@ hat das Spiel beendet";
+"game.end.message.self" = "Du hast das Spiel beendet";
+"game.end.won.player" = "%@ hat das Spiel gewonnen";
+"game.end.won.team" = "Team %@ hat das Spiel gewonnen";
+"game.end.won.self" = "Du hast das Spiel gewonnen";
+
