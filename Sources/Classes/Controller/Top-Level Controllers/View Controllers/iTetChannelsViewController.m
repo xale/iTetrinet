@@ -185,9 +185,9 @@
 #pragma mark -
 #pragma mark IPSContextMenuTableView Delegate Methods
 
-#define iTetChannelRightClickActionsMenuTitle		NSLocalizedStringFromTable(@"Channel Actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
-#define iTetJoinChannelActionMenuItemTitle			NSLocalizedStringFromTable(@"Join Channel", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
-#define iTetRefreshChannelListActionMenuItemTitle	NSLocalizedStringFromTable(@"Refresh Channels List", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on the channels list that allows the user to refresh the list of channels")
+#define iTetChannelRightClickActionsMenuTitle		NSLocalizedStringFromTable(@"channel.actions", @"ChannelsViewController", @"Title of contextual menu displayed when the user right- or control-clicks on a channel in the channels list")
+#define iTetJoinChannelActionMenuItemTitle			NSLocalizedStringFromTable(@"channel.join", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on a channel in the channels list that allows the user to join the clicked channel")
+#define iTetRefreshChannelListActionMenuItemTitle	NSLocalizedStringFromTable(@"channel.refresh", @"ChannelsViewController", @"Title of menu item in the contextual menu displayed when a user right- or control-clicks on the channels list that allows the user to refresh the list of channels")
 
 - (NSMenu*)tableView:(IPSContextMenuTableView*)tableView
 		menuForEvent:(NSEvent*)event
@@ -246,7 +246,7 @@
 	[self switchToChannelNamed:channelName];	
 }
 
-#define iTetSwitchedChannelStatusMessageFormat	NSLocalizedStringFromTable(@"Switching to channel '%@'", @"ChannelsViewController", @"Status message appended to the chat view when the user changes channels on the server to which he or she is connected")
+#define iTetSwitchedChannelStatusMessageFormat	NSLocalizedStringFromTable(@"channel.switch", @"ChannelsViewController", @"Status message appended to the chat view when the user changes channels on the server to which he or she is connected")
 
 - (void)switchToChannelNamed:(NSString*)channelName
 {

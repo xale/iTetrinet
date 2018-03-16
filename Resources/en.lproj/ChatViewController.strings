@@ -1,0 +1,16 @@
+/* 
+  ChatViewController.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"chat.user.joined" = "%@ has joined the channel";
+"chat.user.left" = "%@ has left the channel";
+
+"team.user.joined" = "%@ has joined team '%@'";
+"team.user.switched" = "%@ has switched to team '%@'";
+"team.user.left" = "%@ has left team '%@'";
+
+"kicked.self" = "You have been kicked from the server";
+"kicked.user" = "%@ has been kicked from the server";

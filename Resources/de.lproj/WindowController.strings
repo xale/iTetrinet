@@ -1,0 +1,15 @@
+/*
+ WindowController.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"game.quit.progress" = "Es läuft gerade ein Spiel. Sicher, dass du das Programm beenden willst?";
+"game.quit.progress.ok" = "Programm Beenden";
+
+"game.quit.connection" = "Offene Verbindung";
+"game.quit.connection.message" = "Du bist momentan mit '%@' verbunden. Sicher, dass du das Programm beenden willst?";
+"game.quit.connection.ok" = "Verbindung trennen und Beenden";
+"game.quit.connection.cancel" = "Nicht beenden";
+

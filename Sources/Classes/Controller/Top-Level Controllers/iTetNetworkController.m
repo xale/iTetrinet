@@ -93,11 +93,11 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 #pragma mark -
 #pragma mark Interface Actions
 
-#define iTetDisconnectWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to disconnect from the server?", @"NetworkController", @"Informative text on alert displayed when the user attempts to disconnect from a server while participating in a game")
-#define iTetDisconnectWithGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit and Disconnect", @"NetworkController", @"Title of button on 'disconnect with game in progress?' alert that allows the user to stop playing and disconnect")
+#define iTetDisconnectWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"disconnect.progress.message", @"NetworkController", @"Informative text on alert displayed when the user attempts to disconnect from a server while participating in a game")
+#define iTetDisconnectWithGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"disconnect.progress.ok", @"NetworkController", @"Title of button on 'disconnect with game in progress?' alert that allows the user to stop playing and disconnect")
 
-#define iTetConnectWithOfflineGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"An offline game is currently in progress. Before you can connect to a server, you will have to forfeit the game. Are you sure you want to do this?", @"NetworkController", @"Informative text on alert displayed when the user attempts to open a new server connection while playing an offline game")
-#define iTetConnectWithOfflineGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"Forfeit Game", @"NetworkController", @"Title of button on 'connect with offline game in progress?' alert that allows the user to stop playing the offline game and open a connection to a server")
+#define iTetConnectWithOfflineGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"connect.progress.message", @"NetworkController", @"Informative text on alert displayed when the user attempts to open a new server connection while playing an offline game")
+#define iTetConnectWithOfflineGameInProgressConfirmButtonTitle		NSLocalizedStringFromTable(@"connect.progress.ok", @"NetworkController", @"Title of button on 'connect with offline game in progress?' alert that allows the user to stop playing the offline game and open a connection to a server")
 
 - (IBAction)openCloseConnection:(id)sender
 {
@@ -237,10 +237,10 @@ NSString* const iTetNetworkErrorDomain = @"iTetNetworkError";
 	[self openServerSelectionDialog];
 }
 
-#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"Connect to Server", @"NetworkController", @"Title of 'connect to server' alert dialog")
-#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"Select a server to connect to:", @"NetworkController", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
-#define iTetConnectButtonTitle					NSLocalizedStringFromTable(@"Connect", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
-#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"Edit Server List...", @"NetworkController", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
+#define iTetConnectToServerAlertTitle			NSLocalizedStringFromTable(@"connect.server", @"NetworkController", @"Title of 'connect to server' alert dialog")
+#define iTetConnectToServerAlertInformativeText	NSLocalizedStringFromTable(@"connect.server.query", @"NetworkController", @"Informative text on 'connect to server' alert dialog, prompting the user to select a server to connect to")
+#define iTetConnectButtonTitle					NSLocalizedStringFromTable(@"connect.server.ok", @"NetworkController", @"Title of button or toolbar button used to open a connection to a server")
+#define iTetEditServerListButtonTitle			NSLocalizedStringFromTable(@"server.list.edit", @"NetworkController", @"Button on 'connect to server' alert dialog that cancels the connection and opens the preferences window to allow the user to edit the list of servers")
 
 - (void)openServerSelectionDialog
 {
@@ -479,7 +479,7 @@ willDisconnectWithError:(NSError*)error
 						   tag:0];
 }
 
-#define iTetNoConnectingUnspecifiedReasonPlaceHolder	NSLocalizedStringFromTable(@"(No reason given)", @"NetworkController", @"Placeholder for informational text when a server refuses the user's login, but provides no reason with the rejection message")
+#define iTetNoConnectingUnspecifiedReasonPlaceHolder	NSLocalizedStringFromTable(@"net.no.reason", @"NetworkController", @"Placeholder for informational text when a server refuses the user's login, but provides no reason with the rejection message")
 
 - (void)messageReceived:(iTetMessage*)message
 {
@@ -784,22 +784,22 @@ willDisconnectWithError:(NSError*)error
 #pragma mark -
 #pragma mark Errors
 
-#define iTetConnectionErrorAlertTitle					NSLocalizedStringFromTable(@"Connection error", @"NetworkController", @"Title of alert displayed when an error occurs while connecting or connected to a server")
-#define iTetConnectionRefusedErrorAlertInformativeText	NSLocalizedStringFromTable(@"Connection refused.", @"NetworkController", @"Informative text on alert displayed in the event of a 'connection refused' error when connecting to a server")
-#define iTetHostUnreachableErrorAlertInformativeText	NSLocalizedStringFromTable(@"Could not open a connection to the server.", @"NetworkController", @"Informative text on alert displayed in the event of a 'host unreachable' error when connecting to a server")
-#define iTetPOSIXNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A connection error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a generic connection error")
-#define iTetUnknownHostErrorAlertInformativeText		NSLocalizedStringFromTable(@"Could not find the server.", @"NetworkController", @"Informative text on alert displayed in the event that a DNS lookup on a server name returns no results")
-#define iTetServerLookupErrorAlertInformativeText		NSLocalizedStringFromTable(@"An error occurred while trying to find the server.", @"NetworkController", @"Informative text on alert displayed when a DNS lookup causes an error, prior to the error code")
-#define iTetLocalNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"A local network error occurred:", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a local network problem")
-#define iTetConnectionTimeoutAlertInformativeText		NSLocalizedStringFromTable(@"The connection timed out.", @"NetworkController", @"Informative text on alert displayed when connecting to a server fails due to timeout")
-#define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"Server refused login:", @"NetworkController", @"Informative text prefixing a reason received from a server when it won't allow the user to log in")
-#define iTetUnknownNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"An unknown error occurred:", @"NetworkController", @"Informative text prefixing information about an unknown connection error")
+#define iTetConnectionErrorAlertTitle					NSLocalizedStringFromTable(@"net.err", @"NetworkController", @"Title of alert displayed when an error occurs while connecting or connected to a server")
+#define iTetConnectionRefusedErrorAlertInformativeText	NSLocalizedStringFromTable(@"net.err.refused", @"NetworkController", @"Informative text on alert displayed in the event of a 'connection refused' error when connecting to a server")
+#define iTetHostUnreachableErrorAlertInformativeText	NSLocalizedStringFromTable(@"net.err.nopen", @"NetworkController", @"Informative text on alert displayed in the event of a 'host unreachable' error when connecting to a server")
+#define iTetPOSIXNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.explain", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a generic connection error")
+#define iTetUnknownHostErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.find", @"NetworkController", @"Informative text on alert displayed in the event that a DNS lookup on a server name returns no results")
+#define iTetServerLookupErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.find.long", @"NetworkController", @"Informative text on alert displayed when a DNS lookup causes an error, prior to the error code")
+#define iTetLocalNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.local", @"NetworkController", @"Informative text prefixing information displayed on an alert describing a local network problem")
+#define iTetConnectionTimeoutAlertInformativeText		NSLocalizedStringFromTable(@"net.err.timeout", @"NetworkController", @"Informative text on alert displayed when connecting to a server fails due to timeout")
+#define iTetNoConnectingErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.login", @"NetworkController", @"Informative text prefixing a reason received from a server when it won't allow the user to log in")
+#define iTetUnknownNetworkErrorAlertInformativeText		NSLocalizedStringFromTable(@"net.err.unknown", @"NetworkController", @"Informative text prefixing information about an unknown connection error")
 
-#define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"Check the address of the server you are attempting to connect to and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
-#define iTetCheckNetworkRecoverySuggestionText			NSLocalizedStringFromTable(@"Check that your computer is connected to the internet, or check the server address and try again.", @"NetworkController", @"After a connection error message, suggestion that the user check his or her computer's network state and the server address before retrying")
+#define iTetCheckServerRecoverySuggestionText			NSLocalizedStringFromTable(@"net.err.addr", @"NetworkController", @"After a connection error message, suggestion that the user check that the host address is running a TetriNET server before retrying")
+#define iTetCheckNetworkRecoverySuggestionText			NSLocalizedStringFromTable(@"net.err.inet", @"NetworkController", @"After a connection error message, suggestion that the user check his or her computer's network state and the server address before retrying")
 
-#define iTetErrorDomainLabelFormat						NSLocalizedStringFromTable(@"Error domain: %@", @"NetworkController", @"Label for the domain of an unknown connection error")
-#define iTetErrorCodeLabelFormat						NSLocalizedStringFromTable(@"Error code: %d", @"NetworkController", @"Label for the code of an unknown connection error")
+#define iTetErrorDomainLabelFormat						NSLocalizedStringFromTable(@"net.err.domain", @"NetworkController", @"Label for the domain of an unknown connection error")
+#define iTetErrorCodeLabelFormat						NSLocalizedStringFromTable(@"net.err.code", @"NetworkController", @"Label for the code of an unknown connection error")
 
 - (void)handleError:(NSError*)error
 {
@@ -924,28 +924,28 @@ willDisconnectWithError:(NSError*)error
 	return [currentServer serverAddress];
 }
 
-#define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"Connect to Server...", @"NetworkController", @"Title of menu item used to open a connection to a server")
-#define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"Connection Closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
-#define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"Disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")
-#define iTetServerDisconnectedStatusLabel	NSLocalizedStringFromTable(@"Server closed connection", @"NetworkController", @"Status label displayed at bottom of window when the server closes the remote end of the connection")
+#define iTetConnectMenuItemTitle			NSLocalizedStringFromTable(@"server.connect", @"NetworkController", @"Title of menu item used to open a connection to a server")
+#define iTetDisconnectedStatusMessage		NSLocalizedStringFromTable(@"connection.closed", @"NetworkController", @"Status message appended to the chat view after successfully disconnecting from a server")
+#define iTetDisconnectedStatusLabel			NSLocalizedStringFromTable(@"connection.disconnected", @"NetworkController", @"Status label displayed at bottom of window after successfully disconnecting from a server")
+#define iTetServerDisconnectedStatusLabel	NSLocalizedStringFromTable(@"connection.server.closed", @"NetworkController", @"Status label displayed at bottom of window when the server closes the remote end of the connection")
 
-#define iTetCancelConnectionButtonTitle		NSLocalizedStringFromTable(@"Cancel Connection", @"NetworkController", @"Title of toolbar button used to cancel when attempting to open a connection to a server")
-#define iTetCancelConnectionMenuItemTitle	NSLocalizedStringFromTable(@"Cancel Connection in Progress", @"NetworkController", @"Title of menu item used to cancel when attempting to open a connection to a server")
-#define iTetConnectingStatusLabelFormat		NSLocalizedStringFromTable(@"Connecting to server %@...", @"NetworkController", @"Status label displayed at bottom of window when a new connection is being opened to a server")
+#define iTetCancelConnectionButtonTitle		NSLocalizedStringFromTable(@"connection.cancel", @"NetworkController", @"Title of toolbar button used to cancel when attempting to open a connection to a server")
+#define iTetCancelConnectionMenuItemTitle	NSLocalizedStringFromTable(@"connection.cancel.progress", @"NetworkController", @"Title of menu item used to cancel when attempting to open a connection to a server")
+#define iTetConnectingStatusLabelFormat		NSLocalizedStringFromTable(@"connection.connecting", @"NetworkController", @"Status label displayed at bottom of window when a new connection is being opened to a server")
 
-#define iTetConnectionOpenedStatusMessage	NSLocalizedStringFromTable(@"Connection Opened", @"NetworkController", @"Status message appended to the chat view after successfully opening a connection to a server")
-#define iTetLoggingInStatusLabelFormat		NSLocalizedStringFromTable(@"Logging in as %@...", @"NetworkController", @"Status label displayed at bottom of window while logging in to a server")
+#define iTetConnectionOpenedStatusMessage	NSLocalizedStringFromTable(@"connection.opened", @"NetworkController", @"Status message appended to the chat view after successfully opening a connection to a server")
+#define iTetLoggingInStatusLabelFormat		NSLocalizedStringFromTable(@"connection.login", @"NetworkController", @"Status label displayed at bottom of window while logging in to a server")
 
-#define iTetConnectionCanceledStatusLabel	NSLocalizedStringFromTable(@"Connection canceled", @"NetworkController", @"Status label displayed at the bottom of the window after cancelling a connection to a server")
+#define iTetConnectionCanceledStatusLabel	NSLocalizedStringFromTable(@"connection.canceled", @"NetworkController", @"Status label displayed at the bottom of the window after cancelling a connection to a server")
 
-#define iTetDisconnectButtonTitle			NSLocalizedStringFromTable(@"Disconnect", @"NetworkController", @"Title of button or toolbar button used to close an open connection to a server")
-#define iTetDisconnectMenuItemTitle			NSLocalizedStringFromTable(@"Disconect from Server", @"NetworkController", @"Title of menu item used to close an open connection to a server")
-#define iTetConnectedStatusLabel			NSLocalizedStringFromTable(@"Connected", @"NetworkController", @"Status label displayed at bottom of window while connected to a server")
+#define iTetDisconnectButtonTitle			NSLocalizedStringFromTable(@"connection.disconnect", @"NetworkController", @"Title of button or toolbar button used to close an open connection to a server")
+#define iTetDisconnectMenuItemTitle			NSLocalizedStringFromTable(@"connection.disconnect.from", @"NetworkController", @"Title of menu item used to close an open connection to a server")
+#define iTetConnectedStatusLabel			NSLocalizedStringFromTable(@"connection.connected", @"NetworkController", @"Status label displayed at bottom of window while connected to a server")
 
-#define iTetDisconnectingStatusLabel		NSLocalizedStringFromTable(@"Disconnecting...", @"NetworkController", @"Status label displayed at bottom of window while disconnecting from a server")
+#define iTetDisconnectingStatusLabel		NSLocalizedStringFromTable(@"connection.disconnecting", @"NetworkController", @"Status label displayed at bottom of window while disconnecting from a server")
 
-#define iTetConnectionErrorStatusMessage	NSLocalizedStringFromTable(@"Connection Error", @"NetworkController", @"Status message appended to the chat view if a connection error occurs")
-#define iTetConnectionErrorStatusLabel		NSLocalizedStringFromTable(@"Connection error occurred", @"NetworkController", @"Status label displayed at bottom of window if a connection error occurs")
+#define iTetConnectionErrorStatusMessage	NSLocalizedStringFromTable(@"connection.err.title", @"NetworkController", @"Status message appended to the chat view if a connection error occurs")
+#define iTetConnectionErrorStatusLabel		NSLocalizedStringFromTable(@"connection.err", @"NetworkController", @"Status label displayed at bottom of window if a connection error occurs")
 
 - (void)setConnectionState:(iTetConnectionState)newState
 {

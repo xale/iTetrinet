@@ -10,16 +10,16 @@
 
 #import "iTetSpecial.h"
 
-#define iTetAddLineSpecialName			NSLocalizedStringFromTable(@"Add Line", @"Specials", @"Name of the 'add line' special block")
-#define iTetClearLineSpecialName		NSLocalizedStringFromTable(@"Clear Line", @"Specials", @"Name of the 'clear line' special block")
-#define iTetNukeFieldSpecialName		NSLocalizedStringFromTable(@"Nuke Field", @"Specials", @"Name of the 'nuke field' special block")
-#define iTetRandomClearSpecialName		NSLocalizedStringFromTable(@"Random Clear", @"Specials", @"Name of the 'random clear' special block")
-#define iTetSwitchFieldSpecialName		NSLocalizedStringFromTable(@"Switch Field", @"Specials", @"Name of the 'switch field' special block")
-#define iTetClearSpecialsSpecialName	NSLocalizedStringFromTable(@"Clear Specials", @"Specials", @"Name of the 'clear specials' special block")
-#define iTetGravitySpecialName			NSLocalizedStringFromTable(@"Gravity", @"Specials", @"Name of the 'gravity' special block")
-#define iTetQuakeFieldSpecialName		NSLocalizedStringFromTable(@"Quake Field", @"Specials", @"Name of the 'quake field' special block")
-#define iTetBlockBombSpecialName		NSLocalizedStringFromTable(@"Block Bomb", @"Specials", @"Name of the 'block bomb' special block")
-#define iTetInvalidOrNoneSpecialName	NSLocalizedStringFromTable(@"No Special", @"Specials", @"Placeholder name for null or invalid specials")
+#define iTetAddLineSpecialName			NSLocalizedStringFromTable(@"special.addline", @"Specials", @"Name of the 'add line' special block")
+#define iTetClearLineSpecialName		NSLocalizedStringFromTable(@"special.clearline", @"Specials", @"Name of the 'clear line' special block")
+#define iTetNukeFieldSpecialName		NSLocalizedStringFromTable(@"special.nukefield", @"Specials", @"Name of the 'nuke field' special block")
+#define iTetRandomClearSpecialName		NSLocalizedStringFromTable(@"special.randomclear", @"Specials", @"Name of the 'random clear' special block")
+#define iTetSwitchFieldSpecialName		NSLocalizedStringFromTable(@"special.switchfield", @"Specials", @"Name of the 'switch field' special block")
+#define iTetClearSpecialsSpecialName	NSLocalizedStringFromTable(@"special.clearspecials", @"Specials", @"Name of the 'clear specials' special block")
+#define iTetGravitySpecialName			NSLocalizedStringFromTable(@"special.gravity", @"Specials", @"Name of the 'gravity' special block")
+#define iTetQuakeFieldSpecialName		NSLocalizedStringFromTable(@"special.quakefield", @"Specials", @"Name of the 'quake field' special block")
+#define iTetBlockBombSpecialName		NSLocalizedStringFromTable(@"special.blockbomb", @"Specials", @"Name of the 'block bomb' special block")
+#define iTetInvalidOrNoneSpecialName	NSLocalizedStringFromTable(@"special.null", @"Specials", @"Placeholder name for null or invalid specials")
 
 NSString* const iTetClassicStyleAddSpecialPrefix = @"cs";
 

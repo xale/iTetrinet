@@ -1,0 +1,49 @@
+/* 
+  NetworkController.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"disconnect.progress.message" = "A game is currently in progress. Are you sure you want to disconnect from the server?";
+"disconnect.progress.ok" = "Forfeit and Disconnect";
+"connect.progress.message" = "An offline game is currently in progress. Before you can connect to a server, you will have to forfeit the game. Are you sure you want to do this?";
+"conntect.progress.ok" = "Forfeit Game";
+"connect.server" = "Connect to Server";
+"connect.server.query" = "Select a server to connect to:";
+"connect.server.ok" = "Connect";
+"server.list.edit" = "Edit Server List...";
+
+"net.no.reason" = "(No reason given)";
+"net.err" = "Connection error";
+"net.err.refused" = "Connection refused.";
+"net.err.nopen" = "Could not open a connection to the server.";
+"net.err.explain" = "A connection error occurred:";
+"net.err.find" = "Could not find the server.";
+"net.err.find.long" = "An error occurred while trying to find the server.";
+"net.err.local" = "A local network error occurred:";
+"net.err.timeout" = "The connection timed out.";
+"net.err.login" = "Server refused login:";
+"net.err.unknown" = "An unknown error occurred:";
+"net.err.addr" = "Check the address of the server you are attempting to connect to and try again.";
+"net.err.inet" = "Check that your computer is connected to the internet, or check the server address and try again.";
+"net.err.domain" = "Error domain: %@";
+"net.err.code" = "Error code: %d";
+
+"server.connect" = "Connect to Server...";
+"connection.closed" = "Connection Closed";
+"connection.disconnected" = "Disconnected";
+"connection.server.closed" = "Server closed connection";
+"connection.cancel" = "Cancel Connection";
+"connection.cancel.progress" = "Cancel Connection in Progress";
+"connection.connecting" = "Connecting to server %@...";
+"connection.opened" = "Connection Opened";
+"connection.login" = "Logging in as %@...";
+"connection.canceled" = "Connection canceled";
+"connection.disconnect" = "Disconnect";
+"connection.disconnect.from" = "Disconect from Server";
+"connection.connected" = "Connected";
+"connection.disconnecting" = "Disconnecting...";
+"connection.err.title" = "Connection Error";
+"connection.err" = "Connection error occurred";
+

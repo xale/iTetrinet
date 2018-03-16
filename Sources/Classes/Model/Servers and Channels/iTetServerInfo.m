@@ -20,10 +20,10 @@ NSString* const iTet114GameVersionName =	@"1.14";
 
 @implementation iTetServerInfo
 
-#define iTetExampleTetriNETServerName	NSLocalizedStringFromTable(@"Example TetriNET Server", @"ServerInfo", @"Name for example TetriNET server")
-#define iTetExampleTetrifastServerName	NSLocalizedStringFromTable(@"Example Tetrifast Server", @"ServerInfo", @"Name for example Tetrifast server")
-#define iTetExampleServerAddress		NSLocalizedStringFromTable(@"www.example.com", @"ServerInfo", @"Example server address (need not be a valid address)")
-#define iTetExampleTeamName				NSLocalizedStringFromTable(@"MyTeam", @"ServerInfo", @"Example name for player's team (must not contain spaces)")
+#define iTetExampleTetriNETServerName	NSLocalizedStringFromTable(@"server.example.net", @"ServerInfo", @"Name for example TetriNET server")
+#define iTetExampleTetrifastServerName	NSLocalizedStringFromTable(@"server.example.fast", @"ServerInfo", @"Name for example Tetrifast server")
+#define iTetExampleServerAddress		NSLocalizedStringFromTable(@"server.example.addr", @"ServerInfo", @"Example server address (need not be a valid address)")
+#define iTetExampleTeamName				NSLocalizedStringFromTable(@"server.example.team", @"ServerInfo", @"Example name for player's team (must not contain spaces)")
 
 NSString* const iTetTetrinetUSTerinetServerName =		@"TetriNET.us (TetriNET)";
 NSString* const iTetTetrinetUSTetrifastServerName =		@"TetriNET.us (Tetrifast)";
@@ -91,7 +91,7 @@ NSString* const iTetTetrinetUSServerAddress =			@"www.tetrinet.us";
 	return self;
 }
 
-#define iTetUnnamedServerPlaceholderName	NSLocalizedStringFromTable(@"Unnamed Server", @"ServerInfo", @"Placeholder name for unnamed servers")
+#define iTetUnnamedServerPlaceholderName	NSLocalizedStringFromTable(@"server.unnamed", @"ServerInfo", @"Placeholder name for unnamed servers")
 
 - (id)init
 {	
@@ -163,10 +163,10 @@ typedef enum
 
 NSString* const iTetDefaultLocaleIdentifier =	@"en_US";
 NSString* const iTetDefaultServerReservedName =	@"SERVER";
-#define iTetLocalizedServerReservedName	NSLocalizedStringFromTable(@"SERVER", @"ServerInfo", @"The word 'SERVER' (as in the context of computer networks); used to prevent players from choosing this as their nickname")
+#define iTetLocalizedServerReservedName	NSLocalizedStringFromTable(@"server.reserved.nick", @"ServerInfo", @"The word 'SERVER' (as in the context of computer networks); used to prevent players from choosing this as their nickname")
 
-#define iTetBlankNicknameErrorMessage	NSLocalizedStringFromTable(@"You must provide a nickname.", @"ServerInfo", @"Message displayed to users upon entering blank nickname")
-#define iTetReservedNicknameErrorMessageFormat	NSLocalizedStringFromTable(@"The name '%@' is reserved; please choose another nickname.", @"ServerInfo", @"Message displayed to users if they enter a nickname that cannot be used.")
+#define iTetBlankNicknameErrorMessage	NSLocalizedStringFromTable(@"server.err.nonick", @"ServerInfo", @"Message displayed to users upon entering blank nickname")
+#define iTetReservedNicknameErrorMessageFormat	NSLocalizedStringFromTable(@"server.err.reserved", @"ServerInfo", @"Message displayed to users if they enter a nickname that cannot be used.")
 
 - (BOOL)validatePlayerNickname:(id*)newValue
 						 error:(NSError**)error

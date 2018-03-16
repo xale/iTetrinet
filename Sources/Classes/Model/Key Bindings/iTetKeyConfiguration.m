@@ -74,8 +74,8 @@
 	return [configs objectAtIndex:configNum];
 }
 
-#define	iTetArrowKeysKeyboardConfigurationName	NSLocalizedStringFromTable(@"Arrow Keys", @"Keyboard", @"Name of a built-in key configuration that uses the arrow keys for moving the falling piece")
-#define iTetMacBookKeyboardConfigurationName	NSLocalizedStringFromTable(@"MacBook Keyboard", @"Keyboard", @"Name of a built-in key configuration intended for use with small-form keyboards (such as the MacBook's)")
+#define	iTetArrowKeysKeyboardConfigurationName	NSLocalizedStringFromTable(@"keys.arrow", @"Keyboard", @"Name of a built-in key configuration that uses the arrow keys for moving the falling piece")
+#define iTetMacBookKeyboardConfigurationName	NSLocalizedStringFromTable(@"keys.macbook", @"Keyboard", @"Name of a built-in key configuration intended for use with small-form keyboards (such as the MacBook's)")
 
 + (NSMutableArray*)defaultKeyConfigurations
 {
@@ -171,7 +171,7 @@
 	return self;
 }
 
-#define iTetUntitledKeyboardConfigurationName	NSLocalizedStringFromTable(@"Untitled Key Configuration", @"Keyboard", @"Placeholder name for new or untitled keyboard configurations")
+#define iTetUntitledKeyboardConfigurationName	NSLocalizedStringFromTable(@"config.untitled", @"Keyboard", @"Placeholder name for new or untitled keyboard configurations")
 
 - (id)init
 {

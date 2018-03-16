@@ -1,0 +1,53 @@
+/* 
+  Keyboard.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"move.left" = "Move Piece Left";
+"move.right" = "Move Piece Right";
+"move.down" = "Move Piece Down";
+"move.drop" = "Drop Piece";
+"rotate.counter" = "Rotate Piece Counterclockwise";
+"rotate.clockwise" = "Rotate Piece Clockwise";
+
+"special.discard" = "Discard Special";
+"special.use.self" = "Use Special on Self";
+"special.use.p1" = "Use Special on Player 1";
+"special.use.p2" = "Use Special on Player 2";
+"special.use.p3" = "Use Special on Player 3";
+"special.use.p4" = "Use Special on Player 4";
+"special.use.p5" = "Use Special on Player 5";
+"special.use.p6" = "Use Special on Player 6";
+
+"game.chat" = "Game Chat";
+"game.noop" = "No Action";
+"keys.arrow" = "Arrow Keys";
+"keys.macbook" = "MacBook Keyboard";
+"config.untitled" = "Untitled Key Configuration";
+
+"key.esc" = "esc";
+"key.tab" = "tab";
+"key.return" = "return";
+"key.enter" = "enter";
+"key.delete" = "delete";
+"key.capslock" = "caps lock";
+"key.shift" = "shift";
+"key.control" = "control";
+"key.option" = "option";
+"key.command" = "command";
+"key.unknown" = "(unknown)";
+
+"key.name.esc" = "Escape";
+"key.name.space" = "Space";
+"key.name.tab" = "Tab";
+"key.name.return" = "Return";
+"key.name.enter" = "Enter";
+"key.name.delete" = "Delete";
+"key.name.capslock" = "Caps Lock";
+"key.name.shift" = "Shift";
+"key.name.control" = "Control";
+"key.name.option" = "Option";
+"key.name.command" = "Command";
+"key.name.numpad" = "Numpad %@";

@@ -1,0 +1,35 @@
+/*
+ GameController.strings
+ iTetrinet
+ 
+ Created by Lukas Fülling on 11.12.17.
+ */
+
+"game.end.progress.title" = "Laufendes Spiel beenden?";
+"game.end.progress.message" = "Soll das laufende Spiel wirklich beendet werden??";
+"game.end.progress.ok" = "Spiel beenden";
+
+"game.forfeit.title" = "Spiel Aufgeben?";
+"game.forfeit.message" = "Soll das laufende Spiel wirklich aufgegeben werden?";
+"game.forfeit.ok" = "Aufgeben";
+
+"special.used.on" = "%@ auf %@ genutzt von %@";
+"special.used.by" = "%@ genutzt von %@";
+
+"lines.added.to" = "%@ zu %@ hinzugefügt von %@";
+"lines.singular" = "1 Reihe";
+"lines.plural" = "%d Reihen";
+"lines.double" = "Doppelt";
+"lines.triple" = "Dreifach";
+"lines.quadruple" = "Vierfach";
+
+"menu.new.game" = "Neues Spiel starten";
+"menu.pause.game" = "Aktuelles Spiel pausieren";
+"menu.resume.game" = "Pausiertes Spiel fortsetzen";
+"menu.end.game" = "Laufendes Spiel beenden...";
+
+"button.new.game" = "Neues Spiel";
+"button.pause.game" = "Pause";
+"button.resume.game" = "Fortsetzen";
+"button.end.game" = "Beenden";
+

@@ -10,7 +10,7 @@
 
 #import "iTetGeneralPrefsViewController.h"
 
-#define iTetGeneralPreferencesViewName	NSLocalizedStringFromTable(@"General Preferences", @"PreferencePanes", @"Title of the 'general preferences' preferences pane")
+#define iTetGeneralPreferencesViewName	NSLocalizedStringFromTable(@"preferences.general", @"PreferencePanes", @"Title of the 'general preferences' preferences pane")
 
 @implementation iTetGeneralPrefsViewController
 

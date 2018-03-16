@@ -1,0 +1,14 @@
+/* 
+  WindowController.strings
+  iTetrinet
+
+  Created by Lukas Fülling on 11.12.17.
+*/
+
+"game.quit.progress" = "A game is currently in progress. Are you sure you want to quit?";
+"game.quit.progress.ok" = "Quit Anyway";
+
+"game.quit.connection" = "Open Connection";
+"game.quit.connection.message" = "You are currently connected to the server '%@'. Are you sure you want to quit?";
+"game.quit.connection.ok" = "Disconnect and Quit";
+"game.quit.connection.cancel" = "Don't Quit";

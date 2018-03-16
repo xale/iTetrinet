@@ -271,13 +271,13 @@
 #pragma mark -
 #pragma mark Player Event Notifications
 
-#define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has joined the channel", @"ChatViewController", @"Status message appended to the chat view when a player joins the channel")
-#define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"%@ has left the channel", @"ChatViewController", @"Status message appended to the chat view when a player leaves the channel")
-#define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has joined team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player joins a new team")
-#define iTetPlayerSwitchedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"%@ has switched to team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player changes from one team to another")
-#define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"%@ has left team '%@'", @"ChatViewController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
-#define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"You have been kicked from the server", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
-#define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"%@ has been kicked from the server", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
+#define iTetPlayerJoinedEventStatusMessageFormat		NSLocalizedStringFromTable(@"chat.user.joined", @"ChatViewController", @"Status message appended to the chat view when a player joins the channel")
+#define iTetPlayerLeftEventStatusMessageFormat			NSLocalizedStringFromTable(@"chat.user.left", @"ChatViewController", @"Status message appended to the chat view when a player leaves the channel")
+#define iTetPlayerJoinedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"team.user.joined", @"ChatViewController", @"Status message appended to the chat view when a player joins a new team")
+#define iTetPlayerSwitchedTeamEventStatusMessageFormat	NSLocalizedStringFromTable(@"team.user.switched", @"ChatViewController", @"Status message appended to the chat view when a player changes from one team to another")
+#define iTetPlayerLeftTeamEventStatusMessageFormat		NSLocalizedStringFromTable(@"team.user.left", @"ChatViewController", @"Status message appended to the chat view when a player leaves the team he or she was playing for")
+#define iTetLocalPlayerKickedStatusMessage				NSLocalizedStringFromTable(@"kicked.self", @"NetworkController", @"Status message appended to the chat view when the server informs the client that it is about to be disconnected")
+#define iTetPlayerKickedStatusMessageFormat				NSLocalizedStringFromTable(@"kicked.user", @"NetworkController", @"Status message appended to the chat view when a player is kicked from the server")
 
 - (void)playerEventNotification:(NSNotification*)notification
 {

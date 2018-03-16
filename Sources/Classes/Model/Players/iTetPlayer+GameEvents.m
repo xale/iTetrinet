@@ -12,8 +12,8 @@
 #import "iTetTextAttributes.h"
 #import "NSAttributedString+Convenience.h"
 
-#define iTetServerSenderPlaceholderName			NSLocalizedStringFromTable(@"Server", @"Players", @"Placeholder string used in event description messages on the 'game actions' list when specials are used or lines are added by the server")
-#define iTetTargetAllPlaceholderName			NSLocalizedStringFromTable(@"All", @"Players", @"Placeholder string used in event description messages on the 'game actions' list when a special is used on or lines are added to all players in the game")
+#define iTetServerSenderPlaceholderName			NSLocalizedStringFromTable(@"event.server", @"Players", @"Placeholder string used in event description messages on the 'game actions' list when specials are used or lines are added by the server")
+#define iTetTargetAllPlaceholderName			NSLocalizedStringFromTable(@"event.all", @"Players", @"Placeholder string used in event description messages on the 'game actions' list when a special is used on or lines are added to all players in the game")
 
 @implementation iTetPlayer (GameEvents)
 

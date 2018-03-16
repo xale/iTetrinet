@@ -17,7 +17,7 @@
 
 #import "iTetCommonLocalizations.h"
 
-#define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"Themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
+#define iTetThemesPreferencesViewName	NSLocalizedStringFromTable(@"preferences.themes", @"PreferencePanes", @"Title of the 'themes' preferences pane")
 
 @implementation iTetThemesViewController
 
@@ -82,11 +82,11 @@
 						  contextInfo:NULL];
 }
 
-#define iTetThemeLoadFailedAlertTitle					NSLocalizedStringFromTable(@"Could not load theme", @"ThemesPrefsViewController", @"Title of alert displayed when a theme fails to load")
-#define iTetThemeLoadFailedAlertInformativeText			NSLocalizedStringFromTable(@"Unable to load a theme from the file '%@'. Check that the file is a valid theme file, and that the image specified by the 'Blocks=' section of the theme file is in the same directory as the file.", @"ThemesPrefsViewController", @"Informative text on alert displayed when a theme fails to load")
-#define iTetDuplicateThemeAlertTitle					NSLocalizedStringFromTable(@"Duplicate theme", @"ThemesPrefsViewController", @"Title of alert displayed when a user attempts to add a theme to the themes list that is a duplicate of an existing theme")
-#define iTetDuplicateDefaultThemeAlertInformativeText	NSLocalizedStringFromTable(@"The theme '%@' appears to be a duplicate of one of the default iTetrinet themes. If you would like to use this theme, try changing its name. (To change the theme's name, open the theme file using a text editor, and change the contents of the 'Name=' section)", @"ThemesPrefsViewController", @"Informative text on alert displayed when the user attempts to add a theme to the themes list that is a duplicate of one of the default iTetrinet themes")
-#define iTetDuplicateOtherThemeAlertInformativeText		NSLocalizedStringFromTable(@"A theme named '%@' is already installed. Would you like the replace the existing theme with the new one?", @"ThemesPrefsViewController", @"Informative text on alert displayed when the user attempts to add a theme to the themes list that is a duplicate of another theme they have added (rather than one of the default themes)")
+#define iTetThemeLoadFailedAlertTitle					NSLocalizedStringFromTable(@"preferences.themes.loading.unable.title", @"PreferencePanes", @"Title of alert displayed when a theme fails to load")
+#define iTetThemeLoadFailedAlertInformativeText			NSLocalizedStringFromTable(@"preferences.themes.loading.unable.message", @"PreferencePanes", @"Informative text on alert displayed when a theme fails to load")
+#define iTetDuplicateThemeAlertTitle					NSLocalizedStringFromTable(@"preferences.themes.duplicate.title", @"PreferencePanes", @"Title of alert displayed when a user attempts to add a theme to the themes list that is a duplicate of an existing theme")
+#define iTetDuplicateDefaultThemeAlertInformativeText	NSLocalizedStringFromTable(@"preferences.themes.duplicate.message", @"PreferencePanes", @"Informative text on alert displayed when the user attempts to add a theme to the themes list that is a duplicate of one of the default iTetrinet themes")
+#define iTetDuplicateOtherThemeAlertInformativeText		NSLocalizedStringFromTable(@"preferences.themes.exist", @"PreferencePanes", @"Informative text on alert displayed when the user attempts to add a theme to the themes list that is a duplicate of another theme they have added (rather than one of the default themes)")
 
 - (void)openSheetDidEnd:(NSOpenPanel*)openSheet
 			 returnCode:(NSInteger)returnCode

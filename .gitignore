@@ -4,6 +4,7 @@ build/*
 *.mode1v3
 *.perspectivev3
 *.mshark
+xcuserdata
 
 # old skool
 .svn

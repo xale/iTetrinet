@@ -230,9 +230,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 #pragma mark -
 #pragma mark Interface Actions
 
-#define iTetEndGameAlertTitle			NSLocalizedStringFromTable(@"End Game in Progress?", @"GameViewController", @"Title of 'end game' confirmation alert, displayed when the user selects the 'end game' toolbar button or menu item")
-#define iTetEndGameAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to end the game in progress?", @"GameViewController", @"Informative text on 'end game' confirmation alert")
-#define iTetEndGameConfirmButtonTitle	NSLocalizedStringFromTable(@"End Game", @"GameViewController", @"Title of button on 'end game' confirmation alert that allows the user to confirm and end the game in progress")
+#define iTetEndGameAlertTitle			NSLocalizedStringFromTable(@"game.end.progress.title", @"GameController", @"Title of 'end game' confirmation alert, displayed when the user selects the 'end game' toolbar button or menu item")
+#define iTetEndGameAlertInformativeText	NSLocalizedStringFromTable(@"game.end.progress.message", @"GameController", @"Informative text on 'end game' confirmation alert")
+#define iTetEndGameConfirmButtonTitle	NSLocalizedStringFromTable(@"game.end.progress.ok", @"GameController", @"Title of button on 'end game' confirmation alert that allows the user to confirm and end the game in progress")
 
 - (IBAction)startStopGame:(id)sender
 {
@@ -290,9 +290,9 @@ NSTimeInterval blockFallDelayForLevel(NSInteger level);
 	}
 }
 
-#define iTetForfeitGameAlertTitle			NSLocalizedStringFromTable(@"Forfeit Game?", @"GameViewController", @"Title of 'forfeit game' confirmation art, displayed when the user selects the 'forfeit game' toolbar button")
-#define iTetForfeitGameAlertInformativeText	NSLocalizedStringFromTable(@"Are you sure you want to forfeit this game?", @"GameViewController", @"Informative text on 'forfeit game' confirmation alert")
-#define iTetForfeitGameConfirmButtonTitle	NSLocalizedStringFromTable(@"Forfeit", @"GameViewController", @"Title of button on 'forfeit game' confirmation alert that allows the user to confirm and forfeit the game")
+#define iTetForfeitGameAlertTitle			NSLocalizedStringFromTable(@"game.forfeit.title", @"GameController", @"Title of 'forfeit game' confirmation art, displayed when the user selects the 'forfeit game' toolbar button")
+#define iTetForfeitGameAlertInformativeText	NSLocalizedStringFromTable(@"game.forfeit.message", @"GameController", @"Informative text on 'forfeit game' confirmation alert")
+#define iTetForfeitGameConfirmButtonTitle	NSLocalizedStringFromTable(@"game.forfeit.ok", @"GameController", @"Title of button on 'forfeit game' confirmation alert that allows the user to confirm and forfeit the game")
 
 - (IBAction)forfeitGame:(id)sender
 {
@@ -1564,8 +1564,8 @@ doCommandBySelector:(SEL)command
 
 #define iTetEventBackgroundColorFraction	(0.15)
 
-#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"%@ used on %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
-#define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ used by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
+#define iTetSpecialEventDescriptionFormat		NSLocalizedStringFromTable(@"special.used.on", @"GameController", @"Event description message added to the 'game actions' list whenever a special is used by one player on another; tokens in order are: special name, target player's name, sender player's name")
+#define iTetSelfSpecialEventDescriptionFormat	NSLocalizedStringFromTable(@"special.used.by", @"GameController", @"Event description message added to the 'game actions' list whenever a specials is used by a player on his- or herself; tokens in order are: special name, player's name.")
 
 // These format specifiers are used as placeholders for the attributed-string descriptions of the specials and players; they must contain whitespace, to ensure that they cannot ever collide with a player's name
 NSString* const iTetSpecialDescriptionFormatSpecifier =	@"%{ special }";
@@ -1644,14 +1644,14 @@ NSString* const iTetSenderNameFormatSpecifier =			@"%{ sender }";
 	return [NSAttributedString attributedStringWithAttributedString:description];
 }
 
-#define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"%@ added to %@ by %@", @"GameViewController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
+#define iTetLinesAddedEventDescriptionFormat	NSLocalizedStringFromTable(@"lines.added.to", @"GameController", @"Event description message added to the 'game actions' list whenever lines are added to one or more players' fields; tokens in order are: number of lines, (including the word 'line' or 'lines') target player's name, sender player's name")
 
-#define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"1 Line", @"GameViewController", @"Token for event description messages describing a single line to be added to a player's field")
-#define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"%d Lines", @"GameViewController", @"Token format for event description messages describing multiple lines to be added to a player's field")
+#define iTetOneLineAddedFormat					NSLocalizedStringFromTable(@"lines.singular", @"GameController", @"Token for event description messages describing a single line to be added to a player's field")
+#define iTetMultipleLinesAddedFormat			NSLocalizedStringFromTable(@"lines.plural", @"GameController", @"Token format for event description messages describing multiple lines to be added to a player's field")
 
-#define iTetDoubleClearEventDescription			NSLocalizedStringFromTable(@"Double", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes two lines simultaneously in an offline game")
-#define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"Triple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
-#define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"Quadruple", @"GameViewController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
+#define iTetDoubleClearEventDescription			NSLocalizedStringFromTable(@"lines.double", @"GameController", @"Event description message added to the 'game actions' list when a player completes two lines simultaneously in an offline game")
+#define iTetTripleClearEventDescription			NSLocalizedStringFromTable(@"lines.triple", @"GameController", @"Event description message added to the 'game actions' list when a player completes three lines simultaneously in an offline game")
+#define iTetQuadrupleClearEventDescription		NSLocalizedStringFromTable(@"lines.quadruple", @"GameController", @"Event description message added to the 'game actions' list when a player completes four lines simultaneously in an offline game")
 
 // (See comment about format specifiers, above)
 NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
@@ -1761,17 +1761,17 @@ NSString* const iTetLinesDescriptionFormatSpecifier =	@"%{ lines }";
 	return [currentGameRules boolForKey:iTetGameRulesOfflineGameKey];
 }
 
-#define iTetNewGameMenuItemTitle	NSLocalizedStringFromTable(@"Begin New Game", @"GameViewController", @"Title of menu item used to start a new game")
-#define iTetNewGameButtonTitle		NSLocalizedStringFromTable(@"New Game", @"GameViewController", @"Title of toolbar button used to start a new game")
+#define iTetNewGameMenuItemTitle	NSLocalizedStringFromTable(@"menu.new.game", @"GameController", @"Title of menu item used to start a new game")
+#define iTetNewGameButtonTitle		NSLocalizedStringFromTable(@"button.new.game", @"GameController", @"Title of toolbar button used to start a new game")
 
-#define iTetPauseGameMenuItemTitle	NSLocalizedStringFromTable(@"Pause Current Game", @"GameViewController", @"Title of menu item used to pause a game in progress")
-#define iTetPauseGameButtonTitle	NSLocalizedStringFromTable(@"Pause", @"GameViewController", @"Title of toolbar button used to pause a game in progress")
+#define iTetPauseGameMenuItemTitle	NSLocalizedStringFromTable(@"menu.pause.game", @"GameController", @"Title of menu item used to pause a game in progress")
+#define iTetPauseGameButtonTitle	NSLocalizedStringFromTable(@"button.pause.game", @"GameController", @"Title of toolbar button used to pause a game in progress")
 
-#define iTetResumeGameMenuItemTitle	NSLocalizedStringFromTable(@"Resume Paused Game", @"GameViewController", @"Title of menu item used to resume a paused game")
-#define iTetResumeGameButtonTitle	NSLocalizedStringFromTable(@"Resume", @"GameViewController", @"Title of toolbar button used to resume a paused game")
+#define iTetResumeGameMenuItemTitle	NSLocalizedStringFromTable(@"menu.resume.game", @"GameController", @"Title of menu item used to resume a paused game")
+#define iTetResumeGameButtonTitle	NSLocalizedStringFromTable(@"button.resume.game", @"GameController", @"Title of toolbar button used to resume a paused game")
 
-#define iTetEndGameMenuItemTitle	NSLocalizedStringFromTable(@"End Current Game...", @"GameViewController", @"Title of menu item used to end a game in progress")
-#define iTetEndGameButtonTitle		NSLocalizedStringFromTable(@"End Game", @"GameViewController", @"Title of toolbar button used to end a game in progress")
+#define iTetEndGameMenuItemTitle	NSLocalizedStringFromTable(@"menu.end.game", @"GameController", @"Title of menu item used to end a game in progress")
+#define iTetEndGameButtonTitle		NSLocalizedStringFromTable(@"button.end.game", @"GameController", @"Title of toolbar button used to end a game in progress")
 
 - (void)setGameplayState:(iTetGameplayState)newState
 {

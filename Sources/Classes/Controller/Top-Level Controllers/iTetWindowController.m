@@ -79,13 +79,13 @@
 #pragma mark -
 #pragma mark NSApplication Delegate Methods
 
-#define iTetQuitWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"A game is currently in progress. Are you sure you want to quit?", @"WindowController", @"Informative text on alert displayed when the user attempts to close the application while participating in a game")
-#define iTetQuitWithGameInProgressConfirmButtonTitle	NSLocalizedStringFromTable(@"Quit Anyway", @"WindowController", @"Title of button on 'quit with game in progress?' alert that allows the user to close the application")
+#define iTetQuitWithGameInProgressAlertInformativeText	NSLocalizedStringFromTable(@"game.quit.progress", @"WindowController", @"Informative text on alert displayed when the user attempts to close the application while participating in a game")
+#define iTetQuitWithGameInProgressConfirmButtonTitle	NSLocalizedStringFromTable(@"game.quit.progress.ok", @"WindowController", @"Title of button on 'quit with game in progress?' alert that allows the user to close the application")
 
-#define iTetQuitWithConnectionOpenAlertTitle			NSLocalizedStringFromTable(@"Open Connection", @"WindowController", @"Title of alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
-#define iTetQuitWithConnectionOpenAlertInformativeText	NSLocalizedStringFromTable(@"You are currently connected to the server '%@'. Are you sure you want to quit?", @"WindowController", @"Informative text on alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
-#define iTetQuitWithConnectionOpenConfirmButtonTitle	NSLocalizedStringFromTable(@"Disconnect and Quit", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to close the open connection and quit the application")
-#define iTetQuitWithConnectionOpenCancelButtonTitle		NSLocalizedStringFromTable(@"Don't Quit", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to cancel closing and remain connected")
+#define iTetQuitWithConnectionOpenAlertTitle			NSLocalizedStringFromTable(@"game.quit.connection", @"WindowController", @"Title of alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
+#define iTetQuitWithConnectionOpenAlertInformativeText	NSLocalizedStringFromTable(@"game.quit.connection.message", @"WindowController", @"Informative text on alert displayed when the user attempts to close the application while connected to a server (but not currently participating in a game)")
+#define iTetQuitWithConnectionOpenConfirmButtonTitle	NSLocalizedStringFromTable(@"game.quit.connection.ok", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to close the open connection and quit the application")
+#define iTetQuitWithConnectionOpenCancelButtonTitle		NSLocalizedStringFromTable(@"game.quit.connection.cancel", @"WindowController", @"Title of button on 'quit while connected to server?' alert that allows the user to cancel closing and remain connected")
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender
 {
